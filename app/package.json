@@ -1,9 +1,9 @@
 {
-  "name": "@gamepark/game-template-app",
+  "name": "@gamepark/popcorn-app",
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "description": "The user interface of Game Template adaptation for Game Park",
+  "description": "The user interface of PopCorn adaptation for Game Park",
   "author": "Romain Fromi <romain@game-park.com> (https://game-park.com/)",
   "license": "ISC",
   "scripts": {
@@ -46,7 +46,7 @@
   },
   "jest": {
     "moduleNameMapper": {
-      "^@gamepark/game-template/(.*)$": "<rootDir>/../rules/src/$1"
+      "^@gamepark/popcorn/(.*)$": "<rootDir>/../rules/src/$1"
     }
   }
 }

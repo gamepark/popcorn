@@ -743,9 +743,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@gamepark/game-template-app@workspace:app":
+"@gamepark/popcorn-app@workspace:app":
   version: 0.0.0-use.local
-  resolution: "@gamepark/game-template-app@workspace:app"
+  resolution: "@gamepark/popcorn-app@workspace:app"
   dependencies:
     "@dnd-kit/core": "npm:~6.3.1"
     "@emotion/react": "npm:^11.14.0"
@@ -754,7 +754,7 @@ __metadata:
     "@fortawesome/free-regular-svg-icons": "npm:^7.0.1"
     "@fortawesome/free-solid-svg-icons": "npm:^7.0.1"
     "@fortawesome/react-fontawesome": "npm:^3.0.2"
-    "@gamepark/react-game": "npm:~7.0.0"
+    "@gamepark/react-game": "npm:~7.0.1"
     "@gamepark/rules-api": "npm:~7.0.0"
     "@types/node": "npm:^24.5.0"
     "@types/react": "npm:^19.1.13"
@@ -777,9 +777,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@gamepark/game-template@workspace:rules":
+"@gamepark/popcorn@workspace:rules":
   version: 0.0.0-use.local
-  resolution: "@gamepark/game-template@workspace:rules"
+  resolution: "@gamepark/popcorn@workspace:rules"
   dependencies:
     "@gamepark/rules-api": "npm:~7.0.0"
     es-toolkit: "npm:^1.39.10"
@@ -812,9 +812,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@gamepark/react-game@npm:~7.0.0":
-  version: 7.0.1
-  resolution: "@gamepark/react-game@npm:7.0.1"
+"@gamepark/react-game@npm:~7.0.1":
+  version: 7.0.2
+  resolution: "@gamepark/react-game@npm:7.0.2"
   dependencies:
     "@apollo/client": "npm:^4.0.5"
     "@datadog/browser-logs": "npm:^6.19.0"
@@ -848,7 +848,7 @@ __metadata:
     react-dom: ^19.1.1
     react-i18next: ^15.7.3
     react-redux: ^9.2.0
-  checksum: 10c0/b52506af32b38d942c63b31210c473ab70189560d9b24e8bc856eeb605023a2c9b1537f695279e7de562ea86c810e0e639a7362159a04763c5939bfcba85fcce
+  checksum: 10c0/4e2c3a6c15a7ab3fcee84e2e3aee55a7b7309650424ec16b05d35a229cdc109a1a85a2b3791a30716dca0054564d6761abe9d2224417b28239e8383b0d6edf73
   languageName: node
   linkType: hard
 

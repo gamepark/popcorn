@@ -1,6 +1,6 @@
-import { GameTemplateOptionsSpec } from '@gamepark/game-template/GameTemplateOptions'
-import { GameTemplateRules } from '@gamepark/game-template/GameTemplateRules'
-import { GameTemplateSetup } from '@gamepark/game-template/GameTemplateSetup'
+import { PopCornOptionsSpec } from '@gamepark/popcorn/PopCornOptions'
+import { PopCornRules } from '@gamepark/popcorn/PopCornRules'
+import { PopCornSetup } from '@gamepark/popcorn/PopCornSetup'
 import { GameProvider, setupTranslation } from '@gamepark/react-game'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
@@ -16,9 +16,9 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <GameProvider
       game="game-template"
-      Rules={GameTemplateRules}
-      optionsSpec={GameTemplateOptionsSpec}
-      GameSetup={GameTemplateSetup}
+      Rules={PopCornRules}
+      optionsSpec={PopCornOptionsSpec}
+      GameSetup={PopCornSetup}
       material={Material}
       locators={Locators}
       animations={gameAnimations}
