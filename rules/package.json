@@ -1,7 +1,7 @@
 {
-  "name": "@gamepark/game-template",
+  "name": "@gamepark/popcorn",
   "version": "0.0.0",
-  "description": "The rules of Game Template adapted for Game Park",
+  "description": "The rules of PopCorn adapted for Game Park",
   "sideEffects": false,
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -25,8 +25,10 @@
   },
   "devDependencies": {
     "@gamepark/rules-api": "~6.29.3",
+    "@types/jest": "27.5.2",
     "@types/lodash": "^4.17.7",
     "i18next": "^22.0.3",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "ts-node": "^10.9.2"
   }
 }
