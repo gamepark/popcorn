@@ -1,3 +1,3 @@
-export { GameTemplateRules } from './GameTemplateRules'
-export { GameTemplateOptionsSpec } from './GameTemplateOptions'
-export { GameTemplateSetup } from './GameTemplateSetup'
+export { PopCornRules } from './PopCornRules'
+export { PopCornOptionsSpec } from './PopCornOptions'
+export { PopCornSetup } from './PopCornSetup'

@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
-import { GameTemplateOptionsSpec } from '@gamepark/game-template/GameTemplateOptions'
-import { GameTemplateRules } from '@gamepark/game-template/GameTemplateRules'
-import { GameTemplateSetup } from '@gamepark/game-template/GameTemplateSetup'
+import { PopCornOptionsSpec } from '@gamepark/game-template/PopCornOptions'
+import { PopCornRules } from '@gamepark/game-template/PopCornRules'
+import { PopCornSetup } from '@gamepark/game-template/PopCornSetup'
 import { GameProvider, setupTranslation } from '@gamepark/react-game'
 import { StrictMode } from 'react'
 import ReactDOM from 'react-dom'
@@ -17,9 +17,9 @@ ReactDOM.render(
   <StrictMode>
     <GameProvider
       game="game-template"
-      Rules={GameTemplateRules}
-      optionsSpec={GameTemplateOptionsSpec}
-      GameSetup={GameTemplateSetup}
+      Rules={PopCornRules}
+      optionsSpec={PopCornOptionsSpec}
+      GameSetup={PopCornSetup}
       material={Material}
       locators={Locators}
       animations={gameAnimations}
