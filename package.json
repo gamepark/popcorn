@@ -18,12 +18,12 @@
     "typescript-eslint": "^8.44.0"
   },
   "scripts": {
-    "dev": "yarn workspace @gamepark/game-template-app run dev",
-    "preview": "yarn workspace @gamepark/game-template-app run preview",
-    "build": "yarn workspace @gamepark/game-template-app run build",
-    "deploy": "yarn workspace @gamepark/game-template-app run deploy",
+    "dev": "yarn workspace @gamepark/popcorn-app run dev",
+    "preview": "yarn workspace @gamepark/popcorn-app run preview",
+    "build": "yarn workspace @gamepark/popcorn-app run build",
+    "deploy": "yarn workspace @gamepark/popcorn-app run deploy",
     "publish": "lerna publish",
-    "lint": "yarn workspace @gamepark/game-template run lint && yarn workspace @gamepark/game-template-app run lint",
+    "lint": "yarn workspace @gamepark/popcorn run lint && yarn workspace @gamepark/popcorn-app run lint",
     "linkgp": "yarn link ../rules-api ../react-client ../react-game -r",
     "unlinkgp": "yarn unlink ../react-game ../react-client ../rules-api"
   },
