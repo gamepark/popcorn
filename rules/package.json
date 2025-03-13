@@ -18,7 +18,8 @@
     "build": "tsc",
     "prepublishOnly": "tsc",
     "publish": "lerna publish",
-    "lint": "eslint --fix"
+    "lint": "eslint",
+    "test": "jest --passWithNoTests"
   },
   "peerDependencies": {
     "@gamepark/rules-api": ">=7",

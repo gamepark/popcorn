@@ -2,3 +2,6 @@
 dist
 coverage
 node_modules
+.prettierrc
+*.json
+config-overrides.js
