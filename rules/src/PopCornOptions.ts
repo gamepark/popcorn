@@ -31,13 +31,13 @@ export const PopCornOptionsSpec: OptionsSpec<PopCornOptions> = {
 
 export function getPlayerName(playerId: PlayerColor, t: TFunction) {
   switch (playerId) {
-    case PlayerColor.Red:
-      return t('Red')
-    case PlayerColor.Blue:
-      return t('Blue')
+    case PlayerColor.Cyan:
+      return t('Cyan')
     case PlayerColor.Green:
       return t('Green')
-    case PlayerColor.Yellow:
-      return t('Yellow')
+    case PlayerColor.Orange:
+      return t('Orange')
+    case PlayerColor.Purple:
+      return t('Purple')
   }
 }
