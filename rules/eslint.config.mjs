@@ -8,7 +8,7 @@ import jestPlugin from 'eslint-plugin-jest'
 
 /** @type {import('eslint').Linter.Config[]} */
 export default tseslint.config([
-    globalIgnores(['dist/**/*.{js,ts}', '*.config.{ts,mjs}']),
+    globalIgnores(['dist/**/*.{js,ts}', '**/*.spec.{js,ts}', '*.config.{ts,mjs}']),
     { files: ['src/**/*.{js,mjs,cjs,ts}'] },
     eslint.configs.recommended,
     tseslint.configs.strictTypeChecked,
@@ -27,21 +27,6 @@ export default tseslint.config([
             '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
             '@typescript-eslint/no-confusing-void-expression': 'off',
             '@typescript-eslint/consistent-type-definitions': 'off'
-        }
-    },
-    {
-        files: ['**/*.spec.{js,ts}'],
-        ...jestPlugin.configs['flat/recommended'],
-        plugins: {
-            jest: jestPlugin
-        },
-        settings: {
-            jest: {
-                version: 27
-            }
-        },
-        languageOptions: {
-            globals: jestPlugin.environments.globals.globals
         }
     },
     eslintPluginPrettierRecommended
