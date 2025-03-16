@@ -12,6 +12,7 @@ import money5Back from '../images/Tokens/Money/Money5Back.jpg'
 
 class MoneyTokenDescription extends RoundTokenDescription<PlayerColor, MaterialType, LocationType, MoneyToken> {
   diameter = 2.2
+  thickness = 0.2
 
   stockLocation = {
     type: LocationType.MoneyPileSpot

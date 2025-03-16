@@ -38,6 +38,7 @@ import threeSeatBack from '../images/Tiles/TheaterTiles/3SeatBack.png'
 class TheaterTileDescription extends TokenDescription<PlayerColor, MaterialType, LocationType, TheaterTile> {
   width = 4.3
   height = 4.3
+  thickness = 0.2
 
   images = {
     [TheaterTile.OneSeat2Money]: oneSeat1Front,

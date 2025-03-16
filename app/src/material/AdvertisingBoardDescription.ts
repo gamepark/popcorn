@@ -7,6 +7,7 @@ import advertisingBoard from '../images/Boards/AdvertisingBoard.png'
 class AdvertisingBoardDescription extends BoardDescription<PlayerColor, MaterialType, LocationType> {
   width = 7.38
   height = 18.96
+  thickness = 0.2
 
   image = advertisingBoard
 
