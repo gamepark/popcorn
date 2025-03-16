@@ -1,3 +1,5 @@
+import { getEnumValues } from '@gamepark/rules-api'
+
 export enum FilmColor {
   Yellow = 0,
   Red,
@@ -438,6 +440,8 @@ const FILM_COLOR_LENGTH = 2
 const FILM_PRICE_LENGTH = 3
 const FILM_BONUS_CONDITION_LENGTH = 2
 const FILM_ACTION_LENGTH = 5
+
+export const movieCards = getEnumValues(MovieCard)
 
 export const getFilmColor = (id: MovieCard): FilmColor => id & (2 ** FILM_COLOR_LENGTH - 1)
 
