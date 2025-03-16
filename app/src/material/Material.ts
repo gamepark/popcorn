@@ -10,6 +10,7 @@ import { moneyTokenDescription } from './MoneyTokenDescription'
 import { movieCardDescription } from './MovieCardDescription'
 import { popcornTokenDescription } from './PopcornTokenDescription'
 import { premiersTileDescription } from './PremiersTileDescription'
+import { theaterTileDescription } from './TheaterTileDescription'
 import { topCinemaBoardDescription } from './TopCinemaBoardDescription'
 
 export const Material: Partial<Record<MaterialType, MaterialDescription>> = {
@@ -23,5 +24,6 @@ export const Material: Partial<Record<MaterialType, MaterialDescription>> = {
   [MaterialType.PopcornTokens]: popcornTokenDescription,
   [MaterialType.MoneyTokens]: moneyTokenDescription,
   [MaterialType.AdvertisingBoard]: advertisingBoardDescription,
-  [MaterialType.AdvertisingTokens]: advertisingTokenDescription
+  [MaterialType.AdvertisingTokens]: advertisingTokenDescription,
+  [MaterialType.TheaterTiles]: theaterTileDescription
 }
