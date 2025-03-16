@@ -1,5 +1,6 @@
 import { MaterialType } from '@gamepark/game-template/material/MaterialType'
 import { MaterialDescription } from '@gamepark/react-game'
+import { advertisingBoardDescription } from './AdvertisingBoardDescription'
 import { awardCardDescription } from './AwardCardDescription'
 import { bottomCinemaBoardDescription } from './BottomCinemaBoardDescription'
 import { featuresTileDescription } from './FeaturesTileDescription'
@@ -19,5 +20,6 @@ export const Material: Partial<Record<MaterialType, MaterialDescription>> = {
   [MaterialType.FeaturesTile]: featuresTileDescription,
   [MaterialType.PremiersTile]: premiersTileDescription,
   [MaterialType.PopcornTokens]: popcornTokenDescription,
-  [MaterialType.MoneyTokens]: moneyTokenDescription
+  [MaterialType.MoneyTokens]: moneyTokenDescription,
+  [MaterialType.AdvertisingBoard]: advertisingBoardDescription
 }
