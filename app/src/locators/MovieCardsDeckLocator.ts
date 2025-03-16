@@ -4,7 +4,7 @@ import { PlayerColor } from '@gamepark/game-template/PlayerColor'
 import { DeckLocator } from '@gamepark/react-game'
 
 class MovieCardsDeckLocator extends DeckLocator<PlayerColor, MaterialType, LocationType> {
-  coordinates = { x: -25, y: 0 }
+  coordinates = { x: -25, y: -2 }
   limit = 45
 }
 
