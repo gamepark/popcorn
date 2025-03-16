@@ -12,5 +12,7 @@ export enum MaterialType {
   TopCinemaBoard,
   LobbySliders,
   AudienceCubes,
-  FirstPlayerMarker
+  FirstPlayerMarker,
+  FeaturesTile,
+  PremiersTile
 }
