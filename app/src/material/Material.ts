@@ -5,6 +5,7 @@ import { bottomCinemaBoardDescription } from './BottomCinemaBoardDescription'
 import { featuresTileDescription } from './FeaturesTileDescription'
 import { lobbySliderDescription } from './LobbySliderDescription'
 import { movieCardDescription } from './MovieCardDescription'
+import { popcornTokenDescription } from './PopcornTokenDescription'
 import { premiersTileDescription } from './PremiersTileDescription'
 import { topCinemaBoardDescription } from './TopCinemaBoardDescription'
 
@@ -15,5 +16,6 @@ export const Material: Partial<Record<MaterialType, MaterialDescription>> = {
   [MaterialType.TopCinemaBoard]: topCinemaBoardDescription,
   [MaterialType.LobbySliders]: lobbySliderDescription,
   [MaterialType.FeaturesTile]: featuresTileDescription,
-  [MaterialType.PremiersTile]: premiersTileDescription
+  [MaterialType.PremiersTile]: premiersTileDescription,
+  [MaterialType.PopcornTokens]: popcornTokenDescription
 }
