@@ -43,6 +43,7 @@ class PopcornTokenDescription extends TokenDescription<PlayerColor, MaterialType
   public getSize(id: PopcornToken): ComponentSize {
     return tokenSizes[id]
   }
+  thickness = 0.2
 
   stockLocation = {
     type: LocationType.PopcornPileSpot

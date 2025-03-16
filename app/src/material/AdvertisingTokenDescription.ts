@@ -9,6 +9,7 @@ import advertisingTokenPurple from '../images/Tokens/Advertising/AdvertisingToke
 
 class AdvertisingTokenDescription extends RoundTokenDescription<PlayerColor, MaterialType, LocationType, PlayerColor> {
   diameter = 1.8
+  thickness = 0.2
 
   images = {
     [PlayerColor.Cyan]: advertisingTokenCyen,

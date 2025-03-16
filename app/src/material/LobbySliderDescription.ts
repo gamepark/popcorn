@@ -19,6 +19,7 @@ import purple3LobbySlider from '../images/Sliders/SliderBlue3.png'
 class LobbySliderDescription extends BoardDescription<PlayerColor, MaterialType, LocationType, LobbySlider> {
   width = 1.8
   height = 6.4
+  thickness = 0.2
 
   images = {
     [LobbySlider.Cyan1]: cyan1LobbySlider,

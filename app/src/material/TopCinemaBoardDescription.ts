@@ -11,6 +11,7 @@ import purpleTopCinemaBoard from '../images/Boards/PlayerBoards/PurpleTop.png'
 class TopCinemaBoardDescription extends BoardDescription<PlayerColor, MaterialType, LocationType, PlayerColor> {
   width = 24
   height = 16.5
+  thickness = 0.2
 
   images = {
     [PlayerColor.Cyan]: cyanTopCinemaBoard,
