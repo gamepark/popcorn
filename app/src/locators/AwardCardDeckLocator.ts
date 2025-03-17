@@ -3,9 +3,8 @@ import { MaterialType } from '@gamepark/game-template/material/MaterialType'
 import { PlayerColor } from '@gamepark/game-template/PlayerColor'
 import { DeckLocator } from '@gamepark/react-game'
 
-class MovieCardsDeckLocator extends DeckLocator<PlayerColor, MaterialType, LocationType> {
-  coordinates = { x: -25, y: -3 }
-  limit = 45
+class AwardCardDeckLocator extends DeckLocator<PlayerColor, MaterialType, LocationType> {
+  coordinates = { x: -25, y: 4.5 }
 }
 
-export const movieCardsDeckLocator = new MovieCardsDeckLocator()
+export const awardCardDeckLocator = new AwardCardDeckLocator()

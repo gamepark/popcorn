@@ -20,6 +20,9 @@ export class PopCornRules
   hidingStrategies = {
     [MaterialType.MovieCards]: {
       [LocationType.MovieCardDeckSpot]: hideItemId
+    },
+    [MaterialType.AwardCards]: {
+      [LocationType.AwardCardDeckSpot]: hideItemId
     }
   }
 
@@ -28,6 +31,9 @@ export class PopCornRules
       [LocationType.MovieCardDeckSpot]: new PositiveSequenceStrategy(),
       [LocationType.FeaturesRowSpot]: new FillGapStrategy(),
       [LocationType.PremiersRowSpot]: new FillGapStrategy()
+    },
+    [MaterialType.AwardCards]: {
+      [LocationType.AwardCardDeckSpot]: new PositiveSequenceStrategy()
     }
   }
 

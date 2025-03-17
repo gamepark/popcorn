@@ -436,6 +436,11 @@ export enum MovieCard {
   FinalShowing = 255
 }
 
+export enum MovieCardType {
+  FirstMovie = 1,
+  Movie = 2
+}
+
 const FILM_COLOR_LENGTH = 2
 const FILM_PRICE_LENGTH = 3
 const FILM_BONUS_CONDITION_LENGTH = 2
@@ -458,3 +463,15 @@ export const getSecondAction = (id: MovieCard): FilmAction => (id >> FilmFieldSh
 export const getThirdAction = (id: MovieCard): FilmAction => (id >> FilmFieldShifts.ThirdAction) & (2 ** FILM_ACTION_LENGTH - 1)
 
 export const getFourthAction = (id: MovieCard): FilmAction => (id >> FilmFieldShifts.FourthAction) & (2 ** FILM_ACTION_LENGTH - 1)
+
+export const getMovieCardType = (id: MovieCard): MovieCardType =>
+  [MovieCard.FirstMovieBlueRosebud, MovieCard.FirstMovieGreenLaFinDuMonde, MovieCard.FirstMovieRedCEstMaGuerre, MovieCard.FirstMovieYellowModernLove].includes(
+    id
+  )
+    ? MovieCardType.FirstMovie
+    : MovieCardType.Movie
+
+export type MovieCardId = {
+  front?: MovieCard
+  back: MovieCardType
+}
