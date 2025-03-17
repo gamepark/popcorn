@@ -11,7 +11,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.6.0",
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@gamepark/avataaars": "~2.2.0",
-    "@gamepark/react-game": "~6.29.4",
+    "@gamepark/react-game": "~6.29.11",
     "@gamepark/rules-api": "~6.29.3",
     "@types/react": "^17.0.68",
     "@types/react-dom": "^17.0.9",
@@ -27,6 +27,9 @@
     "react-redux": "^8.0.5",
     "react-scripts": "^5.0.1",
     "web-vitals": "^2.1.0"
+  },
+  "resolutions": {
+    "@gamepark/avataars": "2.2.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.22.0",
