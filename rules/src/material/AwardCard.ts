@@ -1,3 +1,5 @@
+import { getEnumValues } from '@gamepark/rules-api'
+
 export enum AwardCard {
   BlueRedMoviePair = 1,
   BlueGreenMoviePair,
@@ -26,3 +28,5 @@ export enum AwardCard {
   YellowTwoSeatsGuestsMoviesSet,
   FourMovieSameColorSet
 }
+
+export const awardCards = getEnumValues(AwardCard)
