@@ -2,6 +2,7 @@ import { LocationType } from '@gamepark/game-template/material/LocationType'
 import { MaterialType } from '@gamepark/game-template/material/MaterialType'
 import { PlayerColor } from '@gamepark/game-template/PlayerColor'
 import { Locator } from '@gamepark/react-game'
+import { advertisingBoardLocator } from './AdvertisingBoardLocator'
 import { awardCardDeckLocator } from './AwardCardDeckLocator'
 import { featureMovieCardsRowLocator } from './FeatureMovieCardsRowLocator'
 import { featuresTilesLocator } from './FeaturesTilesLocator'
@@ -15,5 +16,6 @@ export const Locators: Partial<Record<LocationType, Locator<PlayerColor, Materia
   [LocationType.PremiersTileSpot]: premiersTileLocator,
   [LocationType.FeaturesRowSpot]: featureMovieCardsRowLocator,
   [LocationType.PremiersRowSpot]: premierMovieCardsRowLocator,
-  [LocationType.AwardCardDeckSpot]: awardCardDeckLocator
+  [LocationType.AwardCardDeckSpot]: awardCardDeckLocator,
+  [LocationType.AdvertisingBoardSpot]: advertisingBoardLocator
 }
