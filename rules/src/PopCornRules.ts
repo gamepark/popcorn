@@ -26,7 +26,8 @@ export class PopCornRules
   locationsStrategies = {
     [MaterialType.MovieCards]: {
       [LocationType.MovieCardDeckSpot]: new PositiveSequenceStrategy(),
-      [LocationType.FeaturesRowSpot]: new FillGapStrategy()
+      [LocationType.FeaturesRowSpot]: new FillGapStrategy(),
+      [LocationType.PremiersRowSpot]: new FillGapStrategy()
     }
   }
 
