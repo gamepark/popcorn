@@ -11,6 +11,7 @@ import { movieCardsDeckLocator } from './MovieCardsDeckLocator'
 import { oneSeatTheaterTilesDeckLocator } from './OneSeatTheaterTilesDeckLocator'
 import { premierMovieCardsRowLocator } from './PremierMovieCardsRowLocator'
 import { premiersTileLocator } from './PremiersTileLocator'
+import { twoSeatTheaterTilesDeckLocator } from './TwoSeatTheaterTilesDeckLocator'
 
 export const Locators: Partial<Record<LocationType, Locator<PlayerColor, MaterialType, LocationType>>> = {
   [LocationType.MovieCardDeckSpot]: movieCardsDeckLocator,
@@ -21,5 +22,6 @@ export const Locators: Partial<Record<LocationType, Locator<PlayerColor, Materia
   [LocationType.AwardCardDeckSpot]: awardCardDeckLocator,
   [LocationType.AdvertisingBoardSpot]: advertisingBoardLocator,
   [LocationType.AdvertisingTokenSpotOnAdvertisingBoard]: advertisingTokenSpotOnAdvertisingBoardLocator,
-  [LocationType.OneSeatTheaterTileDeckSpot]: oneSeatTheaterTilesDeckLocator
+  [LocationType.OneSeatTheaterTileDeckSpot]: oneSeatTheaterTilesDeckLocator,
+  [LocationType.TwoSeatTheaterTileDeckSpot]: twoSeatTheaterTilesDeckLocator
 }
