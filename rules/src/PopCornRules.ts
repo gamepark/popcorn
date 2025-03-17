@@ -1,4 +1,13 @@
-import { FillGapStrategy, hideItemId, MaterialGame, MaterialMove, PositiveSequenceStrategy, SecretMaterialRules, TimeLimit } from '@gamepark/rules-api'
+import {
+  FillGapStrategy,
+  hideFront,
+  hideItemId,
+  MaterialGame,
+  MaterialMove,
+  PositiveSequenceStrategy,
+  SecretMaterialRules,
+  TimeLimit
+} from '@gamepark/rules-api'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { PlayerColor } from './PlayerColor'
@@ -19,10 +28,15 @@ export class PopCornRules
 
   hidingStrategies = {
     [MaterialType.MovieCards]: {
-      [LocationType.MovieCardDeckSpot]: hideItemId
+      [LocationType.MovieCardDeckSpot]: hideFront
     },
     [MaterialType.AwardCards]: {
       [LocationType.AwardCardDeckSpot]: hideItemId
+    },
+    [MaterialType.TheaterTiles]: {
+      [LocationType.OneSeatTheaterTileDeckSpot]: hideFront,
+      [LocationType.TwoSeatTheaterTileDeckSpot]: hideFront,
+      [LocationType.ThreeSeatTheaterTileDeckSpot]: hideItemId
     }
   }
 
@@ -34,6 +48,14 @@ export class PopCornRules
     },
     [MaterialType.AwardCards]: {
       [LocationType.AwardCardDeckSpot]: new PositiveSequenceStrategy()
+    },
+    [MaterialType.TheaterTiles]: {
+      [LocationType.OneSeatTheaterTileDeckSpot]: new PositiveSequenceStrategy(),
+      [LocationType.OneSeatTheaterTileRowSpot]: new FillGapStrategy(),
+      [LocationType.TwoSeatTheaterTileDeckSpot]: new PositiveSequenceStrategy(),
+      [LocationType.TwoSeatTheaterTileRowSpot]: new FillGapStrategy(),
+      [LocationType.ThreeSeatTheaterTileDeckSpot]: new PositiveSequenceStrategy(),
+      [LocationType.ThreeSeatTheaterTileRowSpot]: new FillGapStrategy()
     }
   }
 

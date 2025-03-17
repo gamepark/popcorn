@@ -8,6 +8,7 @@ import { awardCardDeckLocator } from './AwardCardDeckLocator'
 import { featureMovieCardsRowLocator } from './FeatureMovieCardsRowLocator'
 import { featuresTilesLocator } from './FeaturesTilesLocator'
 import { movieCardsDeckLocator } from './MovieCardsDeckLocator'
+import { oneSeatTheaterTilesDeckLocator } from './OneSeatTheaterTilesDeckLocator'
 import { premierMovieCardsRowLocator } from './PremierMovieCardsRowLocator'
 import { premiersTileLocator } from './PremiersTileLocator'
 
@@ -19,5 +20,6 @@ export const Locators: Partial<Record<LocationType, Locator<PlayerColor, Materia
   [LocationType.PremiersRowSpot]: premierMovieCardsRowLocator,
   [LocationType.AwardCardDeckSpot]: awardCardDeckLocator,
   [LocationType.AdvertisingBoardSpot]: advertisingBoardLocator,
-  [LocationType.AdvertisingTokenSpotOnAdvertisingBoard]: advertisingTokenSpotOnAdvertisingBoardLocator
+  [LocationType.AdvertisingTokenSpotOnAdvertisingBoard]: advertisingTokenSpotOnAdvertisingBoardLocator,
+  [LocationType.OneSeatTheaterTileDeckSpot]: oneSeatTheaterTilesDeckLocator
 }

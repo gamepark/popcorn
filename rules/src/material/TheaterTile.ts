@@ -250,3 +250,8 @@ export const getSeat3Action = (id: TheaterTile): SeatAction => {
   }
   return (id >> TheaterTileFieldsShift.Seat3Action) & (2 ** SEAT_ACTION_LENGTH - 1)
 }
+
+export type TheaterTileId = {
+  front?: TheaterTile
+  back: SeatsNumber
+}
