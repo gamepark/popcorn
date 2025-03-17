@@ -1,4 +1,4 @@
-import { hideItemId, MaterialGame, MaterialMove, PositiveSequenceStrategy, SecretMaterialRules, TimeLimit } from '@gamepark/rules-api'
+import { FillGapStrategy, hideItemId, MaterialGame, MaterialMove, PositiveSequenceStrategy, SecretMaterialRules, TimeLimit } from '@gamepark/rules-api'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { PlayerColor } from './PlayerColor'
@@ -25,7 +25,8 @@ export class PopCornRules
 
   locationsStrategies = {
     [MaterialType.MovieCards]: {
-      [LocationType.MovieCardDeckSpot]: new PositiveSequenceStrategy()
+      [LocationType.MovieCardDeckSpot]: new PositiveSequenceStrategy(),
+      [LocationType.FeaturesRowSpot]: new FillGapStrategy()
     }
   }
 
