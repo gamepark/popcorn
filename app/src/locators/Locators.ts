@@ -7,6 +7,7 @@ import { advertisingTokenSpotOnAdvertisingBoardLocator } from './AdvertisingToke
 import { awardCardDeckLocator } from './AwardCardDeckLocator'
 import { featureMovieCardsRowLocator } from './FeatureMovieCardsRowLocator'
 import { featuresTilesLocator } from './FeaturesTilesLocator'
+import { guestPawnReserveLocator } from './GuestPawnReserveLocator'
 import { moneyPileLocator } from './MoneyTokenPileLocator'
 import { movieCardsDeckLocator } from './MovieCardsDeckLocator'
 import { oneSeatTheaterTilesDeckLocator } from './OneSeatTheaterTilesDeckLocator'
@@ -37,5 +38,6 @@ export const Locators: Partial<Record<LocationType, Locator<PlayerColor, Materia
   [LocationType.ThreeSeatTheaterTileRowSpot]: threeSeatTheaterTilesRowLocator,
   [LocationType.PopcornPileSpot]: popcornTokenPileLocator,
   [LocationType.MoneyPileSpot]: moneyPileLocator,
-  [LocationType.TheaterTrophyReserveSpot]: theaterTrophyReserveLocator
+  [LocationType.TheaterTrophyReserveSpot]: theaterTrophyReserveLocator,
+  [LocationType.GuestPawnReserveSpot]: guestPawnReserveLocator
 }
