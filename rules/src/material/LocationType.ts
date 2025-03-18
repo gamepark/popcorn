@@ -19,7 +19,7 @@ export enum LocationType {
   ThreeSeatTheaterTileRowSpot,
   GuestPawnReserveSpot,
   BottomPlayerCinemaBoardSpot,
-  FilmCardSpotOnBottomPlayerCinemaBoard,
+  MovieCardSpotOnBottomPlayerCinemaBoard,
   TopPlayerCinemaBoardSpotOnBottomPlayerCinemaBoard,
   LobbySliderSpotOnTopPlayerCinemaBoard,
   TheaterTileSpotOnTopPlayerCinemaBoard,
