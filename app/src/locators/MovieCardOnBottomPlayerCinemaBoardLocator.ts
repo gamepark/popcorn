@@ -15,7 +15,7 @@ class MovieCardOnBottomPlayerCinemaBoardLocator extends ListLocator<PlayerColor,
     return bottomCinemaBoardDescription.getStaticItems(context).find((boardItem) => boardItem.location.player === location.player)
   }
 
-  coordinates = { x: -7.65, y: -7.5 }
+  coordinates = { x: -7.7, y: -7.5 }
   gap = { x: 7.7, z: 0 }
 }
 

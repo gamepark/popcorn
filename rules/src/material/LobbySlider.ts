@@ -1,3 +1,4 @@
+import { getEnumValues } from '@gamepark/rules-api'
 import { PlayerColor } from '../PlayerColor'
 
 /* eslint "@typescript-eslint/prefer-literal-enum-member": "off" */
@@ -17,3 +18,5 @@ export enum LobbySlider {
 }
 
 export const getSliderColor = (id: LobbySlider): PlayerColor => (id >> 2) & 3
+
+export const lobbySliders = getEnumValues(LobbySlider)
