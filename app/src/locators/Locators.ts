@@ -5,6 +5,7 @@ import { Locator } from '@gamepark/react-game'
 import { advertisingBoardLocator } from './AdvertisingBoardLocator'
 import { advertisingTokenSpotOnAdvertisingBoardLocator } from './AdvertisingTokenSpotOnAdvertisingBoardLocator'
 import { awardCardDeckLocator } from './AwardCardDeckLocator'
+import { bottomCinemaBoardLocator } from './BottomCinemaBoardLocator'
 import { featureMovieCardsRowLocator } from './FeatureMovieCardsRowLocator'
 import { featuresTilesLocator } from './FeaturesTilesLocator'
 import { guestPawnReserveLocator } from './GuestPawnReserveLocator'
@@ -39,5 +40,6 @@ export const Locators: Partial<Record<LocationType, Locator<PlayerColor, Materia
   [LocationType.PopcornPileSpot]: popcornTokenPileLocator,
   [LocationType.MoneyPileSpot]: moneyPileLocator,
   [LocationType.TheaterTrophyReserveSpot]: theaterTrophyReserveLocator,
-  [LocationType.GuestPawnReserveSpot]: guestPawnReserveLocator
+  [LocationType.GuestPawnReserveSpot]: guestPawnReserveLocator,
+  [LocationType.BottomPlayerCinemaBoardSpot]: bottomCinemaBoardLocator
 }
