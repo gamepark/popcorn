@@ -4,6 +4,7 @@ import { PlayerColor } from '@gamepark/game-template/PlayerColor'
 import { Locator } from '@gamepark/react-game'
 import { advertisingBoardLocator } from './AdvertisingBoardLocator'
 import { advertisingTokenSpotOnAdvertisingBoardLocator } from './AdvertisingTokenSpotOnAdvertisingBoardLocator'
+import { audienceCubeSpotOnTopCinenaBoardLocator } from './AudienceCubeSpotOnTopCinemaBoardLocator'
 import { awardCardDeckLocator } from './AwardCardDeckLocator'
 import { bottomCinemaBoardLocator } from './BottomCinemaBoardLocator'
 import { featureMovieCardsRowLocator } from './FeatureMovieCardsRowLocator'
@@ -53,5 +54,6 @@ export const Locators: Partial<Record<LocationType, Locator<PlayerColor, Materia
   [LocationType.LobbySliderSpotOnTopPlayerCinemaBoard]: lobbySliderOnTopCinemaBoardLocator,
   [LocationType.TheaterTileSpotOnTopPlayerCinemaBoard]: theaterTileOnCinemaBoardLocator,
   [LocationType.GuestPawnSpotOnTheaterTile]: guestPawnOnTheaterTileLocator,
-  [LocationType.GuestPawnExitZoneSpotOnTopPlayerCinemaBoard]: guestPawnInExitZoneLocator
+  [LocationType.GuestPawnExitZoneSpotOnTopPlayerCinemaBoard]: guestPawnInExitZoneLocator,
+  [LocationType.AudienceCubeSpotOnTopPlayerCinemaBoard]: audienceCubeSpotOnTopCinenaBoardLocator
 }

@@ -62,10 +62,10 @@ class GuestPawnOnTheaterTileLocator extends Locator<PlayerColor, MaterialType, L
     location: Location<PlayerColor, LocationType>,
     context: MaterialContext<PlayerColor, MaterialType, LocationType>
   ): Partial<Coordinates> {
-    const parentTile = context.rules.material(MaterialType.TheaterTiles).index(location.parent).getItem<TheaterTileId>()
     if (location.x === undefined) {
       throw new Error('Location cannot have a missing x')
     }
+    const parentTile = context.rules.material(MaterialType.TheaterTiles).index(location.parent).getItem<TheaterTileId>()
     if (parentTile === undefined || parentTile.location.type !== LocationType.TheaterTileSpotOnTopPlayerCinemaBoard) {
       throw new Error('Cannot locate a non-existing tile')
     }
