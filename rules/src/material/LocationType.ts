@@ -23,6 +23,7 @@ export enum LocationType {
   TopPlayerCinemaBoardSpotOnBottomPlayerCinemaBoard,
   LobbySliderSpotOnTopPlayerCinemaBoard,
   TheaterTileSpotOnTopPlayerCinemaBoard,
+  GuestPawnSpotOnTheaterTile,
   GuestPawnExitZoneSpotOnTopPlayerCinemaBoard,
   PlayerClothBagSpot,
   AudienceCubeSpotOnTopPlayerCinemaBoard,
