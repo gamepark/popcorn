@@ -8,6 +8,7 @@ import { awardCardDeckLocator } from './AwardCardDeckLocator'
 import { bottomCinemaBoardLocator } from './BottomCinemaBoardLocator'
 import { featureMovieCardsRowLocator } from './FeatureMovieCardsRowLocator'
 import { featuresTilesLocator } from './FeaturesTilesLocator'
+import { guestPawnInExitZoneLocator } from './GuestPawnInExitZoneLocator'
 import { guestPawnOnTheaterTileLocator } from './GuestPawnOnTheaterTileLocator'
 import { guestPawnReserveLocator } from './GuestPawnReserveLocator'
 import { lobbySliderOnTopCinemaBoardLocator } from './LobbySliderOnTopCinemaBoardLocator'
@@ -51,5 +52,6 @@ export const Locators: Partial<Record<LocationType, Locator<PlayerColor, Materia
   [LocationType.TopPlayerCinemaBoardSpotOnBottomPlayerCinemaBoard]: topCinemaBoardOnBottomCinemaBoardLocator,
   [LocationType.LobbySliderSpotOnTopPlayerCinemaBoard]: lobbySliderOnTopCinemaBoardLocator,
   [LocationType.TheaterTileSpotOnTopPlayerCinemaBoard]: theaterTileOnCinemaBoardLocator,
-  [LocationType.GuestPawnSpotOnTheaterTile]: guestPawnOnTheaterTileLocator
+  [LocationType.GuestPawnSpotOnTheaterTile]: guestPawnOnTheaterTileLocator,
+  [LocationType.GuestPawnExitZoneSpotOnTopPlayerCinemaBoard]: guestPawnInExitZoneLocator
 }
