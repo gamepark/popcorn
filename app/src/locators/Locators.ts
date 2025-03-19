@@ -19,6 +19,7 @@ import { movieCardOnBottomPlayerCinemaBoardLocator } from './MovieCardOnBottomPl
 import { movieCardsDeckLocator } from './MovieCardsDeckLocator'
 import { oneSeatTheaterTilesDeckLocator } from './OneSeatTheaterTilesDeckLocator'
 import { oneSeatTheaterTilesRowLocator } from './OneSeatTheaterTilesRowLocator'
+import { playerAdvertisingTokenPileLocator } from './PlayerAdvertisingTokenPileLocator'
 import { popcornTokenPileLocator } from './PopcornTokenPileLocator'
 import { premierMovieCardsRowLocator } from './PremierMovieCardsRowLocator'
 import { premiersTileLocator } from './PremiersTileLocator'
@@ -57,5 +58,6 @@ export const Locators: Partial<Record<LocationType, Locator<PlayerColor, Materia
   [LocationType.GuestPawnSpotOnTheaterTile]: guestPawnOnTheaterTileLocator,
   [LocationType.GuestPawnExitZoneSpotOnTopPlayerCinemaBoard]: guestPawnInExitZoneLocator,
   [LocationType.AudienceCubeSpotOnTopPlayerCinemaBoard]: audienceCubeSpotOnTopCinenaBoardLocator,
-  [LocationType.PlayerAwardCardHand]: awardCardsHandLocator
+  [LocationType.PlayerAwardCardHand]: awardCardsHandLocator,
+  [LocationType.PlayerAdvertisingTokenSpot]: playerAdvertisingTokenPileLocator
 }
