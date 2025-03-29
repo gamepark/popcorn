@@ -3,22 +3,23 @@ import { MaterialType } from '@gamepark/game-template/material/MaterialType'
 import { PlayerColor } from '@gamepark/game-template/PlayerColor'
 import { getRelativePlayerIndex, HandLocator, MaterialContext } from '@gamepark/react-game'
 import { Coordinates, Location, XYCoordinates } from '@gamepark/rules-api'
+import { getPlayerItemRotateZ } from './utils/PlayerItemsUtils'
 
 const handCoordinates: Record<number, Record<number, XYCoordinates>> = {
   2: {
-    0: { x: 20, y: 20 },
-    1: { x: -20, y: -20 }
+    0: { x: 15, y: 20 },
+    1: { x: -15, y: -20 }
   },
   3: {
-    0: { x: 20, y: 20 },
-    1: { x: -54, y: -20 },
-    2: { x: 16, y: -20 }
+    0: { x: 15, y: 20 },
+    1: { x: -49, y: -20 },
+    2: { x: 11, y: -20 }
   },
   4: {
-    0: { x: 54, y: 20 },
-    1: { x: -16, y: 20 },
-    2: { x: -54, y: -20 },
-    3: { x: 16, y: -20 }
+    0: { x: 49, y: 20 },
+    1: { x: -11, y: 20 },
+    2: { x: -49, y: -20 },
+    3: { x: 11, y: -20 }
   }
 }
 
@@ -36,15 +37,7 @@ class AwardCardsHandLocator extends HandLocator<PlayerColor, MaterialType, Locat
   }
 
   public getBaseAngle(location: Location<PlayerColor, LocationType>, context: MaterialContext<PlayerColor, MaterialType, LocationType>): number {
-    switch (context.rules.players.length) {
-      case 2:
-      case 3:
-        return getRelativePlayerIndex(context, location.player) === 0 ? 0 : 180
-      case 4:
-        return getRelativePlayerIndex(context, location.player) < 2 ? 0 : 180
-      default:
-        throw new Error('Invalid number of players')
-    }
+    return getPlayerItemRotateZ(location, context)
   }
 }
 

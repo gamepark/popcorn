@@ -4,9 +4,11 @@ import { PlayerColor } from '@gamepark/game-template/PlayerColor'
 import { Locator, MaterialContext } from '@gamepark/react-game'
 import { Location, MaterialItem } from '@gamepark/rules-api'
 import { bottomCinemaBoardDescription } from '../material/BottomCinemaBoardDescription'
+import { movieCardDescription } from '../material/MovieCardDescription'
 
 class TopCinemaBoardOnBottomCinemaBoardLocator extends Locator<PlayerColor, MaterialType, LocationType> {
   parentItemType = MaterialType.BottomCinemaBoard
+  coordinates = { z: movieCardDescription.thickness }
 
   public getParentItem(
     location: Location<PlayerColor, LocationType>,

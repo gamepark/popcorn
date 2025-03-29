@@ -1,7 +1,7 @@
 import { LocationType } from '@gamepark/game-template/material/LocationType'
 import { MaterialType } from '@gamepark/game-template/material/MaterialType'
 import { PlayerColor } from '@gamepark/game-template/PlayerColor'
-import { BoardDescription, getRelativePlayerIndex, MaterialContext } from '@gamepark/react-game'
+import { BoardDescription, MaterialContext } from '@gamepark/react-game'
 import { MaterialItem } from '@gamepark/rules-api'
 import cyanBottomCinemaBoard from '../images/Boards/PlayerBoards/BlueBottom.jpg'
 import greenBottomCinemaBoard from '../images/Boards/PlayerBoards/GreenBottom.jpg'
@@ -26,7 +26,7 @@ class BottomCinemaBoardDescription extends BoardDescription<PlayerColor, Materia
         id: playerColor,
         location: {
           type: LocationType.BottomPlayerCinemaBoardSpot,
-          player: getRelativePlayerIndex(context, playerColor)
+          player: playerColor
         }
       }
     })

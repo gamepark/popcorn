@@ -1,7 +1,9 @@
 import {
   FillGapStrategy,
   hideFront,
+  hideFrontToOthers,
   hideItemId,
+  hideItemIdToOthers,
   MaterialGame,
   MaterialMove,
   PositiveSequenceStrategy,
@@ -28,26 +30,32 @@ export class PopCornRules
 
   hidingStrategies = {
     [MaterialType.MovieCards]: {
-      [LocationType.MovieCardDeckSpot]: hideFront
+      [LocationType.MovieCardDeckSpot]: hideFront,
+      [LocationType.MovieCardDiscardSpot]: hideFront,
+      [LocationType.PlayerMovieCardArchiveSpot]: hideFrontToOthers
     },
     [MaterialType.AwardCards]: {
-      [LocationType.AwardCardDeckSpot]: hideItemId
+      [LocationType.AwardCardDeckSpot]: hideItemId,
+      [LocationType.PlayerAwardCardHand]: hideItemIdToOthers
     },
     [MaterialType.TheaterTiles]: {
       [LocationType.OneSeatTheaterTileDeckSpot]: hideFront,
       [LocationType.TwoSeatTheaterTileDeckSpot]: hideFront,
-      [LocationType.ThreeSeatTheaterTileDeckSpot]: hideItemId
+      [LocationType.ThreeSeatTheaterTileDeckSpot]: hideFront
     }
   }
 
   locationsStrategies = {
     [MaterialType.MovieCards]: {
       [LocationType.MovieCardDeckSpot]: new PositiveSequenceStrategy(),
+      [LocationType.MovieCardDiscardSpot]: new PositiveSequenceStrategy(),
+      [LocationType.PlayerMovieCardArchiveSpot]: new PositiveSequenceStrategy(),
       [LocationType.FeaturesRowSpot]: new FillGapStrategy(),
       [LocationType.PremiersRowSpot]: new FillGapStrategy()
     },
     [MaterialType.AwardCards]: {
-      [LocationType.AwardCardDeckSpot]: new PositiveSequenceStrategy()
+      [LocationType.AwardCardDeckSpot]: new PositiveSequenceStrategy(),
+      [LocationType.PlayerAwardCardHand]: new PositiveSequenceStrategy()
     },
     [MaterialType.TheaterTiles]: {
       [LocationType.OneSeatTheaterTileDeckSpot]: new PositiveSequenceStrategy(),
@@ -56,6 +64,10 @@ export class PopCornRules
       [LocationType.TwoSeatTheaterTileRowSpot]: new FillGapStrategy(),
       [LocationType.ThreeSeatTheaterTileDeckSpot]: new PositiveSequenceStrategy(),
       [LocationType.ThreeSeatTheaterTileRowSpot]: new FillGapStrategy()
+    },
+    [MaterialType.GuestPawns]: {
+      [LocationType.GuestPawnReserveSpot]: new PositiveSequenceStrategy(),
+      [LocationType.GuestPawnExitZoneSpotOnTopPlayerCinemaBoard]: new PositiveSequenceStrategy()
     }
   }
 

@@ -6,19 +6,19 @@ import { Coordinates, Location, XYCoordinates } from '@gamepark/rules-api'
 
 const coordinates: Record<number, Record<number, XYCoordinates>> = {
   2: {
-    0: { x: -15, y: 20 },
-    1: { x: 15, y: -20 }
+    0: { x: -10, y: 20 },
+    1: { x: 10, y: -20 }
   },
   3: {
-    0: { x: -15, y: 20 },
-    1: { x: -20, y: -20 },
-    2: { x: 50, y: -20 }
+    0: { x: -10, y: 20 },
+    1: { x: -15, y: -20 },
+    2: { x: 45, y: -20 }
   },
   4: {
-    0: { x: 20, y: 20 },
-    1: { x: -50, y: 20 },
-    2: { x: -20, y: -20 },
-    3: { x: 50, y: -20 }
+    0: { x: 15, y: 20 },
+    1: { x: -45, y: 20 },
+    2: { x: -15, y: -20 },
+    3: { x: 45, y: -20 }
   }
 }
 

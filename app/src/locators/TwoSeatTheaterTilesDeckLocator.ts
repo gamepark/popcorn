@@ -4,7 +4,7 @@ import { PlayerColor } from '@gamepark/game-template/PlayerColor'
 import { DeckLocator } from '@gamepark/react-game'
 
 class TwoSeatTheaterTilesDeckLocator extends DeckLocator<PlayerColor, MaterialType, LocationType> {
-  coordinates = { x: 29, y: -6 }
+  coordinates = { x: 29, y: -7 }
 }
 
 export const twoSeatTheaterTilesDeckLocator = new TwoSeatTheaterTilesDeckLocator()

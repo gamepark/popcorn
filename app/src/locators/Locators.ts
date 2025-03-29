@@ -10,6 +10,7 @@ import { awardCardsHandLocator } from './AwardCardsHandLocator'
 import { bottomCinemaBoardLocator } from './BottomCinemaBoardLocator'
 import { featureMovieCardsRowLocator } from './FeatureMovieCardsRowLocator'
 import { featuresTilesLocator } from './FeaturesTilesLocator'
+import { firstPlayerTokenLocator } from './FirstPlayerTokenLocator'
 import { guestPawnInExitZoneLocator } from './GuestPawnInExitZoneLocator'
 import { guestPawnOnTheaterTileLocator } from './GuestPawnOnTheaterTileLocator'
 import { guestPawnReserveLocator } from './GuestPawnReserveLocator'
@@ -20,8 +21,12 @@ import { movieCardsDeckLocator } from './MovieCardsDeckLocator'
 import { oneSeatTheaterTilesDeckLocator } from './OneSeatTheaterTilesDeckLocator'
 import { oneSeatTheaterTilesRowLocator } from './OneSeatTheaterTilesRowLocator'
 import { playerAdvertisingTokenPileLocator } from './PlayerAdvertisingTokenPileLocator'
+import { playerClothBagLocator } from './PlayerClothBagLocator'
+import { playerGuestPawnUnderClothBagLocator } from './PlayerGuestPawnUnderClothBagLocator'
 import { playerMoneyPileLocator } from './PlayerMoneyPileLocator'
 import { playerMovieArchiveDeckLocator } from './PlayerMovieArchiveDeckLocator'
+import { playerPopcornPileLocator } from './PlayerPopcornPileLocator'
+import { popcornCupLocator } from './PopcornCupLocator'
 import { popcornTokenPileLocator } from './PopcornTokenPileLocator'
 import { premierMovieCardsRowLocator } from './PremierMovieCardsRowLocator'
 import { premiersTileLocator } from './PremiersTileLocator'
@@ -63,5 +68,10 @@ export const Locators: Partial<Record<LocationType, Locator<PlayerColor, Materia
   [LocationType.PlayerAwardCardHand]: awardCardsHandLocator,
   [LocationType.PlayerAdvertisingTokenSpot]: playerAdvertisingTokenPileLocator,
   [LocationType.PlayerMoneyPileSpot]: playerMoneyPileLocator,
-  [LocationType.PlayerMovieCardArchiveSpot]: playerMovieArchiveDeckLocator
+  [LocationType.PlayerMovieCardArchiveSpot]: playerMovieArchiveDeckLocator,
+  [LocationType.FirstPlayerMarkerSpot]: firstPlayerTokenLocator,
+  [LocationType.PlayerClothBagSpot]: playerClothBagLocator,
+  [LocationType.PlayerPopcornBucketSpot]: popcornCupLocator,
+  [LocationType.PLayerGuestPawnsUnderBlothBagSpot]: playerGuestPawnUnderClothBagLocator,
+  [LocationType.PlayerPopcornPileUnderPopcornCupSpot]: playerPopcornPileLocator
 }
