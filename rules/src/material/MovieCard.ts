@@ -448,10 +448,6 @@ const FILM_ACTION_LENGTH = 5
 
 export const movieCards = getEnumValues(MovieCard)
 
-export const firstMovieCards = movieCards.slice(0, 4)
-
-export const movieCardsWithoutFinalShowing = movieCards.slice(4, 45)
-
 export const getFilmColor = (id: MovieCard): FilmColor => id & (2 ** FILM_COLOR_LENGTH - 1)
 
 export const getPrice = (id: MovieCard): number => (id >> FilmFieldShifts.Price) & (2 ** FILM_PRICE_LENGTH - 1)
@@ -472,6 +468,12 @@ export const getMovieCardType = (id: MovieCard): MovieCardType =>
   [MovieCard.FirstMovieBlueRosebud, MovieCard.FirstMovieGreenEndOfTheWorld, MovieCard.FirstMovieRedItSMyWar, MovieCard.FirstMovieYellowModernLove].includes(id)
     ? MovieCardType.FirstMovie
     : MovieCardType.Movie
+
+export const firstMovieCards = movieCards.filter((movieId) => getMovieCardType(movieId) === MovieCardType.FirstMovie)
+
+export const movieCardsWithoutFinalShowing = movieCards.filter(
+  (movieId) => getMovieCardType(movieId) === MovieCardType.Movie && movieId !== MovieCard.FinalShowing
+)
 
 export type MovieCardId = {
   front?: MovieCard
