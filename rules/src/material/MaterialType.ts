@@ -14,5 +14,7 @@ export enum MaterialType {
   AudienceCubes,
   FirstPlayerMarker,
   FeaturesTile,
-  PremiersTile
+  PremiersTile,
+  ClothBag,
+  PopcornCup
 }

@@ -5,8 +5,8 @@ import { TokenDescription } from '@gamepark/react-game'
 import audienceCube from '../images/AudienceCube.png'
 
 class AudienceCubeDescription extends TokenDescription<PlayerColor, MaterialType, LocationType> {
-  width = 0.5
-  height = 0.5
+  width = 1
+  height = 1
 
   image = audienceCube
 }

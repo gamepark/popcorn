@@ -16,14 +16,14 @@ import {
 describe('Movie card tests', () => {
   test.each([
     {
-      film: MovieCard.BlueLaMarraine,
-      filmName: MovieCard[MovieCard.BlueLaMarraine],
+      film: MovieCard.BlueTheGodmother,
+      filmName: MovieCard[MovieCard.BlueTheGodmother],
       expectedFilmColor: FilmColor.Blue,
       expectedFilmColorName: FilmColor[FilmColor.Blue]
     },
     {
-      film: MovieCard.BluePoupoule,
-      filmName: MovieCard[MovieCard.BluePoupoule],
+      film: MovieCard.BlueHenrietta,
+      filmName: MovieCard[MovieCard.BlueHenrietta],
       expectedFilmColor: FilmColor.Blue,
       expectedFilmColorName: FilmColor[FilmColor.Blue]
     },
@@ -40,14 +40,14 @@ describe('Movie card tests', () => {
       expectedFilmColorName: FilmColor[FilmColor.Green]
     },
     {
-      film: MovieCard.RedLaFureurDuSerpent,
-      filmName: MovieCard[MovieCard.RedLaFureurDuSerpent],
+      film: MovieCard.RedTheFuryOfTheSerpent,
+      filmName: MovieCard[MovieCard.RedTheFuryOfTheSerpent],
       expectedFilmColor: FilmColor.Red,
       expectedFilmColorName: FilmColor[FilmColor.Red]
     },
     {
-      film: MovieCard.RedLassoFinal,
-      filmName: MovieCard[MovieCard.RedLassoFinal],
+      film: MovieCard.RedFinalLasso,
+      filmName: MovieCard[MovieCard.RedFinalLasso],
       expectedFilmColor: FilmColor.Red,
       expectedFilmColorName: FilmColor[FilmColor.Red]
     },
@@ -58,8 +58,8 @@ describe('Movie card tests', () => {
       expectedFilmColorName: FilmColor[FilmColor.Yellow]
     },
     {
-      film: MovieCard.YellowLEcoleDesZombies,
-      filmName: MovieCard[MovieCard.YellowLEcoleDesZombies],
+      film: MovieCard.YellowSchoolOfZombies,
+      filmName: MovieCard[MovieCard.YellowSchoolOfZombies],
       expectedFilmColor: FilmColor.Yellow,
       expectedFilmColorName: FilmColor[FilmColor.Yellow]
     }
@@ -73,8 +73,8 @@ describe('Movie card tests', () => {
 
   test.each([
     {
-      film: MovieCard.FirstMovieGreenLaFinDuMonde,
-      filmName: MovieCard[MovieCard.FirstMovieGreenLaFinDuMonde],
+      film: MovieCard.FirstMovieGreenEndOfTheWorld,
+      filmName: MovieCard[MovieCard.FirstMovieGreenEndOfTheWorld],
       expectedPrice: 0
     },
     {
@@ -88,8 +88,8 @@ describe('Movie card tests', () => {
       expectedPrice: 4
     },
     {
-      film: MovieCard.RedLeVolcan,
-      filmName: MovieCard[MovieCard.RedLeVolcan],
+      film: MovieCard.RedTheVolcano,
+      filmName: MovieCard[MovieCard.RedTheVolcano],
       expectedPrice: 2
     },
     {
@@ -110,26 +110,26 @@ describe('Movie card tests', () => {
 
   test.each([
     {
-      film: MovieCard.BlueMoi,
-      filmName: MovieCard[MovieCard.BlueMoi],
+      film: MovieCard.BlueMe,
+      filmName: MovieCard[MovieCard.BlueMe],
       expectedBonusCondition: BonusCondition.None,
       expectedBonusConditionName: BonusCondition[BonusCondition.None]
     },
     {
-      film: MovieCard.GreenBadMan,
-      filmName: MovieCard[MovieCard.GreenBadMan],
+      film: MovieCard.GreenBadman,
+      filmName: MovieCard[MovieCard.GreenBadman],
       expectedBonusCondition: BonusCondition.OneSeatTheater,
       expectedBonusConditionName: BonusCondition[BonusCondition.OneSeatTheater]
     },
     {
-      film: MovieCard.RedLaJambeDeBoisMaudite,
-      filmName: MovieCard[MovieCard.RedLaJambeDeBoisMaudite],
+      film: MovieCard.RedTheCursedPegleg,
+      filmName: MovieCard[MovieCard.RedTheCursedPegleg],
       expectedBonusCondition: BonusCondition.TwoSeatTheater,
       expectedBonusConditionName: BonusCondition[BonusCondition.TwoSeatTheater]
     },
     {
-      film: MovieCard.YellowLaPrincessDeFeu,
-      filmName: MovieCard[MovieCard.YellowLaPrincessDeFeu],
+      film: MovieCard.YellowTheFirePrincess,
+      filmName: MovieCard[MovieCard.YellowTheFirePrincess],
       expectedBonusCondition: BonusCondition.ThreeSeatTheater,
       expectedBonusConditionName: BonusCondition[BonusCondition.ThreeSeatTheater]
     }
@@ -143,8 +143,8 @@ describe('Movie card tests', () => {
 
   test.each([
     {
-      film: MovieCard.Blue1234,
-      filmName: MovieCard[MovieCard.Blue1234],
+      film: MovieCard.Blue5678,
+      filmName: MovieCard[MovieCard.Blue5678],
       expectedBonusAction: FilmAction.AudienceTrackAdvance,
       expectedBonusActionName: FilmAction[FilmAction.AudienceTrackAdvance]
     },
@@ -155,14 +155,14 @@ describe('Movie card tests', () => {
       expectedBonusActionName: FilmAction[FilmAction.Get4Popcorn]
     },
     {
-      film: MovieCard.RedLeMondeDApres,
-      filmName: MovieCard[MovieCard.RedLeMondeDApres],
+      film: MovieCard.RedTheWorkdAfter,
+      filmName: MovieCard[MovieCard.RedTheWorkdAfter],
       expectedBonusAction: FilmAction.Get1Money,
       expectedBonusActionName: FilmAction[FilmAction.Get1Money]
     },
     {
-      film: MovieCard.Yellow28DansLaFamille,
-      filmName: MovieCard[MovieCard.Yellow28DansLaFamille],
+      film: MovieCard.Yellow28InTheFamily,
+      filmName: MovieCard[MovieCard.Yellow28InTheFamily],
       expectedBonusAction: FilmAction.DrawAwardCard,
       expectedBonusActionName: FilmAction[FilmAction.DrawAwardCard]
     }
@@ -188,8 +188,8 @@ describe('Movie card tests', () => {
       expectedFourthActionName: FilmAction[FilmAction.None]
     },
     {
-      film: MovieCard.FirstMovieGreenLaFinDuMonde,
-      filmName: MovieCard[MovieCard.FirstMovieGreenLaFinDuMonde],
+      film: MovieCard.FirstMovieGreenEndOfTheWorld,
+      filmName: MovieCard[MovieCard.FirstMovieGreenEndOfTheWorld],
       expectedFirstAction: FilmAction.AudienceTrackAdvance,
       expectedFirstActionName: FilmAction[FilmAction.AudienceTrackAdvance],
       expectedSecondAction: FilmAction.AdvertisingTokenOnGreenGuest,
@@ -200,8 +200,8 @@ describe('Movie card tests', () => {
       expectedFourthActionName: FilmAction[FilmAction.None]
     },
     {
-      film: MovieCard.FirstMovieRedCEstMaGuerre,
-      filmName: MovieCard[MovieCard.FirstMovieRedCEstMaGuerre],
+      film: MovieCard.FirstMovieRedItSMyWar,
+      filmName: MovieCard[MovieCard.FirstMovieRedItSMyWar],
       expectedFirstAction: FilmAction.AudienceTrackAdvance,
       expectedFirstActionName: FilmAction[FilmAction.AudienceTrackAdvance],
       expectedSecondAction: FilmAction.AdvertisingTokenOnRedGuest,
@@ -224,8 +224,8 @@ describe('Movie card tests', () => {
       expectedFourthActionName: FilmAction[FilmAction.None]
     },
     {
-      film: MovieCard.BluePoupoule,
-      filmName: MovieCard[MovieCard.BluePoupoule],
+      film: MovieCard.BlueHenrietta,
+      filmName: MovieCard[MovieCard.BlueHenrietta],
       expectedFirstAction: FilmAction.None,
       expectedFirstActionName: FilmAction[FilmAction.None],
       expectedSecondAction: FilmAction.Get2Money,
@@ -236,8 +236,8 @@ describe('Movie card tests', () => {
       expectedFourthActionName: FilmAction[FilmAction.AdvertisingTokenOnWhiteGuestToBag]
     },
     {
-      film: MovieCard.GreenLeBarbare,
-      filmName: MovieCard[MovieCard.GreenLeBarbare],
+      film: MovieCard.GreenTheBarbarian,
+      filmName: MovieCard[MovieCard.GreenTheBarbarian],
       expectedFirstAction: FilmAction.None,
       expectedFirstActionName: FilmAction[FilmAction.None],
       expectedSecondAction: FilmAction.DrawGuestAndPlaceThem,

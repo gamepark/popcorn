@@ -19,17 +19,21 @@ export enum LocationType {
   ThreeSeatTheaterTileRowSpot,
   GuestPawnReserveSpot,
   BottomPlayerCinemaBoardSpot,
-  FilmCardSpotOnBottomPlayerCinemaBoard,
+  MovieCardSpotOnBottomPlayerCinemaBoard,
   TopPlayerCinemaBoardSpotOnBottomPlayerCinemaBoard,
   LobbySliderSpotOnTopPlayerCinemaBoard,
   TheaterTileSpotOnTopPlayerCinemaBoard,
+  GuestPawnSpotOnTheaterTile,
   GuestPawnExitZoneSpotOnTopPlayerCinemaBoard,
   PlayerClothBagSpot,
+  PLayerGuestPawnsUnderBlothBagSpot,
   AudienceCubeSpotOnTopPlayerCinemaBoard,
   PlayerAdvertisingTokenSpot,
   PlayerPopcornBucketSpot,
   FirstPlayerMarkerSpot,
   PlayerMoneyPileSpot,
   PlayerAwardCardHand,
-  PlayerFilmCardArchiveSpot
+  PlayerMovieCardArchiveSpot,
+  PlayerPopcornPileUnderPopcornCupSpot,
+  PlayerTheaterTrophySpot
 }
