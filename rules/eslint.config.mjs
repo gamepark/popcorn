@@ -8,7 +8,7 @@ import jestPlugin from 'eslint-plugin-jest'
 
 /** @type {import('eslint').Linter.Config[]} */
 export default tseslint.config([
-    globalIgnores(['dist/**/*.{js,ts}', '**/*.spec.{js,ts}', '*.config.{ts,mjs}']),
+    globalIgnores(['dist/**/*.{js,ts}', '**/*.spec.{js,ts}', '*.config.{ts,mjs}', 'tests/utils/*.{js,ts}']),
     { files: ['src/**/*.{js,mjs,cjs,ts}'] },
     eslint.configs.recommended,
     tseslint.configs.strictTypeChecked,
