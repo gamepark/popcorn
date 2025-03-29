@@ -1,35 +1,36 @@
-import { AwardCard } from '@gamepark/game-template/material/AwardCard'
+import { AwardCard, awardCards } from '@gamepark/game-template/material/AwardCard'
 import { LocationType } from '@gamepark/game-template/material/LocationType'
 import { MaterialType } from '@gamepark/game-template/material/MaterialType'
 import { PlayerColor } from '@gamepark/game-template/PlayerColor'
-import { CardDescription } from '@gamepark/react-game'
-import blueRedMoviePair from '../images/Cards/Awards/BlueRedMoviePair.jpeg'
-import blueGreenMoviePair from '../images/Cards/Awards/BlueGreenMoviePair.jpeg'
-import greenYellowMoviePair from '../images/Cards/Awards/GreenYellowMoviePair.jpeg'
-import redYellowMoviePair from '../images/Cards/Awards/RedYellowMoviePair.jpeg'
-import fourOfAKindMovie from '../images/Cards/Awards/FourOfAKindMovie.jpeg'
-import greenRedGuestPair from '../images/Cards/Awards/GreenRedGuestPair.jpeg'
-import blueYellowGuestPair from '../images/Cards/Awards/BlueGreenGuestPair.jpeg'
-import blueGreenGuestPair from '../images/Cards/Awards/BlueGreenGuestPair.jpeg'
-import redYellowGuestPair from '../images/Cards/Awards/RedYellowGuestPair.jpeg'
-import twoFourOfAKindGuest from '../images/Cards/Awards/TwoFourOfAKindGuest.jpeg'
-import guestNumber from '../images/Cards/Awards/GuestNumber.jpeg'
-import moviePrice0Or1 from '../images/Cards/Awards/MoviePrice0Or1.jpeg'
-import moviePrice4Or5 from '../images/Cards/Awards/MoviePrice4Or5.jpeg'
-import threeSeatTheater from '../images/Cards/Awards/ThreeSeatTheater.jpeg'
-import greenYellowSeatPair from '../images/Cards/Awards/GreenYellowSeatPair.jpeg'
-import greenRedSeatPair from '../images/Cards/Awards/GreenRedSeatPair.jpeg'
-import blueRedSeatPair from '../images/Cards/Awards/BlueRedSeatPair.jpeg'
-import blueYellowSeatPair from '../images/Cards/Awards/BlueYellowSeatPair.jpeg'
-import fourOfAKindSeat from '../images/Cards/Awards/FourOfAKindSeat.jpeg'
-import audienceGreaterThanOrEqualToSix from '../images/Cards/Awards/AudienceGreaterThanOrEqualTo6.jpeg'
-import whiteGuestCount from '../images/Cards/Awards/WhiteGuestCount.jpeg'
-import blueTwoSeatsGuestsMoviesSet from '../images/Cards/Awards/BlueTwoSeatsGuestMoviesSet.jpeg'
-import greenTwoSeatsGuestsMoviesSet from '../images/Cards/Awards/GreenTwoSeatsGuestsMoviesSet.jpeg'
-import redTwoSeatsGuestsMoviesSet from '../images/Cards/Awards/RedTwoSeatsGuestsMoviesSet.jpeg'
-import yellowTwoSeatsGuestsMoviesSet from '../images/Cards/Awards/YellowTwoSeatsGuestsMoviesSet.jpeg'
-import fourMovieSameColorSet from '../images/Cards/Awards/FourMovieSameColorSet.jpeg'
-import awardBack from '../images/Cards/Awards/AwardBack.jpeg'
+import { CardDescription, MaterialContext } from '@gamepark/react-game'
+import { MaterialItem } from '@gamepark/rules-api'
+import audienceGreaterThanOrEqualToSix from '../images/Cards/Awards/AudienceGreaterThanOrEqualTo6.jpg'
+import awardBack from '../images/Cards/Awards/AwardBack.jpg'
+import blueYellowGuestPair from '../images/Cards/Awards/BlueGreenGuestPair.jpg'
+import blueGreenGuestPair from '../images/Cards/Awards/BlueGreenGuestPair.jpg'
+import blueGreenMoviePair from '../images/Cards/Awards/BlueGreenMoviePair.jpg'
+import blueRedMoviePair from '../images/Cards/Awards/BlueRedMoviePair.jpg'
+import blueRedSeatPair from '../images/Cards/Awards/BlueRedSeatPair.jpg'
+import blueTwoSeatsGuestsMoviesSet from '../images/Cards/Awards/BlueTwoSeatsGuestMoviesSet.jpg'
+import blueYellowSeatPair from '../images/Cards/Awards/BlueYellowSeatPair.jpg'
+import fourMovieSameColorSet from '../images/Cards/Awards/FourMovieSameColorSet.jpg'
+import fourOfAKindMovie from '../images/Cards/Awards/FourOfAKindMovie.jpg'
+import fourOfAKindSeat from '../images/Cards/Awards/FourOfAKindSeat.jpg'
+import greenRedGuestPair from '../images/Cards/Awards/GreenRedGuestPair.jpg'
+import greenRedSeatPair from '../images/Cards/Awards/GreenRedSeatPair.jpg'
+import greenTwoSeatsGuestsMoviesSet from '../images/Cards/Awards/GreenTwoSeatsGuestsMoviesSet.jpg'
+import greenYellowMoviePair from '../images/Cards/Awards/GreenYellowMoviePair.jpg'
+import greenYellowSeatPair from '../images/Cards/Awards/GreenYellowSeatPair.jpg'
+import guestNumber from '../images/Cards/Awards/GuestNumber.jpg'
+import moviePrice0Or1 from '../images/Cards/Awards/MoviePrice0Or1.jpg'
+import moviePrice4Or5 from '../images/Cards/Awards/MoviePrice4Or5.jpg'
+import redTwoSeatsGuestsMoviesSet from '../images/Cards/Awards/RedTwoSeatsGuestsMoviesSet.jpg'
+import redYellowGuestPair from '../images/Cards/Awards/RedYellowGuestPair.jpg'
+import redYellowMoviePair from '../images/Cards/Awards/RedYellowMoviePair.jpg'
+import threeSeatTheater from '../images/Cards/Awards/ThreeSeatTheater.jpg'
+import twoFourOfAKindGuest from '../images/Cards/Awards/TwoFourOfAKindGuest.jpg'
+import whiteGuestCount from '../images/Cards/Awards/WhiteGuestCount.jpg'
+import yellowTwoSeatsGuestsMoviesSet from '../images/Cards/Awards/YellowTwoSeatsGuestsMoviesSet.jpg'
 
 class AwardCardDescription extends CardDescription<PlayerColor, MaterialType, LocationType, AwardCard> {
   height = 4.5
@@ -64,6 +65,19 @@ class AwardCardDescription extends CardDescription<PlayerColor, MaterialType, Lo
     [AwardCard.FourMovieSameColorSet]: fourMovieSameColorSet
   }
   backImage = awardBack
+
+  public getStaticItems(_context: MaterialContext<PlayerColor, MaterialType, LocationType>): MaterialItem<PlayerColor, LocationType>[] {
+    return awardCards.slice(0, 2).flatMap((id, index) =>
+      _context.rules.players.map((color) => ({
+        id: id,
+        location: {
+          type: LocationType.PlayerAwardCardHand,
+          player: color,
+          x: index
+        }
+      }))
+    )
+  }
 }
 
 export const awardCardDescription = new AwardCardDescription()

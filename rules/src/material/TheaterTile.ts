@@ -167,7 +167,7 @@ export enum TheaterTile {
     (SeatColor.Green << TheaterTileFieldsShift.Seat3Color) |
     (SeatAction.Get1Popcorn << TheaterTileFieldsShift.Seat3Action),
   ThreeSeatYellowGreyGrey = 9 |
-    (SeatsNumber.One << TheaterTileFieldsShift.NumberOfSeats) |
+    (SeatsNumber.Three << TheaterTileFieldsShift.NumberOfSeats) |
     (SeatColor.Yellow << TheaterTileFieldsShift.Seat1Color) |
     (SeatAction.Get2Popcorn << TheaterTileFieldsShift.Seat1Action) |
     (SeatColor.Grey << TheaterTileFieldsShift.Seat2Color) |
@@ -210,6 +210,12 @@ export enum TheaterTile {
 
 export const theaterTiles = getEnumValues(TheaterTile)
 
+export const oneSeatTheaterTiles = getEnumValues(TheaterTile).slice(0, 8)
+
+export const twoSeatTheaterTiles = getEnumValues(TheaterTile).slice(8, 20)
+
+export const threeSeatTheaterTiles = getEnumValues(TheaterTile).slice(20)
+
 const PRICE_LENGTH = 4
 const SEATS_NUMBER_LENGTH = 2
 const SEAT_COLOR_LENGTH = 3
@@ -218,6 +224,8 @@ const SEAT_ACTION_LENGTH = 5
 export const getTheaterTilePrice = (id: TheaterTile): number => id & (2 ** PRICE_LENGTH - 1)
 
 export const getNumberOfSeats = (id: TheaterTile): number => (id >> TheaterTileFieldsShift.NumberOfSeats) & (2 ** SEATS_NUMBER_LENGTH - 1)
+
+export const getSeatsNumber = (id: TheaterTile): SeatsNumber => (id >> TheaterTileFieldsShift.NumberOfSeats) & (2 ** SEATS_NUMBER_LENGTH - 1)
 
 export const getSeat1Color = (id: TheaterTile): SeatColor => (id >> TheaterTileFieldsShift.Seat1Color) & (2 ** SEAT_COLOR_LENGTH - 1)
 
@@ -249,4 +257,9 @@ export const getSeat3Action = (id: TheaterTile): SeatAction => {
     throw new Error("Theater tile doesn't have three seats.")
   }
   return (id >> TheaterTileFieldsShift.Seat3Action) & (2 ** SEAT_ACTION_LENGTH - 1)
+}
+
+export type TheaterTileId = {
+  front?: TheaterTile
+  back: SeatsNumber
 }

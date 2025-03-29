@@ -5,12 +5,17 @@ import { PlayerColor } from '@gamepark/game-template/PlayerColor'
 import { MaterialContext, RoundTokenDescription } from '@gamepark/react-game'
 import { MaterialItem } from '@gamepark/rules-api'
 import { random } from 'lodash'
-import money1Front from '../images/Tokens/Money/Money1Front.jpg'
-import money5Front from '../images/Tokens/Money/Money5Front.jpg'
 import money1Back from '../images/Tokens/Money/Money1Back.jpg'
+import money1Front from '../images/Tokens/Money/Money1Front.jpg'
 import money5Back from '../images/Tokens/Money/Money5Back.jpg'
+import money5Front from '../images/Tokens/Money/Money5Front.jpg'
 
 class MoneyTokenDescription extends RoundTokenDescription<PlayerColor, MaterialType, LocationType, MoneyToken> {
+  private moneyTokensNumber = {
+    [MoneyToken.Money1]: random(5, 10, false),
+    [MoneyToken.Money5]: random(5, 10, false)
+  }
+
   diameter = 2.2
   thickness = 0.2
 
@@ -31,7 +36,7 @@ class MoneyTokenDescription extends RoundTokenDescription<PlayerColor, MaterialT
   public getStaticItems(_context: MaterialContext<PlayerColor, MaterialType, LocationType>): MaterialItem<PlayerColor, LocationType>[] {
     return moneyTokens.map((id) => ({
       id: id,
-      quantity: random(8, 15, false),
+      quantity: this.moneyTokensNumber[id],
       location: this.stockLocation
     }))
   }

@@ -6,19 +6,19 @@ import { BoardDescription } from '@gamepark/react-game'
 import cyan1LobbySlider from '../images/Sliders/SliderBlue1.png'
 import cyan2LobbySlider from '../images/Sliders/SliderBlue2.png'
 import cyan3LobbySlider from '../images/Sliders/SliderBlue3.png'
-import green1LobbySlider from '../images/Sliders/SliderBlue1.png'
-import green2LobbySlider from '../images/Sliders/SliderBlue2.png'
-import green3LobbySlider from '../images/Sliders/SliderBlue3.png'
-import orange1LobbySlider from '../images/Sliders/SliderBlue1.png'
-import orange2LobbySlider from '../images/Sliders/SliderBlue2.png'
-import orange3LobbySlider from '../images/Sliders/SliderBlue3.png'
-import purple1LobbySlider from '../images/Sliders/SliderBlue1.png'
-import purple2LobbySlider from '../images/Sliders/SliderBlue2.png'
-import purple3LobbySlider from '../images/Sliders/SliderBlue3.png'
+import green1LobbySlider from '../images/Sliders/SliderGreen1.png'
+import green2LobbySlider from '../images/Sliders/SliderGreen2.png'
+import green3LobbySlider from '../images/Sliders/SliderGreen3.png'
+import orange1LobbySlider from '../images/Sliders/SliderOrange1.png'
+import orange2LobbySlider from '../images/Sliders/SliderOrange2.png'
+import orange3LobbySlider from '../images/Sliders/SliderOrange3.png'
+import purple1LobbySlider from '../images/Sliders/SliderPurple1.png'
+import purple2LobbySlider from '../images/Sliders/SliderPurple2.png'
+import purple3LobbySlider from '../images/Sliders/SliderPurple3.png'
 
 class LobbySliderDescription extends BoardDescription<PlayerColor, MaterialType, LocationType, LobbySlider> {
-  width = 1.8
-  height = 6.4
+  width = 2.0
+  height = 6.6
   thickness = 0.2
 
   images = {
