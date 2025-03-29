@@ -5,15 +5,15 @@ import { PlayerColor } from '@gamepark/game-template/PlayerColor'
 import { ComponentSize, MaterialContext, TokenDescription } from '@gamepark/react-game'
 import { MaterialItem } from '@gamepark/rules-api'
 import { random } from 'lodash'
-import popcorn1Front1 from '../images/Tokens/Popcorn/Popcorn1Front1.png'
-import popcorn3Front1 from '../images/Tokens/Popcorn/Popcorn3Front1.png'
-import popcorn5Front1 from '../images/Tokens/Popcorn/Popcorn5Front1.png'
 import popcorn1Back1 from '../images/Tokens/Popcorn/Popcorn1Back1.png'
+import popcorn1Front1 from '../images/Tokens/Popcorn/Popcorn1Front1.png'
 import popcorn3Back1 from '../images/Tokens/Popcorn/Popcorn3Back1.png'
+import popcorn3Front1 from '../images/Tokens/Popcorn/Popcorn3Front1.png'
 import popcorn5Back1 from '../images/Tokens/Popcorn/Popcorn5Back1.png'
+import popcorn5Front1 from '../images/Tokens/Popcorn/Popcorn5Front1.png'
 
 const tokenSizes = {
-  [PopcornToken.Token1]: { width: 1.66, height: 1.29 },
+  [PopcornToken.Token1]: { width: 1.29, height: 1.66 },
   //  [PopcornToken.Token12]: { width: 1.6, height: 1.35 },
   //  [PopcornToken.Token13]: { width: 1.27, height: 1.51 },
   //  [PopcornToken.Token14]: { width: 1.63, height: 1.44 },
@@ -32,11 +32,10 @@ class PopcornTokenDescription extends TokenDescription<PlayerColor, MaterialType
 
   thickness = 0.2
 
-  private popcornTokenNumber = {
-    [PopcornToken.Token1]: random(5, 10, false),
-    [PopcornToken.Token3]: random(5, 10, false),
-    [PopcornToken.Token5]: random(5, 10, false)
-  }
+  private popcornTokenNumber = popcornTokens.reduce(
+    (previousValue, currentValue) => ({ ...previousValue, [currentValue]: random(5, 10, false) }),
+    {} as Record<PopcornToken, number>
+  )
 
   stockLocation = {
     type: LocationType.PopcornPileSpot

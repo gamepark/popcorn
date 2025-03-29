@@ -3,6 +3,7 @@ import { MaterialType } from '@gamepark/game-template/material/MaterialType'
 import { PlayerColor } from '@gamepark/game-template/PlayerColor'
 import { getRelativePlayerIndex, Locator, MaterialContext } from '@gamepark/react-game'
 import { Coordinates, Location, XYCoordinates } from '@gamepark/rules-api'
+import { getPlayerItemRotateZ } from './utils/PlayerItemsUtils'
 
 const boardCoordinates: Record<number, Record<number, XYCoordinates>> = {
   2: {
@@ -11,14 +12,14 @@ const boardCoordinates: Record<number, Record<number, XYCoordinates>> = {
   },
   3: {
     0: { x: 0, y: 26 },
-    1: { x: -35, y: -26 },
-    2: { x: 35, y: -26 }
+    1: { x: -30, y: -26 },
+    2: { x: 30, y: -26 }
   },
   4: {
-    0: { x: 35, y: 26 },
-    1: { x: -35, y: 26 },
-    2: { x: -35, y: -26 },
-    3: { x: 35, y: -26 }
+    0: { x: 30, y: 26 },
+    1: { x: -30, y: 26 },
+    2: { x: -30, y: -26 },
+    3: { x: 30, y: -26 }
   }
 }
 
@@ -31,15 +32,7 @@ class BottomCinemaBoardLocator extends Locator<PlayerColor, MaterialType, Locati
   }
 
   public getRotateZ(location: Location<PlayerColor, LocationType>, context: MaterialContext<PlayerColor, MaterialType, LocationType>): number {
-    switch (context.rules.players.length) {
-      case 2:
-      case 3:
-        return getRelativePlayerIndex(context, location.player) === 0 ? 0 : 180
-      case 4:
-        return getRelativePlayerIndex(context, location.player) < 2 ? 0 : 180
-      default:
-        throw new Error('Invalid player number')
-    }
+    return getPlayerItemRotateZ(location, context)
   }
 }
 

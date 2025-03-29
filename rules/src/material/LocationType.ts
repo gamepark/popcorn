@@ -26,11 +26,13 @@ export enum LocationType {
   GuestPawnSpotOnTheaterTile,
   GuestPawnExitZoneSpotOnTopPlayerCinemaBoard,
   PlayerClothBagSpot,
+  PLayerGuestPawnsUnderBlothBagSpot,
   AudienceCubeSpotOnTopPlayerCinemaBoard,
   PlayerAdvertisingTokenSpot,
   PlayerPopcornBucketSpot,
   FirstPlayerMarkerSpot,
   PlayerMoneyPileSpot,
   PlayerAwardCardHand,
-  PlayerFilmCardArchiveSpot
+  PlayerMovieCardArchiveSpot,
+  PlayerPopcornPileUnderPopcornCupSpot
 }

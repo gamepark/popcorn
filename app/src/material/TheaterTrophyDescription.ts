@@ -1,9 +1,8 @@
 import { LocationType } from '@gamepark/game-template/material/LocationType'
 import { MaterialType } from '@gamepark/game-template/material/MaterialType'
-import { theaterTrophy, TheaterTrophy } from '@gamepark/game-template/material/TheaterTrophy'
+import { TheaterTrophy } from '@gamepark/game-template/material/TheaterTrophy'
 import { PlayerColor } from '@gamepark/game-template/PlayerColor'
-import { ComponentSize, MaterialContext, TokenDescription } from '@gamepark/react-game'
-import { MaterialItem } from '@gamepark/rules-api'
+import { ComponentSize, TokenDescription } from '@gamepark/react-game'
 import trophySecond from '../images/Tokens/3TheatreTrophy.png'
 import trophyFirst from '../images/Tokens/5TheatreTrophy.png'
 

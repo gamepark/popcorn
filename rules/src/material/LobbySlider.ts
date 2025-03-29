@@ -17,6 +17,8 @@ export enum LobbySlider {
   Purple3 = 3 | (PlayerColor.Purple << 2)
 }
 
-export const getSliderColor = (id: LobbySlider): PlayerColor => (id >> 2) & 3
+export const getSliderColor = (id: LobbySlider): PlayerColor => (id >> 2) & 7
 
 export const lobbySliders = getEnumValues(LobbySlider)
+
+export const getSlidersForPlayers = (ids: PlayerColor[]): LobbySlider[] => lobbySliders.filter((id) => ids.includes(getSliderColor(id)))

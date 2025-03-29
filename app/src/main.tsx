@@ -7,7 +7,7 @@ import { createRoot } from 'react-dom/client'
 import { gameAnimations } from './animations/GameAnimations'
 import { App } from './App'
 import { Locators } from './locators/Locators'
-import { Material } from './material/Material'
+import { Material, popcornMaterialI18n } from './material/Material'
 import translations from './translations.json'
 
 setupTranslation(translations, { debug: false })
@@ -22,6 +22,7 @@ createRoot(document.getElementById('root')!).render(
       material={Material}
       locators={Locators}
       animations={gameAnimations}
+      materialI18n={popcornMaterialI18n}
     >
       <App />
     </GameProvider>

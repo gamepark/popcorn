@@ -5,10 +5,10 @@ import { PlayerColor } from '@gamepark/game-template/PlayerColor'
 import { MaterialContext, RoundTokenDescription } from '@gamepark/react-game'
 import { MaterialItem } from '@gamepark/rules-api'
 import { random } from 'lodash'
-import money1Front from '../images/Tokens/Money/Money1Front.jpg'
-import money5Front from '../images/Tokens/Money/Money5Front.jpg'
 import money1Back from '../images/Tokens/Money/Money1Back.jpg'
+import money1Front from '../images/Tokens/Money/Money1Front.jpg'
 import money5Back from '../images/Tokens/Money/Money5Back.jpg'
+import money5Front from '../images/Tokens/Money/Money5Front.jpg'
 
 class MoneyTokenDescription extends RoundTokenDescription<PlayerColor, MaterialType, LocationType, MoneyToken> {
   private moneyTokensNumber = {

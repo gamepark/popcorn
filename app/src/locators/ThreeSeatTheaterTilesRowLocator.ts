@@ -4,7 +4,7 @@ import { PlayerColor } from '@gamepark/game-template/PlayerColor'
 import { ListLocator } from '@gamepark/react-game'
 
 class ThreeSeatTheaterTilesRowLocator extends ListLocator<PlayerColor, MaterialType, LocationType> {
-  coordinates = { x: 35, y: -1 }
+  coordinates = { x: 35, y: -2 }
   gap = { y: 4.5 }
 }
 

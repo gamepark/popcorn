@@ -1,7 +1,8 @@
 import { LocationType } from '@gamepark/game-template/material/LocationType'
 import { MaterialType } from '@gamepark/game-template/material/MaterialType'
 import { PlayerColor } from '@gamepark/game-template/PlayerColor'
-import { RoundTokenDescription } from '@gamepark/react-game'
+import { MaterialContext, RoundTokenDescription } from '@gamepark/react-game'
+import { MaterialItem } from '@gamepark/rules-api'
 import advertisingTokenCyen from '../images/Tokens/Advertising/AdvertisingTokenBlue.jpg'
 import advertisingTokenGreen from '../images/Tokens/Advertising/AdvertisingTokenGreen.jpg'
 import advertisingTokenOrange from '../images/Tokens/Advertising/AdvertisingTokenOrange.jpg'
@@ -16,6 +17,17 @@ class AdvertisingTokenDescription extends RoundTokenDescription<PlayerColor, Mat
     [PlayerColor.Green]: advertisingTokenGreen,
     [PlayerColor.Orange]: advertisingTokenOrange,
     [PlayerColor.Purple]: advertisingTokenPurple
+  }
+
+  public getStaticItems(_context: MaterialContext<PlayerColor, MaterialType, LocationType>): MaterialItem<PlayerColor, LocationType>[] {
+    return _context.rules.players.map((color) => ({
+      id: color,
+      quantity: 3,
+      location: {
+        type: LocationType.PlayerAdvertisingTokenSpot,
+        player: color
+      }
+    }))
   }
 }
 
