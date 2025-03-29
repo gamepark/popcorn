@@ -163,7 +163,7 @@ export class PopCornSetup extends MaterialGameSetup<PlayerColor, MaterialType, L
       },
       location: {
         type: LocationType.MovieCardDeckSpot,
-        x: this.players.length === 2 ? 10 : 5
+        x: this.players.length === 2 ? 9 : 4
       }
     })
     const movieCardDeck = this.material(MaterialType.MovieCards).deck()
