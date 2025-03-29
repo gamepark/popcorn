@@ -1,7 +1,7 @@
 import { LocationType } from '@gamepark/game-template/material/LocationType'
 import { MaterialType } from '@gamepark/game-template/material/MaterialType'
 import { PlayerColor } from '@gamepark/game-template/PlayerColor'
-import { MaterialContext, PileLocator } from '@gamepark/react-game'
+import { ItemContext, MaterialContext, PileLocator } from '@gamepark/react-game'
 import { Location, MaterialItem } from '@gamepark/rules-api'
 import { topCinemaBoardDescription } from '../material/TopCinemaBoardDescription'
 
@@ -20,6 +20,10 @@ class GuestPawnInExitZoneLocator extends PileLocator<PlayerColor, MaterialType, 
     context: MaterialContext<PlayerColor, MaterialType, LocationType>
   ): MaterialItem<PlayerColor, LocationType> | undefined {
     return topCinemaBoardDescription.getStaticItems(context).find((boardItem) => boardItem.location.player === location.player)
+  }
+
+  public getPileId(item: MaterialItem<PlayerColor, LocationType>, _context: ItemContext<PlayerColor, MaterialType, LocationType>): string {
+    return `guest-exit-${item.id}-${item.location.player}`
   }
 }
 

@@ -66,8 +66,10 @@ export class PopCornRules
       [LocationType.ThreeSeatTheaterTileRowSpot]: new FillGapStrategy()
     },
     [MaterialType.GuestPawns]: {
-      [LocationType.GuestPawnReserveSpot]: new PositiveSequenceStrategy(),
-      [LocationType.GuestPawnExitZoneSpotOnTopPlayerCinemaBoard]: new PositiveSequenceStrategy()
+      [LocationType.GuestPawnReserveSpot]: new PositiveSequenceStrategy()
+    },
+    [MaterialType.TheaterTrophies]: {
+      [LocationType.TheaterTrophyReserveSpot]: new PositiveSequenceStrategy()
     }
   }
 

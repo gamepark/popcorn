@@ -26,6 +26,7 @@ import { playerGuestPawnUnderClothBagLocator } from './PlayerGuestPawnUnderCloth
 import { playerMoneyPileLocator } from './PlayerMoneyPileLocator'
 import { playerMovieArchiveDeckLocator } from './PlayerMovieArchiveDeckLocator'
 import { playerPopcornPileLocator } from './PlayerPopcornPileLocator'
+import { playerTheaterToprhyLocator } from './PlayerTheaterToprhyLocator'
 import { popcornCupLocator } from './PopcornCupLocator'
 import { popcornTokenPileLocator } from './PopcornTokenPileLocator'
 import { premierMovieCardsRowLocator } from './PremierMovieCardsRowLocator'
@@ -73,5 +74,6 @@ export const Locators: Partial<Record<LocationType, Locator<PlayerColor, Materia
   [LocationType.PlayerClothBagSpot]: playerClothBagLocator,
   [LocationType.PlayerPopcornBucketSpot]: popcornCupLocator,
   [LocationType.PLayerGuestPawnsUnderBlothBagSpot]: playerGuestPawnUnderClothBagLocator,
-  [LocationType.PlayerPopcornPileUnderPopcornCupSpot]: playerPopcornPileLocator
+  [LocationType.PlayerPopcornPileUnderPopcornCupSpot]: playerPopcornPileLocator,
+  [LocationType.PlayerTheaterTrophySpot]: playerTheaterToprhyLocator
 }
