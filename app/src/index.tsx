@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import { PopCornOptionsSpec } from '@gamepark/game-template/PopcornOptions'
+import { PopcornOptionsSpec } from '@gamepark/game-template/PopcornOptions'
 import { PopcornRules } from '@gamepark/game-template/PopcornRules'
 import { PopcornSetup } from '@gamepark/game-template/PopcornSetup'
 import { GameProvider, setupTranslation } from '@gamepark/react-game'
@@ -19,7 +19,7 @@ ReactDOM.render(
     <GameProvider
       game="game-template"
       Rules={PopcornRules}
-      optionsSpec={PopCornOptionsSpec}
+      optionsSpec={PopcornOptionsSpec}
       GameSetup={PopcornSetup}
       material={Material}
       locators={Locators}

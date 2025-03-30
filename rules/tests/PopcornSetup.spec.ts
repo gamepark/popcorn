@@ -1,5 +1,5 @@
 import { Material } from '@gamepark/rules-api'
-import { PopCornSetup } from '../src'
+import { PopcornSetup } from '../src'
 import { LocationType } from '../src/material/LocationType'
 import { MaterialType } from '../src/material/MaterialType'
 import { getMovieCardType, MovieCard, MovieCardId, MovieCardType } from '../src/material/MovieCard'
@@ -12,7 +12,7 @@ describe('Game setup tests', () => {
     [[{ id: PlayerColor.Orange }, { id: PlayerColor.Purple }, { id: PlayerColor.Green }, { id: PlayerColor.Cyan }]]
   ])('Given any player number, setup() should create 45 movie cards', (givenPlayerOptions) => {
     // Given
-    const gameSetup = new PopCornSetup()
+    const gameSetup = new PopcornSetup()
 
     // When
     const game = gameSetup.setup({
@@ -35,7 +35,7 @@ describe('Game setup tests', () => {
 
   test('Given 2 players, setup() should return a game object with the final showing card at the correct location in the deck', () => {
     // Given
-    const gameSetup = new PopCornSetup()
+    const gameSetup = new PopcornSetup()
 
     // When
     const game = gameSetup.setup({
@@ -59,7 +59,7 @@ describe('Game setup tests', () => {
     [[{ id: PlayerColor.Orange }, { id: PlayerColor.Purple }, { id: PlayerColor.Green }, { id: PlayerColor.Cyan }]]
   ])('Given 3 or 4 players, setup() should return a game object with the final showing card at the correct location in the deck', (playerOptions) => {
     // Given
-    const gameSetup = new PopCornSetup()
+    const gameSetup = new PopcornSetup()
 
     // When
     const game = gameSetup.setup({
