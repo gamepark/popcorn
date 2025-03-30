@@ -8,8 +8,7 @@ export class BuyingPhaseRule extends PlayerTurnRule<PlayerColor, MaterialType, L
   private subRules = [new BuyingPhaseBuyingFilmRule(this.game)]
 
   public getPlayerMoves(): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
-    const moves: MaterialMove<PlayerColor, MaterialType, LocationType>[] = this.subRules.flatMap((rule) => rule.getPlayerMoves())
-    return moves
+    return this.subRules.flatMap((rule) => rule.getPlayerMoves())
   }
 
   public onCustomMove(move: CustomMove, context?: PlayMoveContext): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
