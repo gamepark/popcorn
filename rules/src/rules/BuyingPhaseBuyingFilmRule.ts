@@ -4,10 +4,16 @@ import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { moneyTokens } from '../material/MoneyToken'
 import { getPrice, MovieCardId } from '../material/MovieCard'
+import { Memorize, PlayerActionMemory } from '../Memorize'
 import { PlayerColor } from '../PlayerColor'
+import { RuleId } from './RuleId'
 
 export class BuyingPhaseBuyingFilmRule extends PlayerTurnRule<PlayerColor, MaterialType, LocationType> {
   public getPlayerMoves(): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+    const memory = this.remind<PlayerActionMemory>(Memorize.PlayerActions, this.player)
+    if (memory[RuleId.BuyingPhaseRule].filmBought) {
+      return []
+    }
     const numberOfDestinations =
       this.material(MaterialType.TheaterTiles)
         .location(LocationType.TheaterTileSpotOnTopPlayerCinemaBoard)
@@ -52,6 +58,9 @@ export class BuyingPhaseBuyingFilmRule extends PlayerTurnRule<PlayerColor, Mater
 
   public onCustomMove(move: CustomMove<CustomMoveType>, _context?: PlayMoveContext): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     if (isBuyMovieCardCustomMove(move)) {
+      const memory = this.remind<PlayerActionMemory>(Memorize.PlayerActions, this.player)
+      memory[RuleId.BuyingPhaseRule].filmBought = true
+      this.memorize<PlayerActionMemory>(Memorize.PlayerActions, memory, this.player)
       const movieCardMove = move.data.move
       const boughtCard = this.material(MaterialType.MovieCards).index(movieCardMove.itemIndex).getItem<MovieCardId>()
       if (boughtCard?.id.front === undefined) {
