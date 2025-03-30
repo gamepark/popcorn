@@ -1,4 +1,4 @@
-import { CustomMove, MaterialMove, PlayerTurnRule, PlayMoveContext } from '@gamepark/rules-api'
+import { CustomMove, Location, MaterialMove, MoveItem, PlayerTurnRule, PlayMoveContext } from '@gamepark/rules-api'
 import { BuyMovieCardCustomMoveData, CustomMoveType, isBuyMovieCardCustomMove } from '../material/CustomMoveType'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
@@ -30,30 +30,35 @@ export class BuyingPhaseBuyingFilmRule extends PlayerTurnRule<PlayerColor, Mater
       }))
     const playerMoney = this.material(MaterialType.MoneyTokens).money(moneyTokens).location(LocationType.PlayerMoneyPileSpot).player(this.player).count
     return destinations.flatMap((destination) =>
-      this.material(MaterialType.MovieCards)
-        .location(LocationType.FeaturesRowSpot)
-        .id<MovieCardId>((id) => id.front !== undefined && getPrice(id.front) <= playerMoney)
-        .moveItems(destination)
-        .concat(
-          this.material(MaterialType.MovieCards)
-            .location(LocationType.PremiersRowSpot)
-            .id<MovieCardId>((id) => id.front !== undefined && getPrice(id.front) + 2 <= playerMoney)
-            .moveItems(destination)
-        )
-        .map((move) => {
-          const moveData: BuyMovieCardCustomMoveData = {
-            move: move
-          }
-          const previousMovieCardMaterial = this.material(MaterialType.MovieCards).location(
-            (location) =>
-              location.type === LocationType.MovieCardSpotOnBottomPlayerCinemaBoard && location.player === this.player && location.x === move.location.x
-          )
-          if (previousMovieCardMaterial.length === 1) {
-            moveData.previousMovieIndex = previousMovieCardMaterial.getIndex()
-          }
-          return this.customMove<CustomMoveType>(CustomMoveType.BuyMovieCard, moveData)
-        })
+      this.getMovesForMovieCardsInRow(playerMoney, destination, LocationType.FeaturesRowSpot)
+        .concat(this.getMovesForMovieCardsInRow(playerMoney, destination, LocationType.PremiersRowSpot))
+        .map((move) => this.mapMovieCardMoveToCustomMove(move))
     )
+  }
+
+  private mapMovieCardMoveToCustomMove(move: MoveItem<PlayerColor, MaterialType, LocationType>): CustomMove {
+    const moveData: BuyMovieCardCustomMoveData = {
+      move: move
+    }
+    const previousMovieCardMaterial = this.material(MaterialType.MovieCards).location(
+      (location) => location.type === LocationType.MovieCardSpotOnBottomPlayerCinemaBoard && location.player === this.player && location.x === move.location.x
+    )
+    if (previousMovieCardMaterial.length === 1) {
+      moveData.previousMovieIndex = previousMovieCardMaterial.getIndex()
+    }
+    return this.customMove<CustomMoveType>(CustomMoveType.BuyMovieCard, moveData)
+  }
+
+  private getMovesForMovieCardsInRow(
+    playerMoney: number,
+    destination: Location<PlayerColor, LocationType>,
+    row: LocationType.FeaturesRowSpot | LocationType.PremiersRowSpot
+  ): MoveItem<PlayerColor, MaterialType, LocationType>[] {
+    const additionalPrice = row === LocationType.PremiersRowSpot ? 2 : 0
+    return this.material(MaterialType.MovieCards)
+      .location(row)
+      .id<MovieCardId>((id) => id.front !== undefined && getPrice(id.front) + additionalPrice <= playerMoney)
+      .moveItems(destination)
   }
 
   public onCustomMove(move: CustomMove<CustomMoveType>, _context?: PlayMoveContext): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
