@@ -9,6 +9,7 @@ import { moneyTokens } from './material/MoneyToken'
 import { FilmColor, firstMovieCards, getFilmColor, getMovieCardType, MovieCard, movieCardsWithoutFinalShowing } from './material/MovieCard'
 import { getSeatsNumber, SeatsNumber, theaterTiles } from './material/TheaterTile'
 import { theaterTrophy } from './material/TheaterTrophy'
+import { defaultPlayerActionMemory, Memorize, PlayerActionMemory } from './Memorize'
 import { PlayerColor } from './PlayerColor'
 import { PopcornOptions } from './PopcornOptions'
 import { PopcornRules } from './PopcornRules'
@@ -28,6 +29,11 @@ export class PopcornSetup extends MaterialGameSetup<PlayerColor, MaterialType, L
     this.createMovieCardDeckAndPopulateRivers()
     this.createLobbySlidersForPlayers()
     this.createPlayerSpecificMaterial()
+    this.createFirstPlayerToken()
+    this.initializeMemory()
+  }
+
+  private createFirstPlayerToken(): void {
     this.material(MaterialType.FirstPlayerMarker).createItem({
       location: {
         type: LocationType.FirstPlayerMarkerSpot,
@@ -253,5 +259,10 @@ export class PopcornSetup extends MaterialGameSetup<PlayerColor, MaterialType, L
         }
       }))
     )
+  }
+
+  private initializeMemory(): void {
+    this.game.players.forEach((player) => this.memorize<PlayerActionMemory>(Memorize.PlayerActions, defaultPlayerActionMemory, player))
+    this.memorize<boolean>(Memorize.IsFirstTurn, true)
   }
 }
