@@ -1,15 +1,19 @@
-import { ItemMove, MaterialMove, PlayerTurnRule, PlayMoveContext } from '@gamepark/rules-api'
+import { CustomMove, ItemMove, MaterialMove, PlayerTurnRule, PlayMoveContext } from '@gamepark/rules-api'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { PlayerColor } from '../PlayerColor'
-import { BuyingPhaseBuyingFilm } from './BuyingPhaseBuyingFilm'
+import { BuyingPhaseBuyingFilmRule } from './BuyingPhaseBuyingFilmRule'
 
 export class BuyingPhaseRule extends PlayerTurnRule<PlayerColor, MaterialType, LocationType> {
-  private subRules = [new BuyingPhaseBuyingFilm(this.game)]
+  private subRules = [new BuyingPhaseBuyingFilmRule(this.game)]
 
   public getPlayerMoves(): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     const moves: MaterialMove<PlayerColor, MaterialType, LocationType>[] = this.subRules.flatMap((rule) => rule.getPlayerMoves())
     return moves
+  }
+
+  public onCustomMove(move: CustomMove, context?: PlayMoveContext): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+    return this.subRules.flatMap((rule) => rule.onCustomMove(move, context))
   }
 
   public beforeItemMove(
