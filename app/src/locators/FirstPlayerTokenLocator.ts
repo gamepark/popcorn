@@ -18,8 +18,8 @@ const coordinates: Record<number, Record<number, XYCoordinates>> = {
   4: {
     0: { x: 50, y: 14 },
     1: { x: -10, y: 14 },
-    2: { x: 10, y: -14 },
-    3: { x: -50, y: -14 }
+    2: { x: -50, y: -14 },
+    3: { x: 10, y: -14 }
   }
 }
 

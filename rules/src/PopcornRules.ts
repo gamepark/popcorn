@@ -13,19 +13,19 @@ import {
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { PlayerColor } from './PlayerColor'
-import { TheFirstStepRule } from './rules/TheFirstStepRule'
+import { DealAndDiscardAwardCardsRule } from './rules/DealAndDiscardAwardCardsRule'
 import { RuleId } from './rules/RuleId'
 
 /**
  * This class implements the rules of the board game.
  * It must follow Game Park "Rules" API so that the Game Park server can enforce the rules.
  */
-export class PopCornRules
+export class PopcornRules
   extends SecretMaterialRules<PlayerColor, MaterialType, LocationType>
   implements TimeLimit<MaterialGame<PlayerColor, MaterialType, LocationType>, MaterialMove<PlayerColor, MaterialType, LocationType>, PlayerColor>
 {
   rules = {
-    [RuleId.TheFirstStep]: TheFirstStepRule
+    [RuleId.DealAndDiscardAwardCards]: DealAndDiscardAwardCardsRule
   }
 
   hidingStrategies = {
