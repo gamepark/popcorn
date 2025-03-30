@@ -1,3 +1,3 @@
-export { PopCornRules } from './PopCornRules'
-export { PopCornOptionsSpec } from './PopCornOptions'
-export { PopCornSetup } from './PopCornSetup'
+export { PopcornRules } from './PopcornRules'
+export { PopcornOptionsSpec } from './PopcornOptions'
+export { PopcornSetup } from './PopcornSetup'

@@ -1,4 +1,4 @@
-import { PopCornOptionsSpec } from '@gamepark/popcorn/PopcornOptions'
+import { PopcornOptionsSpec } from '@gamepark/popcorn/PopcornOptions'
 import { PopcornRules } from '@gamepark/popcorn/PopcornRules'
 import { PopcornSetup } from '@gamepark/popcorn/PopcornSetup'
 import { GameProvider, setupTranslation } from '@gamepark/react-game'
@@ -18,7 +18,7 @@ createRoot(document.getElementById('root')!).render(
     <GameProvider
       game="game-template"
       Rules={PopcornRules}
-      optionsSpec={PopCornOptionsSpec}
+      optionsSpec={PopcornOptionsSpec}
       GameSetup={PopcornSetup}
       material={Material}
       locators={Locators}

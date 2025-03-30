@@ -10,19 +10,19 @@ import { FilmColor, firstMovieCards, getFilmColor, getMovieCardType, MovieCard, 
 import { getSeatsNumber, SeatsNumber, theaterTiles } from './material/TheaterTile'
 import { theaterTrophy } from './material/TheaterTrophy'
 import { PlayerColor } from './PlayerColor'
-import { PopCornOptions } from './PopCornOptions'
-import { PopCornRules } from './PopCornRules'
+import { PopcornOptions } from './PopcornOptions'
+import { PopcornRules } from './PopcornRules'
 import { RuleId } from './rules/RuleId'
 
 /**
  * This class creates a new Game based on the game options
  */
-export class PopCornSetup extends MaterialGameSetup<PlayerColor, MaterialType, LocationType, PopCornOptions> {
-  Rules = PopCornRules
+export class PopcornSetup extends MaterialGameSetup<PlayerColor, MaterialType, LocationType, PopcornOptions> {
+  Rules = PopcornRules
 
-  setupMaterial(_options: PopCornOptions) {
+  setupMaterial(_options: PopcornOptions) {
     this.createTheaterTrophyTokens()
-    this.createAndDealAwardCards()
+    this.createAwardCards()
     this.createAndPopulateTheaterTileRivers()
     this.createAndDealGeneralGuestPawns()
     this.createMovieCardDeckAndPopulateRivers()
@@ -37,10 +37,10 @@ export class PopCornSetup extends MaterialGameSetup<PlayerColor, MaterialType, L
   }
 
   start() {
-    this.startPlayerTurn(RuleId.TheFirstStep, this.players[0])
+    this.startSimultaneousRule(RuleId.DealAndDiscardAwardCards)
   }
 
-  private createAndDealAwardCards(): void {
+  private createAwardCards(): void {
     this.material(MaterialType.AwardCards).createItemsAtOnce(
       awardCards.map((id) => ({
         id: id,
@@ -50,15 +50,6 @@ export class PopCornSetup extends MaterialGameSetup<PlayerColor, MaterialType, L
       }))
     )
     this.material(MaterialType.AwardCards).shuffle()
-    this.players.forEach((player) => {
-      this.material(MaterialType.AwardCards).deck().dealAtOnce(
-        {
-          type: LocationType.PlayerAwardCardHand,
-          player: player
-        },
-        2
-      )
-    })
   }
 
   private createAndPopulateTheaterTileRivers(): void {
