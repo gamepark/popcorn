@@ -1,12 +1,13 @@
 import { faHandPointer } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { isBuyMovieCardCustomMove } from '@gamepark/game-template/material/CustomMoveType'
 import { LocationType } from '@gamepark/game-template/material/LocationType'
 import { MaterialType } from '@gamepark/game-template/material/MaterialType'
 import { MovieCard, MovieCardId, MovieCardType } from '@gamepark/game-template/material/MovieCard'
 import { PlayerColor } from '@gamepark/game-template/PlayerColor'
 import { RuleId } from '@gamepark/game-template/rules/RuleId'
 import { CardDescription, ItemContext, ItemMenuButton } from '@gamepark/react-game'
-import { isMoveItemType, MaterialItem, MaterialMove } from '@gamepark/rules-api'
+import { Location, MaterialItem, MaterialMove } from '@gamepark/rules-api'
 import React from 'react'
 import { Trans } from 'react-i18next'
 import blue5678 from '../images/Cards/Movies/en/Blue5678.jpg'
@@ -122,6 +123,29 @@ export class MovieCardDescription extends CardDescription<PlayerColor, MaterialT
     [MovieCardType.Movie]: movieBack
   }
 
+  public canDrag(move: MaterialMove<PlayerColor, MaterialType, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType>): boolean {
+    return super.canDrag(move, context) || (isBuyMovieCardCustomMove(move) && move.data.move.itemIndex === context.index)
+  }
+
+  public getMoveDropLocations(
+    context: ItemContext<PlayerColor, MaterialType, LocationType>,
+    move: MaterialMove<PlayerColor, MaterialType, LocationType>
+  ): Location<PlayerColor, LocationType>[] {
+    if (context.rules.game.rule?.id === RuleId.BuyingPhaseRule && isBuyMovieCardCustomMove(move)) {
+      const cardMoveDestination = move.data.move.location
+      if (cardMoveDestination.type === undefined || cardMoveDestination.player === undefined || cardMoveDestination.x === undefined) {
+        throw new Error('Malformed move')
+      }
+      const destination = {
+        type: cardMoveDestination.type,
+        player: cardMoveDestination.player,
+        x: cardMoveDestination.x
+      }
+      return [destination]
+    }
+    return super.getMoveDropLocations(context, move)
+  }
+
   public getItemMenu(
     item: MaterialItem<PlayerColor, LocationType, MovieCardId>,
     context: ItemContext<PlayerColor, MaterialType, LocationType>,
@@ -142,16 +166,14 @@ export class MovieCardDescription extends CardDescription<PlayerColor, MaterialT
     legalMoves: MaterialMove<PlayerColor, MaterialType, LocationType>[]
   ): React.ReactNode {
     const cardIndex = context.rules.material(MaterialType.MovieCards).id<MovieCardId>(item.id).getIndex()
-    const movesForCard = legalMoves
-      .filter(isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.MovieCards))
-      .filter((move) => move.itemIndex === cardIndex)
+    const movesForCard = legalMoves.filter(isBuyMovieCardCustomMove).filter((move) => move.data.move.itemIndex === cardIndex)
     return movesForCard.length > 0 ? (
       <>
         {movesForCard.map((move, index) => (
           <ItemMenuButton
             key={`buy-move-${item.id.front}-${index}`}
             move={move}
-            label={this.getMenuLabelForDestination(move.location.x)}
+            label={this.getMenuLabelForDestination(move.data.move.location.x)}
             angle={0}
             radius={2.5 - index * 2.25}
           >
