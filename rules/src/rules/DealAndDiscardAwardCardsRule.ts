@@ -58,7 +58,7 @@ export class DealAndDiscardAwardCardsRule extends SimultaneousRule<PlayerColor, 
 
   public getMovesAfterPlayersDone(): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     if (this.isFirstTurn()) {
-      return []
+      return [this.startPlayerTurn<PlayerColor, RuleId>(RuleId.BuyingPhaseRule, this.game.players[0])]
     }
     return []
   }

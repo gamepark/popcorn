@@ -197,7 +197,8 @@ export class PopcornSetup extends MaterialGameSetup<PlayerColor, MaterialType, L
         id: firstMovieCardId,
         location: {
           type: LocationType.MovieCardSpotOnBottomPlayerCinemaBoard,
-          player: player
+          player: player,
+          x: 0
         }
       })
       const firstMovieColor = getFilmColor(firstMovieCardId.front)
