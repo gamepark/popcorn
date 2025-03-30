@@ -13,6 +13,7 @@ import {
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { PlayerColor } from './PlayerColor'
+import { BuyingPhaseRule } from './rules/BuyingPhaseRule'
 import { DealAndDiscardAwardCardsRule } from './rules/DealAndDiscardAwardCardsRule'
 import { RuleId } from './rules/RuleId'
 
@@ -25,7 +26,8 @@ export class PopcornRules
   implements TimeLimit<MaterialGame<PlayerColor, MaterialType, LocationType>, MaterialMove<PlayerColor, MaterialType, LocationType>, PlayerColor>
 {
   rules = {
-    [RuleId.DealAndDiscardAwardCards]: DealAndDiscardAwardCardsRule
+    [RuleId.DealAndDiscardAwardCards]: DealAndDiscardAwardCardsRule,
+    [RuleId.BuyingPhaseRule]: BuyingPhaseRule
   }
 
   hidingStrategies = {
