@@ -1,3 +1,4 @@
 export enum RuleId {
-  DealAndDiscardAwardCards = 1
+  DealAndDiscardAwardCards = 1,
+  BuyingPhaseRule
 }

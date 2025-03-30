@@ -1,8 +1,14 @@
+import { faHandPointer } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { AwardCard } from '@gamepark/game-template/material/AwardCard'
 import { LocationType } from '@gamepark/game-template/material/LocationType'
 import { MaterialType } from '@gamepark/game-template/material/MaterialType'
 import { PlayerColor } from '@gamepark/game-template/PlayerColor'
-import { CardDescription } from '@gamepark/react-game'
+import { RuleId } from '@gamepark/game-template/rules/RuleId'
+import { CardDescription, ItemContext, ItemMenuButton } from '@gamepark/react-game'
+import { isMoveItemType, MaterialItem, MaterialMove } from '@gamepark/rules-api'
+import React from 'react'
+import { Trans } from 'react-i18next'
 import audienceGreaterThanOrEqualToSix from '../images/Cards/Awards/AudienceGreaterThanOrEqualTo6.jpg'
 import awardBack from '../images/Cards/Awards/AwardBack.jpg'
 import blueYellowGuestPair from '../images/Cards/Awards/BlueGreenGuestPair.jpg'
@@ -64,6 +70,45 @@ class AwardCardDescription extends CardDescription<PlayerColor, MaterialType, Lo
     [AwardCard.FourMovieSameColorSet]: fourMovieSameColorSet
   }
   backImage = awardBack
+
+  public getItemMenu(
+    item: MaterialItem<PlayerColor, LocationType, AwardCard>,
+    context: ItemContext<PlayerColor, MaterialType, LocationType>,
+    legalMoves: MaterialMove<PlayerColor, MaterialType, LocationType>[]
+  ): React.ReactNode {
+    if (
+      context.rules.game.rule?.id === RuleId.DealAndDiscardAwardCards &&
+      item.location.type === LocationType.PlayerAwardCardHand &&
+      context.player === item.location.player
+    ) {
+      return this.getItemMenuForDealAndDiscardRule(item, context, legalMoves)
+    }
+    return super.getItemMenu(item, context, legalMoves)
+  }
+
+  private getItemMenuForDealAndDiscardRule(
+    item: MaterialItem<PlayerColor, LocationType, AwardCard>,
+    context: ItemContext,
+    legalMoves: MaterialMove<PlayerColor, MaterialType, LocationType>[]
+  ): React.ReactNode {
+    const cardIndex = context.rules.material(MaterialType.AwardCards).id<AwardCard>(item.id).getIndex()
+    const movesForCard = legalMoves
+      .filter(isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.AwardCards))
+      .filter((move) => move.itemIndex === cardIndex)
+    return movesForCard.length > 0 ? (
+      <>
+        {movesForCard.map((move, index) => (
+          <ItemMenuButton key={`awardCard-discard-${index}`} move={move} label={<Trans defaults="awardCard.itemMenu.discard" />} angle={0} radius={1.25}>
+            <FontAwesomeIcon icon={faHandPointer} size="lg" />
+          </ItemMenuButton>
+        ))}
+        {this.getHelpButton(item, context, {
+          angle: 0,
+          radius: -1.25
+        })}
+      </>
+    ) : undefined
+  }
 }
 
 export const awardCardDescription = new AwardCardDescription()
