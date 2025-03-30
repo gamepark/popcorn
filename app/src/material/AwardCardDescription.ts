@@ -1,9 +1,8 @@
-import { AwardCard, awardCards } from '@gamepark/game-template/material/AwardCard'
+import { AwardCard } from '@gamepark/game-template/material/AwardCard'
 import { LocationType } from '@gamepark/game-template/material/LocationType'
 import { MaterialType } from '@gamepark/game-template/material/MaterialType'
 import { PlayerColor } from '@gamepark/game-template/PlayerColor'
-import { CardDescription, MaterialContext } from '@gamepark/react-game'
-import { MaterialItem } from '@gamepark/rules-api'
+import { CardDescription } from '@gamepark/react-game'
 import audienceGreaterThanOrEqualToSix from '../images/Cards/Awards/AudienceGreaterThanOrEqualTo6.jpg'
 import awardBack from '../images/Cards/Awards/AwardBack.jpg'
 import blueYellowGuestPair from '../images/Cards/Awards/BlueGreenGuestPair.jpg'
@@ -65,19 +64,6 @@ class AwardCardDescription extends CardDescription<PlayerColor, MaterialType, Lo
     [AwardCard.FourMovieSameColorSet]: fourMovieSameColorSet
   }
   backImage = awardBack
-
-  public getStaticItems(_context: MaterialContext<PlayerColor, MaterialType, LocationType>): MaterialItem<PlayerColor, LocationType>[] {
-    return awardCards.slice(0, 2).flatMap((id, index) =>
-      _context.rules.players.map((color) => ({
-        id: id,
-        location: {
-          type: LocationType.PlayerAwardCardHand,
-          player: color,
-          x: index
-        }
-      }))
-    )
-  }
 }
 
 export const awardCardDescription = new AwardCardDescription()
