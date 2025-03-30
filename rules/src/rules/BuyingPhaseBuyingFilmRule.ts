@@ -37,7 +37,7 @@ export class BuyingPhaseBuyingFilmRule extends PlayerTurnRule<PlayerColor, Mater
         .concat(
           this.material(MaterialType.MovieCards)
             .location(LocationType.PremiersRowSpot)
-            .id<MovieCardId>((id) => id.front !== undefined && getPrice(id.front) + 2 < playerMoney)
+            .id<MovieCardId>((id) => id.front !== undefined && getPrice(id.front) + 2 <= playerMoney)
             .moveItems(destination)
         )
         .map((move) => {
