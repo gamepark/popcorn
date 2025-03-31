@@ -6,7 +6,7 @@ import { getSliderColor, getSlidersForPlayers } from './material/LobbySlider'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { moneyTokens } from './material/MoneyToken'
-import { FilmColor, firstMovieCards, getFilmColor, getMovieCardType, MovieCard, movieCardsWithoutFinalShowing } from './material/MovieCard'
+import { MovieColor, firstMovieCards, getMovieCardType, MovieCard, movieCardsWithoutFinalShowing, movieCardCharacteristics } from './material/MovieCard'
 import { getSeatsNumber, SeatsNumber, theaterTiles } from './material/TheaterTile'
 import { theaterTrophy } from './material/TheaterTrophy'
 import { defaultPlayerActionMemory, Memorize, PlayerActionMemory } from './Memorize'
@@ -207,7 +207,7 @@ export class PopcornSetup extends MaterialGameSetup<PlayerColor, MaterialType, L
           x: 0
         }
       })
-      const firstMovieColor = getFilmColor(firstMovieCardId.front)
+      const firstMovieColor = movieCardCharacteristics[firstMovieCardId.front].getColor()
       const guestPawnColor = this.getGuestPawnColorFromMovieColor(firstMovieColor)
       this.material(MaterialType.GuestPawns).location(LocationType.GuestPawnReserveSpot).id<GuestPawn>(guestPawnColor).moveItem({
         type: LocationType.PLayerGuestPawnsUnderBlothBagSpot,
@@ -237,15 +237,15 @@ export class PopcornSetup extends MaterialGameSetup<PlayerColor, MaterialType, L
     })
   }
 
-  private getGuestPawnColorFromMovieColor(movieColor: FilmColor): GuestPawn {
+  private getGuestPawnColorFromMovieColor(movieColor: MovieColor): GuestPawn {
     switch (movieColor) {
-      case FilmColor.Blue:
+      case MovieColor.Blue:
         return GuestPawn.Blue
-      case FilmColor.Green:
+      case MovieColor.Green:
         return GuestPawn.Green
-      case FilmColor.Red:
+      case MovieColor.Red:
         return GuestPawn.Red
-      case FilmColor.Yellow:
+      case MovieColor.Yellow:
         return GuestPawn.Yellow
     }
   }

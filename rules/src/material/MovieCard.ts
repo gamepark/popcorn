@@ -1,6 +1,22 @@
 import { getEnumValues } from '@gamepark/rules-api'
+import { AdrianCharacteristics } from './MovieCards/AdrianCharacteristics'
+import { BigSpendersCharacteristics } from './MovieCards/BigSpendersCharacteristics'
+import { ControlZCharacteristics } from './MovieCards/ControlZCharacteristics'
+import { EndOfTheWorldCharacteristics } from './MovieCards/EndOfTheWorldCharacteristics'
+import { FiveSixSevenEightCharacteristics } from './MovieCards/FiveSixSevenEightCharacteristics'
+import { HenriettaCharacteristics } from './MovieCards/HenriettaCharacteristics'
+import { ItSMyWarCharacteristics } from './MovieCards/ItSMyWarCharacteristics'
+import { JoeJoeCharacteristics } from './MovieCards/JoeJoeCharacteristics'
+import { MeCharacteristics } from './MovieCards/MeCharacteristics'
+import { ModernLoveCharacteristics } from './MovieCards/ModernLoveCharacteristics'
+import { MovieCardCharacteristics } from './MovieCards/MovieCardCharacteristics'
+import { ObjectionCharacteristics } from './MovieCards/ObjectionCharacteristics'
+import { RohanAndJayaCharacteristics } from './MovieCards/RohanAndJayaCharacteristics'
+import { RosebudCharacteristics } from './MovieCards/RosebudCharacteristics'
+import { TheGodmotherCharacteristics } from './MovieCards/TheGodmotherCharacteristics'
+import { TheNeuroticDetectiveCharacteristics } from './MovieCards/TheNeuroticDetectiveCharacteristics'
 
-export enum FilmColor {
+export enum MovieColor {
   Yellow = 0,
   Red,
   Green,
@@ -14,7 +30,7 @@ export enum BonusCondition {
   ThreeSeatTheater = 3
 }
 
-export enum FilmAction {
+export enum MovieAction {
   None = 0,
   AudienceTrackAdvance,
   AdvertisingTokenOnYellowGuest,
@@ -49,391 +65,291 @@ enum FilmFieldShifts {
 
 /* eslint "@typescript-eslint/prefer-literal-enum-member": "off" */
 export enum MovieCard {
-  FirstMovieBlueRosebud = FilmColor.Blue |
-    (0 << FilmFieldShifts.Price) |
-    (BonusCondition.None << FilmFieldShifts.BonusCondition) |
-    (FilmAction.None << FilmFieldShifts.BonusAction) |
-    (FilmAction.AudienceTrackAdvance << FilmFieldShifts.FirstAction) |
-    (FilmAction.AdvertisingTokenOnBlueGuest << FilmFieldShifts.SecondAction) |
-    (FilmAction.Get2Money << FilmFieldShifts.ThirdAction) |
-    (FilmAction.None << FilmFieldShifts.FourthAction),
-  FirstMovieGreenEndOfTheWorld = FilmColor.Green |
-    (0 << FilmFieldShifts.Price) |
-    (BonusCondition.None << FilmFieldShifts.BonusCondition) |
-    (FilmAction.None << FilmFieldShifts.BonusAction) |
-    (FilmAction.AudienceTrackAdvance << FilmFieldShifts.FirstAction) |
-    (FilmAction.AdvertisingTokenOnGreenGuest << FilmFieldShifts.SecondAction) |
-    (FilmAction.Get2Money << FilmFieldShifts.ThirdAction) |
-    (FilmAction.None << FilmFieldShifts.FourthAction),
-  FirstMovieRedItSMyWar = FilmColor.Red |
-    (0 << FilmFieldShifts.Price) |
-    (BonusCondition.None << FilmFieldShifts.BonusCondition) |
-    (FilmAction.None << FilmFieldShifts.BonusAction) |
-    (FilmAction.AudienceTrackAdvance << FilmFieldShifts.FirstAction) |
-    (FilmAction.AdvertisingTokenOnRedGuest << FilmFieldShifts.SecondAction) |
-    (FilmAction.Get2Money << FilmFieldShifts.ThirdAction) |
-    (FilmAction.None << FilmFieldShifts.FourthAction),
-  FirstMovieYellowModernLove = FilmColor.Yellow |
-    (0 << FilmFieldShifts.Price) |
-    (BonusCondition.None << FilmFieldShifts.BonusCondition) |
-    (FilmAction.None << FilmFieldShifts.BonusAction) |
-    (FilmAction.AudienceTrackAdvance << FilmFieldShifts.FirstAction) |
-    (FilmAction.AdvertisingTokenOnYellowGuest << FilmFieldShifts.SecondAction) |
-    (FilmAction.Get2Money << FilmFieldShifts.ThirdAction) |
-    (FilmAction.None << FilmFieldShifts.FourthAction),
-  BlueHenrietta = FilmColor.Blue |
-    (0 << FilmFieldShifts.Price) |
-    (BonusCondition.None << FilmFieldShifts.BonusCondition) |
-    (FilmAction.None << FilmFieldShifts.BonusAction) |
-    (FilmAction.None << FilmFieldShifts.FirstAction) |
-    (FilmAction.Get2Money << FilmFieldShifts.SecondAction) |
-    (FilmAction.AdvertisingTokenOnBlueGuest << FilmFieldShifts.ThirdAction) |
-    (FilmAction.AdvertisingTokenOnWhiteGuestToBag << FilmFieldShifts.FourthAction),
-  BlueMe = FilmColor.Blue |
-    (0 << FilmFieldShifts.Price) |
-    (BonusCondition.None << FilmFieldShifts.BonusCondition) |
-    (FilmAction.None << FilmFieldShifts.BonusAction) |
-    (FilmAction.None << FilmFieldShifts.FirstAction) |
-    (FilmAction.PlaceGuestInReserve << FilmFieldShifts.SecondAction) |
-    (FilmAction.DrawGuestAndPlaceThem << FilmFieldShifts.ThirdAction) |
-    (FilmAction.Get4Popcorn << FilmFieldShifts.FourthAction),
-  Blue5678 = FilmColor.Blue |
-    (1 << FilmFieldShifts.Price) |
-    (BonusCondition.OneSeatTheater << FilmFieldShifts.BonusCondition) |
-    (FilmAction.AudienceTrackAdvance << FilmFieldShifts.BonusAction) |
-    (FilmAction.Get1Popcorn << FilmFieldShifts.FirstAction) |
-    (FilmAction.Get2Money << FilmFieldShifts.SecondAction) |
-    (FilmAction.AdvertisingTokenOnBlueGuest << FilmFieldShifts.ThirdAction) |
-    (FilmAction.DrawGuestAndPlaceThem << FilmFieldShifts.FourthAction),
-  BlueJoeJoe = FilmColor.Blue |
-    (1 << FilmFieldShifts.Price) |
-    (BonusCondition.TwoSeatTheater << FilmFieldShifts.BonusCondition) |
-    (FilmAction.Get2Money << FilmFieldShifts.BonusAction) |
-    (FilmAction.Get1Popcorn << FilmFieldShifts.FirstAction) |
-    (FilmAction.AdvertisingTokenOnAnyGuest << FilmFieldShifts.SecondAction) |
-    (FilmAction.Get3Money << FilmFieldShifts.ThirdAction) |
-    (FilmAction.DrawAwardCard << FilmFieldShifts.FourthAction),
-  BlueTheNeuroticDetective = FilmColor.Blue |
-    (2 << FilmFieldShifts.Price) |
-    (BonusCondition.OneSeatTheater << FilmFieldShifts.BonusCondition) |
-    (FilmAction.AdvertisingTokenOnBlueGuest << FilmFieldShifts.BonusAction) |
-    (FilmAction.Get1Money << FilmFieldShifts.FirstAction) |
-    (FilmAction.Get1Popcorn << FilmFieldShifts.SecondAction) |
-    (FilmAction.Get3Popcorn << FilmFieldShifts.ThirdAction) |
-    (FilmAction.DrawAwardCard << FilmFieldShifts.FourthAction),
-  BlueObjection = FilmColor.Blue |
-    (2 << FilmFieldShifts.Price) |
-    (BonusCondition.TwoSeatTheater << FilmFieldShifts.BonusCondition) |
-    (FilmAction.DrawAwardCard << FilmFieldShifts.BonusAction) |
-    (FilmAction.PlaceGuestInReserve << FilmFieldShifts.FirstAction) |
-    (FilmAction.Get2Money << FilmFieldShifts.SecondAction) |
-    (FilmAction.AdvertisingTokenOnBlueGuest << FilmFieldShifts.ThirdAction) |
-    (FilmAction.Get4Money << FilmFieldShifts.FourthAction),
-  BlueBigSpenders = FilmColor.Blue |
-    (3 << FilmFieldShifts.Price) |
-    (BonusCondition.OneSeatTheater << FilmFieldShifts.BonusCondition) |
-    (FilmAction.Get2Money << FilmFieldShifts.BonusAction) |
-    (FilmAction.Get1Money << FilmFieldShifts.FirstAction) |
-    (FilmAction.Get2Popcorn << FilmFieldShifts.SecondAction) |
-    (FilmAction.PlaceExitZoneGuestInBag << FilmFieldShifts.ThirdAction) |
-    (FilmAction.Get2Money << FilmFieldShifts.FourthAction),
-  BlueControlZ = FilmColor.Blue |
-    (3 << FilmFieldShifts.Price) |
-    (BonusCondition.TwoSeatTheater << FilmFieldShifts.BonusCondition) |
-    (FilmAction.AudienceTrackAdvance << FilmFieldShifts.BonusAction) |
-    (FilmAction.AdvertisingTokenOnAnyGuest << FilmFieldShifts.FirstAction) |
-    (FilmAction.Get3Money << FilmFieldShifts.SecondAction) |
-    (FilmAction.DrawAwardCard << FilmFieldShifts.ThirdAction) |
-    (FilmAction.AdvertisingTokenOnWhiteGuestToBag << FilmFieldShifts.FourthAction),
-  BlueRohanAndJaya = FilmColor.Blue |
-    (4 << FilmFieldShifts.Price) |
-    (BonusCondition.ThreeSeatTheater << FilmFieldShifts.BonusCondition) |
-    (FilmAction.Get2Money << FilmFieldShifts.BonusAction) |
-    (FilmAction.AdvertisingTokenOnBlueGuest << FilmFieldShifts.FirstAction) |
-    (FilmAction.Get3Popcorn << FilmFieldShifts.SecondAction) |
-    (FilmAction.DrawAwardCard << FilmFieldShifts.ThirdAction) |
-    (FilmAction.AudienceTrackAdvance << FilmFieldShifts.FourthAction),
-  BlueAdrian = FilmColor.Blue |
-    (4 << FilmFieldShifts.Price) |
-    (BonusCondition.ThreeSeatTheater << FilmFieldShifts.BonusCondition) |
-    (FilmAction.AdvertisingTokenOnAnyGuest << FilmFieldShifts.BonusAction) |
-    (FilmAction.Get3Money << FilmFieldShifts.FirstAction) |
-    (FilmAction.Get2Popcorn << FilmFieldShifts.SecondAction) |
-    (FilmAction.AudienceTrackAdvance << FilmFieldShifts.ThirdAction) |
-    (FilmAction.DrawAwardCard << FilmFieldShifts.FourthAction),
-  BlueTheGodmother = FilmColor.Blue |
-    (5 << FilmFieldShifts.Price) |
-    (BonusCondition.ThreeSeatTheater << FilmFieldShifts.BonusCondition) |
-    (FilmAction.Get3Popcorn << FilmFieldShifts.BonusAction) |
-    (FilmAction.PlaceExitZoneGuestInBag << FilmFieldShifts.FirstAction) |
-    (FilmAction.DrawAwardCard << FilmFieldShifts.SecondAction) |
-    (FilmAction.Get3Money << FilmFieldShifts.ThirdAction) |
-    (FilmAction.AudienceTrackAdvance << FilmFieldShifts.FourthAction),
+  // First movies
+  FirstMovieBlueRosebud = 1,
+  FirstMovieGreenEndOfTheWorld,
+  FirstMovieRedItSMyWar,
+  FirstMovieYellowModernLove,
+  // Blue movies
+  BlueHenrietta,
+  BlueMe,
+  Blue5678,
+  BlueJoeJoe,
+  BlueTheNeuroticDetective,
+  BlueObjection,
+  BlueBigSpenders,
+  BlueControlZ,
+  BlueRohanAndJaya,
+  BlueAdrian,
+  BlueTheGodmother,
   FinalShowing = 255,
-  GreenFrankAndEinstein = FilmColor.Green |
+  // Green movies
+  GreenFrankAndEinstein = MovieColor.Green |
     (0 << FilmFieldShifts.Price) |
     (BonusCondition.None << FilmFieldShifts.BonusCondition) |
-    (FilmAction.None << FilmFieldShifts.BonusAction) |
-    (FilmAction.None << FilmFieldShifts.FirstAction) |
-    (FilmAction.AdvertisingTokenOnWhiteGuestToBag << FilmFieldShifts.SecondAction) |
-    (FilmAction.Get2Money << FilmFieldShifts.ThirdAction) |
-    (FilmAction.AdvertisingTokenOnGreenGuest << FilmFieldShifts.FourthAction),
-  GreenTheBarbarian = FilmColor.Green |
+    (MovieAction.None << FilmFieldShifts.BonusAction) |
+    (MovieAction.None << FilmFieldShifts.FirstAction) |
+    (MovieAction.AdvertisingTokenOnWhiteGuestToBag << FilmFieldShifts.SecondAction) |
+    (MovieAction.Get2Money << FilmFieldShifts.ThirdAction) |
+    (MovieAction.AdvertisingTokenOnGreenGuest << FilmFieldShifts.FourthAction),
+  GreenTheBarbarian = MovieColor.Green |
     (0 << FilmFieldShifts.Price) |
     (BonusCondition.None << FilmFieldShifts.BonusCondition) |
-    (FilmAction.None << FilmFieldShifts.BonusAction) |
-    (FilmAction.None << FilmFieldShifts.FirstAction) |
-    (FilmAction.DrawGuestAndPlaceThem << FilmFieldShifts.SecondAction) |
-    (FilmAction.Get2Money << FilmFieldShifts.ThirdAction) |
-    (FilmAction.PlaceGuestInReserve << FilmFieldShifts.FourthAction),
-  GreenRevengeOfTheDiplodocus = FilmColor.Green |
+    (MovieAction.None << FilmFieldShifts.BonusAction) |
+    (MovieAction.None << FilmFieldShifts.FirstAction) |
+    (MovieAction.DrawGuestAndPlaceThem << FilmFieldShifts.SecondAction) |
+    (MovieAction.Get2Money << FilmFieldShifts.ThirdAction) |
+    (MovieAction.PlaceGuestInReserve << FilmFieldShifts.FourthAction),
+  GreenRevengeOfTheDiplodocus = MovieColor.Green |
     (1 << FilmFieldShifts.Price) |
     (BonusCondition.TwoSeatTheater << FilmFieldShifts.BonusCondition) |
-    (FilmAction.PlaceExitZoneGuestInBag << FilmFieldShifts.BonusAction) |
-    (FilmAction.Get2Popcorn << FilmFieldShifts.FirstAction) |
-    (FilmAction.Get1Popcorn << FilmFieldShifts.SecondAction) |
-    (FilmAction.PlaceGuestInReserve << FilmFieldShifts.ThirdAction) |
-    (FilmAction.AudienceTrackAdvance << FilmFieldShifts.FourthAction),
-  GreenMountainHotel = FilmColor.Green |
+    (MovieAction.PlaceExitZoneGuestInBag << FilmFieldShifts.BonusAction) |
+    (MovieAction.Get2Popcorn << FilmFieldShifts.FirstAction) |
+    (MovieAction.Get1Popcorn << FilmFieldShifts.SecondAction) |
+    (MovieAction.PlaceGuestInReserve << FilmFieldShifts.ThirdAction) |
+    (MovieAction.AudienceTrackAdvance << FilmFieldShifts.FourthAction),
+  GreenMountainHotel = MovieColor.Green |
     (1 << FilmFieldShifts.Price) |
     (BonusCondition.OneSeatTheater << FilmFieldShifts.BonusCondition) |
-    (FilmAction.Get2Money << FilmFieldShifts.BonusAction) |
-    (FilmAction.AdvertisingTokenOnWhiteGuestToBag << FilmFieldShifts.FirstAction) |
-    (FilmAction.PlaceExitZoneGuestInBag << FilmFieldShifts.SecondAction) |
-    (FilmAction.AdvertisingTokenOnGreenGuest << FilmFieldShifts.ThirdAction) |
-    (FilmAction.Get1Popcorn << FilmFieldShifts.FourthAction),
-  GreenBadman = FilmColor.Green |
+    (MovieAction.Get2Money << FilmFieldShifts.BonusAction) |
+    (MovieAction.AdvertisingTokenOnWhiteGuestToBag << FilmFieldShifts.FirstAction) |
+    (MovieAction.PlaceExitZoneGuestInBag << FilmFieldShifts.SecondAction) |
+    (MovieAction.AdvertisingTokenOnGreenGuest << FilmFieldShifts.ThirdAction) |
+    (MovieAction.Get1Popcorn << FilmFieldShifts.FourthAction),
+  GreenBadman = MovieColor.Green |
     (2 << FilmFieldShifts.Price) |
     (BonusCondition.OneSeatTheater << FilmFieldShifts.BonusCondition) |
-    (FilmAction.AdvertisingTokenOnGreenGuest << FilmFieldShifts.BonusAction) |
-    (FilmAction.PlaceExitZoneGuestInBag << FilmFieldShifts.FirstAction) |
-    (FilmAction.Get3Money << FilmFieldShifts.SecondAction) |
-    (FilmAction.PlaceGuestInReserve << FilmFieldShifts.ThirdAction) |
-    (FilmAction.Get2Popcorn << FilmFieldShifts.FourthAction),
-  GreenKingOfTokyo = FilmColor.Green |
+    (MovieAction.AdvertisingTokenOnGreenGuest << FilmFieldShifts.BonusAction) |
+    (MovieAction.PlaceExitZoneGuestInBag << FilmFieldShifts.FirstAction) |
+    (MovieAction.Get3Money << FilmFieldShifts.SecondAction) |
+    (MovieAction.PlaceGuestInReserve << FilmFieldShifts.ThirdAction) |
+    (MovieAction.Get2Popcorn << FilmFieldShifts.FourthAction),
+  GreenKingOfTokyo = MovieColor.Green |
     (2 << FilmFieldShifts.Price) |
     (BonusCondition.TwoSeatTheater << FilmFieldShifts.BonusCondition) |
-    (FilmAction.Get3Popcorn << FilmFieldShifts.BonusAction) |
-    (FilmAction.Get1Popcorn << FilmFieldShifts.FirstAction) |
-    (FilmAction.AdvertisingTokenOnWhiteGuestToBag << FilmFieldShifts.SecondAction) |
-    (FilmAction.Get3Money << FilmFieldShifts.ThirdAction) |
-    (FilmAction.AdvertisingTokenOnGreenGuest << FilmFieldShifts.FourthAction),
-  GreenAMonsterInTheShip = FilmColor.Green |
+    (MovieAction.Get3Popcorn << FilmFieldShifts.BonusAction) |
+    (MovieAction.Get1Popcorn << FilmFieldShifts.FirstAction) |
+    (MovieAction.AdvertisingTokenOnWhiteGuestToBag << FilmFieldShifts.SecondAction) |
+    (MovieAction.Get3Money << FilmFieldShifts.ThirdAction) |
+    (MovieAction.AdvertisingTokenOnGreenGuest << FilmFieldShifts.FourthAction),
+  GreenAMonsterInTheShip = MovieColor.Green |
     (3 << FilmFieldShifts.Price) |
     (BonusCondition.OneSeatTheater << FilmFieldShifts.BonusCondition) |
-    (FilmAction.AudienceTrackAdvance << FilmFieldShifts.BonusAction) |
-    (FilmAction.PlaceGuestInReserve << FilmFieldShifts.FirstAction) |
-    (FilmAction.Get2Popcorn << FilmFieldShifts.SecondAction) |
-    (FilmAction.Get4Money << FilmFieldShifts.ThirdAction) |
-    (FilmAction.AdvertisingTokenOnAnyGuest << FilmFieldShifts.FourthAction),
-  GreenWitchesVsCheerleaders = FilmColor.Green |
+    (MovieAction.AudienceTrackAdvance << FilmFieldShifts.BonusAction) |
+    (MovieAction.PlaceGuestInReserve << FilmFieldShifts.FirstAction) |
+    (MovieAction.Get2Popcorn << FilmFieldShifts.SecondAction) |
+    (MovieAction.Get4Money << FilmFieldShifts.ThirdAction) |
+    (MovieAction.AdvertisingTokenOnAnyGuest << FilmFieldShifts.FourthAction),
+  GreenWitchesVsCheerleaders = MovieColor.Green |
     (3 << FilmFieldShifts.Price) |
     (BonusCondition.TwoSeatTheater << FilmFieldShifts.BonusCondition) |
-    (FilmAction.DrawAwardCard << FilmFieldShifts.BonusAction) |
-    (FilmAction.AdvertisingTokenOnGreenGuest << FilmFieldShifts.FirstAction) |
-    (FilmAction.Get3Money << FilmFieldShifts.SecondAction) |
-    (FilmAction.AudienceTrackAdvance << FilmFieldShifts.ThirdAction) |
-    (FilmAction.AdvertisingTokenOnWhiteGuestToBag << FilmFieldShifts.FourthAction),
-  GreenAbracadab = FilmColor.Green |
+    (MovieAction.DrawAwardCard << FilmFieldShifts.BonusAction) |
+    (MovieAction.AdvertisingTokenOnGreenGuest << FilmFieldShifts.FirstAction) |
+    (MovieAction.Get3Money << FilmFieldShifts.SecondAction) |
+    (MovieAction.AudienceTrackAdvance << FilmFieldShifts.ThirdAction) |
+    (MovieAction.AdvertisingTokenOnWhiteGuestToBag << FilmFieldShifts.FourthAction),
+  GreenAbracadab = MovieColor.Green |
     (4 << FilmFieldShifts.Price) |
     (BonusCondition.ThreeSeatTheater << FilmFieldShifts.BonusCondition) |
-    (FilmAction.Get2Money << FilmFieldShifts.BonusAction) |
-    (FilmAction.DrawGuestAndPlaceThem << FilmFieldShifts.FirstAction) |
-    (FilmAction.Get2Popcorn << FilmFieldShifts.SecondAction) |
-    (FilmAction.AdvertisingTokenOnAnyGuest << FilmFieldShifts.ThirdAction) |
-    (FilmAction.Get3Money << FilmFieldShifts.FourthAction),
-  GreenEliminator4 = FilmColor.Green |
+    (MovieAction.Get2Money << FilmFieldShifts.BonusAction) |
+    (MovieAction.DrawGuestAndPlaceThem << FilmFieldShifts.FirstAction) |
+    (MovieAction.Get2Popcorn << FilmFieldShifts.SecondAction) |
+    (MovieAction.AdvertisingTokenOnAnyGuest << FilmFieldShifts.ThirdAction) |
+    (MovieAction.Get3Money << FilmFieldShifts.FourthAction),
+  GreenEliminator4 = MovieColor.Green |
     (4 << FilmFieldShifts.Price) |
     (BonusCondition.ThreeSeatTheater << FilmFieldShifts.BonusCondition) |
-    (FilmAction.DrawAwardCard << FilmFieldShifts.BonusAction) |
-    (FilmAction.DrawGuestAndPlaceThem << FilmFieldShifts.FirstAction) |
-    (FilmAction.Get3Money << FilmFieldShifts.SecondAction) |
-    (FilmAction.AudienceTrackAdvance << FilmFieldShifts.ThirdAction) |
-    (FilmAction.Get3Popcorn << FilmFieldShifts.FourthAction),
-  GreenIntergalactic = FilmColor.Green |
+    (MovieAction.DrawAwardCard << FilmFieldShifts.BonusAction) |
+    (MovieAction.DrawGuestAndPlaceThem << FilmFieldShifts.FirstAction) |
+    (MovieAction.Get3Money << FilmFieldShifts.SecondAction) |
+    (MovieAction.AudienceTrackAdvance << FilmFieldShifts.ThirdAction) |
+    (MovieAction.Get3Popcorn << FilmFieldShifts.FourthAction),
+  GreenIntergalactic = MovieColor.Green |
     (5 << FilmFieldShifts.Price) |
     (BonusCondition.ThreeSeatTheater << FilmFieldShifts.BonusCondition) |
-    (FilmAction.Get4Popcorn << FilmFieldShifts.BonusAction) |
-    (FilmAction.PlaceExitZoneGuestInBag << FilmFieldShifts.FirstAction) |
-    (FilmAction.Get2Popcorn << FilmFieldShifts.SecondAction) |
-    (FilmAction.DrawAwardCard << FilmFieldShifts.ThirdAction) |
-    (FilmAction.Get4Money << FilmFieldShifts.FourthAction),
-  RedTheManWithTheMoney = FilmColor.Red |
+    (MovieAction.Get4Popcorn << FilmFieldShifts.BonusAction) |
+    (MovieAction.PlaceExitZoneGuestInBag << FilmFieldShifts.FirstAction) |
+    (MovieAction.Get2Popcorn << FilmFieldShifts.SecondAction) |
+    (MovieAction.DrawAwardCard << FilmFieldShifts.ThirdAction) |
+    (MovieAction.Get4Money << FilmFieldShifts.FourthAction),
+  // Red movies
+  RedTheManWithTheMoney = MovieColor.Red |
     (0 << FilmFieldShifts.Price) |
     (BonusCondition.None << FilmFieldShifts.BonusCondition) |
-    (FilmAction.None << FilmFieldShifts.BonusAction) |
-    (FilmAction.None << FilmFieldShifts.FirstAction) |
-    (FilmAction.Get1Money << FilmFieldShifts.SecondAction) |
-    (FilmAction.AdvertisingTokenOnRedGuest << FilmFieldShifts.ThirdAction) |
-    (FilmAction.Get3Popcorn << FilmFieldShifts.FourthAction),
-  RedBarbacus = FilmColor.Red |
+    (MovieAction.None << FilmFieldShifts.BonusAction) |
+    (MovieAction.None << FilmFieldShifts.FirstAction) |
+    (MovieAction.Get1Money << FilmFieldShifts.SecondAction) |
+    (MovieAction.AdvertisingTokenOnRedGuest << FilmFieldShifts.ThirdAction) |
+    (MovieAction.Get3Popcorn << FilmFieldShifts.FourthAction),
+  RedBarbacus = MovieColor.Red |
     (0 << FilmFieldShifts.Price) |
     (BonusCondition.None << FilmFieldShifts.BonusCondition) |
-    (FilmAction.None << FilmFieldShifts.BonusAction) |
-    (FilmAction.None << FilmFieldShifts.FirstAction) |
-    (FilmAction.DrawGuestAndPlaceThem << FilmFieldShifts.SecondAction) |
-    (FilmAction.Get1Money << FilmFieldShifts.ThirdAction) |
-    (FilmAction.DrawAwardCard << FilmFieldShifts.FourthAction),
-  RedTheFuryOfTheSerpent = FilmColor.Red |
+    (MovieAction.None << FilmFieldShifts.BonusAction) |
+    (MovieAction.None << FilmFieldShifts.FirstAction) |
+    (MovieAction.DrawGuestAndPlaceThem << FilmFieldShifts.SecondAction) |
+    (MovieAction.Get1Money << FilmFieldShifts.ThirdAction) |
+    (MovieAction.DrawAwardCard << FilmFieldShifts.FourthAction),
+  RedTheFuryOfTheSerpent = MovieColor.Red |
     (1 << FilmFieldShifts.Price) |
     (BonusCondition.OneSeatTheater << FilmFieldShifts.BonusCondition) |
-    (FilmAction.Get1Popcorn << FilmFieldShifts.BonusAction) |
-    (FilmAction.PlaceExitZoneGuestInBag << FilmFieldShifts.FirstAction) |
-    (FilmAction.Get2Popcorn << FilmFieldShifts.SecondAction) |
-    (FilmAction.Get2Money << FilmFieldShifts.ThirdAction) |
-    (FilmAction.AudienceTrackAdvance << FilmFieldShifts.FourthAction),
-  RedTheCursedPegleg = FilmColor.Red |
+    (MovieAction.Get1Popcorn << FilmFieldShifts.BonusAction) |
+    (MovieAction.PlaceExitZoneGuestInBag << FilmFieldShifts.FirstAction) |
+    (MovieAction.Get2Popcorn << FilmFieldShifts.SecondAction) |
+    (MovieAction.Get2Money << FilmFieldShifts.ThirdAction) |
+    (MovieAction.AudienceTrackAdvance << FilmFieldShifts.FourthAction),
+  RedTheCursedPegleg = MovieColor.Red |
     (1 << FilmFieldShifts.Price) |
     (BonusCondition.TwoSeatTheater << FilmFieldShifts.BonusCondition) |
-    (FilmAction.PlaceGuestInReserve << FilmFieldShifts.BonusAction) |
-    (FilmAction.Get2Popcorn << FilmFieldShifts.FirstAction) |
-    (FilmAction.PlaceExitZoneGuestInBag << FilmFieldShifts.SecondAction) |
-    (FilmAction.Get2Money << FilmFieldShifts.ThirdAction) |
-    (FilmAction.AdvertisingTokenOnRedGuest << FilmFieldShifts.FourthAction),
-  RedTheWorkdAfter = FilmColor.Red |
+    (MovieAction.PlaceGuestInReserve << FilmFieldShifts.BonusAction) |
+    (MovieAction.Get2Popcorn << FilmFieldShifts.FirstAction) |
+    (MovieAction.PlaceExitZoneGuestInBag << FilmFieldShifts.SecondAction) |
+    (MovieAction.Get2Money << FilmFieldShifts.ThirdAction) |
+    (MovieAction.AdvertisingTokenOnRedGuest << FilmFieldShifts.FourthAction),
+  RedTheWorkdAfter = MovieColor.Red |
     (2 << FilmFieldShifts.Price) |
     (BonusCondition.OneSeatTheater << FilmFieldShifts.BonusCondition) |
-    (FilmAction.Get1Money << FilmFieldShifts.BonusAction) |
-    (FilmAction.Get2Money << FilmFieldShifts.FirstAction) |
-    (FilmAction.AdvertisingTokenOnAnyGuest << FilmFieldShifts.SecondAction) |
-    (FilmAction.Get2Popcorn << FilmFieldShifts.ThirdAction) |
-    (FilmAction.AudienceTrackAdvance << FilmFieldShifts.FourthAction),
-  RedTheVolcano = FilmColor.Red |
+    (MovieAction.Get1Money << FilmFieldShifts.BonusAction) |
+    (MovieAction.Get2Money << FilmFieldShifts.FirstAction) |
+    (MovieAction.AdvertisingTokenOnAnyGuest << FilmFieldShifts.SecondAction) |
+    (MovieAction.Get2Popcorn << FilmFieldShifts.ThirdAction) |
+    (MovieAction.AudienceTrackAdvance << FilmFieldShifts.FourthAction),
+  RedTheVolcano = MovieColor.Red |
     (2 << FilmFieldShifts.Price) |
     (BonusCondition.TwoSeatTheater << FilmFieldShifts.BonusCondition) |
-    (FilmAction.AudienceTrackAdvance << FilmFieldShifts.BonusAction) |
-    (FilmAction.Get2Money << FilmFieldShifts.FirstAction) |
-    (FilmAction.AdvertisingTokenOnRedGuest << FilmFieldShifts.SecondAction) |
-    (FilmAction.DrawGuestAndPlaceThem << FilmFieldShifts.ThirdAction) |
-    (FilmAction.Get2Popcorn << FilmFieldShifts.FourthAction),
-  RedUnknownDestination = FilmColor.Red |
+    (MovieAction.AudienceTrackAdvance << FilmFieldShifts.BonusAction) |
+    (MovieAction.Get2Money << FilmFieldShifts.FirstAction) |
+    (MovieAction.AdvertisingTokenOnRedGuest << FilmFieldShifts.SecondAction) |
+    (MovieAction.DrawGuestAndPlaceThem << FilmFieldShifts.ThirdAction) |
+    (MovieAction.Get2Popcorn << FilmFieldShifts.FourthAction),
+  RedUnknownDestination = MovieColor.Red |
     (3 << FilmFieldShifts.Price) |
     (BonusCondition.TwoSeatTheater << FilmFieldShifts.BonusCondition) |
-    (FilmAction.DrawAwardCard << FilmFieldShifts.BonusAction) |
-    (FilmAction.PlaceGuestInReserve << FilmFieldShifts.FirstAction) |
-    (FilmAction.Get2Popcorn << FilmFieldShifts.SecondAction) |
-    (FilmAction.AdvertisingTokenOnRedGuest << FilmFieldShifts.ThirdAction) |
-    (FilmAction.Get2Money << FilmFieldShifts.FourthAction),
-  RedGentlemanDriver = FilmColor.Red |
+    (MovieAction.DrawAwardCard << FilmFieldShifts.BonusAction) |
+    (MovieAction.PlaceGuestInReserve << FilmFieldShifts.FirstAction) |
+    (MovieAction.Get2Popcorn << FilmFieldShifts.SecondAction) |
+    (MovieAction.AdvertisingTokenOnRedGuest << FilmFieldShifts.ThirdAction) |
+    (MovieAction.Get2Money << FilmFieldShifts.FourthAction),
+  RedGentlemanDriver = MovieColor.Red |
     (3 << FilmFieldShifts.Price) |
     (BonusCondition.OneSeatTheater << FilmFieldShifts.BonusCondition) |
-    (FilmAction.Get2Popcorn << FilmFieldShifts.BonusAction) |
-    (FilmAction.Get1Popcorn << FilmFieldShifts.FirstAction) |
-    (FilmAction.AdvertisingTokenOnWhiteGuestToBag << FilmFieldShifts.SecondAction) |
-    (FilmAction.Get3Popcorn << FilmFieldShifts.ThirdAction) |
-    (FilmAction.AdvertisingTokenOnAnyGuest << FilmFieldShifts.FourthAction),
-  RedFinalLasso = FilmColor.Red |
+    (MovieAction.Get2Popcorn << FilmFieldShifts.BonusAction) |
+    (MovieAction.Get1Popcorn << FilmFieldShifts.FirstAction) |
+    (MovieAction.AdvertisingTokenOnWhiteGuestToBag << FilmFieldShifts.SecondAction) |
+    (MovieAction.Get3Popcorn << FilmFieldShifts.ThirdAction) |
+    (MovieAction.AdvertisingTokenOnAnyGuest << FilmFieldShifts.FourthAction),
+  RedFinalLasso = MovieColor.Red |
     (4 << FilmFieldShifts.Price) |
     (BonusCondition.ThreeSeatTheater << FilmFieldShifts.BonusCondition) |
-    (FilmAction.Get2Popcorn << FilmFieldShifts.BonusAction) |
-    (FilmAction.AdvertisingTokenOnWhiteGuestToBag << FilmFieldShifts.FirstAction) |
-    (FilmAction.Get2Popcorn << FilmFieldShifts.SecondAction) |
-    (FilmAction.Get3Money << FilmFieldShifts.ThirdAction) |
-    (FilmAction.DrawAwardCard << FilmFieldShifts.FourthAction),
-  RedElitePilot = FilmColor.Red |
+    (MovieAction.Get2Popcorn << FilmFieldShifts.BonusAction) |
+    (MovieAction.AdvertisingTokenOnWhiteGuestToBag << FilmFieldShifts.FirstAction) |
+    (MovieAction.Get2Popcorn << FilmFieldShifts.SecondAction) |
+    (MovieAction.Get3Money << FilmFieldShifts.ThirdAction) |
+    (MovieAction.DrawAwardCard << FilmFieldShifts.FourthAction),
+  RedElitePilot = MovieColor.Red |
     (4 << FilmFieldShifts.Price) |
     (BonusCondition.ThreeSeatTheater << FilmFieldShifts.BonusCondition) |
-    (FilmAction.AudienceTrackAdvance << FilmFieldShifts.BonusAction) |
-    (FilmAction.PlaceGuestInReserve << FilmFieldShifts.FirstAction) |
-    (FilmAction.Get3Popcorn << FilmFieldShifts.SecondAction) |
-    (FilmAction.DrawGuestAndPlaceThem << FilmFieldShifts.ThirdAction) |
-    (FilmAction.AdvertisingTokenOnRedGuest << FilmFieldShifts.FourthAction),
-  RedVroom8 = FilmColor.Red |
+    (MovieAction.AudienceTrackAdvance << FilmFieldShifts.BonusAction) |
+    (MovieAction.PlaceGuestInReserve << FilmFieldShifts.FirstAction) |
+    (MovieAction.Get3Popcorn << FilmFieldShifts.SecondAction) |
+    (MovieAction.DrawGuestAndPlaceThem << FilmFieldShifts.ThirdAction) |
+    (MovieAction.AdvertisingTokenOnRedGuest << FilmFieldShifts.FourthAction),
+  RedVroom8 = MovieColor.Red |
     (5 << FilmFieldShifts.Price) |
     (BonusCondition.ThreeSeatTheater << FilmFieldShifts.BonusCondition) |
-    (FilmAction.PlaceExitZoneGuestInBag << FilmFieldShifts.BonusAction) |
-    (FilmAction.Get4Money << FilmFieldShifts.FirstAction) |
-    (FilmAction.AdvertisingTokenOnAnyGuest << FilmFieldShifts.SecondAction) |
-    (FilmAction.Get2Popcorn << FilmFieldShifts.ThirdAction) |
-    (FilmAction.Get4Popcorn << FilmFieldShifts.FourthAction),
-  YellowMisterGiggles = FilmColor.Yellow |
+    (MovieAction.PlaceExitZoneGuestInBag << FilmFieldShifts.BonusAction) |
+    (MovieAction.Get4Money << FilmFieldShifts.FirstAction) |
+    (MovieAction.AdvertisingTokenOnAnyGuest << FilmFieldShifts.SecondAction) |
+    (MovieAction.Get2Popcorn << FilmFieldShifts.ThirdAction) |
+    (MovieAction.Get4Popcorn << FilmFieldShifts.FourthAction),
+  // Yellow movies
+  YellowMisterGiggles = MovieColor.Yellow |
     (0 << FilmFieldShifts.Price) |
     (BonusCondition.None << FilmFieldShifts.BonusCondition) |
-    (FilmAction.None << FilmFieldShifts.BonusAction) |
-    (FilmAction.None << FilmFieldShifts.FirstAction) |
-    (FilmAction.PlaceGuestInReserve << FilmFieldShifts.SecondAction) |
-    (FilmAction.Get1Popcorn << FilmFieldShifts.ThirdAction) |
-    (FilmAction.AudienceTrackAdvance << FilmFieldShifts.FourthAction),
-  YellowMelancholyCharlie = FilmColor.Yellow |
+    (MovieAction.None << FilmFieldShifts.BonusAction) |
+    (MovieAction.None << FilmFieldShifts.FirstAction) |
+    (MovieAction.PlaceGuestInReserve << FilmFieldShifts.SecondAction) |
+    (MovieAction.Get1Popcorn << FilmFieldShifts.ThirdAction) |
+    (MovieAction.AudienceTrackAdvance << FilmFieldShifts.FourthAction),
+  YellowMelancholyCharlie = MovieColor.Yellow |
     (0 << FilmFieldShifts.Price) |
     (BonusCondition.None << FilmFieldShifts.BonusCondition) |
-    (FilmAction.None << FilmFieldShifts.BonusAction) |
-    (FilmAction.None << FilmFieldShifts.FirstAction) |
-    (FilmAction.Get1Popcorn << FilmFieldShifts.SecondAction) |
-    (FilmAction.AdvertisingTokenOnYellowGuest << FilmFieldShifts.ThirdAction) |
-    (FilmAction.AudienceTrackAdvance << FilmFieldShifts.FourthAction),
-  YellowKangarooMan = FilmColor.Yellow |
+    (MovieAction.None << FilmFieldShifts.BonusAction) |
+    (MovieAction.None << FilmFieldShifts.FirstAction) |
+    (MovieAction.Get1Popcorn << FilmFieldShifts.SecondAction) |
+    (MovieAction.AdvertisingTokenOnYellowGuest << FilmFieldShifts.ThirdAction) |
+    (MovieAction.AudienceTrackAdvance << FilmFieldShifts.FourthAction),
+  YellowKangarooMan = MovieColor.Yellow |
     (1 << FilmFieldShifts.Price) |
     (BonusCondition.OneSeatTheater << FilmFieldShifts.BonusCondition) |
-    (FilmAction.AudienceTrackAdvance << FilmFieldShifts.BonusAction) |
-    (FilmAction.Get1Money << FilmFieldShifts.SecondAction) |
-    (FilmAction.Get1Popcorn << FilmFieldShifts.SecondAction) |
-    (FilmAction.AdvertisingTokenOnYellowGuest << FilmFieldShifts.ThirdAction) |
-    (FilmAction.Get2Money << FilmFieldShifts.FourthAction),
-  YellowTheKids = FilmColor.Yellow |
+    (MovieAction.AudienceTrackAdvance << FilmFieldShifts.BonusAction) |
+    (MovieAction.Get1Money << FilmFieldShifts.SecondAction) |
+    (MovieAction.Get1Popcorn << FilmFieldShifts.SecondAction) |
+    (MovieAction.AdvertisingTokenOnYellowGuest << FilmFieldShifts.ThirdAction) |
+    (MovieAction.Get2Money << FilmFieldShifts.FourthAction),
+  YellowTheKids = MovieColor.Yellow |
     (1 << FilmFieldShifts.Price) |
     (BonusCondition.TwoSeatTheater << FilmFieldShifts.BonusCondition) |
-    (FilmAction.Get1Popcorn << FilmFieldShifts.BonusAction) |
-    (FilmAction.AdvertisingTokenOnWhiteGuestToBag << FilmFieldShifts.FirstAction) |
-    (FilmAction.AdvertisingTokenOnYellowGuest << FilmFieldShifts.SecondAction) |
-    (FilmAction.Get2Money << FilmFieldShifts.ThirdAction) |
-    (FilmAction.AudienceTrackAdvance << FilmFieldShifts.FourthAction),
-  YellowWhatABunchOfIdiots3 = FilmColor.Yellow |
+    (MovieAction.Get1Popcorn << FilmFieldShifts.BonusAction) |
+    (MovieAction.AdvertisingTokenOnWhiteGuestToBag << FilmFieldShifts.FirstAction) |
+    (MovieAction.AdvertisingTokenOnYellowGuest << FilmFieldShifts.SecondAction) |
+    (MovieAction.Get2Money << FilmFieldShifts.ThirdAction) |
+    (MovieAction.AudienceTrackAdvance << FilmFieldShifts.FourthAction),
+  YellowWhatABunchOfIdiots3 = MovieColor.Yellow |
     (2 << FilmFieldShifts.Price) |
     (BonusCondition.TwoSeatTheater << FilmFieldShifts.BonusCondition) |
-    (FilmAction.AdvertisingTokenOnAnyGuest << FilmFieldShifts.BonusAction) |
-    (FilmAction.Get1Money << FilmFieldShifts.FirstAction) |
-    (FilmAction.Get2Popcorn << FilmFieldShifts.SecondAction) |
-    (FilmAction.PlaceGuestInReserve << FilmFieldShifts.ThirdAction) |
-    (FilmAction.AudienceTrackAdvance << FilmFieldShifts.FourthAction),
-  YellowSchoolOfZombies = FilmColor.Yellow |
+    (MovieAction.AdvertisingTokenOnAnyGuest << FilmFieldShifts.BonusAction) |
+    (MovieAction.Get1Money << FilmFieldShifts.FirstAction) |
+    (MovieAction.Get2Popcorn << FilmFieldShifts.SecondAction) |
+    (MovieAction.PlaceGuestInReserve << FilmFieldShifts.ThirdAction) |
+    (MovieAction.AudienceTrackAdvance << FilmFieldShifts.FourthAction),
+  YellowSchoolOfZombies = MovieColor.Yellow |
     (2 << FilmFieldShifts.Price) |
     (BonusCondition.OneSeatTheater << FilmFieldShifts.BonusCondition) |
-    (FilmAction.PlaceExitZoneGuestInBag << FilmFieldShifts.BonusAction) |
-    (FilmAction.AdvertisingTokenOnYellowGuest << FilmFieldShifts.FirstAction) |
-    (FilmAction.Get1Money << FilmFieldShifts.SecondAction) |
-    (FilmAction.Get2Money << FilmFieldShifts.ThirdAction) |
-    (FilmAction.DrawAwardCard << FilmFieldShifts.FourthAction),
-  YellowDoReMiFaSo = FilmColor.Yellow |
+    (MovieAction.PlaceExitZoneGuestInBag << FilmFieldShifts.BonusAction) |
+    (MovieAction.AdvertisingTokenOnYellowGuest << FilmFieldShifts.FirstAction) |
+    (MovieAction.Get1Money << FilmFieldShifts.SecondAction) |
+    (MovieAction.Get2Money << FilmFieldShifts.ThirdAction) |
+    (MovieAction.DrawAwardCard << FilmFieldShifts.FourthAction),
+  YellowDoReMiFaSo = MovieColor.Yellow |
     (3 << FilmFieldShifts.Price) |
     (BonusCondition.TwoSeatTheater << FilmFieldShifts.BonusCondition) |
-    (FilmAction.Get1Popcorn << FilmFieldShifts.BonusAction) |
-    (FilmAction.Get1Popcorn << FilmFieldShifts.FirstAction) |
-    (FilmAction.PlaceExitZoneGuestInBag << FilmFieldShifts.SecondAction) |
-    (FilmAction.AdvertisingTokenOnAnyGuest << FilmFieldShifts.ThirdAction) |
-    (FilmAction.AudienceTrackAdvance << FilmFieldShifts.FourthAction),
-  YellowFrenchKiss = FilmColor.Yellow |
+    (MovieAction.Get1Popcorn << FilmFieldShifts.BonusAction) |
+    (MovieAction.Get1Popcorn << FilmFieldShifts.FirstAction) |
+    (MovieAction.PlaceExitZoneGuestInBag << FilmFieldShifts.SecondAction) |
+    (MovieAction.AdvertisingTokenOnAnyGuest << FilmFieldShifts.ThirdAction) |
+    (MovieAction.AudienceTrackAdvance << FilmFieldShifts.FourthAction),
+  YellowFrenchKiss = MovieColor.Yellow |
     (3 << FilmFieldShifts.Price) |
     (BonusCondition.OneSeatTheater << FilmFieldShifts.BonusCondition) |
-    (FilmAction.AdvertisingTokenOnYellowGuest << FilmFieldShifts.BonusAction) |
-    (FilmAction.Get2Money << FilmFieldShifts.FirstAction) |
-    (FilmAction.Get2Popcorn << FilmFieldShifts.SecondAction) |
-    (FilmAction.PlaceExitZoneGuestInBag << FilmFieldShifts.ThirdAction) |
-    (FilmAction.AudienceTrackAdvance << FilmFieldShifts.FourthAction),
-  Yellow28InTheFamily = FilmColor.Yellow |
+    (MovieAction.AdvertisingTokenOnYellowGuest << FilmFieldShifts.BonusAction) |
+    (MovieAction.Get2Money << FilmFieldShifts.FirstAction) |
+    (MovieAction.Get2Popcorn << FilmFieldShifts.SecondAction) |
+    (MovieAction.PlaceExitZoneGuestInBag << FilmFieldShifts.ThirdAction) |
+    (MovieAction.AudienceTrackAdvance << FilmFieldShifts.FourthAction),
+  Yellow28InTheFamily = MovieColor.Yellow |
     (4 << FilmFieldShifts.Price) |
     (BonusCondition.ThreeSeatTheater << FilmFieldShifts.BonusCondition) |
-    (FilmAction.DrawAwardCard << FilmFieldShifts.BonusAction) |
-    (FilmAction.DrawGuestAndPlaceThem << FilmFieldShifts.FirstAction) |
-    (FilmAction.Get2Popcorn << FilmFieldShifts.SecondAction) |
-    (FilmAction.AudienceTrackAdvance << FilmFieldShifts.ThirdAction) |
-    (FilmAction.Get2Money << FilmFieldShifts.FourthAction),
-  YellowTheAdventuresOfPewPew = FilmColor.Yellow |
+    (MovieAction.DrawAwardCard << FilmFieldShifts.BonusAction) |
+    (MovieAction.DrawGuestAndPlaceThem << FilmFieldShifts.FirstAction) |
+    (MovieAction.Get2Popcorn << FilmFieldShifts.SecondAction) |
+    (MovieAction.AudienceTrackAdvance << FilmFieldShifts.ThirdAction) |
+    (MovieAction.Get2Money << FilmFieldShifts.FourthAction),
+  YellowTheAdventuresOfPewPew = MovieColor.Yellow |
     (4 << FilmFieldShifts.Price) |
     (BonusCondition.ThreeSeatTheater << FilmFieldShifts.BonusCondition) |
-    (FilmAction.AudienceTrackAdvance << FilmFieldShifts.BonusAction) |
-    (FilmAction.Get3Money << FilmFieldShifts.FirstAction) |
-    (FilmAction.DrawGuestAndPlaceThem << FilmFieldShifts.SecondAction) |
-    (FilmAction.DrawAwardCard << FilmFieldShifts.ThirdAction) |
-    (FilmAction.AdvertisingTokenOnYellowGuest << FilmFieldShifts.FourthAction),
-  YellowTheFirePrincess = FilmColor.Yellow |
+    (MovieAction.AudienceTrackAdvance << FilmFieldShifts.BonusAction) |
+    (MovieAction.Get3Money << FilmFieldShifts.FirstAction) |
+    (MovieAction.DrawGuestAndPlaceThem << FilmFieldShifts.SecondAction) |
+    (MovieAction.DrawAwardCard << FilmFieldShifts.ThirdAction) |
+    (MovieAction.AdvertisingTokenOnYellowGuest << FilmFieldShifts.FourthAction),
+  YellowTheFirePrincess = MovieColor.Yellow |
     (5 << FilmFieldShifts.Price) |
     (BonusCondition.ThreeSeatTheater << FilmFieldShifts.BonusCondition) |
-    (FilmAction.Get2Popcorn << FilmFieldShifts.BonusCondition) |
-    (FilmAction.Get3Money << FilmFieldShifts.FirstAction) |
-    (FilmAction.AudienceTrackAdvance << FilmFieldShifts.SecondAction) |
-    (FilmAction.Get3Popcorn << FilmFieldShifts.ThirdAction) |
-    (FilmAction.AdvertisingTokenOnAnyGuest << FilmFieldShifts.FourthAction)
+    (MovieAction.Get2Popcorn << FilmFieldShifts.BonusCondition) |
+    (MovieAction.Get3Money << FilmFieldShifts.FirstAction) |
+    (MovieAction.AudienceTrackAdvance << FilmFieldShifts.SecondAction) |
+    (MovieAction.Get3Popcorn << FilmFieldShifts.ThirdAction) |
+    (MovieAction.AdvertisingTokenOnAnyGuest << FilmFieldShifts.FourthAction)
 }
 
 export enum MovieCardType {
@@ -441,28 +357,25 @@ export enum MovieCardType {
   Movie = 2
 }
 
-const FILM_COLOR_LENGTH = 2
-const FILM_PRICE_LENGTH = 3
-const FILM_BONUS_CONDITION_LENGTH = 2
-const FILM_ACTION_LENGTH = 5
+export const movieCardCharacteristics: Record<MovieCard, MovieCardCharacteristics> = {
+  [MovieCard.FirstMovieBlueRosebud]: new RosebudCharacteristics(),
+  [MovieCard.FirstMovieGreenEndOfTheWorld]: new EndOfTheWorldCharacteristics(),
+  [MovieCard.FirstMovieRedItSMyWar]: new ItSMyWarCharacteristics(),
+  [MovieCard.FirstMovieYellowModernLove]: new ModernLoveCharacteristics(),
+  [MovieCard.BlueHenrietta]: new HenriettaCharacteristics(),
+  [MovieCard.BlueMe]: new MeCharacteristics(),
+  [MovieCard.Blue5678]: new FiveSixSevenEightCharacteristics(),
+  [MovieCard.BlueJoeJoe]: new JoeJoeCharacteristics(),
+  [MovieCard.BlueTheNeuroticDetective]: new TheNeuroticDetectiveCharacteristics(),
+  [MovieCard.BlueObjection]: new ObjectionCharacteristics(),
+  [MovieCard.BlueBigSpenders]: new BigSpendersCharacteristics(),
+  [MovieCard.BlueControlZ]: new ControlZCharacteristics(),
+  [MovieCard.BlueRohanAndJaya]: new RohanAndJayaCharacteristics(),
+  [MovieCard.BlueAdrian]: new AdrianCharacteristics(),
+  [MovieCard.BlueTheGodmother]: new TheGodmotherCharacteristics()
+}
 
 export const movieCards = getEnumValues(MovieCard)
-
-export const getFilmColor = (id: MovieCard): FilmColor => id & (2 ** FILM_COLOR_LENGTH - 1)
-
-export const getPrice = (id: MovieCard): number => (id >> FilmFieldShifts.Price) & (2 ** FILM_PRICE_LENGTH - 1)
-
-export const getBonusCondition = (id: MovieCard): BonusCondition => (id >> FilmFieldShifts.BonusCondition) & (2 ** FILM_BONUS_CONDITION_LENGTH - 1)
-
-export const getBonusAction = (id: MovieCard): FilmAction => (id >> FilmFieldShifts.BonusAction) & (2 ** FILM_ACTION_LENGTH - 1)
-
-export const getFirstAction = (id: MovieCard): FilmAction => (id >> FilmFieldShifts.FirstAction) & (2 ** FILM_ACTION_LENGTH - 1)
-
-export const getSecondAction = (id: MovieCard): FilmAction => (id >> FilmFieldShifts.SecondAction) & (2 ** FILM_ACTION_LENGTH - 1)
-
-export const getThirdAction = (id: MovieCard): FilmAction => (id >> FilmFieldShifts.ThirdAction) & (2 ** FILM_ACTION_LENGTH - 1)
-
-export const getFourthAction = (id: MovieCard): FilmAction => (id >> FilmFieldShifts.FourthAction) & (2 ** FILM_ACTION_LENGTH - 1)
 
 export const getMovieCardType = (id: MovieCard): MovieCardType =>
   [MovieCard.FirstMovieBlueRosebud, MovieCard.FirstMovieGreenEndOfTheWorld, MovieCard.FirstMovieRedItSMyWar, MovieCard.FirstMovieYellowModernLove].includes(id)
