@@ -6,7 +6,7 @@ import { getSliderColor, getSlidersForPlayers } from './material/LobbySlider'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { moneyTokens } from './material/MoneyToken'
-import { MovieColor, firstMovieCards, getMovieCardType, MovieCard, movieCardsWithoutFinalShowing, movieCardCharacteristics } from './material/MovieCard'
+import { MovieColor, firstMovieCards, MovieCard, movieCardsWithoutFinalShowing, movieCardCharacteristics } from './material/MovieCard'
 import { getSeatsNumber, SeatsNumber, theaterTiles } from './material/TheaterTile'
 import { theaterTrophy } from './material/TheaterTrophy'
 import { defaultPlayerActionMemory, Memorize, PlayerActionMemory } from './Memorize'
@@ -145,7 +145,7 @@ export class PopcornSetup extends MaterialGameSetup<PlayerColor, MaterialType, L
       movieCardsWithoutFinalShowing.map((id) => ({
         id: {
           front: id,
-          back: getMovieCardType(id)
+          back: movieCardCharacteristics[id].getMovieType()
         },
         location: {
           type: LocationType.MovieCardDeckSpot
@@ -156,7 +156,7 @@ export class PopcornSetup extends MaterialGameSetup<PlayerColor, MaterialType, L
     this.material(MaterialType.MovieCards).createItem({
       id: {
         front: MovieCard.FinalShowing,
-        back: getMovieCardType(MovieCard.FinalShowing)
+        back: movieCardCharacteristics[MovieCard.FinalShowing].getMovieType()
       },
       location: {
         type: LocationType.MovieCardDeckSpot,
@@ -197,7 +197,7 @@ export class PopcornSetup extends MaterialGameSetup<PlayerColor, MaterialType, L
     this.players.forEach((player, index) => {
       const firstMovieCardId = {
         front: firstMovieCardIds[index],
-        back: getMovieCardType(firstMovieCardIds[index])
+        back: movieCardCharacteristics[firstMovieCardIds[index]].getMovieType()
       }
       this.material(MaterialType.MovieCards).createItem({
         id: firstMovieCardId,
