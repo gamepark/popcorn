@@ -1,7 +1,7 @@
 import {
   BonusCondition,
-  FilmAction,
-  FilmColor,
+  MovieAction,
+  MovieColor,
   getBonusAction,
   getBonusCondition,
   getFilmColor,
@@ -18,50 +18,50 @@ describe('Movie card tests', () => {
     {
       film: MovieCard.BlueTheGodmother,
       filmName: MovieCard[MovieCard.BlueTheGodmother],
-      expectedFilmColor: FilmColor.Blue,
-      expectedFilmColorName: FilmColor[FilmColor.Blue]
+      expectedFilmColor: MovieColor.Blue,
+      expectedFilmColorName: MovieColor[MovieColor.Blue]
     },
     {
       film: MovieCard.BlueHenrietta,
       filmName: MovieCard[MovieCard.BlueHenrietta],
-      expectedFilmColor: FilmColor.Blue,
-      expectedFilmColorName: FilmColor[FilmColor.Blue]
+      expectedFilmColor: MovieColor.Blue,
+      expectedFilmColorName: MovieColor[MovieColor.Blue]
     },
     {
       film: MovieCard.GreenKingOfTokyo,
       filmName: MovieCard[MovieCard.GreenKingOfTokyo],
-      expectedFilmColor: FilmColor.Green,
-      expectedFilmColorName: FilmColor[FilmColor.Green]
+      expectedFilmColor: MovieColor.Green,
+      expectedFilmColorName: MovieColor[MovieColor.Green]
     },
     {
       film: MovieCard.GreenWitchesVsCheerleaders,
       filmName: MovieCard[MovieCard.GreenWitchesVsCheerleaders],
-      expectedFilmColor: FilmColor.Green,
-      expectedFilmColorName: FilmColor[FilmColor.Green]
+      expectedFilmColor: MovieColor.Green,
+      expectedFilmColorName: MovieColor[MovieColor.Green]
     },
     {
       film: MovieCard.RedTheFuryOfTheSerpent,
       filmName: MovieCard[MovieCard.RedTheFuryOfTheSerpent],
-      expectedFilmColor: FilmColor.Red,
-      expectedFilmColorName: FilmColor[FilmColor.Red]
+      expectedFilmColor: MovieColor.Red,
+      expectedFilmColorName: MovieColor[MovieColor.Red]
     },
     {
       film: MovieCard.RedFinalLasso,
       filmName: MovieCard[MovieCard.RedFinalLasso],
-      expectedFilmColor: FilmColor.Red,
-      expectedFilmColorName: FilmColor[FilmColor.Red]
+      expectedFilmColor: MovieColor.Red,
+      expectedFilmColorName: MovieColor[MovieColor.Red]
     },
     {
       film: MovieCard.YellowFrenchKiss,
       filmName: MovieCard[MovieCard.YellowFrenchKiss],
-      expectedFilmColor: FilmColor.Yellow,
-      expectedFilmColorName: FilmColor[FilmColor.Yellow]
+      expectedFilmColor: MovieColor.Yellow,
+      expectedFilmColorName: MovieColor[MovieColor.Yellow]
     },
     {
       film: MovieCard.YellowSchoolOfZombies,
       filmName: MovieCard[MovieCard.YellowSchoolOfZombies],
-      expectedFilmColor: FilmColor.Yellow,
-      expectedFilmColorName: FilmColor[FilmColor.Yellow]
+      expectedFilmColor: MovieColor.Yellow,
+      expectedFilmColorName: MovieColor[MovieColor.Yellow]
     }
   ])('Given $filmName, getFilmColor() should return $expectedFilmColorName', ({ film, expectedFilmColor }) => {
     // When
@@ -145,26 +145,26 @@ describe('Movie card tests', () => {
     {
       film: MovieCard.Blue5678,
       filmName: MovieCard[MovieCard.Blue5678],
-      expectedBonusAction: FilmAction.AudienceTrackAdvance,
-      expectedBonusActionName: FilmAction[FilmAction.AudienceTrackAdvance]
+      expectedBonusAction: MovieAction.AudienceTrackAdvance,
+      expectedBonusActionName: MovieAction[MovieAction.AudienceTrackAdvance]
     },
     {
       film: MovieCard.GreenIntergalactic,
       filmName: MovieCard[MovieCard.GreenIntergalactic],
-      expectedBonusAction: FilmAction.Get4Popcorn,
-      expectedBonusActionName: FilmAction[FilmAction.Get4Popcorn]
+      expectedBonusAction: MovieAction.Get4Popcorn,
+      expectedBonusActionName: MovieAction[MovieAction.Get4Popcorn]
     },
     {
       film: MovieCard.RedTheWorkdAfter,
       filmName: MovieCard[MovieCard.RedTheWorkdAfter],
-      expectedBonusAction: FilmAction.Get1Money,
-      expectedBonusActionName: FilmAction[FilmAction.Get1Money]
+      expectedBonusAction: MovieAction.Get1Money,
+      expectedBonusActionName: MovieAction[MovieAction.Get1Money]
     },
     {
       film: MovieCard.Yellow28InTheFamily,
       filmName: MovieCard[MovieCard.Yellow28InTheFamily],
-      expectedBonusAction: FilmAction.DrawAwardCard,
-      expectedBonusActionName: FilmAction[FilmAction.DrawAwardCard]
+      expectedBonusAction: MovieAction.DrawAwardCard,
+      expectedBonusActionName: MovieAction[MovieAction.DrawAwardCard]
     }
   ])('Given $filmName, getBonusAction() should return $expectedBonusActionName', ({ film, expectedBonusAction }) => {
     // When
@@ -178,74 +178,74 @@ describe('Movie card tests', () => {
     {
       film: MovieCard.FirstMovieBlueRosebud,
       filmName: MovieCard[MovieCard.FirstMovieBlueRosebud],
-      expectedFirstAction: FilmAction.AudienceTrackAdvance,
-      expectedFirstActionName: FilmAction[FilmAction.AudienceTrackAdvance],
-      expectedSecondAction: FilmAction.AdvertisingTokenOnBlueGuest,
-      expectedSecondActionName: FilmAction[FilmAction.AdvertisingTokenOnBlueGuest],
-      expectedThirdAction: FilmAction.Get2Money,
-      expectedThirdActionName: FilmAction[FilmAction.Get2Money],
-      expectedFourthAction: FilmAction.None,
-      expectedFourthActionName: FilmAction[FilmAction.None]
+      expectedFirstAction: MovieAction.AudienceTrackAdvance,
+      expectedFirstActionName: MovieAction[MovieAction.AudienceTrackAdvance],
+      expectedSecondAction: MovieAction.AdvertisingTokenOnBlueGuest,
+      expectedSecondActionName: MovieAction[MovieAction.AdvertisingTokenOnBlueGuest],
+      expectedThirdAction: MovieAction.Get2Money,
+      expectedThirdActionName: MovieAction[MovieAction.Get2Money],
+      expectedFourthAction: MovieAction.None,
+      expectedFourthActionName: MovieAction[MovieAction.None]
     },
     {
       film: MovieCard.FirstMovieGreenEndOfTheWorld,
       filmName: MovieCard[MovieCard.FirstMovieGreenEndOfTheWorld],
-      expectedFirstAction: FilmAction.AudienceTrackAdvance,
-      expectedFirstActionName: FilmAction[FilmAction.AudienceTrackAdvance],
-      expectedSecondAction: FilmAction.AdvertisingTokenOnGreenGuest,
-      expectedSecondActionName: FilmAction[FilmAction.AdvertisingTokenOnGreenGuest],
-      expectedThirdAction: FilmAction.Get2Money,
-      expectedThirdActionName: FilmAction[FilmAction.Get2Money],
-      expectedFourthAction: FilmAction.None,
-      expectedFourthActionName: FilmAction[FilmAction.None]
+      expectedFirstAction: MovieAction.AudienceTrackAdvance,
+      expectedFirstActionName: MovieAction[MovieAction.AudienceTrackAdvance],
+      expectedSecondAction: MovieAction.AdvertisingTokenOnGreenGuest,
+      expectedSecondActionName: MovieAction[MovieAction.AdvertisingTokenOnGreenGuest],
+      expectedThirdAction: MovieAction.Get2Money,
+      expectedThirdActionName: MovieAction[MovieAction.Get2Money],
+      expectedFourthAction: MovieAction.None,
+      expectedFourthActionName: MovieAction[MovieAction.None]
     },
     {
       film: MovieCard.FirstMovieRedItSMyWar,
       filmName: MovieCard[MovieCard.FirstMovieRedItSMyWar],
-      expectedFirstAction: FilmAction.AudienceTrackAdvance,
-      expectedFirstActionName: FilmAction[FilmAction.AudienceTrackAdvance],
-      expectedSecondAction: FilmAction.AdvertisingTokenOnRedGuest,
-      expectedSecondActionName: FilmAction[FilmAction.AdvertisingTokenOnRedGuest],
-      expectedThirdAction: FilmAction.Get2Money,
-      expectedThirdActionName: FilmAction[FilmAction.Get2Money],
-      expectedFourthAction: FilmAction.None,
-      expectedFourthActionName: FilmAction[FilmAction.None]
+      expectedFirstAction: MovieAction.AudienceTrackAdvance,
+      expectedFirstActionName: MovieAction[MovieAction.AudienceTrackAdvance],
+      expectedSecondAction: MovieAction.AdvertisingTokenOnRedGuest,
+      expectedSecondActionName: MovieAction[MovieAction.AdvertisingTokenOnRedGuest],
+      expectedThirdAction: MovieAction.Get2Money,
+      expectedThirdActionName: MovieAction[MovieAction.Get2Money],
+      expectedFourthAction: MovieAction.None,
+      expectedFourthActionName: MovieAction[MovieAction.None]
     },
     {
       film: MovieCard.FirstMovieYellowModernLove,
       filmName: MovieCard[MovieCard.FirstMovieYellowModernLove],
-      expectedFirstAction: FilmAction.AudienceTrackAdvance,
-      expectedFirstActionName: FilmAction[FilmAction.AudienceTrackAdvance],
-      expectedSecondAction: FilmAction.AdvertisingTokenOnYellowGuest,
-      expectedSecondActionName: FilmAction[FilmAction.AdvertisingTokenOnYellowGuest],
-      expectedThirdAction: FilmAction.Get2Money,
-      expectedThirdActionName: FilmAction[FilmAction.Get2Money],
-      expectedFourthAction: FilmAction.None,
-      expectedFourthActionName: FilmAction[FilmAction.None]
+      expectedFirstAction: MovieAction.AudienceTrackAdvance,
+      expectedFirstActionName: MovieAction[MovieAction.AudienceTrackAdvance],
+      expectedSecondAction: MovieAction.AdvertisingTokenOnYellowGuest,
+      expectedSecondActionName: MovieAction[MovieAction.AdvertisingTokenOnYellowGuest],
+      expectedThirdAction: MovieAction.Get2Money,
+      expectedThirdActionName: MovieAction[MovieAction.Get2Money],
+      expectedFourthAction: MovieAction.None,
+      expectedFourthActionName: MovieAction[MovieAction.None]
     },
     {
       film: MovieCard.BlueHenrietta,
       filmName: MovieCard[MovieCard.BlueHenrietta],
-      expectedFirstAction: FilmAction.None,
-      expectedFirstActionName: FilmAction[FilmAction.None],
-      expectedSecondAction: FilmAction.Get2Money,
-      expectedSecondActionName: FilmAction[FilmAction.Get2Money],
-      expectedThirdAction: FilmAction.AdvertisingTokenOnBlueGuest,
-      expectedThirdActionName: FilmAction[FilmAction.AdvertisingTokenOnBlueGuest],
-      expectedFourthAction: FilmAction.AdvertisingTokenOnWhiteGuestToBag,
-      expectedFourthActionName: FilmAction[FilmAction.AdvertisingTokenOnWhiteGuestToBag]
+      expectedFirstAction: MovieAction.None,
+      expectedFirstActionName: MovieAction[MovieAction.None],
+      expectedSecondAction: MovieAction.Get2Money,
+      expectedSecondActionName: MovieAction[MovieAction.Get2Money],
+      expectedThirdAction: MovieAction.AdvertisingTokenOnBlueGuest,
+      expectedThirdActionName: MovieAction[MovieAction.AdvertisingTokenOnBlueGuest],
+      expectedFourthAction: MovieAction.AdvertisingTokenOnWhiteGuestToBag,
+      expectedFourthActionName: MovieAction[MovieAction.AdvertisingTokenOnWhiteGuestToBag]
     },
     {
       film: MovieCard.GreenTheBarbarian,
       filmName: MovieCard[MovieCard.GreenTheBarbarian],
-      expectedFirstAction: FilmAction.None,
-      expectedFirstActionName: FilmAction[FilmAction.None],
-      expectedSecondAction: FilmAction.DrawGuestAndPlaceThem,
-      expectedSecondActionName: FilmAction[FilmAction.DrawGuestAndPlaceThem],
-      expectedThirdAction: FilmAction.Get2Money,
-      expectedThirdActionName: FilmAction[FilmAction.Get2Money],
-      expectedFourthAction: FilmAction.PlaceGuestInReserve,
-      expectedFourthActionName: FilmAction[FilmAction.PlaceGuestInReserve]
+      expectedFirstAction: MovieAction.None,
+      expectedFirstActionName: MovieAction[MovieAction.None],
+      expectedSecondAction: MovieAction.DrawGuestAndPlaceThem,
+      expectedSecondActionName: MovieAction[MovieAction.DrawGuestAndPlaceThem],
+      expectedThirdAction: MovieAction.Get2Money,
+      expectedThirdActionName: MovieAction[MovieAction.Get2Money],
+      expectedFourthAction: MovieAction.PlaceGuestInReserve,
+      expectedFourthActionName: MovieAction[MovieAction.PlaceGuestInReserve]
     }
   ])(
     'Given $filmName, getFirstAction(), getSecondAction(), getThirdAction and getFourthAction should return respectively $expectedFirstActionName, $expectedSecondActionName, $expectedThirdActionName, $expectedFourthActionName',
