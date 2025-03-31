@@ -6,19 +6,24 @@ import { BadmanCharacteristics } from './MovieCards/BadmanCharacteristics'
 import { BarbacusCharacteristics } from './MovieCards/BarbacusCharacteristics'
 import { BigSpendersCharacteristics } from './MovieCards/BigSpendersCharacteristics'
 import { ControlZCharacteristics } from './MovieCards/ControlZCharacteristics'
+import { DoReMiFaSoCharacteristics } from './MovieCards/DoReMiFaSoCharacteristics'
 import { Eliminator4Characteristics } from './MovieCards/Eliminator4Characteristics'
 import { ElitePilotCharacteristics } from './MovieCards/ElitePilotCharacteristics'
 import { EndOfTheWorldCharacteristics } from './MovieCards/EndOfTheWorldCharacteristics'
 import { FinalLassoCharacteristics } from './MovieCards/FinalLassoCharacteristics'
 import { FiveSixSevenEightCharacteristics } from './MovieCards/FiveSixSevenEightCharacteristics'
 import { FrankAndEinsteinCharacteristics } from './MovieCards/FrankAndEinsteinCharacteristics'
+import { FrenchKissCharacteristics } from './MovieCards/FrenchKissCharacteristics'
 import { GentlemanDriverCharacteristics } from './MovieCards/GentlemanDriverCharacteristics'
 import { HenriettaCharacteristics } from './MovieCards/HenriettaCharacteristics'
 import { IntergalacticCharacteristics } from './MovieCards/IntergalacticCharacteristics'
 import { ItSMyWarCharacteristics } from './MovieCards/ItSMyWarCharacteristics'
 import { JoeJoeCharacteristics } from './MovieCards/JoeJoeCharacteristics'
+import { KangarooManCharacteristics } from './MovieCards/KangarooManCharacteristics'
 import { KingOfTokyoCharacteristics } from './MovieCards/KingOfTokyoCharacteristics'
 import { MeCharacteristics } from './MovieCards/MeCharacteristics'
+import { MelancholyCharlieCharacteristics } from './MovieCards/MelancholyCharlieCharacteristics'
+import { MisterGigglesCharacteristics } from './MovieCards/MisterGigglesCharacteristics'
 import { ModernLoveCharacteristics } from './MovieCards/ModernLoveCharacteristics'
 import { MountainHotelCharacteristics } from './MovieCards/MountainHotelCharacteristics'
 import { MovieCardCharacteristics } from './MovieCards/MovieCardCharacteristics'
@@ -26,16 +31,22 @@ import { ObjectionCharacteristics } from './MovieCards/ObjectionCharacteristics'
 import { RevengeOfTheDiplodocusCharacteristics } from './MovieCards/RevengeOfTheDiplodocusCharacteristics'
 import { RohanAndJayaCharacteristics } from './MovieCards/RohanAndJayaCharacteristics'
 import { RosebudCharacteristics } from './MovieCards/RosebudCharacteristics'
+import { SchoolOfZombiesCharacteristics } from './MovieCards/SchoolOfZombiesCharacteristics'
+import { TheAdventuresOfPewPewCharacteristics } from './MovieCards/TheAdventuresOfPewPewCharacteristics'
 import { TheBarbarianCharacteristics } from './MovieCards/TheBarbarianCharacteristics'
 import { TheCursedPeglegCharacteristics } from './MovieCards/TheCursedPeglegCharacteristics'
+import { TheFirePrincessCharacteristics } from './MovieCards/TheFirePrincessCharacteristics'
 import { TheFuryOfTheSerpentCharacteristics } from './MovieCards/TheFuryOfTheSerpentCharacteristics'
 import { TheGodmotherCharacteristics } from './MovieCards/TheGodmotherCharacteristics'
+import { TheKidsCharacteristics } from './MovieCards/TheKidsCharacteristics'
 import { TheManWithTheMoneyCharacteristics } from './MovieCards/TheManWithTheMoneyCharacteristics'
 import { TheNeuroticDetectiveCharacteristics } from './MovieCards/TheNeuroticDetectiveCharacteristics'
 import { TheVolcanoCharacteristics } from './MovieCards/TheVolcanoCharacteristics'
 import { TheWorldAfterCharacteristics } from './MovieCards/TheWorldAfterCharacteristics'
+import { TwentyEightInTheFamilyCharacteristics } from './MovieCards/TwentyEightInTheFamilyCharacteristics'
 import { UnknwonDestinationCharacteristics } from './MovieCards/UnknwonDestinationCharacteristics'
 import { Vroom8Characteristics } from './MovieCards/Vroom8Characteristics'
+import { WhatABunchOfIdiots3Characteristics } from './MovieCards/WhatABunchOfIdiots3Characteristics'
 import { WitchesVsCheerleadersCharacteristics } from './MovieCards/WitchesVsCheerleadersCharacteristics'
 
 export enum MovieColor {
@@ -75,17 +86,6 @@ export enum MovieAction {
   DrawAwardCard
 }
 
-enum FilmFieldShifts {
-  Price = 2,
-  BonusCondition = 5,
-  BonusAction = 7,
-  FirstAction = 12,
-  SecondAction = 17,
-  ThirdAction = 22,
-  FourthAction = 27
-}
-
-/* eslint "@typescript-eslint/prefer-literal-enum-member": "off" */
 export enum MovieCard {
   // First movies
   FirstMovieBlueRosebud = 1,
@@ -128,96 +128,20 @@ export enum MovieCard {
   RedFinalLasso,
   RedElitePilot,
   RedVroom8,
-  FinalShowing = 255,
   // Yellow movies
-  YellowMisterGiggles = MovieColor.Yellow |
-    (0 << FilmFieldShifts.Price) |
-    (BonusCondition.None << FilmFieldShifts.BonusCondition) |
-    (MovieAction.None << FilmFieldShifts.BonusAction) |
-    (MovieAction.None << FilmFieldShifts.FirstAction) |
-    (MovieAction.PlaceGuestInReserve << FilmFieldShifts.SecondAction) |
-    (MovieAction.Get1Popcorn << FilmFieldShifts.ThirdAction) |
-    (MovieAction.AudienceTrackAdvance << FilmFieldShifts.FourthAction),
-  YellowMelancholyCharlie = MovieColor.Yellow |
-    (0 << FilmFieldShifts.Price) |
-    (BonusCondition.None << FilmFieldShifts.BonusCondition) |
-    (MovieAction.None << FilmFieldShifts.BonusAction) |
-    (MovieAction.None << FilmFieldShifts.FirstAction) |
-    (MovieAction.Get1Popcorn << FilmFieldShifts.SecondAction) |
-    (MovieAction.AdvertisingTokenOnYellowGuest << FilmFieldShifts.ThirdAction) |
-    (MovieAction.AudienceTrackAdvance << FilmFieldShifts.FourthAction),
-  YellowKangarooMan = MovieColor.Yellow |
-    (1 << FilmFieldShifts.Price) |
-    (BonusCondition.OneSeatTheater << FilmFieldShifts.BonusCondition) |
-    (MovieAction.AudienceTrackAdvance << FilmFieldShifts.BonusAction) |
-    (MovieAction.Get1Money << FilmFieldShifts.SecondAction) |
-    (MovieAction.Get1Popcorn << FilmFieldShifts.SecondAction) |
-    (MovieAction.AdvertisingTokenOnYellowGuest << FilmFieldShifts.ThirdAction) |
-    (MovieAction.Get2Money << FilmFieldShifts.FourthAction),
-  YellowTheKids = MovieColor.Yellow |
-    (1 << FilmFieldShifts.Price) |
-    (BonusCondition.TwoSeatTheater << FilmFieldShifts.BonusCondition) |
-    (MovieAction.Get1Popcorn << FilmFieldShifts.BonusAction) |
-    (MovieAction.AdvertisingTokenOnWhiteGuestToBag << FilmFieldShifts.FirstAction) |
-    (MovieAction.AdvertisingTokenOnYellowGuest << FilmFieldShifts.SecondAction) |
-    (MovieAction.Get2Money << FilmFieldShifts.ThirdAction) |
-    (MovieAction.AudienceTrackAdvance << FilmFieldShifts.FourthAction),
-  YellowWhatABunchOfIdiots3 = MovieColor.Yellow |
-    (2 << FilmFieldShifts.Price) |
-    (BonusCondition.TwoSeatTheater << FilmFieldShifts.BonusCondition) |
-    (MovieAction.AdvertisingTokenOnAnyGuest << FilmFieldShifts.BonusAction) |
-    (MovieAction.Get1Money << FilmFieldShifts.FirstAction) |
-    (MovieAction.Get2Popcorn << FilmFieldShifts.SecondAction) |
-    (MovieAction.PlaceGuestInReserve << FilmFieldShifts.ThirdAction) |
-    (MovieAction.AudienceTrackAdvance << FilmFieldShifts.FourthAction),
-  YellowSchoolOfZombies = MovieColor.Yellow |
-    (2 << FilmFieldShifts.Price) |
-    (BonusCondition.OneSeatTheater << FilmFieldShifts.BonusCondition) |
-    (MovieAction.PlaceExitZoneGuestInBag << FilmFieldShifts.BonusAction) |
-    (MovieAction.AdvertisingTokenOnYellowGuest << FilmFieldShifts.FirstAction) |
-    (MovieAction.Get1Money << FilmFieldShifts.SecondAction) |
-    (MovieAction.Get2Money << FilmFieldShifts.ThirdAction) |
-    (MovieAction.DrawAwardCard << FilmFieldShifts.FourthAction),
-  YellowDoReMiFaSo = MovieColor.Yellow |
-    (3 << FilmFieldShifts.Price) |
-    (BonusCondition.TwoSeatTheater << FilmFieldShifts.BonusCondition) |
-    (MovieAction.Get1Popcorn << FilmFieldShifts.BonusAction) |
-    (MovieAction.Get1Popcorn << FilmFieldShifts.FirstAction) |
-    (MovieAction.PlaceExitZoneGuestInBag << FilmFieldShifts.SecondAction) |
-    (MovieAction.AdvertisingTokenOnAnyGuest << FilmFieldShifts.ThirdAction) |
-    (MovieAction.AudienceTrackAdvance << FilmFieldShifts.FourthAction),
-  YellowFrenchKiss = MovieColor.Yellow |
-    (3 << FilmFieldShifts.Price) |
-    (BonusCondition.OneSeatTheater << FilmFieldShifts.BonusCondition) |
-    (MovieAction.AdvertisingTokenOnYellowGuest << FilmFieldShifts.BonusAction) |
-    (MovieAction.Get2Money << FilmFieldShifts.FirstAction) |
-    (MovieAction.Get2Popcorn << FilmFieldShifts.SecondAction) |
-    (MovieAction.PlaceExitZoneGuestInBag << FilmFieldShifts.ThirdAction) |
-    (MovieAction.AudienceTrackAdvance << FilmFieldShifts.FourthAction),
-  Yellow28InTheFamily = MovieColor.Yellow |
-    (4 << FilmFieldShifts.Price) |
-    (BonusCondition.ThreeSeatTheater << FilmFieldShifts.BonusCondition) |
-    (MovieAction.DrawAwardCard << FilmFieldShifts.BonusAction) |
-    (MovieAction.DrawGuestAndPlaceThem << FilmFieldShifts.FirstAction) |
-    (MovieAction.Get2Popcorn << FilmFieldShifts.SecondAction) |
-    (MovieAction.AudienceTrackAdvance << FilmFieldShifts.ThirdAction) |
-    (MovieAction.Get2Money << FilmFieldShifts.FourthAction),
-  YellowTheAdventuresOfPewPew = MovieColor.Yellow |
-    (4 << FilmFieldShifts.Price) |
-    (BonusCondition.ThreeSeatTheater << FilmFieldShifts.BonusCondition) |
-    (MovieAction.AudienceTrackAdvance << FilmFieldShifts.BonusAction) |
-    (MovieAction.Get3Money << FilmFieldShifts.FirstAction) |
-    (MovieAction.DrawGuestAndPlaceThem << FilmFieldShifts.SecondAction) |
-    (MovieAction.DrawAwardCard << FilmFieldShifts.ThirdAction) |
-    (MovieAction.AdvertisingTokenOnYellowGuest << FilmFieldShifts.FourthAction),
-  YellowTheFirePrincess = MovieColor.Yellow |
-    (5 << FilmFieldShifts.Price) |
-    (BonusCondition.ThreeSeatTheater << FilmFieldShifts.BonusCondition) |
-    (MovieAction.Get2Popcorn << FilmFieldShifts.BonusCondition) |
-    (MovieAction.Get3Money << FilmFieldShifts.FirstAction) |
-    (MovieAction.AudienceTrackAdvance << FilmFieldShifts.SecondAction) |
-    (MovieAction.Get3Popcorn << FilmFieldShifts.ThirdAction) |
-    (MovieAction.AdvertisingTokenOnAnyGuest << FilmFieldShifts.FourthAction)
+  YellowMisterGiggles,
+  YellowMelancholyCharlie,
+  YellowKangarooMan,
+  YellowTheKids,
+  YellowWhatABunchOfIdiots3,
+  YellowSchoolOfZombies,
+  YellowDoReMiFaSo,
+  YellowFrenchKiss,
+  Yellow28InTheFamily,
+  YellowTheAdventuresOfPewPew,
+  YellowTheFirePrincess,
+  // Final showing
+  FinalShowing = 255
 }
 
 export enum MovieCardType {
@@ -225,7 +149,7 @@ export enum MovieCardType {
   Movie = 2
 }
 
-export const movieCardCharacteristics: Record<MovieCard, MovieCardCharacteristics> = {
+export const movieCardCharacteristics: Record<Exclude<MovieCard, MovieCard.FinalShowing>, MovieCardCharacteristics> = {
   // First movies
   [MovieCard.FirstMovieBlueRosebud]: new RosebudCharacteristics(),
   [MovieCard.FirstMovieGreenEndOfTheWorld]: new EndOfTheWorldCharacteristics(),
@@ -266,21 +190,26 @@ export const movieCardCharacteristics: Record<MovieCard, MovieCardCharacteristic
   [MovieCard.RedGentlemanDriver]: new GentlemanDriverCharacteristics(),
   [MovieCard.RedFinalLasso]: new FinalLassoCharacteristics(),
   [MovieCard.RedElitePilot]: new ElitePilotCharacteristics(),
-  [MovieCard.RedVroom8]: new Vroom8Characteristics()
+  [MovieCard.RedVroom8]: new Vroom8Characteristics(),
+  // Yellow movies
+  [MovieCard.YellowMisterGiggles]: new MisterGigglesCharacteristics(),
+  [MovieCard.YellowMelancholyCharlie]: new MelancholyCharlieCharacteristics(),
+  [MovieCard.YellowKangarooMan]: new KangarooManCharacteristics(),
+  [MovieCard.YellowTheKids]: new TheKidsCharacteristics(),
+  [MovieCard.YellowWhatABunchOfIdiots3]: new WhatABunchOfIdiots3Characteristics(),
+  [MovieCard.YellowSchoolOfZombies]: new SchoolOfZombiesCharacteristics(),
+  [MovieCard.YellowDoReMiFaSo]: new DoReMiFaSoCharacteristics(),
+  [MovieCard.YellowFrenchKiss]: new FrenchKissCharacteristics(),
+  [MovieCard.Yellow28InTheFamily]: new TwentyEightInTheFamilyCharacteristics(),
+  [MovieCard.YellowTheAdventuresOfPewPew]: new TheAdventuresOfPewPewCharacteristics(),
+  [MovieCard.YellowTheFirePrincess]: new TheFirePrincessCharacteristics()
 }
 
 export const movieCards = getEnumValues(MovieCard)
 
-export const getMovieCardType = (id: MovieCard): MovieCardType =>
-  [MovieCard.FirstMovieBlueRosebud, MovieCard.FirstMovieGreenEndOfTheWorld, MovieCard.FirstMovieRedItSMyWar, MovieCard.FirstMovieYellowModernLove].includes(id)
-    ? MovieCardType.FirstMovie
-    : MovieCardType.Movie
+export const firstMovieCards = movieCards.slice(0, 4)
 
-export const firstMovieCards = movieCards.filter((movieId) => getMovieCardType(movieId) === MovieCardType.FirstMovie)
-
-export const movieCardsWithoutFinalShowing = movieCards.filter(
-  (movieId) => getMovieCardType(movieId) === MovieCardType.Movie && movieId !== MovieCard.FinalShowing
-)
+export const movieCardsWithoutFinalShowing = movieCards.slice(4, 48)
 
 export type MovieCardId = {
   front?: MovieCard
