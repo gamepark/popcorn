@@ -1,20 +1,31 @@
 import { getEnumValues } from '@gamepark/rules-api'
+import { AbracadabCharacteristics } from './MovieCards/AbracadabCharacteristics'
 import { AdrianCharacteristics } from './MovieCards/AdrianCharacteristics'
+import { AMonsterInTheShipCharacteristics } from './MovieCards/AMonsterInTheShipCharacteristics'
+import { BadmanCharacteristics } from './MovieCards/BadmanCharacteristics'
 import { BigSpendersCharacteristics } from './MovieCards/BigSpendersCharacteristics'
 import { ControlZCharacteristics } from './MovieCards/ControlZCharacteristics'
+import { Eliminator4Characteristics } from './MovieCards/Eliminator4Characteristics'
 import { EndOfTheWorldCharacteristics } from './MovieCards/EndOfTheWorldCharacteristics'
 import { FiveSixSevenEightCharacteristics } from './MovieCards/FiveSixSevenEightCharacteristics'
+import { FrankAndEinsteinCharacteristics } from './MovieCards/FrankAndEinsteinCharacteristics'
 import { HenriettaCharacteristics } from './MovieCards/HenriettaCharacteristics'
+import { IntergalacticCharacteristics } from './MovieCards/IntergalacticCharacteristics'
 import { ItSMyWarCharacteristics } from './MovieCards/ItSMyWarCharacteristics'
 import { JoeJoeCharacteristics } from './MovieCards/JoeJoeCharacteristics'
+import { KingOfTokyoCharacteristics } from './MovieCards/KingOfTokyoCharacteristics'
 import { MeCharacteristics } from './MovieCards/MeCharacteristics'
 import { ModernLoveCharacteristics } from './MovieCards/ModernLoveCharacteristics'
+import { MountainHotelCharacteristics } from './MovieCards/MountainHotelCharacteristics'
 import { MovieCardCharacteristics } from './MovieCards/MovieCardCharacteristics'
 import { ObjectionCharacteristics } from './MovieCards/ObjectionCharacteristics'
+import { RevengeOfTheDiplodocusCharacteristics } from './MovieCards/RevengeOfTheDiplodocusCharacteristics'
 import { RohanAndJayaCharacteristics } from './MovieCards/RohanAndJayaCharacteristics'
 import { RosebudCharacteristics } from './MovieCards/RosebudCharacteristics'
+import { TheBarbarianCharacteristics } from './MovieCards/TheBarbarianCharacteristics'
 import { TheGodmotherCharacteristics } from './MovieCards/TheGodmotherCharacteristics'
 import { TheNeuroticDetectiveCharacteristics } from './MovieCards/TheNeuroticDetectiveCharacteristics'
+import { WitchesVsCheerleadersCharacteristics } from './MovieCards/WitchesVsCheerleadersCharacteristics'
 
 export enum MovieColor {
   Yellow = 0,
@@ -82,96 +93,19 @@ export enum MovieCard {
   BlueRohanAndJaya,
   BlueAdrian,
   BlueTheGodmother,
-  FinalShowing = 255,
   // Green movies
-  GreenFrankAndEinstein = MovieColor.Green |
-    (0 << FilmFieldShifts.Price) |
-    (BonusCondition.None << FilmFieldShifts.BonusCondition) |
-    (MovieAction.None << FilmFieldShifts.BonusAction) |
-    (MovieAction.None << FilmFieldShifts.FirstAction) |
-    (MovieAction.AdvertisingTokenOnWhiteGuestToBag << FilmFieldShifts.SecondAction) |
-    (MovieAction.Get2Money << FilmFieldShifts.ThirdAction) |
-    (MovieAction.AdvertisingTokenOnGreenGuest << FilmFieldShifts.FourthAction),
-  GreenTheBarbarian = MovieColor.Green |
-    (0 << FilmFieldShifts.Price) |
-    (BonusCondition.None << FilmFieldShifts.BonusCondition) |
-    (MovieAction.None << FilmFieldShifts.BonusAction) |
-    (MovieAction.None << FilmFieldShifts.FirstAction) |
-    (MovieAction.DrawGuestAndPlaceThem << FilmFieldShifts.SecondAction) |
-    (MovieAction.Get2Money << FilmFieldShifts.ThirdAction) |
-    (MovieAction.PlaceGuestInReserve << FilmFieldShifts.FourthAction),
-  GreenRevengeOfTheDiplodocus = MovieColor.Green |
-    (1 << FilmFieldShifts.Price) |
-    (BonusCondition.TwoSeatTheater << FilmFieldShifts.BonusCondition) |
-    (MovieAction.PlaceExitZoneGuestInBag << FilmFieldShifts.BonusAction) |
-    (MovieAction.Get2Popcorn << FilmFieldShifts.FirstAction) |
-    (MovieAction.Get1Popcorn << FilmFieldShifts.SecondAction) |
-    (MovieAction.PlaceGuestInReserve << FilmFieldShifts.ThirdAction) |
-    (MovieAction.AudienceTrackAdvance << FilmFieldShifts.FourthAction),
-  GreenMountainHotel = MovieColor.Green |
-    (1 << FilmFieldShifts.Price) |
-    (BonusCondition.OneSeatTheater << FilmFieldShifts.BonusCondition) |
-    (MovieAction.Get2Money << FilmFieldShifts.BonusAction) |
-    (MovieAction.AdvertisingTokenOnWhiteGuestToBag << FilmFieldShifts.FirstAction) |
-    (MovieAction.PlaceExitZoneGuestInBag << FilmFieldShifts.SecondAction) |
-    (MovieAction.AdvertisingTokenOnGreenGuest << FilmFieldShifts.ThirdAction) |
-    (MovieAction.Get1Popcorn << FilmFieldShifts.FourthAction),
-  GreenBadman = MovieColor.Green |
-    (2 << FilmFieldShifts.Price) |
-    (BonusCondition.OneSeatTheater << FilmFieldShifts.BonusCondition) |
-    (MovieAction.AdvertisingTokenOnGreenGuest << FilmFieldShifts.BonusAction) |
-    (MovieAction.PlaceExitZoneGuestInBag << FilmFieldShifts.FirstAction) |
-    (MovieAction.Get3Money << FilmFieldShifts.SecondAction) |
-    (MovieAction.PlaceGuestInReserve << FilmFieldShifts.ThirdAction) |
-    (MovieAction.Get2Popcorn << FilmFieldShifts.FourthAction),
-  GreenKingOfTokyo = MovieColor.Green |
-    (2 << FilmFieldShifts.Price) |
-    (BonusCondition.TwoSeatTheater << FilmFieldShifts.BonusCondition) |
-    (MovieAction.Get3Popcorn << FilmFieldShifts.BonusAction) |
-    (MovieAction.Get1Popcorn << FilmFieldShifts.FirstAction) |
-    (MovieAction.AdvertisingTokenOnWhiteGuestToBag << FilmFieldShifts.SecondAction) |
-    (MovieAction.Get3Money << FilmFieldShifts.ThirdAction) |
-    (MovieAction.AdvertisingTokenOnGreenGuest << FilmFieldShifts.FourthAction),
-  GreenAMonsterInTheShip = MovieColor.Green |
-    (3 << FilmFieldShifts.Price) |
-    (BonusCondition.OneSeatTheater << FilmFieldShifts.BonusCondition) |
-    (MovieAction.AudienceTrackAdvance << FilmFieldShifts.BonusAction) |
-    (MovieAction.PlaceGuestInReserve << FilmFieldShifts.FirstAction) |
-    (MovieAction.Get2Popcorn << FilmFieldShifts.SecondAction) |
-    (MovieAction.Get4Money << FilmFieldShifts.ThirdAction) |
-    (MovieAction.AdvertisingTokenOnAnyGuest << FilmFieldShifts.FourthAction),
-  GreenWitchesVsCheerleaders = MovieColor.Green |
-    (3 << FilmFieldShifts.Price) |
-    (BonusCondition.TwoSeatTheater << FilmFieldShifts.BonusCondition) |
-    (MovieAction.DrawAwardCard << FilmFieldShifts.BonusAction) |
-    (MovieAction.AdvertisingTokenOnGreenGuest << FilmFieldShifts.FirstAction) |
-    (MovieAction.Get3Money << FilmFieldShifts.SecondAction) |
-    (MovieAction.AudienceTrackAdvance << FilmFieldShifts.ThirdAction) |
-    (MovieAction.AdvertisingTokenOnWhiteGuestToBag << FilmFieldShifts.FourthAction),
-  GreenAbracadab = MovieColor.Green |
-    (4 << FilmFieldShifts.Price) |
-    (BonusCondition.ThreeSeatTheater << FilmFieldShifts.BonusCondition) |
-    (MovieAction.Get2Money << FilmFieldShifts.BonusAction) |
-    (MovieAction.DrawGuestAndPlaceThem << FilmFieldShifts.FirstAction) |
-    (MovieAction.Get2Popcorn << FilmFieldShifts.SecondAction) |
-    (MovieAction.AdvertisingTokenOnAnyGuest << FilmFieldShifts.ThirdAction) |
-    (MovieAction.Get3Money << FilmFieldShifts.FourthAction),
-  GreenEliminator4 = MovieColor.Green |
-    (4 << FilmFieldShifts.Price) |
-    (BonusCondition.ThreeSeatTheater << FilmFieldShifts.BonusCondition) |
-    (MovieAction.DrawAwardCard << FilmFieldShifts.BonusAction) |
-    (MovieAction.DrawGuestAndPlaceThem << FilmFieldShifts.FirstAction) |
-    (MovieAction.Get3Money << FilmFieldShifts.SecondAction) |
-    (MovieAction.AudienceTrackAdvance << FilmFieldShifts.ThirdAction) |
-    (MovieAction.Get3Popcorn << FilmFieldShifts.FourthAction),
-  GreenIntergalactic = MovieColor.Green |
-    (5 << FilmFieldShifts.Price) |
-    (BonusCondition.ThreeSeatTheater << FilmFieldShifts.BonusCondition) |
-    (MovieAction.Get4Popcorn << FilmFieldShifts.BonusAction) |
-    (MovieAction.PlaceExitZoneGuestInBag << FilmFieldShifts.FirstAction) |
-    (MovieAction.Get2Popcorn << FilmFieldShifts.SecondAction) |
-    (MovieAction.DrawAwardCard << FilmFieldShifts.ThirdAction) |
-    (MovieAction.Get4Money << FilmFieldShifts.FourthAction),
+  GreenFrankAndEinstein,
+  GreenTheBarbarian,
+  GreenRevengeOfTheDiplodocus,
+  GreenMountainHotel,
+  GreenBadman,
+  GreenKingOfTokyo,
+  GreenAMonsterInTheShip,
+  GreenWitchesVsCheerleaders,
+  GreenAbracadab,
+  GreenEliminator4,
+  GreenIntergalactic,
+  FinalShowing = 255,
   // Red movies
   RedTheManWithTheMoney = MovieColor.Red |
     (0 << FilmFieldShifts.Price) |
@@ -358,10 +292,12 @@ export enum MovieCardType {
 }
 
 export const movieCardCharacteristics: Record<MovieCard, MovieCardCharacteristics> = {
+  // First movies
   [MovieCard.FirstMovieBlueRosebud]: new RosebudCharacteristics(),
   [MovieCard.FirstMovieGreenEndOfTheWorld]: new EndOfTheWorldCharacteristics(),
   [MovieCard.FirstMovieRedItSMyWar]: new ItSMyWarCharacteristics(),
   [MovieCard.FirstMovieYellowModernLove]: new ModernLoveCharacteristics(),
+  // Blue movies
   [MovieCard.BlueHenrietta]: new HenriettaCharacteristics(),
   [MovieCard.BlueMe]: new MeCharacteristics(),
   [MovieCard.Blue5678]: new FiveSixSevenEightCharacteristics(),
@@ -372,7 +308,19 @@ export const movieCardCharacteristics: Record<MovieCard, MovieCardCharacteristic
   [MovieCard.BlueControlZ]: new ControlZCharacteristics(),
   [MovieCard.BlueRohanAndJaya]: new RohanAndJayaCharacteristics(),
   [MovieCard.BlueAdrian]: new AdrianCharacteristics(),
-  [MovieCard.BlueTheGodmother]: new TheGodmotherCharacteristics()
+  [MovieCard.BlueTheGodmother]: new TheGodmotherCharacteristics(),
+  // Green movies
+  [MovieCard.GreenFrankAndEinstein]: new FrankAndEinsteinCharacteristics(),
+  [MovieCard.GreenTheBarbarian]: new TheBarbarianCharacteristics(),
+  [MovieCard.GreenRevengeOfTheDiplodocus]: new RevengeOfTheDiplodocusCharacteristics(),
+  [MovieCard.GreenMountainHotel]: new MountainHotelCharacteristics(),
+  [MovieCard.GreenBadman]: new BadmanCharacteristics(),
+  [MovieCard.GreenKingOfTokyo]: new KingOfTokyoCharacteristics(),
+  [MovieCard.GreenAMonsterInTheShip]: new AMonsterInTheShipCharacteristics(),
+  [MovieCard.GreenWitchesVsCheerleaders]: new WitchesVsCheerleadersCharacteristics(),
+  [MovieCard.GreenAbracadab]: new AbracadabCharacteristics(),
+  [MovieCard.GreenEliminator4]: new Eliminator4Characteristics(),
+  [MovieCard.GreenIntergalactic]: new IntergalacticCharacteristics()
 }
 
 export const movieCards = getEnumValues(MovieCard)
