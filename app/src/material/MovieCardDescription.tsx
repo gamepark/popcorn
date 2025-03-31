@@ -97,7 +97,7 @@ export class MovieCardDescription extends CardDescription<PlayerColor, MaterialT
     [MovieCard.RedBarbacus]: redBarbacus,
     [MovieCard.RedTheFuryOfTheSerpent]: redTheFuryOfTheSerpent,
     [MovieCard.RedTheCursedPegleg]: redTheCursedPegleg,
-    [MovieCard.RedTheWorkdAfter]: redTheWorldAfter,
+    [MovieCard.RedTheWorldAfter]: redTheWorldAfter,
     [MovieCard.RedTheVolcano]: redTheVolcano,
     [MovieCard.RedUnknownDestination]: redUnknownDestination,
     [MovieCard.RedGentlemanDriver]: redGentlemanDriver,

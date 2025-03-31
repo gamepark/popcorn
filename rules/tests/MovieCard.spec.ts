@@ -155,8 +155,8 @@ describe('Movie card tests', () => {
       expectedBonusActionName: MovieAction[MovieAction.Get4Popcorn]
     },
     {
-      film: MovieCard.RedTheWorkdAfter,
-      filmName: MovieCard[MovieCard.RedTheWorkdAfter],
+      film: MovieCard.RedTheWorldAfter,
+      filmName: MovieCard[MovieCard.RedTheWorldAfter],
       expectedBonusAction: MovieAction.Get1Money,
       expectedBonusActionName: MovieAction[MovieAction.Get1Money]
     },
