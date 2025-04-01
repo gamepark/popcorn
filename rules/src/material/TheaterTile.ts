@@ -8,6 +8,17 @@ import { OneSeatGreenReserveCharacteristics } from './TheaterTiles/OneSeatGreenR
 import { OneSeatRed2PopcornCharacteristics } from './TheaterTiles/OneSeatRed2PopcornCharacteristics'
 import { OneSeatYellowDrawGuestCharacteristics } from './TheaterTiles/OneSeatYellowDrawGuestCharacteristics'
 import { TheaterTileCharacteristics } from './TheaterTiles/TheaterTileCharacteristics'
+import { TwoSeatBlue1Popcorn2MoneyCharacteristics } from './TheaterTiles/TwoSeatBlue1Popcorn2MoneyCharacteristics'
+import { TwoSeatBlue2PopcornMovieActionCharacteristic } from './TheaterTiles/TwoSeatBlue2PopcornMovieActionCharacteristics'
+import { TwoSeatBlueGreenCharacteristics } from './TheaterTiles/TwoSeatBlueGreenCharacteristics'
+import { TwoSeatGreen2MoneyMovieActionCharacteristics } from './TheaterTiles/TwoSeatGreen2MoneyMovieActionCharacteristics'
+import { TwoSeatGreenBlueCharacteristics } from './TheaterTiles/TwoSeatGreenBlueCharacteristics'
+import { TwoSeatGreenDrawMovieActionCharacteristics } from './TheaterTiles/TwoSeatGreenDrawMovieActionCharacteristics'
+import { TwoSeatRed2MoneyMovieActionCharacteristics } from './TheaterTiles/TwoSeatRed2MoneyMovieActionCharacteristics'
+import { TwoSeatRedBagMovieActionCharacteristics } from './TheaterTiles/TwoSeatRedBagMovieActionCharacteristics'
+import { TwoSeatRedRedCharacteristics } from './TheaterTiles/TwoSeatRedRedCharacteristics'
+import { TwoSeatYellowReserve2MoneyCharacteristics } from './TheaterTiles/TwoSeatYellowReserve2MoneyCharacteristics'
+import { TwoSeatYellowYellowCharacteristics } from './TheaterTiles/TwoSeatYellowYellowCharacteristics'
 
 export enum SeatColor {
   Grey = 1,
@@ -56,72 +67,17 @@ export enum TheaterTile {
   OneSeat3Money,
   OneSeat1Money,
   TwoSeatGreen2MoneyMovieAction,
-  TwoSeatYellow2PopcornMovieAction = 6 |
-    (SeatsNumber.Two << TheaterTileFieldsShift.NumberOfSeats) |
-    (SeatColor.Yellow << TheaterTileFieldsShift.Seat1Color) |
-    (SeatAction.Get2Popcorn << TheaterTileFieldsShift.Seat1Action) |
-    (SeatColor.Green << TheaterTileFieldsShift.Seat2Color) |
-    (SeatAction.MovieAction << TheaterTileFieldsShift.Seat2Action),
-  TwoSeatBlue2PopcornMovieAction = 6 |
-    (SeatsNumber.Two << TheaterTileFieldsShift.NumberOfSeats) |
-    (SeatColor.Blue << TheaterTileFieldsShift.Seat1Color) |
-    (SeatAction.Get2Popcorn << TheaterTileFieldsShift.Seat1Action) |
-    (SeatColor.Green << TheaterTileFieldsShift.Seat2Color) |
-    (SeatAction.MovieAction << TheaterTileFieldsShift.Seat2Action),
-  TwoSeatRed2MoneyMovieAction = 5 |
-    (SeatsNumber.Two << TheaterTileFieldsShift.NumberOfSeats) |
-    (SeatColor.Red << TheaterTileFieldsShift.Seat1Color) |
-    (SeatAction.Get2Money << TheaterTileFieldsShift.Seat1Action) |
-    (SeatColor.Grey << TheaterTileFieldsShift.Seat2Color) |
-    (SeatAction.MovieAction << TheaterTileFieldsShift.Seat2Action),
-  TwoSeatBlue1Popcorn2Money = 4 |
-    (SeatsNumber.Two << TheaterTileFieldsShift.NumberOfSeats) |
-    (SeatColor.Blue << TheaterTileFieldsShift.Seat1Color) |
-    (SeatAction.Get1Popcorn << TheaterTileFieldsShift.Seat1Action) |
-    (SeatColor.Grey << TheaterTileFieldsShift.Seat2Color) |
-    (SeatAction.Get2Money << TheaterTileFieldsShift.Seat2Action),
-  TwoSeatRedBagMovieAction = 6 |
-    (SeatsNumber.Two << TheaterTileFieldsShift.NumberOfSeats) |
-    (SeatColor.Red << TheaterTileFieldsShift.Seat1Color) |
-    (SeatAction.MoveGuestFromExitZoneToBag << TheaterTileFieldsShift.Seat1Action) |
-    (SeatColor.Grey << TheaterTileFieldsShift.Seat2Color) |
-    (SeatAction.MovieAction << TheaterTileFieldsShift.Seat2Action),
-  TwoSeatYellowReserve2money = 4 |
-    (SeatsNumber.Two << TheaterTileFieldsShift.NumberOfSeats) |
-    (SeatColor.Yellow << TheaterTileFieldsShift.Seat1Color) |
-    (SeatAction.PlaceGuestInReserve << TheaterTileFieldsShift.Seat1Action) |
-    (SeatColor.Grey << TheaterTileFieldsShift.Seat2Color) |
-    (SeatAction.Get2Money << TheaterTileFieldsShift.Seat2Action),
-  TwoSeatGreenDrawMovieAction = 5 |
-    (SeatsNumber.Two << TheaterTileFieldsShift.NumberOfSeats) |
-    (SeatColor.Green << TheaterTileFieldsShift.Seat1Color) |
-    (SeatAction.DrawGuestAndPlaceThem << TheaterTileFieldsShift.Seat1Action) |
-    (SeatColor.Grey << TheaterTileFieldsShift.Seat2Color) |
-    (SeatAction.MovieAction << TheaterTileFieldsShift.Seat2Action),
-  TwoSeatYellowYellow = 4 |
-    (SeatsNumber.Two << TheaterTileFieldsShift.NumberOfSeats) |
-    (SeatColor.Yellow << TheaterTileFieldsShift.Seat1Color) |
-    (SeatAction.MovieAction << TheaterTileFieldsShift.Seat1Action) |
-    (SeatColor.Yellow << TheaterTileFieldsShift.Seat2Color) |
-    (SeatAction.Get2Money << TheaterTileFieldsShift.Seat2Action),
-  TwoSeatRedRed = 5 |
-    (SeatsNumber.Two << TheaterTileFieldsShift.NumberOfSeats) |
-    (SeatColor.Red << TheaterTileFieldsShift.Seat1Color) |
-    (SeatAction.MovieAction << TheaterTileFieldsShift.Seat1Action) |
-    (SeatColor.Red << TheaterTileFieldsShift.Seat2Color) |
-    (SeatAction.Get2Popcorn << TheaterTileFieldsShift.Seat2Action),
-  TwoSeatBlueGreen = 4 |
-    (SeatsNumber.Two << TheaterTileFieldsShift.NumberOfSeats) |
-    (SeatColor.Blue << TheaterTileFieldsShift.Seat1Color) |
-    (SeatAction.MovieAction << TheaterTileFieldsShift.Seat1Action) |
-    (SeatColor.Green << TheaterTileFieldsShift.Seat2Color) |
-    (SeatAction.MoveGuestFromExitZoneToBag << TheaterTileFieldsShift.Seat2Action),
-  TwoSeatGreenBlue = 5 |
-    (SeatsNumber.Two << TheaterTileFieldsShift.NumberOfSeats) |
-    (SeatColor.Green << TheaterTileFieldsShift.Seat1Color) |
-    (SeatAction.MovieAction << TheaterTileFieldsShift.Seat1Action) |
-    (SeatColor.Blue << TheaterTileFieldsShift.Seat2Color) |
-    (SeatAction.Get2Popcorn << TheaterTileFieldsShift.Seat2Action),
+  TwoSeatYellow2PopcornMovieAction,
+  TwoSeatBlue2PopcornMovieAction,
+  TwoSeatRed2MoneyMovieAction,
+  TwoSeatBlue1Popcorn2Money,
+  TwoSeatRedBagMovieAction,
+  TwoSeatYellowReserve2Money,
+  TwoSeatGreenDrawMovieAction,
+  TwoSeatYellowYellow,
+  TwoSeatRedRed,
+  TwoSeatBlueGreen,
+  TwoSeatGreenBlue,
   ThreeSeatBlueGreyGrey = 8 |
     (SeatsNumber.Three << TheaterTileFieldsShift.NumberOfSeats) |
     (SeatColor.Blue << TheaterTileFieldsShift.Seat1Color) |
@@ -196,7 +152,7 @@ export const twoSeatTheaterTiles = getEnumValues(TheaterTile).slice(8, 20)
 
 export const threeSeatTheaterTiles = getEnumValues(TheaterTile).slice(20)
 
-export const theaterTilesCharacteristics: Record<TheaterTile, TheaterTileCharacteristics> = {
+export const theaterTilesCharacteristics: Partial<Record<TheaterTile, TheaterTileCharacteristics>> = {
   [TheaterTile.OneSeat2Money]: new OneSeat2MoneyCharacteristics(),
   [TheaterTile.OneSeat1Popcorn]: new OneSeat1PopcornCharacteristics(),
   [TheaterTile.OneSeatRed2Popcorn]: new OneSeatRed2PopcornCharacteristics(),
@@ -204,7 +160,18 @@ export const theaterTilesCharacteristics: Record<TheaterTile, TheaterTileCharact
   [TheaterTile.OneSeatBlue3Money]: new OneSeatBlue3MoneyCharacteristics(),
   [TheaterTile.OneSeatGreenReserve]: new OneSeatGreenReserveCharacteristics(),
   [TheaterTile.OneSeat3Money]: new OneSeat3MoneyCharacteristics(),
-  [TheaterTile.OneSeat1Money]: new OneSeat1MoneyCharacteristics()
+  [TheaterTile.OneSeat1Money]: new OneSeat1MoneyCharacteristics(),
+  [TheaterTile.TwoSeatGreen2MoneyMovieAction]: new TwoSeatGreen2MoneyMovieActionCharacteristics(),
+  [TheaterTile.TwoSeatBlue2PopcornMovieAction]: new TwoSeatBlue2PopcornMovieActionCharacteristic(),
+  [TheaterTile.TwoSeatRed2MoneyMovieAction]: new TwoSeatRed2MoneyMovieActionCharacteristics(),
+  [TheaterTile.TwoSeatBlue1Popcorn2Money]: new TwoSeatBlue1Popcorn2MoneyCharacteristics(),
+  [TheaterTile.TwoSeatRedBagMovieAction]: new TwoSeatRedBagMovieActionCharacteristics(),
+  [TheaterTile.TwoSeatYellowReserve2Money]: new TwoSeatYellowReserve2MoneyCharacteristics(),
+  [TheaterTile.TwoSeatGreenDrawMovieAction]: new TwoSeatGreenDrawMovieActionCharacteristics(),
+  [TheaterTile.TwoSeatYellowYellow]: new TwoSeatYellowYellowCharacteristics(),
+  [TheaterTile.TwoSeatRedRed]: new TwoSeatRedRedCharacteristics(),
+  [TheaterTile.TwoSeatBlueGreen]: new TwoSeatBlueGreenCharacteristics(),
+  [TheaterTile.TwoSeatGreenBlue]: new TwoSeatGreenBlueCharacteristics()
 }
 
 const PRICE_LENGTH = 4
