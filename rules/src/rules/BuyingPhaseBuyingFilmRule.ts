@@ -3,7 +3,7 @@ import { BuyMovieCardCustomMoveData, CustomMoveType, isBuyMovieCardCustomMove } 
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { moneyTokens } from '../material/MoneyToken'
-import { movieCardCharacteristics, MovieCardId } from '../material/MovieCard'
+import { MovieCard, movieCardCharacteristics, MovieCardId } from '../material/MovieCard'
 import { Memorize, PlayerActionMemory } from '../Memorize'
 import { PlayerColor } from '../PlayerColor'
 import { RuleId } from './RuleId'
@@ -56,7 +56,7 @@ export class BuyingPhaseBuyingFilmRule extends PlayerTurnRule<PlayerColor, Mater
   ): MoveItem<PlayerColor, MaterialType, LocationType>[] {
     return this.material(MaterialType.MovieCards)
       .location(row)
-      .id<MovieCardId>((id) => id.front !== undefined && movieCardCharacteristics[id.front].getPrice(row) <= playerMoney)
+      .id<MovieCardId>((id) => id.front !== undefined && id.front !== MovieCard.FinalShowing && movieCardCharacteristics[id.front].getPrice(row) <= playerMoney)
       .moveItems(destination)
   }
 
@@ -69,6 +69,7 @@ export class BuyingPhaseBuyingFilmRule extends PlayerTurnRule<PlayerColor, Mater
       const boughtCard = this.material(MaterialType.MovieCards).index(movieCardMove.itemIndex).getItem<MovieCardId>()
       if (
         boughtCard?.id.front === undefined ||
+        boughtCard.id.front === MovieCard.FinalShowing ||
         (boughtCard.location.type !== LocationType.PremiersRowSpot && boughtCard.location.type !== LocationType.FeaturesRowSpot)
       ) {
         throw new Error('Trying to move an invalid card')
