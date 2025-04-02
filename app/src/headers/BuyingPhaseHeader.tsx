@@ -8,7 +8,7 @@ import { PlayMoveButton, useLegalMove, usePlayerId, usePlayerName, useRules } fr
 import { MaterialMove } from '@gamepark/rules-api'
 import { FC } from 'react'
 
-const PASS_MOVE_TIME = 30
+// const PASS_MOVE_TIME = 30
 
 export const BuyingPhaseHeader: FC = () => {
   const passMove = useLegalMove<MaterialMove<PlayerColor, MaterialType, LocationType>>(isPassBuyingPhaseCustomMove)
@@ -19,10 +19,7 @@ export const BuyingPhaseHeader: FC = () => {
   if (me === activePlayer) {
     return (
       <>
-        You can buy a movie, a theater, activate an advertising token or{' '}
-        <PlayMoveButton auto={PASS_MOVE_TIME} move={passMove}>
-          Pass
-        </PlayMoveButton>
+        You can buy a movie, a theater, activate an advertising token or <PlayMoveButton /*auto={PASS_MOVE_TIME}*/ move={passMove}>Pass</PlayMoveButton>
       </>
     )
   }

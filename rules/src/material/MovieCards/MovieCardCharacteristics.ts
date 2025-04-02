@@ -1,6 +1,6 @@
 import { LocationType } from '../LocationType'
 import { MovieAction, MovieCardType, MovieColor } from '../MovieCard'
-import { getNumberOfSeats, TheaterTile } from '../TheaterTile'
+import { SeatsNumber, TheaterTile, theaterTilesCharacteristics } from '../TheaterTile'
 
 export interface MovieCardCharacteristics {
   getColor(): MovieColor
@@ -22,5 +22,7 @@ export const getMoviePriceForRow = (basePrice: number, row: LocationType.Feature
 export const getMovieAction = (actions: MovieAction[], actionNumber: number): MovieAction | undefined =>
   actionNumber in actions ? actions[actionNumber] : undefined
 
-export const getBonusAction = (theaterTile: TheaterTile, numberOfSeatsForBonus: 1 | 2 | 3, action: MovieAction): MovieAction | undefined =>
-  getNumberOfSeats(theaterTile) === numberOfSeatsForBonus ? action : undefined
+export const getBonusAction = (theaterTile: TheaterTile, numberOfSeatsForBonus: 1 | 2 | 3, action: MovieAction): MovieAction | undefined => {
+  const targetSeatsNumber = numberOfSeatsForBonus === 1 ? SeatsNumber.One : numberOfSeatsForBonus === 2 ? SeatsNumber.Two : SeatsNumber.Three
+  return theaterTilesCharacteristics[theaterTile].getSeatsNumber() === targetSeatsNumber ? action : undefined
+}

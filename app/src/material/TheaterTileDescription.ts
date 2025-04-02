@@ -34,6 +34,7 @@ import threeSeat6Front from '../images/Tiles/TheaterTiles/3Seat6Front.png'
 import threeSeat7Front from '../images/Tiles/TheaterTiles/3Seat7Front.png'
 import threeSeat8Front from '../images/Tiles/TheaterTiles/3Seat8Front.png'
 import threeSeatBack from '../images/Tiles/TheaterTiles/3SeatBack.png'
+import emptyTile from '../images/Tiles/TheaterTiles/EmptyTile.png'
 
 class TheaterTileDescription extends TokenDescription<PlayerColor, MaterialType, LocationType, TheaterTileId> {
   width = 4.3
@@ -41,6 +42,8 @@ class TheaterTileDescription extends TokenDescription<PlayerColor, MaterialType,
   thickness = 0.2
 
   images = {
+    [TheaterTile.DefaultOneSeatTile]: emptyTile,
+    [TheaterTile.DefaultTwoSeatTile]: emptyTile,
     [TheaterTile.OneSeat2Money]: oneSeat1Front,
     [TheaterTile.OneSeat1Popcorn]: oneSeat2Front,
     [TheaterTile.OneSeatRed2Popcorn]: oneSeat3Front,
@@ -68,13 +71,14 @@ class TheaterTileDescription extends TokenDescription<PlayerColor, MaterialType,
     [TheaterTile.ThreeSeatYellowExitRedGrey]: threeSeat5Front,
     [TheaterTile.ThreeSeatYellow3MoneyRedGrey]: threeSeat6Front,
     [TheaterTile.ThreeSeatBlueBlueGrey]: threeSeat7Front,
-    [TheaterTile.ThreeSeatGreenGreen]: threeSeat8Front
+    [TheaterTile.ThreeSeatGreenGreenGrey]: threeSeat8Front
   }
 
   backImages = {
     [SeatsNumber.One]: oneSeatBack,
     [SeatsNumber.Two]: twoSeatBack,
-    [SeatsNumber.Three]: threeSeatBack
+    [SeatsNumber.Three]: threeSeatBack,
+    [SeatsNumber.Default]: emptyTile
   }
 }
 
