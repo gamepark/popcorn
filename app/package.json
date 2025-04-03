@@ -73,7 +73,7 @@
   },
   "jest": {
     "moduleNameMapper": {
-      "^@gamepark/game-template/(.*)$": "<rootDir>/../rules/src/$1"
+      "^@gamepark/popcorn/(.*)$": "<rootDir>/../rules/src/$1"
     }
   }
 }

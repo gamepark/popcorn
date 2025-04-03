@@ -2,7 +2,7 @@ import { Material } from '@gamepark/rules-api'
 import { PopcornSetup } from '../src'
 import { LocationType } from '../src/material/LocationType'
 import { MaterialType } from '../src/material/MaterialType'
-import { getMovieCardType, MovieCard, MovieCardId, MovieCardType } from '../src/material/MovieCard'
+import { MovieCardId, MovieCardType, movieCardCharacteristics, MovieCard } from '../src/material/MovieCard'
 import { PlayerColor } from '../src/PlayerColor'
 
 describe('Game setup tests', () => {
@@ -22,7 +22,9 @@ describe('Game setup tests', () => {
     // Then
     const movieCardsMaterial = new Material(MaterialType.MovieCards, game.items[MaterialType.MovieCards])
     const firstMovieCards = movieCardsMaterial.location(LocationType.MovieCardSpotOnBottomPlayerCinemaBoard).getItems<MovieCardId>()
-    const allMovieCards = movieCardsMaterial.id<MovieCardId>((id) => getMovieCardType(id.front!) === MovieCardType.Movie).getItems<MovieCardId>()
+    const allMovieCards = movieCardsMaterial
+      .id<MovieCardId>((id) => id.front === MovieCard.FinalShowing || movieCardCharacteristics[id.front!].getMovieType() === MovieCardType.Movie)
+      .getItems<MovieCardId>()
     const movieCardsInDeck = movieCardsMaterial.location(LocationType.MovieCardDeckSpot).getItems<MovieCardId>()
     const movieCardsInFeaturesRow = movieCardsMaterial.location(LocationType.FeaturesRowSpot).getItems<MovieCardId>()
     const movieCardsInPremiersRow = movieCardsMaterial.location(LocationType.PremiersRowSpot).getItems<MovieCardId>()

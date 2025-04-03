@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import { RuleId } from '@gamepark/game-template/rules/RuleId'
+import { RuleId } from '@gamepark/popcorn/rules/RuleId'
 import { ComponentType } from 'react'
 import { BuyingPhaseHeader } from './BuyingPhaseHeader'
 import { DealAndDiscardAwardCardsHeader } from './DealAndDiscardAwardCardsHeader'

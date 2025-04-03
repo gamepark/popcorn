@@ -6,8 +6,8 @@ import { getSliderColor, getSlidersForPlayers } from './material/LobbySlider'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { moneyTokens } from './material/MoneyToken'
-import { FilmColor, firstMovieCards, getFilmColor, getMovieCardType, MovieCard, movieCardsWithoutFinalShowing } from './material/MovieCard'
-import { getSeatsNumber, SeatsNumber, theaterTiles } from './material/TheaterTile'
+import { firstMovieCards, MovieCard, movieCardCharacteristics, movieCardsWithoutFinalShowing, MovieCardType, MovieColor } from './material/MovieCard'
+import { SeatsNumber, theaterTiles, theaterTilesCharacteristics, theaterTilesWithoutDefault } from './material/TheaterTile'
 import { theaterTrophy } from './material/TheaterTrophy'
 import { defaultPlayerActionMemory, Memorize, PlayerActionMemory } from './Memorize'
 import { PlayerColor } from './PlayerColor'
@@ -46,6 +46,17 @@ export class PopcornSetup extends MaterialGameSetup<PlayerColor, MaterialType, L
     this.startSimultaneousRule(RuleId.DealAndDiscardAwardCards)
   }
 
+  private createTheaterTrophyTokens(): void {
+    this.material(MaterialType.TheaterTrophies).createItemsAtOnce(
+      theaterTrophy.map((id) => ({
+        id: id,
+        location: {
+          type: LocationType.TheaterTrophyReserveSpot
+        }
+      }))
+    )
+  }
+
   private createAwardCards(): void {
     this.material(MaterialType.AwardCards).createItemsAtOnce(
       awardCards.map((id) => ({
@@ -60,8 +71,8 @@ export class PopcornSetup extends MaterialGameSetup<PlayerColor, MaterialType, L
 
   private createAndPopulateTheaterTileRivers(): void {
     this.material(MaterialType.TheaterTiles).createItemsAtOnce(
-      theaterTiles.map((id) => {
-        const numberOfSeats = getSeatsNumber(id)
+      theaterTilesWithoutDefault.map((id) => {
+        const numberOfSeats = theaterTilesCharacteristics[id].getSeatsNumber()
         const targetLocation =
           numberOfSeats === SeatsNumber.One
             ? LocationType.OneSeatTheaterTileDeckSpot
@@ -131,7 +142,7 @@ export class PopcornSetup extends MaterialGameSetup<PlayerColor, MaterialType, L
             .map((_) => ({
               id: guestPawn,
               location: {
-                type: LocationType.PLayerGuestPawnsUnderBlothBagSpot,
+                type: LocationType.PlayerGuestPawnsUnderBlothBagSpot,
                 player: player
               }
             }))
@@ -142,21 +153,26 @@ export class PopcornSetup extends MaterialGameSetup<PlayerColor, MaterialType, L
 
   private createMovieCardDeckAndPopulateRivers(): void {
     this.material(MaterialType.MovieCards).createItemsAtOnce(
-      movieCardsWithoutFinalShowing.map((id) => ({
-        id: {
-          front: id,
-          back: getMovieCardType(id)
-        },
-        location: {
-          type: LocationType.MovieCardDeckSpot
+      movieCardsWithoutFinalShowing.map((id) => {
+        if (id === MovieCard.FinalShowing) {
+          throw new Error('invalid card')
         }
-      }))
+        return {
+          id: {
+            front: id,
+            back: movieCardCharacteristics[id].getMovieType()
+          },
+          location: {
+            type: LocationType.MovieCardDeckSpot
+          }
+        }
+      })
     )
     this.material(MaterialType.MovieCards).shuffle()
     this.material(MaterialType.MovieCards).createItem({
       id: {
         front: MovieCard.FinalShowing,
-        back: getMovieCardType(MovieCard.FinalShowing)
+        back: MovieCardType.Movie
       },
       location: {
         type: LocationType.MovieCardDeckSpot,
@@ -195,9 +211,13 @@ export class PopcornSetup extends MaterialGameSetup<PlayerColor, MaterialType, L
   private createPlayerSpecificMaterial(): void {
     const firstMovieCardIds = shuffle(firstMovieCards)
     this.players.forEach((player, index) => {
+      const movieId = firstMovieCardIds[index]
+      if (movieId === MovieCard.FinalShowing) {
+        throw new Error('invalid card')
+      }
       const firstMovieCardId = {
-        front: firstMovieCardIds[index],
-        back: getMovieCardType(firstMovieCardIds[index])
+        front: movieId,
+        back: movieCardCharacteristics[movieId].getMovieType()
       }
       this.material(MaterialType.MovieCards).createItem({
         id: firstMovieCardId,
@@ -207,10 +227,10 @@ export class PopcornSetup extends MaterialGameSetup<PlayerColor, MaterialType, L
           x: 0
         }
       })
-      const firstMovieColor = getFilmColor(firstMovieCardId.front)
+      const firstMovieColor = movieCardCharacteristics[movieId].getColor()
       const guestPawnColor = this.getGuestPawnColorFromMovieColor(firstMovieColor)
       this.material(MaterialType.GuestPawns).location(LocationType.GuestPawnReserveSpot).id<GuestPawn>(guestPawnColor).moveItem({
-        type: LocationType.PLayerGuestPawnsUnderBlothBagSpot,
+        type: LocationType.PlayerGuestPawnsUnderBlothBagSpot,
         player: player
       })
       this.material(MaterialType.MoneyTokens)
@@ -234,31 +254,33 @@ export class PopcornSetup extends MaterialGameSetup<PlayerColor, MaterialType, L
           x: 0
         }
       })
+      this.material(MaterialType.TheaterTiles).createItems(
+        theaterTiles.slice(0, 2).map((id, index) => ({
+          id: {
+            front: id,
+            back: SeatsNumber.Default
+          },
+          location: {
+            type: LocationType.TheaterTileSpotOnTopPlayerCinemaBoard,
+            player: player,
+            x: index
+          }
+        }))
+      )
     })
   }
 
-  private getGuestPawnColorFromMovieColor(movieColor: FilmColor): GuestPawn {
+  private getGuestPawnColorFromMovieColor(movieColor: MovieColor): GuestPawn {
     switch (movieColor) {
-      case FilmColor.Blue:
+      case MovieColor.Blue:
         return GuestPawn.Blue
-      case FilmColor.Green:
+      case MovieColor.Green:
         return GuestPawn.Green
-      case FilmColor.Red:
+      case MovieColor.Red:
         return GuestPawn.Red
-      case FilmColor.Yellow:
+      case MovieColor.Yellow:
         return GuestPawn.Yellow
     }
-  }
-
-  private createTheaterTrophyTokens(): void {
-    this.material(MaterialType.TheaterTrophies).createItemsAtOnce(
-      theaterTrophy.map((id) => ({
-        id: id,
-        location: {
-          type: LocationType.TheaterTrophyReserveSpot
-        }
-      }))
-    )
   }
 
   private initializeMemory(): void {

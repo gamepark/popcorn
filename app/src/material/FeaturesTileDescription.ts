@@ -1,6 +1,6 @@
-import { LocationType } from '@gamepark/game-template/material/LocationType'
-import { MaterialType } from '@gamepark/game-template/material/MaterialType'
-import { PlayerColor } from '@gamepark/game-template/PlayerColor'
+import { LocationType } from '@gamepark/popcorn/material/LocationType'
+import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
+import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
 import { TokenDescription } from '@gamepark/react-game'
 import featureTile from '../images/Tiles/MovieTiles/FeaturesTile.png'
 

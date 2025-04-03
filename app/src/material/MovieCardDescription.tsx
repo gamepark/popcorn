@@ -1,11 +1,11 @@
 import { faHandPointer } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { isBuyMovieCardCustomMove } from '@gamepark/game-template/material/CustomMoveType'
-import { LocationType } from '@gamepark/game-template/material/LocationType'
-import { MaterialType } from '@gamepark/game-template/material/MaterialType'
-import { MovieCard, MovieCardId, MovieCardType } from '@gamepark/game-template/material/MovieCard'
-import { PlayerColor } from '@gamepark/game-template/PlayerColor'
-import { RuleId } from '@gamepark/game-template/rules/RuleId'
+import { isBuyMovieCardCustomMove } from '@gamepark/popcorn/material/CustomMoveType'
+import { LocationType } from '@gamepark/popcorn/material/LocationType'
+import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
+import { MovieCard, MovieCardId, MovieCardType } from '@gamepark/popcorn/material/MovieCard'
+import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
+import { RuleId } from '@gamepark/popcorn/rules/RuleId'
 import { CardDescription, ItemContext, ItemMenuButton } from '@gamepark/react-game'
 import { Location, MaterialItem, MaterialMove } from '@gamepark/rules-api'
 import React from 'react'
@@ -97,7 +97,7 @@ export class MovieCardDescription extends CardDescription<PlayerColor, MaterialT
     [MovieCard.RedBarbacus]: redBarbacus,
     [MovieCard.RedTheFuryOfTheSerpent]: redTheFuryOfTheSerpent,
     [MovieCard.RedTheCursedPegleg]: redTheCursedPegleg,
-    [MovieCard.RedTheWorkdAfter]: redTheWorldAfter,
+    [MovieCard.RedTheWorldAfter]: redTheWorldAfter,
     [MovieCard.RedTheVolcano]: redTheVolcano,
     [MovieCard.RedUnknownDestination]: redUnknownDestination,
     [MovieCard.RedGentlemanDriver]: redGentlemanDriver,
@@ -124,7 +124,7 @@ export class MovieCardDescription extends CardDescription<PlayerColor, MaterialT
   }
 
   public canDrag(move: MaterialMove<PlayerColor, MaterialType, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType>): boolean {
-    return super.canDrag(move, context) || (isBuyMovieCardCustomMove(move) && move.data.move.itemIndex === context.index)
+    return super.canDrag(move, context) || (isBuyMovieCardCustomMove(move) && move.data.boughtCardIndex === context.index)
   }
 
   public getMoveDropLocations(
@@ -132,14 +132,10 @@ export class MovieCardDescription extends CardDescription<PlayerColor, MaterialT
     move: MaterialMove<PlayerColor, MaterialType, LocationType>
   ): Location<PlayerColor, LocationType>[] {
     if (context.rules.game.rule?.id === RuleId.BuyingPhaseRule && isBuyMovieCardCustomMove(move)) {
-      const cardMoveDestination = move.data.move.location
-      if (cardMoveDestination.type === undefined || cardMoveDestination.player === undefined || cardMoveDestination.x === undefined) {
-        throw new Error('Malformed move')
-      }
       const destination = {
-        type: cardMoveDestination.type,
-        player: cardMoveDestination.player,
-        x: cardMoveDestination.x
+        type: LocationType.MovieCardSpotOnBottomPlayerCinemaBoard,
+        player: move.data.player,
+        x: move.data.destinationSpot
       }
       return [destination]
     }
@@ -166,14 +162,14 @@ export class MovieCardDescription extends CardDescription<PlayerColor, MaterialT
     legalMoves: MaterialMove<PlayerColor, MaterialType, LocationType>[]
   ): React.ReactNode {
     const cardIndex = context.rules.material(MaterialType.MovieCards).id<MovieCardId>(item.id).getIndex()
-    const movesForCard = legalMoves.filter(isBuyMovieCardCustomMove).filter((move) => move.data.move.itemIndex === cardIndex)
+    const movesForCard = legalMoves.filter(isBuyMovieCardCustomMove).filter((move) => move.data.boughtCardIndex === cardIndex)
     return movesForCard.length > 0 ? (
       <>
         {movesForCard.map((move, index) => (
           <ItemMenuButton
             key={`buy-move-${item.id.front}-${index}`}
             move={move}
-            label={this.getMenuLabelForDestination(move.data.move.location.x)}
+            label={this.getMenuLabelForDestination(move.data.destinationSpot)}
             angle={0}
             radius={2.5 - index * 2.25}
           >

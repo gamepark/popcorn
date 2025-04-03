@@ -1,7 +1,7 @@
-import { LocationType } from '@gamepark/game-template/material/LocationType'
-import { MaterialType } from '@gamepark/game-template/material/MaterialType'
-import { SeatsNumber, TheaterTile, TheaterTileId } from '@gamepark/game-template/material/TheaterTile'
-import { PlayerColor } from '@gamepark/game-template/PlayerColor'
+import { LocationType } from '@gamepark/popcorn/material/LocationType'
+import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
+import { SeatsNumber, TheaterTile, TheaterTileId } from '@gamepark/popcorn/material/TheaterTile'
+import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
 import { TokenDescription } from '@gamepark/react-game'
 import oneSeat1Front from '../images/Tiles/TheaterTiles/1Seat1Front.png'
 import oneSeat2Front from '../images/Tiles/TheaterTiles/1Seat2Front.png'
@@ -34,6 +34,7 @@ import threeSeat6Front from '../images/Tiles/TheaterTiles/3Seat6Front.png'
 import threeSeat7Front from '../images/Tiles/TheaterTiles/3Seat7Front.png'
 import threeSeat8Front from '../images/Tiles/TheaterTiles/3Seat8Front.png'
 import threeSeatBack from '../images/Tiles/TheaterTiles/3SeatBack.png'
+import emptyTile from '../images/Tiles/TheaterTiles/EmptyTile.png'
 
 class TheaterTileDescription extends TokenDescription<PlayerColor, MaterialType, LocationType, TheaterTileId> {
   width = 4.3
@@ -41,6 +42,8 @@ class TheaterTileDescription extends TokenDescription<PlayerColor, MaterialType,
   thickness = 0.2
 
   images = {
+    [TheaterTile.DefaultOneSeatTile]: emptyTile,
+    [TheaterTile.DefaultTwoSeatTile]: emptyTile,
     [TheaterTile.OneSeat2Money]: oneSeat1Front,
     [TheaterTile.OneSeat1Popcorn]: oneSeat2Front,
     [TheaterTile.OneSeatRed2Popcorn]: oneSeat3Front,
@@ -55,7 +58,7 @@ class TheaterTileDescription extends TokenDescription<PlayerColor, MaterialType,
     [TheaterTile.TwoSeatRed2MoneyMovieAction]: twoSeat4Front,
     [TheaterTile.TwoSeatBlue1Popcorn2Money]: twoSeat5Front,
     [TheaterTile.TwoSeatRedBagMovieAction]: twoSeat6Front,
-    [TheaterTile.TwoSeatYellowReserve2money]: twoSeat7Front,
+    [TheaterTile.TwoSeatYellowReserve2Money]: twoSeat7Front,
     [TheaterTile.TwoSeatGreenDrawMovieAction]: twoSeat8Front,
     [TheaterTile.TwoSeatYellowYellow]: twoSeat9Front,
     [TheaterTile.TwoSeatRedRed]: twoSeat10Front,
@@ -68,13 +71,14 @@ class TheaterTileDescription extends TokenDescription<PlayerColor, MaterialType,
     [TheaterTile.ThreeSeatYellowExitRedGrey]: threeSeat5Front,
     [TheaterTile.ThreeSeatYellow3MoneyRedGrey]: threeSeat6Front,
     [TheaterTile.ThreeSeatBlueBlueGrey]: threeSeat7Front,
-    [TheaterTile.ThreeSeatGreenGreen]: threeSeat8Front
+    [TheaterTile.ThreeSeatGreenGreenGrey]: threeSeat8Front
   }
 
   backImages = {
     [SeatsNumber.One]: oneSeatBack,
     [SeatsNumber.Two]: twoSeatBack,
-    [SeatsNumber.Three]: threeSeatBack
+    [SeatsNumber.Three]: threeSeatBack,
+    [SeatsNumber.Default]: emptyTile
   }
 }
 

@@ -2,7 +2,8 @@ import { isMoveItemType, ItemMove, MaterialMove, PlayMoveContext, RuleMove, Rule
 import { AwardCard } from '../material/AwardCard'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
-import { getMovieCardType, MovieCardId, MovieCardType } from '../material/MovieCard'
+import { MovieCard, movieCardCharacteristics, MovieCardId, MovieCardType } from '../material/MovieCard'
+import { Memorize } from '../Memorize'
 import { PlayerColor } from '../PlayerColor'
 import { RuleId } from './RuleId'
 
@@ -51,6 +52,9 @@ export class DealAndDiscardAwardCardsRule extends SimultaneousRule<PlayerColor, 
       if (card?.location.player === undefined) {
         throw new Error('Unable to find player owning card')
       }
+      if (this.game.rule?.players?.length === 1) {
+        this.memorize<PlayerColor>(Memorize.PlayerDiscardingAwardCards, card.location.player)
+      }
       return [this.endPlayerTurn(card.location.player)]
     }
     return []
@@ -60,14 +64,22 @@ export class DealAndDiscardAwardCardsRule extends SimultaneousRule<PlayerColor, 
     if (this.isFirstTurn()) {
       return [this.startPlayerTurn<PlayerColor, RuleId>(RuleId.BuyingPhaseRule, this.game.players[0])]
     }
-    return []
+    return [this.startPlayerTurn<PlayerColor, RuleId>(RuleId.BuyingPhaseRule, this.remind<PlayerColor>(Memorize.PlayerDiscardingAwardCards))]
+  }
+
+  public onRuleEnd(_move: RuleMove<PlayerColor, RuleId>, _context?: PlayMoveContext): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+    this.forget(Memorize.PlayerDiscardingAwardCards)
+    return super.onRuleEnd(_move, _context)
   }
 
   private isFirstTurn() {
     return (
       this.material(MaterialType.MovieCards)
         .location(LocationType.MovieCardSpotOnBottomPlayerCinemaBoard)
-        .id<MovieCardId>((id) => id.front !== undefined && getMovieCardType(id.front) === MovieCardType.FirstMovie).length === this.game.players.length &&
+        .id<MovieCardId>(
+          (id) =>
+            id.front !== undefined && id.front !== MovieCard.FinalShowing && movieCardCharacteristics[id.front].getMovieType() === MovieCardType.FirstMovie
+        ).length === this.game.players.length &&
       this.material(MaterialType.LobbySliders).location(
         (location) => location.type === LocationType.LobbySliderSpotOnTopPlayerCinemaBoard && location.x === 0 && location.y === 1
       )

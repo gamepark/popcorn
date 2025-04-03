@@ -1,11 +1,11 @@
 /** @jsxImportSource @emotion/react */
-import { PopcornOptionsSpec } from '@gamepark/game-template/PopcornOptions'
-import { PopcornRules } from '@gamepark/game-template/PopcornRules'
-import { PopcornSetup } from '@gamepark/game-template/PopcornSetup'
+import { PopcornOptionsSpec } from '@gamepark/popcorn/PopcornOptions'
+import { PopcornRules } from '@gamepark/popcorn/PopcornRules'
+import { PopcornSetup } from '@gamepark/popcorn/PopcornSetup'
 import { GameProvider, setupTranslation } from '@gamepark/react-game'
 import { StrictMode } from 'react'
 import ReactDOM from 'react-dom'
-import { gameAnimations } from './animations/GameAnimations'
+import { popcornAnimations } from './animations/PopcornAnimations'
 import App from './App'
 import { Locators } from './locators/Locators'
 import { Material, popcornMaterialI18n } from './material/Material'
@@ -17,13 +17,13 @@ setupTranslation(translations, { debug: false })
 ReactDOM.render(
   <StrictMode>
     <GameProvider
-      game="game-template"
+      game="popcorn"
       Rules={PopcornRules}
       optionsSpec={PopcornOptionsSpec}
       GameSetup={PopcornSetup}
       material={Material}
       locators={Locators}
-      animations={gameAnimations}
+      animations={popcornAnimations}
       materialI18n={popcornMaterialI18n}
       theme={PopcornTheme}
     >

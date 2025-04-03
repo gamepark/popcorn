@@ -1,4 +1,4 @@
-import { MovieCard } from '@gamepark/game-template/material/MovieCard'
+import { MovieCard } from '@gamepark/popcorn/material/MovieCard'
 import blue5678 from '../images/Cards/Movies/fr/Blue5678.jpg'
 import blueAdrian from '../images/Cards/Movies/fr/BlueAdrian.jpg'
 import blueBigSpenders from '../images/Cards/Movies/fr/BlueBigSpenders.jpg'
@@ -82,7 +82,7 @@ class FrenchMovieCardDescription extends MovieCardDescription {
     [MovieCard.RedBarbacus]: redBarbacus,
     [MovieCard.RedTheFuryOfTheSerpent]: redTheFuryOfTheSerpent,
     [MovieCard.RedTheCursedPegleg]: redTheCursedPegleg,
-    [MovieCard.RedTheWorkdAfter]: redTheWorldAfter,
+    [MovieCard.RedTheWorldAfter]: redTheWorldAfter,
     [MovieCard.RedTheVolcano]: redTheVolcano,
     [MovieCard.RedUnknownDestination]: redUnknownDestination,
     [MovieCard.RedGentlemanDriver]: redGentlemanDriver,
