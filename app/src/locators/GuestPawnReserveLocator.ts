@@ -1,7 +1,7 @@
-import { GuestPawn } from '@gamepark/game-template/material/GuestPawn'
-import { LocationType } from '@gamepark/game-template/material/LocationType'
-import { MaterialType } from '@gamepark/game-template/material/MaterialType'
-import { PlayerColor } from '@gamepark/game-template/PlayerColor'
+import { GuestPawn } from '@gamepark/popcorn/material/GuestPawn'
+import { LocationType } from '@gamepark/popcorn/material/LocationType'
+import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
+import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
 import { ListLocator, MaterialContext } from '@gamepark/react-game'
 import { Coordinates, Location } from '@gamepark/rules-api'
 

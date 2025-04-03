@@ -15,6 +15,7 @@ import { MaterialType } from './material/MaterialType'
 import { PlayerColor } from './PlayerColor'
 import { BuyingPhaseRule } from './rules/BuyingPhaseRule'
 import { DealAndDiscardAwardCardsRule } from './rules/DealAndDiscardAwardCardsRule'
+import { PlaceExitZoneGuestInBagRule } from './rules/PlaceExitZoneGuestInBagRule'
 import { RuleId } from './rules/RuleId'
 
 /**
@@ -27,7 +28,8 @@ export class PopcornRules
 {
   rules = {
     [RuleId.DealAndDiscardAwardCards]: DealAndDiscardAwardCardsRule,
-    [RuleId.BuyingPhaseRule]: BuyingPhaseRule
+    [RuleId.BuyingPhaseRule]: BuyingPhaseRule,
+    [RuleId.PlaceExitZoneGuestInBagRule]: PlaceExitZoneGuestInBagRule
   }
 
   hidingStrategies = {
@@ -68,7 +70,9 @@ export class PopcornRules
       [LocationType.ThreeSeatTheaterTileRowSpot]: new FillGapStrategy()
     },
     [MaterialType.GuestPawns]: {
-      [LocationType.GuestPawnReserveSpot]: new PositiveSequenceStrategy()
+      [LocationType.GuestPawnReserveSpot]: new PositiveSequenceStrategy(),
+      [LocationType.PlayerGuestPawnsUnderBlothBagSpot]: new PositiveSequenceStrategy(),
+      [LocationType.GuestPawnExitZoneSpotOnTopPlayerCinemaBoard]: new PositiveSequenceStrategy()
     },
     [MaterialType.TheaterTrophies]: {
       [LocationType.TheaterTrophyReserveSpot]: new PositiveSequenceStrategy()

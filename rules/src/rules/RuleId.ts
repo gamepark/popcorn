@@ -1,4 +1,6 @@
 export enum RuleId {
   DealAndDiscardAwardCards = 1,
-  BuyingPhaseRule
+  BuyingPhaseRule,
+  PlaceExitZoneGuestInBagRule,
+  PickGuestFromReserveOrExitZoneRule
 }

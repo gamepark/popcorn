@@ -142,7 +142,7 @@ export class PopcornSetup extends MaterialGameSetup<PlayerColor, MaterialType, L
             .map((_) => ({
               id: guestPawn,
               location: {
-                type: LocationType.PLayerGuestPawnsUnderBlothBagSpot,
+                type: LocationType.PlayerGuestPawnsUnderBlothBagSpot,
                 player: player
               }
             }))
@@ -230,7 +230,7 @@ export class PopcornSetup extends MaterialGameSetup<PlayerColor, MaterialType, L
       const firstMovieColor = movieCardCharacteristics[movieId].getColor()
       const guestPawnColor = this.getGuestPawnColorFromMovieColor(firstMovieColor)
       this.material(MaterialType.GuestPawns).location(LocationType.GuestPawnReserveSpot).id<GuestPawn>(guestPawnColor).moveItem({
-        type: LocationType.PLayerGuestPawnsUnderBlothBagSpot,
+        type: LocationType.PlayerGuestPawnsUnderBlothBagSpot,
         player: player
       })
       this.material(MaterialType.MoneyTokens)
