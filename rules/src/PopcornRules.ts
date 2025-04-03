@@ -16,6 +16,7 @@ import { PlayerColor } from './PlayerColor'
 import { BuyingPhaseRule } from './rules/BuyingPhaseRule'
 import { DealAndDiscardAwardCardsRule } from './rules/DealAndDiscardAwardCardsRule'
 import { PlaceExitZoneGuestInBagRule } from './rules/PlaceExitZoneGuestInBagRule'
+import { PickPlayerGuestAndPlaceItInReserveRule } from './rules/PickPlayerGuestAndPlaceItInReserveRule'
 import { RuleId } from './rules/RuleId'
 
 /**
@@ -29,7 +30,8 @@ export class PopcornRules
   rules = {
     [RuleId.DealAndDiscardAwardCards]: DealAndDiscardAwardCardsRule,
     [RuleId.BuyingPhaseRule]: BuyingPhaseRule,
-    [RuleId.PlaceExitZoneGuestInBagRule]: PlaceExitZoneGuestInBagRule
+    [RuleId.PlaceExitZoneGuestInBagRule]: PlaceExitZoneGuestInBagRule,
+    [RuleId.PickPlayerGuestAndPlaceItInReserveRule]: PickPlayerGuestAndPlaceItInReserveRule
   }
 
   hidingStrategies = {

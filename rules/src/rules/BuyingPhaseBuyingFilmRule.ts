@@ -188,7 +188,7 @@ export class BuyingPhaseBuyingFilmRule extends PlayerTurnRule<PlayerColor, Mater
       case MovieAction.Get4Popcorn:
         return this.getMoneyMove(MaterialType.PopcornTokens, 4, player)
       case MovieAction.PlaceGuestInReserve:
-        return [] // TODO
+        return [this.startRule(RuleId.PickPlayerGuestAndPlaceItInReserveRule)] // TODO
       case MovieAction.PlaceExitZoneGuestInBag:
         return [this.startRule<RuleId>(RuleId.PlaceExitZoneGuestInBagRule)] // TODO
       case MovieAction.DrawGuestAndPlaceThem:
