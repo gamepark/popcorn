@@ -32,8 +32,7 @@ class MovieCardOnBottomPlayerCinemaBoardLocationDescription extends DropAreaDesc
     context: MaterialContext<PlayerColor, MaterialType, LocationType>
   ): boolean {
     if (isBuyMovieCardCustomMove(move)) {
-      const cardMove = move.data.move
-      return location.player === cardMove.location.player && location.x === cardMove.location.x
+      return location.player === move.data.player && location.x === move.data.destinationSpot
     }
     return super.isMoveToLocation(move, location, context)
   }
