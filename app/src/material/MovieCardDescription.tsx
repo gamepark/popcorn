@@ -124,7 +124,7 @@ export class MovieCardDescription extends CardDescription<PlayerColor, MaterialT
   }
 
   public canDrag(move: MaterialMove<PlayerColor, MaterialType, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType>): boolean {
-    return super.canDrag(move, context) || (isBuyMovieCardCustomMove(move) && move.data.move.itemIndex === context.index)
+    return super.canDrag(move, context) || (isBuyMovieCardCustomMove(move) && move.data.boughtCardIndex === context.index)
   }
 
   public getMoveDropLocations(
@@ -132,14 +132,10 @@ export class MovieCardDescription extends CardDescription<PlayerColor, MaterialT
     move: MaterialMove<PlayerColor, MaterialType, LocationType>
   ): Location<PlayerColor, LocationType>[] {
     if (context.rules.game.rule?.id === RuleId.BuyingPhaseRule && isBuyMovieCardCustomMove(move)) {
-      const cardMoveDestination = move.data.move.location
-      if (cardMoveDestination.type === undefined || cardMoveDestination.player === undefined || cardMoveDestination.x === undefined) {
-        throw new Error('Malformed move')
-      }
       const destination = {
-        type: cardMoveDestination.type,
-        player: cardMoveDestination.player,
-        x: cardMoveDestination.x
+        type: LocationType.MovieCardSpotOnBottomPlayerCinemaBoard,
+        player: move.data.player,
+        x: move.data.destinationSpot
       }
       return [destination]
     }
@@ -166,14 +162,14 @@ export class MovieCardDescription extends CardDescription<PlayerColor, MaterialT
     legalMoves: MaterialMove<PlayerColor, MaterialType, LocationType>[]
   ): React.ReactNode {
     const cardIndex = context.rules.material(MaterialType.MovieCards).id<MovieCardId>(item.id).getIndex()
-    const movesForCard = legalMoves.filter(isBuyMovieCardCustomMove).filter((move) => move.data.move.itemIndex === cardIndex)
+    const movesForCard = legalMoves.filter(isBuyMovieCardCustomMove).filter((move) => move.data.boughtCardIndex === cardIndex)
     return movesForCard.length > 0 ? (
       <>
         {movesForCard.map((move, index) => (
           <ItemMenuButton
             key={`buy-move-${item.id.front}-${index}`}
             move={move}
-            label={this.getMenuLabelForDestination(move.data.move.location.x)}
+            label={this.getMenuLabelForDestination(move.data.destinationSpot)}
             angle={0}
             radius={2.5 - index * 2.25}
           >

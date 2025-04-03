@@ -1,4 +1,4 @@
-import { isCustomMoveType, MaterialMove, MoveItem, MoveKind } from '@gamepark/rules-api'
+import { CustomMove, isCustomMoveType, MaterialMove } from '@gamepark/rules-api'
 import { PlayerColor } from '../PlayerColor'
 import { LocationType } from './LocationType'
 import { MaterialType } from './MaterialType'
@@ -9,20 +9,16 @@ export enum CustomMoveType {
 }
 
 export type BuyMovieCardCustomMoveData = {
-  previousMovieIndex?: number
-  move: MoveItem<PlayerColor, MaterialType, LocationType>
+  boughtCardIndex: number
+  player: PlayerColor
+  destinationSpot: 0 | 1 | 2
 }
 
-export type BuyMovieCardCustomMove = {
-  kind: typeof MoveKind.CustomMove
-  type: typeof CustomMoveType.BuyMovieCard
+export type BuyMovieCardCustomMove = Omit<CustomMove, 'data'> & {
   data: BuyMovieCardCustomMoveData
 }
 
-export type PassBuyingPhaseCustomMove = {
-  kind: typeof MoveKind.CustomMove
-  type: typeof CustomMoveType.PassBuyingPhase
-}
+export type PassBuyingPhaseCustomMove = Omit<CustomMove, 'data'>
 
 export const isBuyMovieCardCustomMove = (move: MaterialMove<PlayerColor, MaterialType, LocationType>): move is BuyMovieCardCustomMove =>
   isCustomMoveType<CustomMoveType>(CustomMoveType.BuyMovieCard)(move)
