@@ -2,7 +2,9 @@ import { RuleId } from './rules/RuleId'
 
 export enum Memorize {
   IsFirstTurn = 1,
-  PlayerActions
+  PlayerActions,
+  PlayerDiscardingAwardCards,
+  GuestPawnColorToDraw
 }
 
 export type PlayerActionMemory = {

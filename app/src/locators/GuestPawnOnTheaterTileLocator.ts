@@ -1,12 +1,12 @@
-import { LocationType } from '@gamepark/game-template/material/LocationType'
-import { MaterialType } from '@gamepark/game-template/material/MaterialType'
-import { SeatsNumber, TheaterTileId } from '@gamepark/game-template/material/TheaterTile'
-import { PlayerColor } from '@gamepark/game-template/PlayerColor'
+import { LocationType } from '@gamepark/popcorn/material/LocationType'
+import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
+import { SeatsNumber, TheaterTile, TheaterTileId } from '@gamepark/popcorn/material/TheaterTile'
+import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
 import { Locator, MaterialContext } from '@gamepark/react-game'
 import { Coordinates, Location, MaterialItem, XYCoordinates } from '@gamepark/rules-api'
 import { topCinemaBoardDescription } from '../material/TopCinemaBoardDescription'
 
-const coordinatesOnTile: Record<SeatsNumber, Record<number, XYCoordinates>> = {
+const coordinatesOnTile: Record<Exclude<SeatsNumber, SeatsNumber.Default>, Record<number, XYCoordinates>> = {
   [SeatsNumber.One]: {
     0: { x: 0, y: -1.25 }
   },
@@ -69,7 +69,13 @@ class GuestPawnOnTheaterTileLocator extends Locator<PlayerColor, MaterialType, L
     if (parentTile === undefined || parentTile.location.type !== LocationType.TheaterTileSpotOnTopPlayerCinemaBoard) {
       throw new Error('Cannot locate a non-existing tile')
     }
-    return coordinatesOnTile[parentTile.id.back][location.x]
+    const frontId = parentTile.id.front
+    const backId =
+      frontId === TheaterTile.DefaultTwoSeatTile ? SeatsNumber.Two : frontId === TheaterTile.DefaultOneSeatTile ? SeatsNumber.One : parentTile.id.back
+    if (backId === SeatsNumber.Default) {
+      throw new Error('Issue with tile id')
+    }
+    return coordinatesOnTile[backId][location.x]
   }
 
   private getCoordinatesOnCinemaBoard(location: Location<PlayerColor, LocationType>): Partial<Coordinates> {

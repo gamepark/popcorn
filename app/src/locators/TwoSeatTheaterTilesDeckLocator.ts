@@ -1,6 +1,6 @@
-import { LocationType } from '@gamepark/game-template/material/LocationType'
-import { MaterialType } from '@gamepark/game-template/material/MaterialType'
-import { PlayerColor } from '@gamepark/game-template/PlayerColor'
+import { LocationType } from '@gamepark/popcorn/material/LocationType'
+import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
+import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
 import { DeckLocator } from '@gamepark/react-game'
 
 class TwoSeatTheaterTilesDeckLocator extends DeckLocator<PlayerColor, MaterialType, LocationType> {
