@@ -1,71 +1,60 @@
-import {
-  BonusCondition,
-  MovieAction,
-  MovieColor,
-  getBonusAction,
-  getBonusCondition,
-  getFilmColor,
-  getFirstAction,
-  getFourthAction,
-  getPrice,
-  getSecondAction,
-  getThirdAction,
-  MovieCard
-} from '../src/material/MovieCard'
+import { LocationType } from '../src/material/LocationType'
+import { MovieAction, MovieCard, movieCardCharacteristics, MovieColor } from '../src/material/MovieCard'
+import { TheaterTile } from '../src/material/TheaterTile'
 
 describe('Movie card tests', () => {
   test.each([
     {
-      film: MovieCard.BlueTheGodmother,
+      film: MovieCard.BlueTheGodmother as Exclude<MovieCard, MovieCard.FinalShowing>,
       filmName: MovieCard[MovieCard.BlueTheGodmother],
       expectedFilmColor: MovieColor.Blue,
       expectedFilmColorName: MovieColor[MovieColor.Blue]
     },
     {
-      film: MovieCard.BlueHenrietta,
+      film: MovieCard.BlueHenrietta as Exclude<MovieCard, MovieCard.FinalShowing>,
       filmName: MovieCard[MovieCard.BlueHenrietta],
       expectedFilmColor: MovieColor.Blue,
       expectedFilmColorName: MovieColor[MovieColor.Blue]
     },
     {
-      film: MovieCard.GreenKingOfTokyo,
+      film: MovieCard.GreenKingOfTokyo as Exclude<MovieCard, MovieCard.FinalShowing>,
       filmName: MovieCard[MovieCard.GreenKingOfTokyo],
       expectedFilmColor: MovieColor.Green,
       expectedFilmColorName: MovieColor[MovieColor.Green]
     },
     {
-      film: MovieCard.GreenWitchesVsCheerleaders,
+      film: MovieCard.GreenWitchesVsCheerleaders as Exclude<MovieCard, MovieCard.FinalShowing>,
       filmName: MovieCard[MovieCard.GreenWitchesVsCheerleaders],
       expectedFilmColor: MovieColor.Green,
       expectedFilmColorName: MovieColor[MovieColor.Green]
     },
     {
-      film: MovieCard.RedTheFuryOfTheSerpent,
+      film: MovieCard.RedTheFuryOfTheSerpent as Exclude<MovieCard, MovieCard.FinalShowing>,
       filmName: MovieCard[MovieCard.RedTheFuryOfTheSerpent],
       expectedFilmColor: MovieColor.Red,
       expectedFilmColorName: MovieColor[MovieColor.Red]
     },
     {
-      film: MovieCard.RedFinalLasso,
+      film: MovieCard.RedFinalLasso as Exclude<MovieCard, MovieCard.FinalShowing>,
       filmName: MovieCard[MovieCard.RedFinalLasso],
       expectedFilmColor: MovieColor.Red,
       expectedFilmColorName: MovieColor[MovieColor.Red]
     },
     {
-      film: MovieCard.YellowFrenchKiss,
+      film: MovieCard.YellowFrenchKiss as Exclude<MovieCard, MovieCard.FinalShowing>,
       filmName: MovieCard[MovieCard.YellowFrenchKiss],
       expectedFilmColor: MovieColor.Yellow,
       expectedFilmColorName: MovieColor[MovieColor.Yellow]
     },
     {
-      film: MovieCard.YellowSchoolOfZombies,
+      film: MovieCard.YellowSchoolOfZombies as Exclude<MovieCard, MovieCard.FinalShowing>,
       filmName: MovieCard[MovieCard.YellowSchoolOfZombies],
       expectedFilmColor: MovieColor.Yellow,
       expectedFilmColorName: MovieColor[MovieColor.Yellow]
     }
   ])('Given $filmName, getFilmColor() should return $expectedFilmColorName', ({ film, expectedFilmColor }) => {
     // When
-    const color = getFilmColor(film)
+    const color = movieCardCharacteristics[film].getColor()
 
     // Then
     expect(color).toEqual(expectedFilmColor)
@@ -73,36 +62,33 @@ describe('Movie card tests', () => {
 
   test.each([
     {
-      film: MovieCard.FirstMovieGreenEndOfTheWorld,
+      film: MovieCard.FirstMovieGreenEndOfTheWorld as Exclude<MovieCard, MovieCard.FinalShowing>,
       filmName: MovieCard[MovieCard.FirstMovieGreenEndOfTheWorld],
       expectedPrice: 0
     },
     {
-      film: MovieCard.BlueControlZ,
+      film: MovieCard.BlueControlZ as Exclude<MovieCard, MovieCard.FinalShowing>,
       filmName: MovieCard[MovieCard.BlueControlZ],
       expectedPrice: 3
     },
     {
-      film: MovieCard.GreenAbracadab,
+      film: MovieCard.GreenAbracadab as Exclude<MovieCard, MovieCard.FinalShowing>,
       filmName: MovieCard[MovieCard.GreenAbracadab],
       expectedPrice: 4
     },
     {
-      film: MovieCard.RedTheVolcano,
+      film: MovieCard.RedTheVolcano as Exclude<MovieCard, MovieCard.FinalShowing>,
       filmName: MovieCard[MovieCard.RedTheVolcano],
       expectedPrice: 2
     },
     {
-      film: MovieCard.YellowKangarooMan,
+      film: MovieCard.YellowKangarooMan as Exclude<MovieCard, MovieCard.FinalShowing>,
       filmName: MovieCard[MovieCard.YellowKangarooMan],
       expectedPrice: 1
     }
   ])('Given $filmName, getPrice() should return $expectedPrice', ({ film, expectedPrice }) => {
-    // Given
-    const movie = film
-
     // When
-    const price = getPrice(movie)
+    const price = movieCardCharacteristics[film].getPrice(LocationType.FeaturesRowSpot)
 
     // Then
     expect(price).toEqual(expectedPrice)
@@ -110,65 +96,36 @@ describe('Movie card tests', () => {
 
   test.each([
     {
-      film: MovieCard.BlueMe,
-      filmName: MovieCard[MovieCard.BlueMe],
-      expectedBonusCondition: BonusCondition.None,
-      expectedBonusConditionName: BonusCondition[BonusCondition.None]
-    },
-    {
-      film: MovieCard.GreenBadman,
-      filmName: MovieCard[MovieCard.GreenBadman],
-      expectedBonusCondition: BonusCondition.OneSeatTheater,
-      expectedBonusConditionName: BonusCondition[BonusCondition.OneSeatTheater]
-    },
-    {
-      film: MovieCard.RedTheCursedPegleg,
-      filmName: MovieCard[MovieCard.RedTheCursedPegleg],
-      expectedBonusCondition: BonusCondition.TwoSeatTheater,
-      expectedBonusConditionName: BonusCondition[BonusCondition.TwoSeatTheater]
-    },
-    {
-      film: MovieCard.YellowTheFirePrincess,
-      filmName: MovieCard[MovieCard.YellowTheFirePrincess],
-      expectedBonusCondition: BonusCondition.ThreeSeatTheater,
-      expectedBonusConditionName: BonusCondition[BonusCondition.ThreeSeatTheater]
-    }
-  ])('Given $filmName, getBonusCondidition should return $expectedBonusConditionName', ({ film, expectedBonusCondition }) => {
-    // When
-    const condition = getBonusCondition(film)
-
-    // Then
-    expect(condition).toEqual(expectedBonusCondition)
-  })
-
-  test.each([
-    {
-      film: MovieCard.Blue5678,
+      film: MovieCard.Blue5678 as Exclude<MovieCard, MovieCard.FinalShowing>,
       filmName: MovieCard[MovieCard.Blue5678],
+      theaterTile: TheaterTile.DefaultOneSeatTile,
       expectedBonusAction: MovieAction.AudienceTrackAdvance,
       expectedBonusActionName: MovieAction[MovieAction.AudienceTrackAdvance]
     },
     {
-      film: MovieCard.GreenIntergalactic,
+      film: MovieCard.GreenIntergalactic as Exclude<MovieCard, MovieCard.FinalShowing>,
+      theaterTile: TheaterTile.ThreeSeatBlueBlueGrey,
       filmName: MovieCard[MovieCard.GreenIntergalactic],
       expectedBonusAction: MovieAction.Get4Popcorn,
       expectedBonusActionName: MovieAction[MovieAction.Get4Popcorn]
     },
     {
-      film: MovieCard.RedTheWorldAfter,
+      film: MovieCard.RedTheWorldAfter as Exclude<MovieCard, MovieCard.FinalShowing>,
+      theaterTile: TheaterTile.DefaultOneSeatTile,
       filmName: MovieCard[MovieCard.RedTheWorldAfter],
       expectedBonusAction: MovieAction.Get1Money,
       expectedBonusActionName: MovieAction[MovieAction.Get1Money]
     },
     {
-      film: MovieCard.Yellow28InTheFamily,
+      film: MovieCard.Yellow28InTheFamily as Exclude<MovieCard, MovieCard.FinalShowing>,
+      theaterTile: TheaterTile.ThreeSeatBlueBlueGrey,
       filmName: MovieCard[MovieCard.Yellow28InTheFamily],
       expectedBonusAction: MovieAction.DrawAwardCard,
       expectedBonusActionName: MovieAction[MovieAction.DrawAwardCard]
     }
-  ])('Given $filmName, getBonusAction() should return $expectedBonusActionName', ({ film, expectedBonusAction }) => {
+  ])('Given $filmName, getBonusAction() should return $expectedBonusActionName', ({ film, theaterTile, expectedBonusAction }) => {
     // When
-    const action = getBonusAction(film)
+    const action = movieCardCharacteristics[film].getBonusAction(theaterTile)
 
     // Then
     expect(action).toEqual(expectedBonusAction)
@@ -176,7 +133,7 @@ describe('Movie card tests', () => {
 
   test.each([
     {
-      film: MovieCard.FirstMovieBlueRosebud,
+      film: MovieCard.FirstMovieBlueRosebud as Exclude<MovieCard, MovieCard.FinalShowing>,
       filmName: MovieCard[MovieCard.FirstMovieBlueRosebud],
       expectedFirstAction: MovieAction.AudienceTrackAdvance,
       expectedFirstActionName: MovieAction[MovieAction.AudienceTrackAdvance],
@@ -184,11 +141,11 @@ describe('Movie card tests', () => {
       expectedSecondActionName: MovieAction[MovieAction.AdvertisingTokenOnBlueGuest],
       expectedThirdAction: MovieAction.Get2Money,
       expectedThirdActionName: MovieAction[MovieAction.Get2Money],
-      expectedFourthAction: MovieAction.None,
-      expectedFourthActionName: MovieAction[MovieAction.None]
+      expectedFourthAction: undefined,
+      expectedFourthActionName: 'undefined'
     },
     {
-      film: MovieCard.FirstMovieGreenEndOfTheWorld,
+      film: MovieCard.FirstMovieGreenEndOfTheWorld as Exclude<MovieCard, MovieCard.FinalShowing>,
       filmName: MovieCard[MovieCard.FirstMovieGreenEndOfTheWorld],
       expectedFirstAction: MovieAction.AudienceTrackAdvance,
       expectedFirstActionName: MovieAction[MovieAction.AudienceTrackAdvance],
@@ -196,11 +153,11 @@ describe('Movie card tests', () => {
       expectedSecondActionName: MovieAction[MovieAction.AdvertisingTokenOnGreenGuest],
       expectedThirdAction: MovieAction.Get2Money,
       expectedThirdActionName: MovieAction[MovieAction.Get2Money],
-      expectedFourthAction: MovieAction.None,
-      expectedFourthActionName: MovieAction[MovieAction.None]
+      expectedFourthAction: undefined,
+      expectedFourthActionName: 'undefined'
     },
     {
-      film: MovieCard.FirstMovieRedItSMyWar,
+      film: MovieCard.FirstMovieRedItSMyWar as Exclude<MovieCard, MovieCard.FinalShowing>,
       filmName: MovieCard[MovieCard.FirstMovieRedItSMyWar],
       expectedFirstAction: MovieAction.AudienceTrackAdvance,
       expectedFirstActionName: MovieAction[MovieAction.AudienceTrackAdvance],
@@ -208,11 +165,11 @@ describe('Movie card tests', () => {
       expectedSecondActionName: MovieAction[MovieAction.AdvertisingTokenOnRedGuest],
       expectedThirdAction: MovieAction.Get2Money,
       expectedThirdActionName: MovieAction[MovieAction.Get2Money],
-      expectedFourthAction: MovieAction.None,
-      expectedFourthActionName: MovieAction[MovieAction.None]
+      expectedFourthAction: undefined,
+      expectedFourthActionName: 'undefined'
     },
     {
-      film: MovieCard.FirstMovieYellowModernLove,
+      film: MovieCard.FirstMovieYellowModernLove as Exclude<MovieCard, MovieCard.FinalShowing>,
       filmName: MovieCard[MovieCard.FirstMovieYellowModernLove],
       expectedFirstAction: MovieAction.AudienceTrackAdvance,
       expectedFirstActionName: MovieAction[MovieAction.AudienceTrackAdvance],
@@ -220,11 +177,11 @@ describe('Movie card tests', () => {
       expectedSecondActionName: MovieAction[MovieAction.AdvertisingTokenOnYellowGuest],
       expectedThirdAction: MovieAction.Get2Money,
       expectedThirdActionName: MovieAction[MovieAction.Get2Money],
-      expectedFourthAction: MovieAction.None,
-      expectedFourthActionName: MovieAction[MovieAction.None]
+      expectedFourthAction: undefined,
+      expectedFourthActionName: 'undefined'
     },
     {
-      film: MovieCard.BlueHenrietta,
+      film: MovieCard.BlueHenrietta as Exclude<MovieCard, MovieCard.FinalShowing>,
       filmName: MovieCard[MovieCard.BlueHenrietta],
       expectedFirstAction: MovieAction.None,
       expectedFirstActionName: MovieAction[MovieAction.None],
@@ -236,7 +193,7 @@ describe('Movie card tests', () => {
       expectedFourthActionName: MovieAction[MovieAction.AdvertisingTokenOnWhiteGuestToBag]
     },
     {
-      film: MovieCard.GreenTheBarbarian,
+      film: MovieCard.GreenTheBarbarian as Exclude<MovieCard, MovieCard.FinalShowing>,
       filmName: MovieCard[MovieCard.GreenTheBarbarian],
       expectedFirstAction: MovieAction.None,
       expectedFirstActionName: MovieAction[MovieAction.None],
@@ -251,10 +208,11 @@ describe('Movie card tests', () => {
     'Given $filmName, getFirstAction(), getSecondAction(), getThirdAction and getFourthAction should return respectively $expectedFirstActionName, $expectedSecondActionName, $expectedThirdActionName, $expectedFourthActionName',
     ({ film, expectedFirstAction, expectedSecondAction, expectedThirdAction, expectedFourthAction }) => {
       // When
-      const firstAction = getFirstAction(film)
-      const secondAction = getSecondAction(film)
-      const thirdAction = getThirdAction(film)
-      const fourthAction = getFourthAction(film)
+      const testMovieCharacteristics = movieCardCharacteristics[film]
+      const firstAction = testMovieCharacteristics.getAction(0)
+      const secondAction = testMovieCharacteristics.getAction(1)
+      const thirdAction = testMovieCharacteristics.getAction(2)
+      const fourthAction = testMovieCharacteristics.getAction(3)
 
       // Then
       expect(firstAction).toEqual(expectedFirstAction)

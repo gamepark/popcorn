@@ -56,13 +56,6 @@ export enum MovieColor {
   Blue
 }
 
-export enum BonusCondition {
-  None = 0,
-  OneSeatTheater = 1,
-  TwoSeatTheater = 2,
-  ThreeSeatTheater = 3
-}
-
 export enum MovieAction {
   None = 0,
   AudienceTrackAdvance,

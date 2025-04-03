@@ -54,12 +54,22 @@ export class BuyingPhaseBuyingFilmRule extends PlayerTurnRule<PlayerColor, Mater
         throw new Error('Trying to move an invalid card')
       }
       const consequences: MaterialMove<PlayerColor, MaterialType, LocationType>[] = []
+      const sliderMove = this.getSliderMove(move.data.destinationSpot)
+      if (sliderMove !== undefined) {
+        consequences.push(sliderMove)
+      }
       const previousMovieCardMaterial = this.material(MaterialType.MovieCards)
         .location(LocationType.MovieCardSpotOnBottomPlayerCinemaBoard)
         .player(this.player)
         .location((location) => location.x === move.data.destinationSpot)
       if (previousMovieCardMaterial.length === 1) {
         consequences.push(
+          previousMovieCardMaterial.moveItem({
+            type: LocationType.MovieCardSpotOnBottomPlayerCinemaBoard,
+            player: this.player,
+            x: move.data.destinationSpot,
+            y: 1
+          }),
           previousMovieCardMaterial.moveItem({
             type: LocationType.PlayerMovieCardArchiveSpot
           })
@@ -70,13 +80,16 @@ export class BuyingPhaseBuyingFilmRule extends PlayerTurnRule<PlayerColor, Mater
         boughtCardMaterial.moveItem({
           type: LocationType.MovieCardSpotOnBottomPlayerCinemaBoard,
           player: this.player,
-          x: move.data.destinationSpot
+          x: move.data.destinationSpot,
+          y: 1
+        }),
+        boughtCardMaterial.moveItem({
+          type: LocationType.MovieCardSpotOnBottomPlayerCinemaBoard,
+          player: this.player,
+          x: move.data.destinationSpot,
+          y: 0
         })
       )
-      const sliderMove = this.getSliderMove(move.data.destinationSpot)
-      if (sliderMove !== undefined) {
-        consequences.push(sliderMove)
-      }
       const theaterTile = this.material(MaterialType.TheaterTiles)
         .location(LocationType.TheaterTileSpotOnTopPlayerCinemaBoard)
         .player(this.player)
@@ -177,11 +190,11 @@ export class BuyingPhaseBuyingFilmRule extends PlayerTurnRule<PlayerColor, Mater
       case MovieAction.PlaceGuestInReserve:
         return [] // TODO
       case MovieAction.PlaceExitZoneGuestInBag:
-        return [] // TODO
+        return [this.startRule<RuleId>(RuleId.PlaceExitZoneGuestInBagRule)] // TODO
       case MovieAction.DrawGuestAndPlaceThem:
         return [] // TODO
       case MovieAction.DrawAwardCard:
-        return [] // TODO
+        return [this.startSimultaneousRule<PlayerColor, RuleId>(RuleId.DealAndDiscardAwardCards, [this.player])]
     }
   }
 

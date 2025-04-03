@@ -15,7 +15,7 @@ export class JoeJoeCharacteristics implements MovieCardCharacteristics {
   }
 
   public getBonusAction(theaterTile: TheaterTile): MovieAction | undefined {
-    return getBonusAction(theaterTile, 2, MovieAction.Get2Money)
+    return getBonusAction(theaterTile, 2, MovieAction.Get2Popcorn)
   }
 
   public getAction(actionNumber: number): MovieAction | undefined {

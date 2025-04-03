@@ -4,7 +4,7 @@ import { TheaterTile } from '../TheaterTile'
 import { getMovieAction, MovieCardCharacteristics } from './MovieCardCharacteristics'
 
 export class ItSMyWarCharacteristics implements MovieCardCharacteristics {
-  private readonly actions: MovieAction[] = [MovieAction.AudienceTrackAdvance, MovieAction.AdvertisingTokenOnBlueGuest, MovieAction.Get2Money]
+  private readonly actions: MovieAction[] = [MovieAction.AudienceTrackAdvance, MovieAction.AdvertisingTokenOnRedGuest, MovieAction.Get2Money]
 
   public getColor(): MovieColor {
     return MovieColor.Red

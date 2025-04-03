@@ -1,6 +1,6 @@
-import { LocationType } from '@gamepark/game-template/material/LocationType'
-import { MaterialType } from '@gamepark/game-template/material/MaterialType'
-import { PlayerColor } from '@gamepark/game-template/PlayerColor'
+import { LocationType } from '@gamepark/popcorn/material/LocationType'
+import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
+import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
 import { Locator } from '@gamepark/react-game'
 import { advertisingBoardLocator } from './AdvertisingBoardLocator'
 import { advertisingTokenSpotOnAdvertisingBoardLocator } from './AdvertisingTokenSpotOnAdvertisingBoardLocator'
@@ -73,7 +73,7 @@ export const Locators: Partial<Record<LocationType, Locator<PlayerColor, Materia
   [LocationType.FirstPlayerMarkerSpot]: firstPlayerTokenLocator,
   [LocationType.PlayerClothBagSpot]: playerClothBagLocator,
   [LocationType.PlayerPopcornBucketSpot]: popcornCupLocator,
-  [LocationType.PLayerGuestPawnsUnderBlothBagSpot]: playerGuestPawnUnderClothBagLocator,
+  [LocationType.PlayerGuestPawnsUnderBlothBagSpot]: playerGuestPawnUnderClothBagLocator,
   [LocationType.PlayerPopcornPileUnderPopcornCupSpot]: playerPopcornPileLocator,
   [LocationType.PlayerTheaterTrophySpot]: playerTheaterToprhyLocator
 }

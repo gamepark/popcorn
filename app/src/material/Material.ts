@@ -1,4 +1,4 @@
-import { MaterialType } from '@gamepark/game-template/material/MaterialType'
+import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
 import { MaterialDescription } from '@gamepark/react-game'
 import { advertisingBoardDescription } from './AdvertisingBoardDescription'
 import { advertisingTokenDescription } from './AdvertisingTokenDescription'
