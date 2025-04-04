@@ -1,3 +1,4 @@
+import { BuyMovieCardCustomMoveData } from './material/CustomMoveType'
 import { RuleId } from './rules/RuleId'
 
 export enum Memorize {
@@ -11,6 +12,7 @@ export type PlayerActionMemory = {
   [RuleId.BuyingPhaseRule]: {
     filmBought: boolean
     theaterTileBought: boolean
+    buyingCardCustomMoveData?: BuyMovieCardCustomMoveData
   }
 }
 

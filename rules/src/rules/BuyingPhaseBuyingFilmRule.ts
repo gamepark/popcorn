@@ -1,10 +1,11 @@
-import { CustomMove, Location, MaterialItem, MaterialMove, MoveItem, PlayerTurnRule, PlayMoveContext } from '@gamepark/rules-api'
+import { CustomMove, Location, MaterialItem, MaterialMove, MaterialRulesPart, MoveItem, PlayerTurnRule, PlayMoveContext } from '@gamepark/rules-api'
 import { AdvertisingTokenSpot } from '../material/AdvertisingTokenSpot'
 import { BuyMovieCardCustomMoveData, CustomMoveType, isBuyMovieCardCustomMove } from '../material/CustomMoveType'
+import { GuestPawn } from '../material/GuestPawn'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { moneyTokens } from '../material/MoneyToken'
-import { MovieAction, MovieCard, movieCardCharacteristics, MovieCardId } from '../material/MovieCard'
+import { MovieAction, MovieCard, movieCardCharacteristics, MovieCardId, MovieColor } from '../material/MovieCard'
 import { popcornTokens } from '../material/PopcornToken'
 import { TheaterTileId } from '../material/TheaterTile'
 import { Memorize, PlayerActionMemory } from '../Memorize'
@@ -43,72 +44,97 @@ export class BuyingPhaseBuyingFilmRule extends PlayerTurnRule<PlayerColor, Mater
     if (isBuyMovieCardCustomMove(move)) {
       const memory = this.remind<PlayerActionMemory>(Memorize.PlayerActions, this.player)
       memory[RuleId.BuyingPhaseRule].filmBought = true
-      this.memorize<PlayerActionMemory>(Memorize.PlayerActions, memory, this.player)
       const boughtCardMaterial = this.material(MaterialType.MovieCards).index(move.data.boughtCardIndex)
-      const boughtCard = boughtCardMaterial.getItem<MovieCardId>()
-      if (
-        boughtCard?.id.front === undefined ||
-        boughtCard.id.front === MovieCard.FinalShowing ||
-        (boughtCard.location.type !== LocationType.PremiersRowSpot && boughtCard.location.type !== LocationType.FeaturesRowSpot)
-      ) {
-        throw new Error('Trying to move an invalid card')
+      const boughtCard = boughtCardMaterial.getItem<MovieCardId>() as MaterialItem<PlayerColor, LocationType, Required<MovieCardId>>
+      if (boughtCard.id.front === MovieCard.FinalShowing) {
+        throw new Error('Final showing cannot be bought')
       }
-      const consequences: MaterialMove<PlayerColor, MaterialType, LocationType>[] = []
-      const sliderMove = this.getSliderMove(move.data.destinationSpot)
-      if (sliderMove !== undefined) {
-        consequences.push(sliderMove)
+      if (boughtCard.location.type === LocationType.PremiersRowSpot) {
+        memory[RuleId.BuyingPhaseRule].buyingCardCustomMoveData = move.data
+        this.memorize<PlayerActionMemory>(Memorize.PlayerActions, memory, this.player)
+        const guestPawn = BuyingPhaseBuyingFilmRule.getGuestPawnColorFromMovieId(boughtCard.id.front)
+        this.memorize<GuestPawn>(Memorize.GuestPawnColorToDraw, guestPawn, this.player)
+        return [this.startRule<RuleId>(RuleId.PickGuestFromReserveOrExitZoneRule)]
       }
-      const previousMovieCardMaterial = this.material(MaterialType.MovieCards)
-        .location(LocationType.MovieCardSpotOnBottomPlayerCinemaBoard)
-        .player(this.player)
-        .location((location) => location.x === move.data.destinationSpot)
-      if (previousMovieCardMaterial.length === 1) {
-        consequences.push(
-          previousMovieCardMaterial.moveItem({
-            type: LocationType.MovieCardSpotOnBottomPlayerCinemaBoard,
-            player: this.player,
-            x: move.data.destinationSpot,
-            y: 1
-          }),
-          previousMovieCardMaterial.moveItem({
-            type: LocationType.PlayerMovieCardArchiveSpot
-          })
-        )
-      }
-      consequences.push(
-        ...this.getMoneyTokensMoves(boughtCard),
-        boughtCardMaterial.moveItem({
-          type: LocationType.MovieCardSpotOnBottomPlayerCinemaBoard,
-          player: this.player,
-          x: move.data.destinationSpot,
-          y: 1
-        }),
-        boughtCardMaterial.moveItem({
-          type: LocationType.MovieCardSpotOnBottomPlayerCinemaBoard,
-          player: this.player,
-          x: move.data.destinationSpot,
-          y: 0
-        })
-      )
-      const theaterTile = this.material(MaterialType.TheaterTiles)
-        .location(LocationType.TheaterTileSpotOnTopPlayerCinemaBoard)
-        .player(this.player)
-        .location((location) => location.x === move.data.destinationSpot)
-        .getItem<TheaterTileId>()
-      if (theaterTile?.id.front === undefined) {
-        throw new Error('Cannot have an empty tile')
-      }
-      const movieCharacteristics = movieCardCharacteristics[boughtCard.id.front]
-      const bonusAction = movieCharacteristics.getBonusAction(theaterTile.id.front)
-      if (bonusAction !== undefined) {
-        consequences.push(...this.getMovesForMovieAction(bonusAction, this.player))
-      }
-      return consequences
+      this.memorize<PlayerActionMemory>(Memorize.PlayerActions, memory, this.player)
+      return BuyingPhaseBuyingFilmRule.getBuyingFilmCardConsequences(this, this.player, boughtCard, move.data.destinationSpot)
     }
     return []
   }
 
-  getMoneyTokensMoves(boughtCard: MaterialItem<PlayerColor, LocationType, MovieCardId>): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+  public static getBuyingFilmCardConsequences(
+    rule: MaterialRulesPart<PlayerColor, MaterialType, LocationType>,
+    player: PlayerColor,
+    boughtCard: MaterialItem<PlayerColor, LocationType, Required<MovieCardId>>,
+    destinationSpot: 0 | 1 | 2
+  ): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+    if (
+      boughtCard.id.front === MovieCard.FinalShowing ||
+      (boughtCard.location.type !== LocationType.PremiersRowSpot && boughtCard.location.type !== LocationType.FeaturesRowSpot)
+    ) {
+      throw new Error('Trying to move an invalid card')
+    }
+    const boughtCardMaterial = rule.material(MaterialType.MovieCards).id(boughtCard.id)
+    const consequences: MaterialMove<PlayerColor, MaterialType, LocationType>[] = []
+    const sliderMove = BuyingPhaseBuyingFilmRule.getSliderMove(rule, player, destinationSpot)
+    if (sliderMove !== undefined) {
+      consequences.push(sliderMove)
+    }
+    const previousMovieCardMaterial = rule
+      .material(MaterialType.MovieCards)
+      .location(LocationType.MovieCardSpotOnBottomPlayerCinemaBoard)
+      .player(player)
+      .location((location) => location.x === destinationSpot)
+    if (previousMovieCardMaterial.length === 1) {
+      consequences.push(
+        previousMovieCardMaterial.moveItem({
+          type: LocationType.MovieCardSpotOnBottomPlayerCinemaBoard,
+          player: player,
+          x: destinationSpot,
+          y: 1
+        }),
+        previousMovieCardMaterial.moveItem({
+          type: LocationType.PlayerMovieCardArchiveSpot
+        })
+      )
+    }
+    consequences.push(
+      ...BuyingPhaseBuyingFilmRule.getMoneyTokensMoves(rule, boughtCard, player),
+      boughtCardMaterial.moveItem({
+        type: LocationType.MovieCardSpotOnBottomPlayerCinemaBoard,
+        player: player,
+        x: destinationSpot,
+        y: 1
+      }),
+      boughtCardMaterial.moveItem({
+        type: LocationType.MovieCardSpotOnBottomPlayerCinemaBoard,
+        player: player,
+        x: destinationSpot,
+        y: 0
+      })
+    )
+    const theaterTile = rule
+      .material(MaterialType.TheaterTiles)
+      .location(LocationType.TheaterTileSpotOnTopPlayerCinemaBoard)
+      .player(player)
+      .location((location) => location.x === destinationSpot)
+      .getItem<TheaterTileId>()
+    if (theaterTile?.id.front === undefined) {
+      throw new Error('Cannot have an empty tile')
+    }
+    const movieCharacteristics = movieCardCharacteristics[boughtCard.id.front]
+    const bonusAction = movieCharacteristics.getBonusAction(theaterTile.id.front)
+    if (bonusAction !== undefined) {
+      consequences.push(...BuyingPhaseBuyingFilmRule.getMovesForMovieAction(rule, player, bonusAction))
+    }
+    return consequences
+  }
+
+  private static getMoneyTokensMoves(
+    rule: MaterialRulesPart<PlayerColor, MaterialType, LocationType>,
+    boughtCard: MaterialItem<PlayerColor, LocationType, MovieCardId>,
+    player: PlayerColor
+  ): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     if (
       boughtCard.id.front === undefined ||
       boughtCard.id.front === MovieCard.FinalShowing ||
@@ -117,9 +143,9 @@ export class BuyingPhaseBuyingFilmRule extends PlayerTurnRule<PlayerColor, Mater
       throw new Error('Trying to move an invalid card')
     }
     const cardPrice = movieCardCharacteristics[boughtCard.id.front].getPrice(boughtCard.location.type)
-    return this.material(MaterialType.MoneyTokens).money(moneyTokens).removeMoney(cardPrice, {
+    return rule.material(MaterialType.MoneyTokens).money(moneyTokens).removeMoney(cardPrice, {
       type: LocationType.PlayerMoneyPileSpot,
-      player: this.player
+      player: player
     })
   }
 
@@ -143,14 +169,19 @@ export class BuyingPhaseBuyingFilmRule extends PlayerTurnRule<PlayerColor, Mater
       .moveItems(destination)
   }
 
-  private getSliderMove(destinationSpot: 0 | 1 | 2): MaterialMove<PlayerColor, MaterialType, LocationType> | undefined {
-    const destinationLobbySliderMaterial = this.material(MaterialType.LobbySliders)
-      .player(this.player)
+  private static getSliderMove(
+    rule: MaterialRulesPart<PlayerColor, MaterialType, LocationType>,
+    player: PlayerColor,
+    destinationSpot: 0 | 1 | 2
+  ): MaterialMove<PlayerColor, MaterialType, LocationType> | undefined {
+    const destinationLobbySliderMaterial = rule
+      .material(MaterialType.LobbySliders)
+      .player(player)
       .location((location) => location.x === destinationSpot && location.y !== 0)
     if (destinationLobbySliderMaterial.length === 1) {
       return destinationLobbySliderMaterial.moveItem({
         type: LocationType.LobbySliderSpotOnTopPlayerCinemaBoard,
-        player: this.player,
+        player: player,
         x: destinationSpot,
         y: 0
       })
@@ -158,69 +189,78 @@ export class BuyingPhaseBuyingFilmRule extends PlayerTurnRule<PlayerColor, Mater
     return undefined
   }
 
-  private getMovesForMovieAction(bonusAction: MovieAction, player: PlayerColor): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+  private static getMovesForMovieAction(
+    rule: MaterialRulesPart<PlayerColor, MaterialType, LocationType>,
+    player: PlayerColor,
+    bonusAction: MovieAction
+  ): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     switch (bonusAction) {
       case MovieAction.None:
         return []
       case MovieAction.AudienceTrackAdvance:
-        return this.getAudienceTrackMove(player)
+        return BuyingPhaseBuyingFilmRule.getAudienceTrackMove(rule, player)
       case MovieAction.AdvertisingTokenOnAnyGuest:
       case MovieAction.AdvertisingTokenOnBlueGuest:
       case MovieAction.AdvertisingTokenOnGreenGuest:
       case MovieAction.AdvertisingTokenOnRedGuest:
       case MovieAction.AdvertisingTokenOnYellowGuest:
       case MovieAction.AdvertisingTokenOnWhiteGuestToBag:
-        return this.getAdvertisingTokenMove(bonusAction, player)
+        return BuyingPhaseBuyingFilmRule.getAdvertisingTokenMove(rule, player, bonusAction)
       case MovieAction.Get1Money:
-        return this.getMoneyMove(MaterialType.MoneyTokens, 1, player)
+        return BuyingPhaseBuyingFilmRule.getMoneyMove(rule, player, MaterialType.MoneyTokens, 1)
       case MovieAction.Get2Money:
-        return this.getMoneyMove(MaterialType.MoneyTokens, 2, player)
+        return BuyingPhaseBuyingFilmRule.getMoneyMove(rule, player, MaterialType.MoneyTokens, 2)
       case MovieAction.Get3Money:
-        return this.getMoneyMove(MaterialType.MoneyTokens, 3, player)
+        return BuyingPhaseBuyingFilmRule.getMoneyMove(rule, player, MaterialType.MoneyTokens, 3)
       case MovieAction.Get4Money:
-        return this.getMoneyMove(MaterialType.MoneyTokens, 4, player)
+        return BuyingPhaseBuyingFilmRule.getMoneyMove(rule, player, MaterialType.MoneyTokens, 4)
       case MovieAction.Get1Popcorn:
-        return this.getMoneyMove(MaterialType.PopcornTokens, 1, player)
+        return BuyingPhaseBuyingFilmRule.getMoneyMove(rule, player, MaterialType.PopcornTokens, 1)
       case MovieAction.Get2Popcorn:
-        return this.getMoneyMove(MaterialType.PopcornTokens, 2, player)
+        return BuyingPhaseBuyingFilmRule.getMoneyMove(rule, player, MaterialType.PopcornTokens, 2)
       case MovieAction.Get3Popcorn:
-        return this.getMoneyMove(MaterialType.PopcornTokens, 3, player)
+        return BuyingPhaseBuyingFilmRule.getMoneyMove(rule, player, MaterialType.PopcornTokens, 3)
       case MovieAction.Get4Popcorn:
-        return this.getMoneyMove(MaterialType.PopcornTokens, 4, player)
+        return BuyingPhaseBuyingFilmRule.getMoneyMove(rule, player, MaterialType.PopcornTokens, 4)
       case MovieAction.PlaceGuestInReserve:
-        return [this.startRule(RuleId.PickPlayerGuestAndPlaceItInReserveRule)] // TODO
+        return [rule.startRule(RuleId.PickPlayerGuestAndPlaceItInReserveRule)]
       case MovieAction.PlaceExitZoneGuestInBag:
-        return [this.startRule<RuleId>(RuleId.PlaceExitZoneGuestInBagRule)] // TODO
+        return [rule.startRule<RuleId>(RuleId.PlaceExitZoneGuestInBagRule)]
       case MovieAction.DrawGuestAndPlaceThem:
         return [] // TODO
       case MovieAction.DrawAwardCard:
-        return [this.startSimultaneousRule<PlayerColor, RuleId>(RuleId.DealAndDiscardAwardCards, [this.player])]
+        return [rule.startSimultaneousRule<PlayerColor, RuleId>(RuleId.DealAndDiscardAwardCards, [player])]
     }
   }
 
-  private getMoneyMove(
+  private static getMoneyMove(
+    rule: MaterialRulesPart<PlayerColor, MaterialType, LocationType>,
+    player: PlayerColor,
     moneyType: MaterialType.MoneyTokens | MaterialType.PopcornTokens,
-    quantity: number,
-    player: PlayerColor
+    quantity: number
   ): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     const moneyValues: number[] = moneyType === MaterialType.MoneyTokens ? moneyTokens : popcornTokens
     const destinationLocationType =
       moneyType === MaterialType.MoneyTokens ? LocationType.PlayerMoneyPileSpot : LocationType.PlayerPopcornPileUnderPopcornCupSpot
-    return this.material(moneyType).money(moneyValues).addMoney(quantity, {
+    return rule.material(moneyType).money(moneyValues).addMoney(quantity, {
       type: destinationLocationType,
       player: player
     })
   }
 
-  private getAudienceTrackMove(player: PlayerColor): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
-    const audienceCube = this.material(MaterialType.AudienceCubes).player(player).getItem()
+  private static getAudienceTrackMove(
+    rule: MaterialRulesPart<PlayerColor, MaterialType, LocationType>,
+    player: PlayerColor
+  ): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+    const audienceCube = rule.material(MaterialType.AudienceCubes).player(player).getItem()
     if (audienceCube !== undefined) {
       const newCubeSpot = Math.min((audienceCube.location.x ?? 0) + 1, 8)
       if (newCubeSpot === 8) {
-        this.getMoneyMove(MaterialType.PopcornTokens, 1, player)
+        BuyingPhaseBuyingFilmRule.getMoneyMove(rule, player, MaterialType.PopcornTokens, 1)
       }
       const consequences: MaterialMove<PlayerColor, MaterialType, LocationType>[] = [
-        this.material(MaterialType.AudienceCubes)
+        rule
+          .material(MaterialType.AudienceCubes)
           .player(player)
           .moveItem((item) => ({
             type: LocationType.AudienceCubeSpotOnTopPlayerCinemaBoard,
@@ -228,24 +268,25 @@ export class BuyingPhaseBuyingFilmRule extends PlayerTurnRule<PlayerColor, Mater
             x: (item.location.x ?? 0) + 1
           }))
       ]
-      consequences.push(...this.getAudienceBonusMove(newCubeSpot, player))
+      consequences.push(...BuyingPhaseBuyingFilmRule.getAudienceBonusMove(rule, player, newCubeSpot))
       return consequences
     }
     return []
   }
 
-  private getAdvertisingTokenMove(
+  private static getAdvertisingTokenMove(
+    rule: MaterialRulesPart<PlayerColor, MaterialType, LocationType>,
+    player: PlayerColor,
     bonusAction:
       | MovieAction.AdvertisingTokenOnYellowGuest
       | MovieAction.AdvertisingTokenOnRedGuest
       | MovieAction.AdvertisingTokenOnGreenGuest
       | MovieAction.AdvertisingTokenOnBlueGuest
       | MovieAction.AdvertisingTokenOnAnyGuest
-      | MovieAction.AdvertisingTokenOnWhiteGuestToBag,
-    player: PlayerColor
+      | MovieAction.AdvertisingTokenOnWhiteGuestToBag
   ): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
-    const destinationLocationId = this.getAdvertisingTokenSpotFromMovieAction(bonusAction)
-    const advertisingTokenMaterial = this.material(MaterialType.AdvertisingTokens).location(LocationType.PlayerAdvertisingTokenSpot).player(player)
+    const destinationLocationId = BuyingPhaseBuyingFilmRule.getAdvertisingTokenSpotFromMovieAction(bonusAction)
+    const advertisingTokenMaterial = rule.material(MaterialType.AdvertisingTokens).location(LocationType.PlayerAdvertisingTokenSpot).player(player)
     if (advertisingTokenMaterial.length > 0) {
       return [
         advertisingTokenMaterial.moveItem({
@@ -257,7 +298,7 @@ export class BuyingPhaseBuyingFilmRule extends PlayerTurnRule<PlayerColor, Mater
     return []
   }
 
-  private getAdvertisingTokenSpotFromMovieAction(
+  private static getAdvertisingTokenSpotFromMovieAction(
     bonusAction:
       | MovieAction.AdvertisingTokenOnYellowGuest
       | MovieAction.AdvertisingTokenOnRedGuest
@@ -282,18 +323,35 @@ export class BuyingPhaseBuyingFilmRule extends PlayerTurnRule<PlayerColor, Mater
     }
   }
 
-  private getAudienceBonusMove(newCubeSpot: number, player: PlayerColor): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+  private static getAudienceBonusMove(
+    rule: MaterialRulesPart<PlayerColor, MaterialType, LocationType>,
+    player: PlayerColor,
+    newCubeSpot: number
+  ): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     switch (newCubeSpot) {
       case 2:
-        return this.getMoneyMove(MaterialType.MoneyTokens, 2, player)
+        return BuyingPhaseBuyingFilmRule.getMoneyMove(rule, player, MaterialType.MoneyTokens, 2)
       case 4:
-        return this.getMoneyMove(MaterialType.MoneyTokens, 3, player)
+        return BuyingPhaseBuyingFilmRule.getMoneyMove(rule, player, MaterialType.MoneyTokens, 3)
       case 6:
         return [] // TODO
       case 7:
-        return this.getMoneyMove(MaterialType.PopcornTokens, 3, player)
+        return BuyingPhaseBuyingFilmRule.getMoneyMove(rule, player, MaterialType.PopcornTokens, 3)
       default:
         return []
+    }
+  }
+
+  private static getGuestPawnColorFromMovieId(front: Exclude<MovieCard, MovieCard.FinalShowing>): GuestPawn {
+    switch (movieCardCharacteristics[front].getColor()) {
+      case MovieColor.Blue:
+        return GuestPawn.Blue
+      case MovieColor.Green:
+        return GuestPawn.Green
+      case MovieColor.Red:
+        return GuestPawn.Red
+      case MovieColor.Yellow:
+        return GuestPawn.Yellow
     }
   }
 }
