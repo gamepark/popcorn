@@ -5,13 +5,15 @@ import { MaterialType } from '../material/MaterialType'
 import { defaultPlayerActionMemory, Memorize, PlayerActionMemory } from '../Memorize'
 import { PlayerColor } from '../PlayerColor'
 import { BuyingPhaseBuyingFilmRule } from './BuyingPhaseBuyingFilmRule'
+import { BuyingPhaseUseAdvertisingTokenRule } from './BuyingPhaseUseAdvertisingTokenRule'
 import { RuleId } from './RuleId'
 
 export class BuyingPhaseRule extends PlayerTurnRule<PlayerColor, MaterialType, LocationType> {
-  private subRules = [new BuyingPhaseBuyingFilmRule(this.game)]
+  private subRules = [new BuyingPhaseBuyingFilmRule(this.game), new BuyingPhaseUseAdvertisingTokenRule(this.game)]
 
   public getPlayerMoves(): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
-    const playerMoves = this.subRules.flatMap((rule) => rule.getPlayerMoves())
+    const availableSubRules = this.remind<boolean>(Memorize.IsFirstTurn) ? [this.subRules[0]] : this.subRules
+    const playerMoves = availableSubRules.flatMap((rule) => rule.getPlayerMoves())
     playerMoves.push(this.customMove<CustomMoveType>(CustomMoveType.PassBuyingPhase))
     return playerMoves
   }
