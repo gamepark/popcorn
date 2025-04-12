@@ -1,7 +1,6 @@
 import { CustomMove, Location, MaterialItem, MaterialMove, MaterialRulesPart, MoveItem, PlayerTurnRule, PlayMoveContext } from '@gamepark/rules-api'
 import { AdvertisingTokenSpot } from '../material/AdvertisingTokenSpot'
 import { BuyMovieCardCustomMoveData, CustomMoveType, isBuyMovieCardCustomMove } from '../material/CustomMoveType'
-import { GuestPawn } from '../material/GuestPawn'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { moneyTokens } from '../material/MoneyToken'
@@ -53,7 +52,7 @@ export class BuyingPhaseBuyingFilmRule extends PlayerTurnRule<PlayerColor, Mater
         memory[RuleId.BuyingPhaseRule].buyingCardCustomMoveData = move.data
         this.memorize<PlayerActionMemory>(Memorize.PlayerActions, memory, this.player)
         const guestPawn = BuyingPhaseBuyingFilmRule.getGuestPawnColorFromMovieId(boughtCard.id.front)
-        this.memorize<GuestPawn>(Memorize.GuestPawnColorToDraw, guestPawn, this.player)
+        this.memorize<AdvertisingTokenSpot>(Memorize.GuestPawnColorToDraw, guestPawn, this.player)
         return [this.startRule<RuleId>(RuleId.PickGuestFromReserveOrExitZoneRule)]
       }
       this.memorize<PlayerActionMemory>(Memorize.PlayerActions, memory, this.player)
@@ -292,7 +291,8 @@ export class BuyingPhaseBuyingFilmRule extends PlayerTurnRule<PlayerColor, Mater
         advertisingTokenMaterial.moveItem({
           type: LocationType.AdvertisingTokenSpotOnAdvertisingBoard,
           id: destinationLocationId
-        })
+        }),
+        advertisingTokenMaterial.unselectItem()
       ]
     }
     return []
@@ -342,16 +342,16 @@ export class BuyingPhaseBuyingFilmRule extends PlayerTurnRule<PlayerColor, Mater
     }
   }
 
-  private static getGuestPawnColorFromMovieId(front: Exclude<MovieCard, MovieCard.FinalShowing>): GuestPawn {
+  private static getGuestPawnColorFromMovieId(front: Exclude<MovieCard, MovieCard.FinalShowing>): AdvertisingTokenSpot {
     switch (movieCardCharacteristics[front].getColor()) {
       case MovieColor.Blue:
-        return GuestPawn.Blue
+        return AdvertisingTokenSpot.BlueGuestPawn
       case MovieColor.Green:
-        return GuestPawn.Green
+        return AdvertisingTokenSpot.GreenGuestPawn
       case MovieColor.Red:
-        return GuestPawn.Red
+        return AdvertisingTokenSpot.RedGuestPawn
       case MovieColor.Yellow:
-        return GuestPawn.Yellow
+        return AdvertisingTokenSpot.YellowGuestPawn
     }
   }
 }
