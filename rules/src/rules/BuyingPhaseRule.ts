@@ -5,6 +5,7 @@ import { MaterialType } from '../material/MaterialType'
 import { defaultPlayerActionMemory, Memorize, PlayerActionMemory } from '../Memorize'
 import { PlayerColor } from '../PlayerColor'
 import { BuyingPhaseBuyingFilmRule } from './BuyingPhaseBuyingFilmRule'
+import { BuyingPhaseBuyingTheaterRule } from './BuyingPhaseBuyingTheaterRule'
 import { BuyingPhaseUseAdvertisingTokenRule } from './BuyingPhaseUseAdvertisingTokenRule'
 import { RuleId } from './RuleId'
 
@@ -12,7 +13,7 @@ export class BuyingPhaseRule extends PlayerTurnRule<PlayerColor, MaterialType, L
   private get subRules() {
     return this.remind<boolean>(Memorize.IsFirstTurn)
       ? [new BuyingPhaseBuyingFilmRule(this.game)]
-      : [new BuyingPhaseBuyingFilmRule(this.game), new BuyingPhaseUseAdvertisingTokenRule(this.game)]
+      : [new BuyingPhaseBuyingFilmRule(this.game), new BuyingPhaseBuyingTheaterRule(this.game), new BuyingPhaseUseAdvertisingTokenRule(this.game)]
   }
 
   public getPlayerMoves(): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
@@ -25,9 +26,7 @@ export class BuyingPhaseRule extends PlayerTurnRule<PlayerColor, MaterialType, L
     if (isPassBuyingPhaseCustomMove(move)) {
       this.memorize<PlayerActionMemory>(Memorize.PlayerActions, defaultPlayerActionMemory, this.player)
       if (this.nextPlayer === this.game.players[0]) {
-        if (this.remind<boolean>(Memorize.IsFirstTurn)) {
-          this.memorize<boolean>(Memorize.IsFirstTurn, false)
-        }
+        this.memorize<boolean>(Memorize.IsFirstTurn, (_) => false)
         return [this.endGame()]
       }
       return [this.startPlayerTurn<PlayerColor, RuleId>(RuleId.BuyingPhaseRule, this.nextPlayer)]

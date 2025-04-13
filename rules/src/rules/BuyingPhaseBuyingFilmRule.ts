@@ -40,21 +40,33 @@ export class BuyingPhaseBuyingFilmRule extends PlayerTurnRule<PlayerColor, Mater
 
   public onCustomMove(move: CustomMove<CustomMoveType>, _context?: PlayMoveContext): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     if (isBuyMovieCardCustomMove(move)) {
-      const memory = this.remind<PlayerActionMemory>(Memorize.PlayerActions, this.player)
-      memory[RuleId.BuyingPhaseRule].filmBought = true
       const boughtCardMaterial = this.material(MaterialType.MovieCards).index(move.data.boughtCardIndex)
       const boughtCard = boughtCardMaterial.getItem<MovieCardId>() as MaterialItem<PlayerColor, LocationType, Required<MovieCardId>>
       if (boughtCard.id.front === MovieCard.FinalShowing) {
         throw new Error('Final showing cannot be bought')
       }
       if (boughtCard.location.type === LocationType.PremiersRowSpot) {
-        memory[RuleId.BuyingPhaseRule].buyingCardCustomMoveData = move.data
-        this.memorize<PlayerActionMemory>(Memorize.PlayerActions, memory, this.player)
+        this.memorize<PlayerActionMemory>(
+          Memorize.PlayerActions,
+          (memory) => {
+            memory[RuleId.BuyingPhaseRule].filmBought = true
+            memory[RuleId.BuyingPhaseRule].buyingCardCustomMoveData = move.data
+            return memory
+          },
+          this.player
+        )
         const guestPawn = BuyingPhaseBuyingFilmRule.getGuestPawnColorFromMovieId(boughtCard.id.front)
         this.memorize<AdvertisingTokenSpot>(Memorize.GuestPawnColorToDraw, guestPawn, this.player)
         return [this.startRule<RuleId>(RuleId.PickGuestFromReserveOrExitZoneRule)]
       }
-      this.memorize<PlayerActionMemory>(Memorize.PlayerActions, memory, this.player)
+      this.memorize<PlayerActionMemory>(
+        Memorize.PlayerActions,
+        (memory) => {
+          memory[RuleId.BuyingPhaseRule].filmBought = true
+          return memory
+        },
+        this.player
+      )
       return getBuyingFilmCardConsequences(this, this.player, boughtCard, move.data.destinationSpot)
     }
     return []
