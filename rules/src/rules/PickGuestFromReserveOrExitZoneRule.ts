@@ -6,8 +6,8 @@ import { MaterialType } from '../material/MaterialType'
 import { MovieCardId } from '../material/MovieCard'
 import { Memorize, PlayerActionMemory } from '../Memorize'
 import { PlayerColor } from '../PlayerColor'
-import { BuyingPhaseBuyingFilmRule } from './BuyingPhaseBuyingFilmRule'
 import { RuleId } from './RuleId'
+import { getBuyingFilmCardConsequences } from './utils/BuyingFilmConsequencesHelper'
 
 export class PickGuestFromReserveOrExitZoneRule extends PlayerTurnRule<PlayerColor, MaterialType, LocationType> {
   public getPlayerMoves(): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
@@ -74,7 +74,7 @@ export class PickGuestFromReserveOrExitZoneRule extends PlayerTurnRule<PlayerCol
       }
       const consequences = [
         this.material(MaterialType.GuestPawns).location(LocationType.PlayerGuestPawnsUnderBlothBagSpot).player(this.player).shuffle(),
-        ...BuyingPhaseBuyingFilmRule.getBuyingFilmCardConsequences(this, this.player, boughtCard, moveData.destinationSpot)
+        ...getBuyingFilmCardConsequences(this, this.player, boughtCard, moveData.destinationSpot)
       ]
       if (!consequences.some((move) => isStartRule(move) || isStartSimultaneousRule(move))) {
         consequences.push(this.startRule<RuleId>(RuleId.BuyingPhaseRule))
