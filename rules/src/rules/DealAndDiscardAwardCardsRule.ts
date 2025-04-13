@@ -73,16 +73,16 @@ export class DealAndDiscardAwardCardsRule extends SimultaneousRule<PlayerColor, 
   }
 
   private isFirstTurn() {
+    const playerMovieMaterial = this.material(MaterialType.MovieCards).location(LocationType.MovieCardSpotOnBottomPlayerCinemaBoard)
+    const playerMovies = playerMovieMaterial.getItems<Required<MovieCardId>>()
     return (
-      this.material(MaterialType.MovieCards)
-        .location(LocationType.MovieCardSpotOnBottomPlayerCinemaBoard)
-        .id<MovieCardId>(
-          (id) =>
-            id.front !== undefined && id.front !== MovieCard.FinalShowing && movieCardCharacteristics[id.front].getMovieType() === MovieCardType.FirstMovie
-        ).length === this.game.players.length &&
+      playerMovieMaterial.length === this.game.players.length &&
+      playerMovies.every(
+        (item) => item.id.front !== MovieCard.FinalShowing && movieCardCharacteristics[item.id.front].getMovieType() === MovieCardType.FirstMovie
+      ) &&
       this.material(MaterialType.LobbySliders).location(
         (location) => location.type === LocationType.LobbySliderSpotOnTopPlayerCinemaBoard && location.x === 0 && location.y === 1
-      )
+      ).length === this.game.players.length
     )
   }
 }
