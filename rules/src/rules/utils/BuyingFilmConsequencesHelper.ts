@@ -1,4 +1,4 @@
-import { MaterialItem, MaterialMove, MaterialRulesPart } from '@gamepark/rules-api'
+import { isStartPlayerTurn, isStartRule, isStartSimultaneousRule, MaterialItem, MaterialMove, MaterialRulesPart } from '@gamepark/rules-api'
 import { AdvertisingTokenSpot } from '../../material/AdvertisingTokenSpot'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
@@ -6,6 +6,7 @@ import { moneyTokens } from '../../material/MoneyToken'
 import { MovieAction, MovieCard, movieCardCharacteristics, MovieCardId } from '../../material/MovieCard'
 import { popcornTokens } from '../../material/PopcornToken'
 import { TheaterTileId } from '../../material/TheaterTile'
+import { Memorize, PlayerActionMemory } from '../../Memorize'
 import { PlayerColor } from '../../PlayerColor'
 import { RuleId } from '../RuleId'
 
@@ -266,5 +267,31 @@ export const getBuyingFilmCardConsequences = (
   if (bonusAction !== undefined) {
     consequences.push(...getMovesForMovieAction(rule, player, bonusAction))
   }
+  addNextRuleMoveToConsequenceIfNecessary(rule, player, consequences)
   return consequences
+}
+
+export const addNextRuleMoveToConsequenceIfNecessary = (
+  rule: MaterialRulesPart<PlayerColor, MaterialType, LocationType>,
+  player: PlayerColor,
+  consequences: MaterialMove<PlayerColor, MaterialType, LocationType>[]
+) => {
+  if (!consequences.some((move) => isStartPlayerTurn(move) || isStartRule(move) || isStartSimultaneousRule(move))) {
+    const isFirstTurn = rule.remind<boolean>(Memorize.IsFirstTurn)
+    const actionMemory = rule.remind<PlayerActionMemory>(Memorize.PlayerActions, player)[RuleId.BuyingPhaseRule]
+    if (
+      (isFirstTurn && actionMemory.filmBought) ||
+      (!isFirstTurn &&
+        actionMemory.filmBought &&
+        actionMemory.theaterTileBought &&
+        rule.material(MaterialType.AdvertisingTokens).player(player).location(LocationType.AdvertisingTokenSpotOnAdvertisingBoard).selected(true).length === 0)
+    ) {
+      if (rule.game.players.indexOf(player) === rule.game.players.length - 1) {
+        consequences.push(rule.startSimultaneousRule<PlayerColor, RuleId>(RuleId.ShowingsPhaseRule))
+      } else {
+        const newtPlayer = rule.game.players[(rule.game.players.indexOf(player) + 1) % rule.game.players.length]
+        consequences.push(rule.startPlayerTurn<PlayerColor, RuleId>(RuleId.BuyingPhaseRule, newtPlayer))
+      }
+    }
+  }
 }

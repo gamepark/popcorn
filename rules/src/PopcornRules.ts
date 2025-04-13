@@ -19,6 +19,7 @@ import { PickGuestFromReserveOrExitZoneRule } from './rules/PickGuestFromReserve
 import { PlaceExitZoneGuestInBagRule } from './rules/PlaceExitZoneGuestInBagRule'
 import { PickPlayerGuestAndPlaceItInReserveRule } from './rules/PickPlayerGuestAndPlaceItInReserveRule'
 import { RuleId } from './rules/RuleId'
+import { ShowingsPhaseRule } from './rules/ShowingsPhaseRule'
 
 /**
  * This class implements the rules of the board game.
@@ -33,7 +34,8 @@ export class PopcornRules
     [RuleId.BuyingPhaseRule]: BuyingPhaseRule,
     [RuleId.PlaceExitZoneGuestInBagRule]: PlaceExitZoneGuestInBagRule,
     [RuleId.PickPlayerGuestAndPlaceItInReserveRule]: PickPlayerGuestAndPlaceItInReserveRule,
-    [RuleId.PickGuestFromReserveOrExitZoneRule]: PickGuestFromReserveOrExitZoneRule
+    [RuleId.PickGuestFromReserveOrExitZoneRule]: PickGuestFromReserveOrExitZoneRule,
+    [RuleId.ShowingsPhaseRule]: ShowingsPhaseRule
   }
 
   hidingStrategies = {
