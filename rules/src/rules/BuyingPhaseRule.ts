@@ -1,4 +1,5 @@
-import { CustomMove, ItemMove, MaterialMove, PlayerTurnRule, PlayMoveContext } from '@gamepark/rules-api'
+import { CustomMove, ItemMove, MaterialMove, PlayerTurnRule, PlayMoveContext, RuleMove, RuleStep } from '@gamepark/rules-api'
+import { isEmpty } from 'lodash'
 import { CustomMoveType, isPassBuyingPhaseCustomMove } from '../material/CustomMoveType'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
@@ -8,6 +9,7 @@ import { BuyingPhaseBuyingFilmRule } from './BuyingPhaseBuyingFilmRule'
 import { BuyingPhaseBuyingTheaterRule } from './BuyingPhaseBuyingTheaterRule'
 import { BuyingPhaseUseAdvertisingTokenRule } from './BuyingPhaseUseAdvertisingTokenRule'
 import { RuleId } from './RuleId'
+import { addNextRuleMoveToConsequenceIfNecessary } from './utils/BuyingFilmConsequencesHelper'
 
 export class BuyingPhaseRule extends PlayerTurnRule<PlayerColor, MaterialType, LocationType> {
   private get subRules() {
@@ -16,9 +18,21 @@ export class BuyingPhaseRule extends PlayerTurnRule<PlayerColor, MaterialType, L
       : [new BuyingPhaseBuyingFilmRule(this.game), new BuyingPhaseBuyingTheaterRule(this.game), new BuyingPhaseUseAdvertisingTokenRule(this.game)]
   }
 
+  public onRuleStart(
+    _move: RuleMove<PlayerColor, RuleId>,
+    _previousRule?: RuleStep,
+    _context?: PlayMoveContext
+  ): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+    const consequences: MaterialMove<PlayerColor, MaterialType, LocationType>[] = []
+    addNextRuleMoveToConsequenceIfNecessary(this, this.player, consequences)
+    return consequences
+  }
+
   public getPlayerMoves(): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     const playerMoves = this.subRules.flatMap((rule) => rule.getPlayerMoves())
-    playerMoves.push(this.customMove<CustomMoveType>(CustomMoveType.PassBuyingPhase))
+    if (!isEmpty(playerMoves)) {
+      playerMoves.push(this.customMove<CustomMoveType>(CustomMoveType.PassBuyingPhase))
+    }
     return playerMoves
   }
 
@@ -27,7 +41,7 @@ export class BuyingPhaseRule extends PlayerTurnRule<PlayerColor, MaterialType, L
       this.memorize<PlayerActionMemory>(Memorize.PlayerActions, defaultPlayerActionMemory, this.player)
       if (this.nextPlayer === this.game.players[0]) {
         this.memorize<boolean>(Memorize.IsFirstTurn, (_) => false)
-        return [this.endGame()]
+        return [this.startSimultaneousRule<PlayerColor, RuleId>(RuleId.ShowingsPhaseRule)]
       }
       return [this.startPlayerTurn<PlayerColor, RuleId>(RuleId.BuyingPhaseRule, this.nextPlayer)]
     }

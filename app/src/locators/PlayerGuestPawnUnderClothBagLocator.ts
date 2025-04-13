@@ -6,11 +6,11 @@ import { Coordinates, Location, XYCoordinates } from '@gamepark/rules-api'
 
 const coordinates: Record<number, Record<number, XYCoordinates>> = {
   2: {
-    0: { x: -12.5, y: 28 },
-    1: { x: 12.5, y: -28 }
+    0: { x: -16, y: 28 },
+    1: { x: 16, y: -28 }
   },
   3: {
-    0: { x: -12.5, y: 28 },
+    0: { x: -16, y: 28 },
     1: { x: -13, y: -28 },
     2: { x: 52, y: -28 }
   },

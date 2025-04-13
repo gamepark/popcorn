@@ -85,7 +85,7 @@ export class PickGuestFromReserveOrExitZoneRule extends PlayerTurnRule<PlayerCol
   }
 
   private getGuestPawnColorFromMemory(): GuestPawn | undefined {
-    const colorFromMemory = this.remind<AdvertisingTokenSpot>(Memorize.GuestPawnColorToDraw)
+    const colorFromMemory = this.remind<AdvertisingTokenSpot>(Memorize.GuestPawnColorToDraw, this.player)
     switch (colorFromMemory) {
       case AdvertisingTokenSpot.AnyGuestPawn:
         return undefined

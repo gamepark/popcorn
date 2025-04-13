@@ -7,11 +7,11 @@ import { getPlayerItemRotateZ } from './utils/PlayerItemsUtils'
 
 const coordinates: Record<number, Record<number, Coordinates>> = {
   2: {
-    0: { x: -12.5, y: 30, z: 0.1 },
-    1: { x: 12.5, y: -30, z: 0.1 }
+    0: { x: -16, y: 30, z: 0.1 },
+    1: { x: 16, y: -30, z: 0.1 }
   },
   3: {
-    0: { x: -12.5, y: 30, z: 0.1 },
+    0: { x: -16, y: 30, z: 0.1 },
     1: { x: -13, y: -30, z: 0.1 },
     2: { x: 52, y: -30, z: 0.1 }
   },

@@ -3,5 +3,6 @@ export enum RuleId {
   BuyingPhaseRule,
   PlaceExitZoneGuestInBagRule,
   PickPlayerGuestAndPlaceItInReserveRule,
-  PickGuestFromReserveOrExitZoneRule
+  PickGuestFromReserveOrExitZoneRule,
+  ShowingsPhaseRule
 }
