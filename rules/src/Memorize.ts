@@ -14,11 +14,19 @@ export type PlayerActionMemory = {
     theaterTileBought: boolean
     buyingCardCustomMoveData?: BuyMovieCardCustomMoveData
   }
+  [RuleId.ShowingsPhaseRule]: {
+    guestPlaced: boolean
+    theaterTilesActivated: boolean[]
+  }
 }
 
 export const defaultPlayerActionMemory: PlayerActionMemory = {
   [RuleId.BuyingPhaseRule]: {
     filmBought: false,
     theaterTileBought: false
+  },
+  [RuleId.ShowingsPhaseRule]: {
+    guestPlaced: false,
+    theaterTilesActivated: [false, false, false]
   }
 }

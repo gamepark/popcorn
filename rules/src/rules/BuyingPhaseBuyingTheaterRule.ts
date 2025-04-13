@@ -7,6 +7,7 @@ import { SeatsNumber, TheaterTileId, theaterTilesCharacteristics } from '../mate
 import { Memorize, PlayerActionMemory } from '../Memorize'
 import { PlayerColor } from '../PlayerColor'
 import { RuleId } from './RuleId'
+import { addNextRuleMoveToConsequenceIfNecessary } from './utils/BuyingFilmConsequencesHelper'
 
 const availableLocationTypes = [LocationType.OneSeatTheaterTileRowSpot, LocationType.TwoSeatTheaterTileRowSpot, LocationType.ThreeSeatTheaterTileRowSpot]
 
@@ -87,6 +88,7 @@ export class BuyingPhaseBuyingTheaterRule extends PlayerTurnRule<PlayerColor, Ma
         },
         this.player
       )
+      addNextRuleMoveToConsequenceIfNecessary(this, this.player, consequences)
       return consequences
     }
     return super.onCustomMove(move, _context)
