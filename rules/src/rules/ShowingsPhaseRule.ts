@@ -6,23 +6,20 @@ import { RuleId } from './RuleId'
 
 export class ShowingsPhaseRule extends SimultaneousRule<PlayerColor, MaterialType, LocationType> {
   public onRuleStart(
-    move: RuleMove<PlayerColor, RuleId>,
-    previousRule?: RuleStep,
-    context?: PlayMoveContext
+    _move: RuleMove<PlayerColor, RuleId>,
+    _previousRule?: RuleStep,
+    _context?: PlayMoveContext
   ): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
-    if (previousRule?.id === RuleId.BuyingPhaseRule) {
-      return this.game.players.flatMap((player: PlayerColor) => {
-        const numberOfGuestsToDraw = this.getNumberOfGuestsToDraw(player)
-        return this.material(MaterialType.GuestPawns).location(LocationType.PlayerGuestPawnsUnderBlothBagSpot).player(player).deck().deal(
-          {
-            type: LocationType.PlayerShowingsGuestSpot,
-            player: player
-          },
-          numberOfGuestsToDraw
-        )
-      })
-    }
-    return super.onRuleStart(move, previousRule, context)
+    return this.game.players.flatMap((player: PlayerColor) => {
+      const numberOfGuestsToDraw = this.getNumberOfGuestsToDraw(player)
+      return this.material(MaterialType.GuestPawns).location(LocationType.PlayerGuestPawnsUnderBlothBagSpot).player(player).deck().dealAtOnce(
+        {
+          type: LocationType.PlayerShowingsDrawnGuestSpot,
+          player: player
+        },
+        numberOfGuestsToDraw
+      )
+    })
   }
 
   public getActivePlayerLegalMoves(_player: PlayerColor): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
