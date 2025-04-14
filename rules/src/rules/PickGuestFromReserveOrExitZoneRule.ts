@@ -19,11 +19,11 @@ export class PickGuestFromReserveOrExitZoneRule extends PlayerTurnRule<PlayerCol
           .location(
             (location) =>
               (location.player !== this.player && location.type === LocationType.GuestPawnExitZoneSpotOnTopPlayerCinemaBoard) ||
-              (location.player === this.player && location.type !== LocationType.PlayerGuestPawnsUnderBlothBagSpot) ||
+              (location.player === this.player && location.type !== LocationType.PlayerGuestPawnsUnderClothBagSpot) ||
               location.type === LocationType.GuestPawnReserveSpot
           )
           .moveItems({
-            type: LocationType.PlayerGuestPawnsUnderBlothBagSpot,
+            type: LocationType.PlayerGuestPawnsUnderClothBagSpot,
             player: player
           })
       )
@@ -46,11 +46,11 @@ export class PickGuestFromReserveOrExitZoneRule extends PlayerTurnRule<PlayerCol
             .id<GuestPawn>(guestColor)
     return reserveGuestMaterial.length > 0
       ? reserveGuestMaterial.moveItems({
-          type: LocationType.PlayerGuestPawnsUnderBlothBagSpot,
+          type: LocationType.PlayerGuestPawnsUnderClothBagSpot,
           player: this.player
         })
       : exitZoneGuestsMaterial.moveItems({
-          type: LocationType.PlayerGuestPawnsUnderBlothBagSpot,
+          type: LocationType.PlayerGuestPawnsUnderClothBagSpot,
           player: this.player
         })
   }
@@ -61,7 +61,7 @@ export class PickGuestFromReserveOrExitZoneRule extends PlayerTurnRule<PlayerCol
   ): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     if (
       isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.GuestPawns)(move) &&
-      move.location.type === LocationType.PlayerGuestPawnsUnderBlothBagSpot &&
+      move.location.type === LocationType.PlayerGuestPawnsUnderClothBagSpot &&
       move.location.player === this.player
     ) {
       const moveData = this.remind<PlayerActionMemory>(Memorize.PlayerActions, this.player)[RuleId.BuyingPhaseRule].buyingCardCustomMoveData
@@ -73,7 +73,7 @@ export class PickGuestFromReserveOrExitZoneRule extends PlayerTurnRule<PlayerCol
         throw new Error('Issue with game memory')
       }
       const consequences = [
-        this.material(MaterialType.GuestPawns).location(LocationType.PlayerGuestPawnsUnderBlothBagSpot).player(this.player).shuffle(),
+        this.material(MaterialType.GuestPawns).location(LocationType.PlayerGuestPawnsUnderClothBagSpot).player(this.player).shuffle(),
         ...getBuyingFilmCardConsequences(this, this.player, boughtCard, moveData.destinationSpot)
       ]
       if (!consequences.some((move) => isStartRule(move) || isStartSimultaneousRule(move))) {

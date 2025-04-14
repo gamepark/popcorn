@@ -95,6 +95,17 @@ export const theaterTiles = getEnumValues(TheaterTile)
 
 export const theaterTilesWithoutDefault = theaterTiles.slice(2)
 
+export const getMaximumNumberOfGuests = (seatNumber: Exclude<SeatsNumber, SeatsNumber.Default>): number => {
+  switch (seatNumber) {
+    case SeatsNumber.One:
+      return 1
+    case SeatsNumber.Two:
+      return 2
+    case SeatsNumber.Three:
+      return 3
+  }
+}
+
 export const theaterTilesCharacteristics: Record<TheaterTile, TheaterTileCharacteristics> = {
   [TheaterTile.DefaultOneSeatTile]: new DefaultOneSeatTileCharacteristics(),
   [TheaterTile.DefaultTwoSeatTile]: new DefaultTwoSeatTileCharacteristics(),
