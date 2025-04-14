@@ -63,9 +63,8 @@ export class BuyingPhaseBuyingTheaterRule extends PlayerTurnRule<PlayerColor, Ma
         if (previousTile === undefined) {
           throw new Error('Invalid material given')
         }
-        const previousTileCharacteristics = theaterTilesCharacteristics[previousTile.id.front]
         consequences.push(
-          previousTileCharacteristics.getSeatsNumber() !== SeatsNumber.Default
+          previousTile.id.back !== SeatsNumber.Default
             ? previousTileMaterial.moveItem((item) => ({
                 type: this.getDestinationLocationTypeFromTheaterTileId(item.id as Required<TheaterTileId>),
                 x: 0

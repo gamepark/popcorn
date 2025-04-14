@@ -17,7 +17,7 @@ export class TwoSeatYellow2PopcornMovieActionCharacteristics implements TheaterT
     return getTheaterSeatColor(this.seatColors, seatNumber)
   }
 
-  public getSeatsNumber(): SeatsNumber {
+  public getSeatsNumber(): Exclude<SeatsNumber, SeatsNumber.Default> {
     return SeatsNumber.Two
   }
 }

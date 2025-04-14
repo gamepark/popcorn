@@ -68,7 +68,7 @@ export class DealAndDiscardAwardCardsRule extends SimultaneousRule<PlayerColor, 
   }
 
   public onRuleEnd(_move: RuleMove<PlayerColor, RuleId>, _context?: PlayMoveContext): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
-    this.forget(Memorize.PlayerDiscardingAwardCards)
+    this.game.players.forEach((player) => this.forget(Memorize.PlayerDiscardingAwardCards, player))
     return super.onRuleEnd(_move, _context)
   }
 

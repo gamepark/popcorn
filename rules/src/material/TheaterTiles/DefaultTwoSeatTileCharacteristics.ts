@@ -17,7 +17,7 @@ export class DefaultTwoSeatTileCharacteristics implements TheaterTileCharacteris
     return getTheaterSeatColor(this.seatColors, seatNumber)
   }
 
-  public getSeatsNumber(): SeatsNumber {
+  public getSeatsNumber(): Exclude<SeatsNumber, SeatsNumber.Default> {
     return SeatsNumber.Two
   }
 }
