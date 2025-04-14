@@ -7,7 +7,7 @@ import { RuleId } from './RuleId'
 export class PlaceExitZoneGuestInBagRule extends PlayerTurnRule<PlayerColor, MaterialType, LocationType> {
   public getPlayerMoves(): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     const moves = this.material(MaterialType.GuestPawns).location(LocationType.GuestPawnExitZoneSpotOnTopPlayerCinemaBoard).player(this.player).moveItems({
-      type: LocationType.PlayerGuestPawnsUnderBlothBagSpot,
+      type: LocationType.PlayerGuestPawnsUnderClothBagSpot,
       player: this.player
     })
     return moves
@@ -19,11 +19,11 @@ export class PlaceExitZoneGuestInBagRule extends PlayerTurnRule<PlayerColor, Mat
   ): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     if (
       isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.GuestPawns)(move) &&
-      move.location.type === LocationType.PlayerGuestPawnsUnderBlothBagSpot &&
+      move.location.type === LocationType.PlayerGuestPawnsUnderClothBagSpot &&
       move.location.player === this.player
     ) {
       return [
-        this.material(MaterialType.GuestPawns).location(LocationType.PlayerGuestPawnsUnderBlothBagSpot).player(this.player).shuffle(),
+        this.material(MaterialType.GuestPawns).location(LocationType.PlayerGuestPawnsUnderClothBagSpot).player(this.player).shuffle(),
         this.startRule<RuleId>(RuleId.BuyingPhaseRule)
       ]
     }

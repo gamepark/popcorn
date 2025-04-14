@@ -74,7 +74,7 @@ export const Locators: Partial<Record<LocationType, Locator<PlayerColor, Materia
   [LocationType.FirstPlayerMarkerSpot]: firstPlayerTokenLocator,
   [LocationType.PlayerClothBagSpot]: playerClothBagLocator,
   [LocationType.PlayerPopcornBucketSpot]: popcornCupLocator,
-  [LocationType.PlayerGuestPawnsUnderBlothBagSpot]: playerGuestPawnUnderClothBagLocator,
+  [LocationType.PlayerGuestPawnsUnderClothBagSpot]: playerGuestPawnUnderClothBagLocator,
   [LocationType.PlayerPopcornPileUnderPopcornCupSpot]: playerPopcornPileLocator,
   [LocationType.PlayerTheaterTrophySpot]: playerTheaterToprhyLocator,
   [LocationType.PlayerShowingsDrawnGuestSpot]: playerShowingsDrawnGuestsLocator

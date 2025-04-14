@@ -17,7 +17,7 @@ export class OneSeat2MoneyCharacteristics implements TheaterTileCharacteristics 
     return getTheaterSeatColor(this.seatsColors, seatNumber)
   }
 
-  public getSeatsNumber(): SeatsNumber {
+  public getSeatsNumber(): Exclude<SeatsNumber, SeatsNumber.Default> {
     return SeatsNumber.One
   }
 }

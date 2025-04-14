@@ -77,7 +77,7 @@ export class PopcornRules
     },
     [MaterialType.GuestPawns]: {
       [LocationType.GuestPawnReserveSpot]: new PositiveSequenceStrategy(),
-      [LocationType.PlayerGuestPawnsUnderBlothBagSpot]: new PositiveSequenceStrategy(),
+      [LocationType.PlayerGuestPawnsUnderClothBagSpot]: new PositiveSequenceStrategy(),
       [LocationType.GuestPawnExitZoneSpotOnTopPlayerCinemaBoard]: new PositiveSequenceStrategy(),
       [LocationType.PlayerShowingsDrawnGuestSpot]: new PositiveSequenceStrategy()
     },

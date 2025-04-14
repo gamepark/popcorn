@@ -11,7 +11,7 @@ export class FiveSixSevenEightCharacteristics implements MovieCardCharacteristic
     MovieAction.DrawGuestAndPlaceThem
   ]
   public getColor(): MovieColor {
-    throw new Error('Method not implemented.')
+    return MovieColor.Blue
   }
 
   public getPrice(row: LocationType.FeaturesRowSpot | LocationType.PremiersRowSpot): number {

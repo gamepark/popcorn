@@ -234,7 +234,8 @@ export const getBuyingFilmCardConsequences = (
         y: 1
       }),
       previousMovieCardMaterial.moveItem({
-        type: LocationType.PlayerMovieCardArchiveSpot
+        type: LocationType.PlayerMovieCardArchiveSpot,
+        player: player
       })
     )
   }

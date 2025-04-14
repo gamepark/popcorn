@@ -2,7 +2,7 @@ import { SeatAction, SeatColor, SeatsNumber } from '../TheaterTile'
 
 export interface TheaterTileCharacteristics {
   getPrice(): number
-  getSeatsNumber(): SeatsNumber
+  getSeatsNumber(): Exclude<SeatsNumber, SeatsNumber.Default>
   getSeatColor(seatNumber: number): SeatColor | undefined
   getSeatAction(seatNumber: number): SeatAction | undefined
 }
