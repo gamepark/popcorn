@@ -5,7 +5,8 @@ export enum Memorize {
   IsFirstTurn = 1,
   PlayerActions,
   PlayerDiscardingAwardCards,
-  GuestPawnColorToDraw
+  GuestPawnColorToDraw,
+  CurrentPhase
 }
 
 export type PlayerActionMemory = {

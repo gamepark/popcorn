@@ -57,7 +57,7 @@ export class BuyingPhaseBuyingFilmRule extends PlayerTurnRule<PlayerColor, Mater
         )
         const guestPawn = BuyingPhaseBuyingFilmRule.getGuestPawnColorFromMovieId(boughtCard.id.front)
         this.memorize<AdvertisingTokenSpot>(Memorize.GuestPawnColorToDraw, guestPawn, this.player)
-        return [this.startRule<RuleId>(RuleId.PickGuestFromReserveOrExitZoneRule)]
+        return [this.startSimultaneousRule<PlayerColor, RuleId>(RuleId.PickGuestFromReserveOrExitZoneRule, [this.player])]
       }
       this.memorize<PlayerActionMemory>(
         Memorize.PlayerActions,

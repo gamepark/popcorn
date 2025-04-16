@@ -30,7 +30,7 @@ export class BuyingPhaseUseAdvertisingTokenRule extends PlayerTurnRule<PlayerCol
       const tokenSourceMaterial = this.material(MaterialType.AdvertisingTokens).index(move.itemIndex)
       const tokenSource = tokenSourceMaterial.getItem<PlayerColor>()?.location.id as AdvertisingTokenSpot
       this.memorize<AdvertisingTokenSpot>(Memorize.GuestPawnColorToDraw, tokenSource)
-      return [tokenSourceMaterial.unselectItem(), this.startRule<RuleId>(RuleId.PickGuestFromReserveOrExitZoneRule)]
+      return [tokenSourceMaterial.unselectItem(), this.startSimultaneousRule<PlayerColor, RuleId>(RuleId.PickGuestFromReserveOrExitZoneRule, [this.player])]
     }
     return []
   }

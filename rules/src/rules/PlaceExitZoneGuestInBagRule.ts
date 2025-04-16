@@ -1,14 +1,15 @@
-import { isMoveItemType, ItemMove, MaterialMove, PlayerTurnRule, PlayMoveContext } from '@gamepark/rules-api'
+import { isMoveItemType, ItemMove, MaterialMove, PlayMoveContext, SimultaneousRule } from '@gamepark/rules-api'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
+import { Memorize } from '../Memorize'
 import { PlayerColor } from '../PlayerColor'
 import { RuleId } from './RuleId'
 
-export class PlaceExitZoneGuestInBagRule extends PlayerTurnRule<PlayerColor, MaterialType, LocationType> {
-  public getPlayerMoves(): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
-    const moves = this.material(MaterialType.GuestPawns).location(LocationType.GuestPawnExitZoneSpotOnTopPlayerCinemaBoard).player(this.player).moveItems({
+export class PlaceExitZoneGuestInBagRule extends SimultaneousRule<PlayerColor, MaterialType, LocationType> {
+  public getActivePlayerLegalMoves(player: PlayerColor): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+    const moves = this.material(MaterialType.GuestPawns).location(LocationType.GuestPawnExitZoneSpotOnTopPlayerCinemaBoard).player(player).moveItems({
       type: LocationType.PlayerGuestPawnsUnderClothBagSpot,
-      player: this.player
+      player: player
     })
     return moves
   }
@@ -19,14 +20,24 @@ export class PlaceExitZoneGuestInBagRule extends PlayerTurnRule<PlayerColor, Mat
   ): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     if (
       isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.GuestPawns)(move) &&
-      move.location.type === LocationType.PlayerGuestPawnsUnderClothBagSpot &&
-      move.location.player === this.player
+      move.location.type === LocationType.PlayerGuestPawnsUnderClothBagSpot
     ) {
-      return [
-        this.material(MaterialType.GuestPawns).location(LocationType.PlayerGuestPawnsUnderClothBagSpot).player(this.player).shuffle(),
-        this.startRule<RuleId>(RuleId.BuyingPhaseRule)
+      const player = move.location.player
+      if (player === undefined) {
+        throw new Error('Cannot find player from target location')
+      }
+      const consequences: MaterialMove<PlayerColor, MaterialType, LocationType>[] = [
+        this.material(MaterialType.GuestPawns).location(LocationType.PlayerGuestPawnsUnderClothBagSpot).player(player).shuffle()
       ]
+      if (this.remind<RuleId.BuyingPhaseRule | RuleId.ShowingsPhaseRule>(Memorize.CurrentPhase) === RuleId.BuyingPhaseRule) {
+        consequences.push(this.endPlayerTurn(player), this.startPlayerTurn<PlayerColor, RuleId>(RuleId.BuyingPhaseRule, player))
+      }
+      return consequences
     }
     return super.afterItemMove(move, _context)
+  }
+
+  public getMovesAfterPlayersDone(): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+    return []
   }
 }

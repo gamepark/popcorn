@@ -29,7 +29,7 @@ export class ShowingsPhaseRule extends SimultaneousRule<PlayerColor, MaterialTyp
           numberOfGuestsToDraw
         )
       ]
-      if (theoreticalNumberOfGuestsToDraw === numberOfGuestsToDraw) {
+      if (theoreticalNumberOfGuestsToDraw > playerGuestInBagMaterial.length) {
         const exitGuestDeck = this.material(MaterialType.GuestPawns).location(LocationType.GuestPawnExitZoneSpotOnTopPlayerCinemaBoard).player(player).deck()
         consequences.push(
           exitGuestDeck.moveItemsAtOnce({
