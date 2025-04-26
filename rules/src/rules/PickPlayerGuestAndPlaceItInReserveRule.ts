@@ -9,9 +9,11 @@ import { RuleId } from './RuleId'
 export class PickPlayerGuestAndPlaceItInReserveRule extends SimultaneousRule<PlayerColor, MaterialType, LocationType> {
   public getActivePlayerLegalMoves(player: PlayerColor): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     return this.material(MaterialType.GuestPawns)
-      .player(player)
       .location(
-        (location) => location.type === LocationType.GuestPawnExitZoneSpotOnTopPlayerCinemaBoard || location.type === LocationType.GuestPawnSpotOnTheaterTile
+        (location) =>
+          (location.type === LocationType.GuestPawnExitZoneSpotOnTopPlayerCinemaBoard && location.player === player) ||
+          (location.type === LocationType.GuestPawnSpotOnTheaterTile &&
+            this.material(MaterialType.TheaterTiles).player(player).index(location.parent).length > 0)
       )
       .moveItems((item) => ({
         type: LocationType.GuestPawnReserveSpot,
