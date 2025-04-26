@@ -288,7 +288,7 @@ export const addNextRuleMoveToConsequenceIfNecessary = (
         rule.material(MaterialType.AdvertisingTokens).player(player).location(LocationType.AdvertisingTokenSpotOnAdvertisingBoard).selected(true).length === 0)
     ) {
       if (rule.game.players.indexOf(player) === rule.game.players.length - 1) {
-        consequences.push(rule.startSimultaneousRule<PlayerColor, RuleId>(RuleId.ShowingsPhaseRule))
+        consequences.push(rule.startSimultaneousRule<PlayerColor, RuleId>(RuleId.ShowingsPhaseDrawingGuestPawnsRule))
       } else {
         const newtPlayer = rule.game.players[(rule.game.players.indexOf(player) + 1) % rule.game.players.length]
         consequences.push(rule.startPlayerTurn<PlayerColor, RuleId>(RuleId.BuyingPhaseRule, newtPlayer))

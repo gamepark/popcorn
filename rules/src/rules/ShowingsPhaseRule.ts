@@ -1,54 +1,27 @@
-import { isShuffleItemType, ItemMove, MaterialMove, PlayMoveContext, RuleMove, RuleStep, SimultaneousRule } from '@gamepark/rules-api'
-import { GuestPawn } from '../material/GuestPawn'
+import { ItemMove, MaterialMove, PlayMoveContext, SimultaneousRule } from '@gamepark/rules-api'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { Memorize, PlayerActionMemory } from '../Memorize'
 import { PlayerColor } from '../PlayerColor'
+import { PickPlayerGuestAndPlaceItInReserveRule } from './PickPlayerGuestAndPlaceItInReserveRule'
+import { PlaceExitZoneGuestInBagRule } from './PlaceExitZoneGuestInBagRule'
 import { RuleId } from './RuleId'
 import { ShowingsPhasePlaceGuestsRule } from './ShowingsPhasePlaceGuestsRule'
+import { ShowingsPhaseSeatActionRule } from './ShowingsPhaseSeatActionRule'
+import { SeatActionSubRules } from './ShowingsPhaseSubRules'
 
 export class ShowingsPhaseRule extends SimultaneousRule<PlayerColor, MaterialType, LocationType> {
   private subRules = {
-    placeGuests: new ShowingsPhasePlaceGuestsRule(this.game)
-  }
-  public onRuleStart(
-    _move: RuleMove<PlayerColor, RuleId>,
-    _previousRule?: RuleStep,
-    _context?: PlayMoveContext
-  ): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
-    return this.game.players.flatMap((player: PlayerColor) => {
-      const theoreticalNumberOfGuestsToDraw = this.getNumberOfGuestsToDraw(player)
-      const playerGuestInBagMaterial = this.material(MaterialType.GuestPawns).location(LocationType.PlayerGuestPawnsUnderClothBagSpot).player(player)
-      const numberOfGuestsToDraw = Math.min(playerGuestInBagMaterial.length, theoreticalNumberOfGuestsToDraw)
-      const consequences: MaterialMove<PlayerColor, MaterialType, LocationType>[] = [
-        playerGuestInBagMaterial.deck().dealAtOnce(
-          {
-            type: LocationType.PlayerShowingsDrawnGuestSpot,
-            player: player
-          },
-          numberOfGuestsToDraw
-        )
-      ]
-      if (theoreticalNumberOfGuestsToDraw > playerGuestInBagMaterial.length) {
-        const exitGuestDeck = this.material(MaterialType.GuestPawns).location(LocationType.GuestPawnExitZoneSpotOnTopPlayerCinemaBoard).player(player).deck()
-        consequences.push(
-          exitGuestDeck.moveItemsAtOnce({
-            type: LocationType.PlayerGuestPawnsUnderClothBagSpot,
-            player: player
-          }),
-          exitGuestDeck.shuffle()
-        )
-      }
-      return consequences
-    })
+    placeGuests: new ShowingsPhasePlaceGuestsRule(this.game),
+    chooseTheater: new ShowingsPhasePlaceGuestsRule(this.game),
+    seatActions: new ShowingsPhaseSeatActionRule(this.game),
+    placeExitZoneGuestInBag: new PlaceExitZoneGuestInBagRule(this.game),
+    placeInReserve: new PickPlayerGuestAndPlaceItInReserveRule(this.game)
   }
 
   public getActivePlayerLegalMoves(player: PlayerColor): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
-    const ruleActions = this.remind<PlayerActionMemory>(Memorize.PlayerActions, player)[RuleId.ShowingsPhaseRule]
-    if (!ruleActions.guestPlaced) {
-      return this.subRules.placeGuests.getActivePlayerLegalMoves(player)
-    }
-    return []
+    const subRule = this.getSubRuleFromMemory(player)
+    return subRule === undefined ? [] : subRule.getActivePlayerLegalMoves(player)
   }
 
   public beforeItemMove(
@@ -58,60 +31,34 @@ export class ShowingsPhaseRule extends SimultaneousRule<PlayerColor, MaterialTyp
     return Object.values(this.subRules).flatMap((subRule) => subRule.beforeItemMove(move, context))
   }
 
-  public afterItemMove(
-    move: ItemMove<PlayerColor, MaterialType, LocationType>,
-    _context?: PlayMoveContext
-  ): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
-    if (isShuffleItemType<PlayerColor, MaterialType, LocationType>(MaterialType.GuestPawns)(move)) {
-      const guestPawns = this.material(MaterialType.GuestPawns)
-        .index((guestIndex) => move.indexes.includes(guestIndex))
-        .getItems<GuestPawn>()
-      const players = guestPawns.map((guestPawn) => guestPawn.location.player)
-      const player = players.every((p) => p === players[0]) ? players[0] : undefined
-      if (player === undefined) {
-        throw new Error('Undefined played after shuffle')
-      }
-      if (!this.remind<PlayerActionMemory>(Memorize.PlayerActions, player)[RuleId.ShowingsPhaseRule].guestPlaced) {
-        const numberOfRemainingGuestToDraw =
-          this.getNumberOfGuestsToDraw(player) -
-          this.material(MaterialType.GuestPawns).location(LocationType.PlayerShowingsDrawnGuestSpot).player(player).length
-        return [
-          this.material(MaterialType.GuestPawns).location(LocationType.PlayerGuestPawnsUnderClothBagSpot).player(player).deck().dealAtOnce(
-            {
-              type: LocationType.PlayerShowingsDrawnGuestSpot,
-              player: player
-            },
-            numberOfRemainingGuestToDraw
-          )
-        ]
-      }
-    }
-    return super.afterItemMove(move, _context)
-  }
-
   public getMovesAfterPlayersDone(): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     return [this.endGame()]
   }
 
-  private getNumberOfGuestsToDraw(player: PlayerColor): number {
-    const audienceCubeLocation = this.material(MaterialType.AudienceCubes).player(player).getItems()[0].location
-    switch (audienceCubeLocation.x ?? 0) {
-      case 0:
-        return 3
-      case 1:
-      case 2:
-        return 4
-      case 3:
-      case 4:
-        return 5
-      case 5:
-      case 6:
-      case 7:
-        return 6
-      case 8:
-        return 7
-      default:
-        throw new Error('Invalid audience cube spot')
+  private getSubRuleFromMemory(player: PlayerColor): SimultaneousRule<PlayerColor, MaterialType, LocationType> | undefined {
+    const ruleActions = this.remind<PlayerActionMemory>(Memorize.PlayerActions, player)[RuleId.ShowingsPhaseRule]
+    if (!ruleActions.guestPlaced) {
+      return this.subRules.placeGuests
+    } else if (ruleActions.theaterTilesActivated.some((v) => !v)) {
+      if (ruleActions.seatActionSubRule === undefined && ruleActions.currentTheaterTileIndex === undefined) {
+        return this.subRules.chooseTheater
+      } else if (ruleActions.currentTheaterTileIndex !== undefined) {
+        return this.subRules.seatActions
+      }
+      switch (ruleActions.seatActionSubRule) {
+        case SeatActionSubRules.MovieAction:
+          // TODO
+          return
+        case SeatActionSubRules.MoveGuestFromExitZoneToBag:
+          return this.subRules.placeExitZoneGuestInBag
+        case SeatActionSubRules.DrawGuestAndPlaceThem:
+          return this.subRules.placeGuests
+        case SeatActionSubRules.PlaceGuestInReserve:
+          return this.subRules.placeInReserve
+        case undefined:
+          return
+      }
     }
+    return
   }
 }

@@ -1,5 +1,6 @@
 import { BuyMovieCardCustomMoveData } from './material/CustomMoveType'
 import { RuleId } from './rules/RuleId'
+import { SeatActionSubRules } from './rules/ShowingsPhaseSubRules'
 
 export enum Memorize {
   IsFirstTurn = 1,
@@ -18,6 +19,8 @@ export type PlayerActionMemory = {
   [RuleId.ShowingsPhaseRule]: {
     guestPlaced: boolean
     theaterTilesActivated: boolean[]
+    currentTheaterTileIndex: number | undefined
+    seatActionSubRule: SeatActionSubRules | undefined
   }
 }
 
@@ -28,6 +31,8 @@ export const defaultPlayerActionMemory: PlayerActionMemory = {
   },
   [RuleId.ShowingsPhaseRule]: {
     guestPlaced: false,
-    theaterTilesActivated: [false, false, false]
+    theaterTilesActivated: [false, false, false],
+    currentTheaterTileIndex: undefined,
+    seatActionSubRule: undefined
   }
 }
