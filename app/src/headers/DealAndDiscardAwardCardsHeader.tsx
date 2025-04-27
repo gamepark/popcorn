@@ -1,3 +1,3 @@
-export const TheFirstStepHeader = () => {
+export const DealAndDiscardAwardCardsHeader = () => {
   return <>Hello world!</>
 }

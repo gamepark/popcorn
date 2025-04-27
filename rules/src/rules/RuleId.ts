@@ -4,5 +4,6 @@ export enum RuleId {
   PlaceExitZoneGuestInBagRule,
   PickPlayerGuestAndPlaceItInReserveRule,
   PickGuestFromReserveOrExitZoneRule,
+  ShowingsPhaseDrawingGuestPawnsRule,
   ShowingsPhaseRule
 }
