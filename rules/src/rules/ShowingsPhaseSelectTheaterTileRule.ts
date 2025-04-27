@@ -23,7 +23,7 @@ export class ShowingsPhaseSelectTheaterTileRule extends SimultaneousRule<PlayerC
     move: ItemMove<PlayerColor, MaterialType, LocationType>,
     _context?: PlayMoveContext
   ): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
-    if (isSelectItemType<PlayerColor, MaterialType, LocationType>(MaterialType.TheaterTiles)(move) && move.selected) {
+    if (isSelectItemType<PlayerColor, MaterialType, LocationType>(MaterialType.TheaterTiles)(move) && move.selected !== false) {
       const theaterTileItem = this.material(MaterialType.TheaterTiles).index(move.itemIndex).getItems<Required<TheaterTileId>>()[0]
       const player = theaterTileItem.location.player
       if (player === undefined) {
@@ -33,6 +33,7 @@ export class ShowingsPhaseSelectTheaterTileRule extends SimultaneousRule<PlayerC
         Memorize.PlayerActions,
         (actionMemory) => {
           actionMemory[RuleId.ShowingsPhaseRule].currentTheaterTileIndex = move.itemIndex
+          actionMemory[RuleId.ShowingsPhaseRule].theaterTilesActivated[theaterTileItem.location.x ?? 0] = true
           return actionMemory
         },
         player
