@@ -19,6 +19,7 @@ import { PickGuestFromReserveOrExitZoneRule } from './rules/PickGuestFromReserve
 import { PlaceExitZoneGuestInBagRule } from './rules/PlaceExitZoneGuestInBagRule'
 import { PickPlayerGuestAndPlaceItInReserveRule } from './rules/PickPlayerGuestAndPlaceItInReserveRule'
 import { RuleId } from './rules/RuleId'
+import { ShowingsPhaseDrawingGuestPawns } from './rules/ShowingsPhaseDrawingGuestPawns'
 import { ShowingsPhaseRule } from './rules/ShowingsPhaseRule'
 
 /**
@@ -35,6 +36,7 @@ export class PopcornRules
     [RuleId.PlaceExitZoneGuestInBagRule]: PlaceExitZoneGuestInBagRule,
     [RuleId.PickPlayerGuestAndPlaceItInReserveRule]: PickPlayerGuestAndPlaceItInReserveRule,
     [RuleId.PickGuestFromReserveOrExitZoneRule]: PickGuestFromReserveOrExitZoneRule,
+    [RuleId.ShowingsPhaseDrawingGuestPawnsRule]: ShowingsPhaseDrawingGuestPawns,
     [RuleId.ShowingsPhaseRule]: ShowingsPhaseRule
   }
 

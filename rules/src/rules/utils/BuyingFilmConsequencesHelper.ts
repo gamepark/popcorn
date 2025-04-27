@@ -161,9 +161,9 @@ const getAdvertisingTokenMove = (
 const getMovesForMovieAction = (
   rule: MaterialRulesPart<PlayerColor, MaterialType, LocationType>,
   player: PlayerColor,
-  bonusAction: MovieAction
+  action: MovieAction
 ): MaterialMove<PlayerColor, MaterialType, LocationType>[] => {
-  switch (bonusAction) {
+  switch (action) {
     case MovieAction.None:
       return []
     case MovieAction.AudienceTrackAdvance:
@@ -174,7 +174,7 @@ const getMovesForMovieAction = (
     case MovieAction.AdvertisingTokenOnRedGuest:
     case MovieAction.AdvertisingTokenOnYellowGuest:
     case MovieAction.AdvertisingTokenOnWhiteGuestToBag:
-      return getAdvertisingTokenMove(rule, player, bonusAction)
+      return getAdvertisingTokenMove(rule, player, action)
     case MovieAction.Get1Money:
       return getMoneyMove(rule, player, MaterialType.MoneyTokens, 1)
     case MovieAction.Get2Money:
@@ -192,9 +192,9 @@ const getMovesForMovieAction = (
     case MovieAction.Get4Popcorn:
       return getMoneyMove(rule, player, MaterialType.PopcornTokens, 4)
     case MovieAction.PlaceGuestInReserve:
-      return [rule.startRule(RuleId.PickPlayerGuestAndPlaceItInReserveRule)]
+      return [rule.startSimultaneousRule<PlayerColor, RuleId>(RuleId.PickPlayerGuestAndPlaceItInReserveRule, [player])]
     case MovieAction.PlaceExitZoneGuestInBag:
-      return [rule.startRule<RuleId>(RuleId.PlaceExitZoneGuestInBagRule)]
+      return [rule.startSimultaneousRule<PlayerColor, RuleId>(RuleId.PlaceExitZoneGuestInBagRule, [player])]
     case MovieAction.DrawGuestAndPlaceThem:
       return [] // TODO
     case MovieAction.DrawAwardCard:
@@ -288,7 +288,7 @@ export const addNextRuleMoveToConsequenceIfNecessary = (
         rule.material(MaterialType.AdvertisingTokens).player(player).location(LocationType.AdvertisingTokenSpotOnAdvertisingBoard).selected(true).length === 0)
     ) {
       if (rule.game.players.indexOf(player) === rule.game.players.length - 1) {
-        consequences.push(rule.startSimultaneousRule<PlayerColor, RuleId>(RuleId.ShowingsPhaseRule))
+        consequences.push(rule.startSimultaneousRule<PlayerColor, RuleId>(RuleId.ShowingsPhaseDrawingGuestPawnsRule))
       } else {
         const newtPlayer = rule.game.players[(rule.game.players.indexOf(player) + 1) % rule.game.players.length]
         consequences.push(rule.startPlayerTurn<PlayerColor, RuleId>(RuleId.BuyingPhaseRule, newtPlayer))

@@ -24,6 +24,7 @@ export class BuyingPhaseRule extends PlayerTurnRule<PlayerColor, MaterialType, L
     _context?: PlayMoveContext
   ): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     const consequences: MaterialMove<PlayerColor, MaterialType, LocationType>[] = []
+    this.memorize<RuleId.BuyingPhaseRule | RuleId.ShowingsPhaseRule>(Memorize.CurrentPhase, RuleId.BuyingPhaseRule)
     addNextRuleMoveToConsequenceIfNecessary(this, this.player, consequences)
     return consequences
   }
