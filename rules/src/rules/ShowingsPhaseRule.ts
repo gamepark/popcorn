@@ -1,4 +1,4 @@
-import { ItemMove, MaterialMove, PlayMoveContext, SimultaneousRule } from '@gamepark/rules-api'
+import { CustomMove, ItemMove, MaterialMove, PlayMoveContext, SimultaneousRule } from '@gamepark/rules-api'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { Memorize, PlayerActionMemory } from '../Memorize'
@@ -8,12 +8,13 @@ import { PlaceExitZoneGuestInBagRule } from './PlaceExitZoneGuestInBagRule'
 import { RuleId } from './RuleId'
 import { ShowingsPhasePlaceGuestsRule } from './ShowingsPhasePlaceGuestsRule'
 import { ShowingsPhaseSeatActionRule } from './ShowingsPhaseSeatActionRule'
+import { ShowingsPhaseSelectTheaterTileRule } from './ShowingsPhaseSelectTheaterTileRule'
 import { SeatActionSubRules } from './ShowingsPhaseSubRules'
 
 export class ShowingsPhaseRule extends SimultaneousRule<PlayerColor, MaterialType, LocationType> {
   private subRules = {
     placeGuests: new ShowingsPhasePlaceGuestsRule(this.game),
-    chooseTheater: new ShowingsPhasePlaceGuestsRule(this.game),
+    chooseTheater: new ShowingsPhaseSelectTheaterTileRule(this.game),
     seatActions: new ShowingsPhaseSeatActionRule(this.game),
     placeExitZoneGuestInBag: new PlaceExitZoneGuestInBagRule(this.game),
     placeInReserve: new PickPlayerGuestAndPlaceItInReserveRule(this.game)
@@ -29,6 +30,17 @@ export class ShowingsPhaseRule extends SimultaneousRule<PlayerColor, MaterialTyp
     context?: PlayMoveContext
   ): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     return Object.values(this.subRules).flatMap((subRule) => subRule.beforeItemMove(move, context))
+  }
+
+  public afterItemMove(
+    _move: ItemMove<PlayerColor, MaterialType, LocationType>,
+    _context?: PlayMoveContext
+  ): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+    return Object.values(this.subRules).flatMap((subRule) => subRule.afterItemMove(_move, _context))
+  }
+
+  public onCustomMove(move: CustomMove, context?: PlayMoveContext): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+    return Object.values(this.subRules).flatMap((subRule) => subRule.onCustomMove(move, context))
   }
 
   public getMovesAfterPlayersDone(): MaterialMove<PlayerColor, MaterialType, LocationType>[] {

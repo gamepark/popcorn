@@ -5,7 +5,7 @@ import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { MoneyToken, moneyTokens } from '../material/MoneyToken'
 import { PopcornToken, popcornTokens } from '../material/PopcornToken'
-import { SeatAction, SeatColor, TheaterTileId, theaterTilesCharacteristics } from '../material/TheaterTile'
+import { getMaximumNumberOfGuests, SeatAction, SeatColor, TheaterTileId, theaterTilesCharacteristics } from '../material/TheaterTile'
 import { Memorize, PlayerActionMemory } from '../Memorize'
 import { PlayerColor } from '../PlayerColor'
 import { RuleId } from './RuleId'
@@ -23,17 +23,23 @@ export class ShowingsPhaseSeatActionRule extends SimultaneousRule<PlayerColor, M
   public onCustomMove(move: CustomMove, _context?: PlayMoveContext): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     if (isPassSeatActionCustomMove(move)) {
       const guestPawnMaterial = this.material(MaterialType.GuestPawns).index(move.data.guestPawnIndex)
-      const guestPawnSeat = guestPawnMaterial.getItems<GuestPawn>()[0].location.x
+      const guestPawn = guestPawnMaterial.getItems<GuestPawn>()[0]
+      const guestPawnSeat = guestPawn.location.x
+      const parentTheaterTile = this.material(MaterialType.TheaterTiles).index(guestPawn.location.parent).getItems<Required<TheaterTileId>>()[0]
       if (guestPawnSeat === undefined) {
         throw new Error('Error getting guest pawn seat number')
       }
-      return [
+      const consequences: MaterialMove<PlayerColor, MaterialType, LocationType>[] = [
         guestPawnMaterial.unselectItem(),
         guestPawnMaterial.moveItem({
           type: LocationType.GuestPawnExitZoneSpotOnTopPlayerCinemaBoard,
           player: move.data.player
         })
       ]
+      if (guestPawnSeat === getMaximumNumberOfGuests(theaterTilesCharacteristics[parentTheaterTile.id.front].getSeatsNumber()) - 1) {
+        this.clearTileIndexInMemory(move.data.player)
+      }
+      return consequences
     }
     return super.onCustomMove(move, _context)
   }
@@ -42,7 +48,7 @@ export class ShowingsPhaseSeatActionRule extends SimultaneousRule<PlayerColor, M
     move: ItemMove<PlayerColor, MaterialType, LocationType>,
     _context?: PlayMoveContext
   ): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
-    if (isSelectItemType<PlayerColor, MaterialType, LocationType>(MaterialType.GuestPawns)(move) && move.selected) {
+    if (isSelectItemType<PlayerColor, MaterialType, LocationType>(MaterialType.GuestPawns)(move) && move.selected !== false) {
       const guestPawnMaterial = this.material(MaterialType.GuestPawns).index(move.itemIndex)
       const guestPawn = guestPawnMaterial.getItems<GuestPawn>()[0]
       if (guestPawn.location.x === undefined) {
@@ -59,7 +65,8 @@ export class ShowingsPhaseSeatActionRule extends SimultaneousRule<PlayerColor, M
         throw new Error('Error getting theater tile seat color')
       }
       if (seatColor === SeatColor.Grey || guestPawn.id === this.getGuestColorCorrespondingToSeatColor(seatColor)) {
-        return this.getConsequencesForSeatAction(parentTileCharacteristics.getSeatAction(guestPawn.location.x), player, guestPawnMaterial)
+        const isLastGuest = guestPawn.location.x === getMaximumNumberOfGuests(parentTileCharacteristics.getSeatsNumber()) - 1
+        return this.getConsequencesForSeatAction(parentTileCharacteristics.getSeatAction(guestPawn.location.x), player, guestPawnMaterial, isLastGuest)
       }
       return [
         guestPawnMaterial.unselectItem(),
@@ -86,7 +93,6 @@ export class ShowingsPhaseSeatActionRule extends SimultaneousRule<PlayerColor, M
   //       return 2 === guestPawnSeat
   //   }
   // }
-
   private getGuestColorCorrespondingToSeatColor(seatColor: Exclude<SeatColor, SeatColor.Grey>): GuestPawn {
     switch (seatColor) {
       case SeatColor.Blue:
@@ -103,7 +109,8 @@ export class ShowingsPhaseSeatActionRule extends SimultaneousRule<PlayerColor, M
   private getConsequencesForSeatAction(
     seatAction: SeatAction | undefined,
     player: PlayerColor,
-    guestPawnMaterial: Material<PlayerColor, MaterialType, LocationType>
+    guestPawnMaterial: Material<PlayerColor, MaterialType, LocationType>,
+    isLastGuest: boolean
   ): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     const consequences: MaterialMove<PlayerColor, MaterialType, LocationType>[] = [guestPawnMaterial.unselectItem()]
     switch (seatAction) {
@@ -118,6 +125,9 @@ export class ShowingsPhaseSeatActionRule extends SimultaneousRule<PlayerColor, M
             player: player
           })
         )
+        if (isLastGuest) {
+          this.clearTileIndexInMemory(player)
+        }
         break
       case SeatAction.Get2Money:
         consequences.push(
@@ -130,6 +140,9 @@ export class ShowingsPhaseSeatActionRule extends SimultaneousRule<PlayerColor, M
             player: player
           })
         )
+        if (isLastGuest) {
+          this.clearTileIndexInMemory(player)
+        }
         break
       case SeatAction.Get3Money:
         consequences.push(
@@ -142,6 +155,9 @@ export class ShowingsPhaseSeatActionRule extends SimultaneousRule<PlayerColor, M
             player: player
           })
         )
+        if (isLastGuest) {
+          this.clearTileIndexInMemory(player)
+        }
         break
       case SeatAction.Get1Popcorn:
         consequences.push(
@@ -154,6 +170,9 @@ export class ShowingsPhaseSeatActionRule extends SimultaneousRule<PlayerColor, M
             player: player
           })
         )
+        if (isLastGuest) {
+          this.clearTileIndexInMemory(player)
+        }
         break
       case SeatAction.Get2Popcorn:
         consequences.push(
@@ -166,6 +185,9 @@ export class ShowingsPhaseSeatActionRule extends SimultaneousRule<PlayerColor, M
             player: player
           })
         )
+        if (isLastGuest) {
+          this.clearTileIndexInMemory(player)
+        }
         break
       case SeatAction.MovieAction:
         this.memorize<PlayerActionMemory>(
@@ -215,5 +237,16 @@ export class ShowingsPhaseSeatActionRule extends SimultaneousRule<PlayerColor, M
         break
     }
     return consequences
+  }
+
+  private clearTileIndexInMemory(player: PlayerColor): void {
+    this.memorize<PlayerActionMemory>(
+      Memorize.PlayerActions,
+      (actionMemory) => {
+        actionMemory[RuleId.ShowingsPhaseRule].currentTheaterTileIndex = undefined
+        return actionMemory
+      },
+      player
+    )
   }
 }

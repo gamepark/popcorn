@@ -1,8 +1,14 @@
+import { faHandPointer } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { LocationType } from '@gamepark/popcorn/material/LocationType'
 import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
 import { SeatsNumber, TheaterTile, TheaterTileId } from '@gamepark/popcorn/material/TheaterTile'
+import { Memorize, PlayerActionMemory } from '@gamepark/popcorn/Memorize'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
-import { TokenDescription } from '@gamepark/react-game'
+import { RuleId } from '@gamepark/popcorn/rules/RuleId'
+import { ItemContext, ItemMenuButton, TokenDescription } from '@gamepark/react-game'
+import { isSelectItemType, MaterialItem, MaterialMove } from '@gamepark/rules-api'
+import React from 'react'
 import oneSeat1Front from '../images/Tiles/TheaterTiles/1Seat1Front.png'
 import oneSeat2Front from '../images/Tiles/TheaterTiles/1Seat2Front.png'
 import oneSeat3Front from '../images/Tiles/TheaterTiles/1Seat3Front.png'
@@ -79,6 +85,64 @@ class TheaterTileDescription extends TokenDescription<PlayerColor, MaterialType,
     [SeatsNumber.Two]: twoSeatBack,
     [SeatsNumber.Three]: threeSeatBack,
     [SeatsNumber.Default]: emptyTile
+  }
+
+  public getItemMenu(
+    item: MaterialItem<PlayerColor, LocationType>,
+    context: ItemContext<PlayerColor, MaterialType, LocationType>,
+    legalMoves: MaterialMove<PlayerColor, MaterialType, LocationType>[]
+  ): React.ReactNode {
+    if (context.player !== undefined) {
+      if (context.rules.game.rule?.id === RuleId.ShowingsPhaseRule && context.rules.game.players.includes(context.player)) {
+        const actionsMemory = context.rules.remind<PlayerActionMemory>(Memorize.PlayerActions, context.player)[RuleId.ShowingsPhaseRule]
+        if (actionsMemory.guestPlaced && actionsMemory.seatActionSubRule === undefined && actionsMemory.theaterTilesActivated.some((activated) => !activated)) {
+          const currentItemIndex = context.rules
+            .material(MaterialType.TheaterTiles)
+            .location(item.location.type)
+            .player(item.location.player)
+            .id(item.id)
+            .getIndex()
+          const selectCurrentTileLegalMove = legalMoves
+            .filter(isSelectItemType<PlayerColor, MaterialType, LocationType>(MaterialType.TheaterTiles))
+            .filter((move) => move.itemIndex === currentItemIndex)
+          return selectCurrentTileLegalMove.length > 0 ? (
+            <>
+              {selectCurrentTileLegalMove.map((move) => (
+                <ItemMenuButton
+                  key={`theaterTile-${move.itemIndex}-selectMove`}
+                  move={move}
+                  x={-1.25}
+                  y={this.height / 2}
+                  //label={<Trans defaults="button.theaterTile.showingsPhase.activateTheater" />}
+                  labelPosition="left"
+                >
+                  <FontAwesomeIcon icon={faHandPointer} size="lg" />
+                </ItemMenuButton>
+              ))}
+              {this.getHelpButton(item, context, {
+                x: 1.25,
+                y: this.height / 2,
+                labelPosition: 'right',
+                label: ''
+              })}
+            </>
+          ) : undefined
+        }
+      }
+    }
+    return super.getItemMenu(item, context, legalMoves)
+  }
+
+  public isMenuAlwaysVisible(item: MaterialItem<PlayerColor, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType>): boolean {
+    if (context.player !== undefined) {
+      if (context.rules.game.rule?.id === RuleId.ShowingsPhaseRule && context.rules.game.players.includes(context.player)) {
+        const actionsMemory = context.rules.remind<PlayerActionMemory>(Memorize.PlayerActions, context.player)[RuleId.ShowingsPhaseRule]
+        if (actionsMemory.guestPlaced && actionsMemory.seatActionSubRule === undefined && actionsMemory.theaterTilesActivated.some((activated) => !activated)) {
+          return item.location.player === context.player && !item.selected
+        }
+      }
+    }
+    return super.isMenuAlwaysVisible(item, context)
   }
 }
 
