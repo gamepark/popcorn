@@ -1,37 +1,31 @@
 import { LocationType } from '../LocationType'
 import { MovieAction, MovieCardType, MovieColor } from '../MovieCard'
-import { TheaterTile } from '../TheaterTile'
+import { SeatsNumber, TheaterTile } from '../TheaterTile'
 import { getBonusAction, getMovieAction, getMoviePriceForRow, MovieCardCharacteristics } from './MovieCardCharacteristics'
 
 export class TheWorldAfterCharacteristics implements MovieCardCharacteristics {
-  private readonly actions: MovieAction[] = [
+  public readonly actions: MovieAction[] = [
     MovieAction.Get1Money,
     MovieAction.AdvertisingTokenOnAnyGuest,
     MovieAction.Get2Popcorn,
     MovieAction.AudienceTrackAdvance
   ]
+  public readonly color = MovieColor.Red
+  public readonly movieType = MovieCardType.Movie
+  public readonly isFirstMovie = false
+  public readonly basePrice = 2
+  public readonly bonusAction = MovieAction.Get1Money
+  public readonly numberOfSeatsForBonus = SeatsNumber.One
 
   public getAction(actionNumber: number): MovieAction | undefined {
-    return getMovieAction(this.actions, actionNumber)
+    return getMovieAction(this, actionNumber)
   }
 
   public getBonusAction(theaterTile: TheaterTile): MovieAction | undefined {
-    return getBonusAction(theaterTile, 1, MovieAction.Get1Money)
-  }
-
-  public getColor(): MovieColor {
-    return MovieColor.Red
-  }
-
-  public getMovieType(): MovieCardType {
-    return MovieCardType.Movie
+    return getBonusAction(this, theaterTile)
   }
 
   public getPrice(row: LocationType.FeaturesRowSpot | LocationType.PremiersRowSpot): number {
-    return getMoviePriceForRow(2, row)
-  }
-
-  public isFirstMovie(): boolean {
-    return false
+    return getMoviePriceForRow(this, row)
   }
 }

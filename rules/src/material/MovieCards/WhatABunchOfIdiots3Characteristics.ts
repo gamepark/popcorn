@@ -1,32 +1,26 @@
 import { LocationType } from '../LocationType'
 import { MovieAction, MovieCardType, MovieColor } from '../MovieCard'
-import { TheaterTile } from '../TheaterTile'
+import { SeatsNumber, TheaterTile } from '../TheaterTile'
 import { getBonusAction, getMovieAction, getMoviePriceForRow, MovieCardCharacteristics } from './MovieCardCharacteristics'
 
 export class WhatABunchOfIdiots3Characteristics implements MovieCardCharacteristics {
-  private readonly actions: MovieAction[] = [MovieAction.Get1Money, MovieAction.Get2Popcorn, MovieAction.PlaceGuestInReserve, MovieAction.AudienceTrackAdvance]
+  public readonly actions: MovieAction[] = [MovieAction.Get1Money, MovieAction.Get2Popcorn, MovieAction.PlaceGuestInReserve, MovieAction.AudienceTrackAdvance]
+  public readonly color = MovieColor.Yellow
+  public readonly movieType = MovieCardType.Movie
+  public readonly isFirstMovie = false
+  public readonly basePrice = 2
+  public readonly bonusAction = MovieAction.AdvertisingTokenOnAnyGuest
+  public readonly numberOfSeatsForBonus = SeatsNumber.Two
 
   public getAction(actionNumber: number): MovieAction | undefined {
-    return getMovieAction(this.actions, actionNumber)
+    return getMovieAction(this, actionNumber)
   }
 
   public getBonusAction(theaterTile: TheaterTile): MovieAction | undefined {
-    return getBonusAction(theaterTile, 2, MovieAction.AdvertisingTokenOnAnyGuest)
-  }
-
-  public getColor(): MovieColor {
-    return MovieColor.Yellow
-  }
-
-  public getMovieType(): MovieCardType {
-    return MovieCardType.Movie
+    return getBonusAction(this, theaterTile)
   }
 
   public getPrice(row: LocationType.FeaturesRowSpot | LocationType.PremiersRowSpot): number {
-    return getMoviePriceForRow(2, row)
-  }
-
-  public isFirstMovie(): boolean {
-    return false
+    return getMoviePriceForRow(this, row)
   }
 }

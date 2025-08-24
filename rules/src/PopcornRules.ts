@@ -13,13 +13,9 @@ import {
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { PlayerColor } from './PlayerColor'
+import { DiscardAwardCardActionRule } from './rules/actions/DiscardAwardCardActionRule'
 import { BuyingPhaseRule } from './rules/BuyingPhaseRule'
-import { DealAndDiscardAwardCardsRule } from './rules/DealAndDiscardAwardCardsRule'
-import { PickGuestFromReserveOrExitZoneRule } from './rules/PickGuestFromReserveOrExitZoneRule'
-import { PlaceExitZoneGuestInBagRule } from './rules/PlaceExitZoneGuestInBagRule'
-import { PickPlayerGuestAndPlaceItInReserveRule } from './rules/PickPlayerGuestAndPlaceItInReserveRule'
 import { RuleId } from './rules/RuleId'
-import { ShowingsPhaseDrawingGuestPawns } from './rules/ShowingsPhaseDrawingGuestPawns'
 import { ShowingsPhaseRule } from './rules/ShowingsPhaseRule'
 
 /**
@@ -27,16 +23,13 @@ import { ShowingsPhaseRule } from './rules/ShowingsPhaseRule'
  * It must follow Game Park "Rules" API so that the Game Park server can enforce the rules.
  */
 export class PopcornRules
-  extends SecretMaterialRules<PlayerColor, MaterialType, LocationType>
-  implements TimeLimit<MaterialGame<PlayerColor, MaterialType, LocationType>, MaterialMove<PlayerColor, MaterialType, LocationType>, PlayerColor>
+  extends SecretMaterialRules<PlayerColor, MaterialType, LocationType, RuleId>
+  implements
+    TimeLimit<MaterialGame<PlayerColor, MaterialType, LocationType, RuleId>, MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>, PlayerColor>
 {
   rules = {
-    [RuleId.DealAndDiscardAwardCards]: DealAndDiscardAwardCardsRule,
+    [RuleId.DealAndDiscardAwardCards]: DiscardAwardCardActionRule,
     [RuleId.BuyingPhaseRule]: BuyingPhaseRule,
-    [RuleId.PlaceExitZoneGuestInBagRule]: PlaceExitZoneGuestInBagRule,
-    [RuleId.PickPlayerGuestAndPlaceItInReserveRule]: PickPlayerGuestAndPlaceItInReserveRule,
-    [RuleId.PickGuestFromReserveOrExitZoneRule]: PickGuestFromReserveOrExitZoneRule,
-    [RuleId.ShowingsPhaseDrawingGuestPawnsRule]: ShowingsPhaseDrawingGuestPawns,
     [RuleId.ShowingsPhaseRule]: ShowingsPhaseRule
   }
 
@@ -54,6 +47,9 @@ export class PopcornRules
       [LocationType.OneSeatTheaterTileDeckSpot]: hideFront,
       [LocationType.TwoSeatTheaterTileDeckSpot]: hideFront,
       [LocationType.ThreeSeatTheaterTileDeckSpot]: hideFront
+    },
+    [MaterialType.GuestPawns]: {
+      [LocationType.PlayerGuestPawnsUnderClothBagSpot]: hideItemId
     }
   }
 

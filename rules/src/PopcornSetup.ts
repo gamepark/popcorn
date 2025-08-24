@@ -1,5 +1,7 @@
 import { MaterialGameSetup } from '@gamepark/rules-api'
 import { shuffle } from 'lodash'
+import { Actions } from './material/Actions/Actions'
+import { ActionType } from './material/Actions/ActionType'
 import { awardCards } from './material/AwardCard'
 import { GuestPawn, guestPawns } from './material/GuestPawn'
 import { getSliderColor, getSlidersForPlayers } from './material/LobbySlider'
@@ -9,7 +11,7 @@ import { moneyTokens } from './material/MoneyToken'
 import { firstMovieCards, MovieCard, movieCardCharacteristics, movieCardsWithoutFinalShowing, MovieCardType, MovieColor } from './material/MovieCard'
 import { SeatsNumber, theaterTiles, theaterTilesCharacteristics, theaterTilesWithoutDefault } from './material/TheaterTile'
 import { theaterTrophy } from './material/TheaterTrophy'
-import { defaultPlayerActionMemory, Memorize, PlayerActionMemory } from './Memorize'
+import { AvailableMovieActionsMemory, Memory } from './Memory'
 import { PlayerColor } from './PlayerColor'
 import { PopcornOptions } from './PopcornOptions'
 import { PopcornRules } from './PopcornRules'
@@ -154,13 +156,10 @@ export class PopcornSetup extends MaterialGameSetup<PlayerColor, MaterialType, L
   private createMovieCardDeckAndPopulateRivers(): void {
     this.material(MaterialType.MovieCards).createItemsAtOnce(
       movieCardsWithoutFinalShowing.map((id) => {
-        if (id === MovieCard.FinalShowing) {
-          throw new Error('invalid card')
-        }
         return {
           id: {
             front: id,
-            back: movieCardCharacteristics[id].getMovieType()
+            back: movieCardCharacteristics[id].movieType
           },
           location: {
             type: LocationType.MovieCardDeckSpot
@@ -217,7 +216,7 @@ export class PopcornSetup extends MaterialGameSetup<PlayerColor, MaterialType, L
       }
       const firstMovieCardId = {
         front: movieId,
-        back: movieCardCharacteristics[movieId].getMovieType()
+        back: movieCardCharacteristics[movieId].movieType
       }
       this.material(MaterialType.MovieCards).createItem({
         id: firstMovieCardId,
@@ -227,7 +226,8 @@ export class PopcornSetup extends MaterialGameSetup<PlayerColor, MaterialType, L
           x: 0
         }
       })
-      const firstMovieColor = movieCardCharacteristics[movieId].getColor()
+      this.memorize<AvailableMovieActionsMemory>(Memory.AvailableMovieActions, { [movieId]: Array(3).fill(true) })
+      const firstMovieColor = movieCardCharacteristics[movieId].color
       const guestPawnColor = this.getGuestPawnColorFromMovieColor(firstMovieColor)
       this.material(MaterialType.GuestPawns).location(LocationType.GuestPawnReserveSpot).id<GuestPawn>(guestPawnColor).moveItem({
         type: LocationType.PlayerGuestPawnsUnderClothBagSpot,
@@ -284,7 +284,8 @@ export class PopcornSetup extends MaterialGameSetup<PlayerColor, MaterialType, L
   }
 
   private initializeMemory(): void {
-    this.game.players.forEach((player) => this.memorize<PlayerActionMemory>(Memorize.PlayerActions, defaultPlayerActionMemory, player))
-    this.memorize<boolean>(Memorize.IsFirstTurn, true)
+    this.game.players.forEach((player) => {
+      this.memorize<Actions[]>(Memory.PendingActions, [{ type: ActionType.DiscardAwardCard }, { type: ActionType.BuyMovieCard }], player)
+    })
   }
 }

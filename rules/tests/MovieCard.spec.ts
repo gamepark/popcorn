@@ -54,7 +54,7 @@ describe('Movie card tests', () => {
     }
   ])('Given $filmName, getFilmColor() should return $expectedFilmColorName', ({ film, expectedFilmColor }) => {
     // When
-    const color = movieCardCharacteristics[film].getColor()
+    const color = movieCardCharacteristics[film].color
 
     // Then
     expect(color).toEqual(expectedFilmColor)
