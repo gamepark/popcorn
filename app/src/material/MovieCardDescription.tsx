@@ -1,9 +1,12 @@
-import { faHandPointer, faHandPointLeft } from '@fortawesome/free-solid-svg-icons'
+import { faHandPointer, faHandPointRight } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Actions } from '@gamepark/popcorn/material/Actions/Actions'
+import { ActionType } from '@gamepark/popcorn/material/Actions/ActionType'
 import { isBuyMovieCardCustomMove, isMovieActionCustomMove } from '@gamepark/popcorn/material/CustomMoveType'
 import { LocationType } from '@gamepark/popcorn/material/LocationType'
 import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
 import { MovieCard, MovieCardId, MovieCardType } from '@gamepark/popcorn/material/MovieCard'
+import { Memory } from '@gamepark/popcorn/Memory'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
 import { RuleId } from '@gamepark/popcorn/rules/RuleId'
 import { CardDescription, ItemContext, ItemMenuButton } from '@gamepark/react-game'
@@ -143,10 +146,9 @@ export class MovieCardDescription extends CardDescription<PlayerColor, MaterialT
   }
 
   public isMenuAlwaysVisible(_item: MaterialItem<PlayerColor, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType>): boolean {
-    // if (context.player !== undefined && context.rules.game.rule?.id === RuleId.ShowingsPhaseRule) {
-    //   const subRule = context.rules.remind<PlayerActionMemory>(Memory.PlayerActions, context.player)[RuleId.ShowingsPhaseRule].seatActionSubRule
-    //   return subRule === SeatActionSubRules.MovieAction
-    // }
+    if (context.player !== undefined) {
+      return context.rules.remind<Actions[]>(Memory.PendingActions, context.player)[0]?.type === ActionType.ChooseMovieAction
+    }
     return super.isMenuAlwaysVisible(_item, context)
   }
 
@@ -171,14 +173,20 @@ export class MovieCardDescription extends CardDescription<PlayerColor, MaterialT
               <ItemMenuButton
                 key={`movieAction-${movieCardIndex}-${index}`}
                 move={move}
-                label={<Trans defaults={'testLabel'} />}
-                x={-1}
+                label={<Trans defaults={'buttons.movieCard.chooseAction'} />}
+                labelPosition="left"
+                x={-3.35}
                 y={-2.75 + 1.35 * index}
                 style={{ width: '1.25em', height: '1.25em' }}
               >
-                <FontAwesomeIcon icon={faHandPointLeft} size="sm" />
+                <FontAwesomeIcon icon={faHandPointRight} size="sm" />
               </ItemMenuButton>
             ))}
+            {this.getHelpButton(item, context, {
+              angle: 0,
+              radius: -2.5,
+              label: ''
+            })}
           </>
         )
       }

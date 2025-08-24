@@ -8,7 +8,15 @@ import { getSliderColor, getSlidersForPlayers } from './material/LobbySlider'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { moneyTokens } from './material/MoneyToken'
-import { firstMovieCards, MovieCard, movieCardCharacteristics, movieCardsWithoutFinalShowing, MovieCardType, MovieColor } from './material/MovieCard'
+import {
+  firstMovieCards,
+  MovieCard,
+  movieCardCharacteristics,
+  movieCardsWithoutFinalShowing,
+  MovieCardType,
+  MovieColor,
+  PlayableMovieCardId
+} from './material/MovieCard'
 import { SeatsNumber, theaterTiles, theaterTilesCharacteristics, theaterTilesWithoutDefault } from './material/TheaterTile'
 import { theaterTrophy } from './material/TheaterTrophy'
 import { AvailableMovieActionsMemory, Memory } from './Memory'
@@ -211,9 +219,6 @@ export class PopcornSetup extends MaterialGameSetup<PlayerColor, MaterialType, L
     const firstMovieCardIds = shuffle(firstMovieCards)
     this.players.forEach((player, index) => {
       const movieId = firstMovieCardIds[index]
-      if (movieId === MovieCard.FinalShowing) {
-        throw new Error('invalid card')
-      }
       const firstMovieCardId = {
         front: movieId,
         back: movieCardCharacteristics[movieId].movieType
@@ -226,7 +231,6 @@ export class PopcornSetup extends MaterialGameSetup<PlayerColor, MaterialType, L
           x: 0
         }
       })
-      this.memorize<AvailableMovieActionsMemory>(Memory.AvailableMovieActions, { [movieId]: Array(3).fill(true) })
       const firstMovieColor = movieCardCharacteristics[movieId].color
       const guestPawnColor = this.getGuestPawnColorFromMovieColor(firstMovieColor)
       this.material(MaterialType.GuestPawns).location(LocationType.GuestPawnReserveSpot).id<GuestPawn>(guestPawnColor).moveItem({
@@ -287,5 +291,18 @@ export class PopcornSetup extends MaterialGameSetup<PlayerColor, MaterialType, L
     this.game.players.forEach((player) => {
       this.memorize<Actions[]>(Memory.PendingActions, [{ type: ActionType.DiscardAwardCard }, { type: ActionType.BuyMovieCard }], player)
     })
+    this.memorize<AvailableMovieActionsMemory>(
+      Memory.AvailableMovieActions,
+      this.material(MaterialType.MovieCards)
+        .location(LocationType.MovieCardSpotOnBottomPlayerCinemaBoard)
+        .getItems<Required<PlayableMovieCardId>>()
+        .reduce(
+          (accumulator, item) => ({
+            ...accumulator,
+            [item.id.front]: Array(3).fill(true)
+          }),
+          {}
+        )
+    )
   }
 }

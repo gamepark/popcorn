@@ -30,14 +30,13 @@ export type BuyTheaterTileCustomMove = Omit<CustomMove, 'data'> & {
   data: BuyTheaterTileCustomMoveData
 }
 
-export type MovieActionCustomeMoveData = {
-  player: PlayerColor
+export type MovieActionCustomMoveData = {
   movieCardIndex: number
   movieActionNumber: 0 | 1 | 2 | 3
 }
 
 export type MovieActionCustomMove = Omit<CustomMove, 'data'> & {
-  data: MovieActionCustomeMoveData
+  data: MovieActionCustomMoveData
 }
 
 export type PassCurrentActionCustomeMoveData = {
