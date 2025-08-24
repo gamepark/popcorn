@@ -41,6 +41,14 @@ export class PlaceCinemaGuestInReserveActionRule extends ActionRule<PlaceCinemaG
         guestPawn.location.player
       )
       this.removeCurrentActionForPlayer(guestPawn.location.player)
+      if (this.action.guestIndexToMoveToExitZone !== undefined && move.itemIndex !== this.action.guestIndexToMoveToExitZone) {
+        return [
+          this.material(MaterialType.GuestPawns).index(this.action.guestIndexToMoveToExitZone).moveItem({
+            type: LocationType.GuestPawnExitZoneSpotOnTopPlayerCinemaBoard,
+            player: guestPawn.location.player
+          })
+        ]
+      }
     }
     return super.afterItemMove(move, context)
   }

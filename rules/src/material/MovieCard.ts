@@ -200,7 +200,7 @@ export const movieCardCharacteristics: Record<Exclude<MovieCard, MovieCard.Final
 
 export const movieCards = getEnumValues(MovieCard)
 
-export const firstMovieCards = movieCards.slice(0, 4)
+export const firstMovieCards = movieCards.slice(0, 4) as Exclude<MovieCard, MovieCard.FinalShowing>[]
 
 export const movieCardsWithoutFinalShowing = movieCards.slice(4, 48) as Exclude<MovieCard, MovieCard.FinalShowing>[]
 
@@ -209,6 +209,6 @@ export type MovieCardId = {
   back: MovieCardType
 }
 
-export type BuyableMovieCardId = Omit<MovieCardId, 'front'> & {
+export type PlayableMovieCardId = Omit<MovieCardId, 'front'> & {
   front?: Exclude<MovieCard, MovieCard.FinalShowing>
 }
