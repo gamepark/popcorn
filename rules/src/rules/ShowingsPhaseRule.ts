@@ -69,7 +69,11 @@ export class ShowingsPhaseRule extends SimultaneousRule<PlayerColor, MaterialTyp
   }
 
   public getMovesAfterPlayersDone(): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
-    return [this.endGame()]
+    const firstPlayerOfRound = this.material(MaterialType.FirstPlayerMarker).getItems()[0].location.player
+    if (firstPlayerOfRound === undefined) {
+      throw new Error('Invalid game state')
+    }
+    return [this.startPlayerTurn<PlayerColor, RuleId>(RuleId.EndOfRoundPhaseRule, firstPlayerOfRound)]
   }
 
   public afterItemMove(
