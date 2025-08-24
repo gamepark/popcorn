@@ -1,32 +1,26 @@
 import { LocationType } from '../LocationType'
 import { MovieAction, MovieCardType, MovieColor } from '../MovieCard'
-import { TheaterTile } from '../TheaterTile'
+import { SeatsNumber, TheaterTile } from '../TheaterTile'
 import { getBonusAction, getMovieAction, getMoviePriceForRow, MovieCardCharacteristics } from './MovieCardCharacteristics'
 
 export class RevengeOfTheDiplodocusCharacteristics implements MovieCardCharacteristics {
-  private readonly actions: MovieAction[] = [MovieAction.Get2Money, MovieAction.Get1Popcorn, MovieAction.PlaceGuestInReserve, MovieAction.AudienceTrackAdvance]
+  public readonly actions: MovieAction[] = [MovieAction.Get2Money, MovieAction.Get1Popcorn, MovieAction.PlaceGuestInReserve, MovieAction.AudienceTrackAdvance]
+  public readonly color = MovieColor.Green
+  public readonly movieType = MovieCardType.Movie
+  public readonly isFirstMovie = false
+  public readonly basePrice = 1
+  public readonly bonusAction = MovieAction.PlaceExitZoneGuestInBag
+  public readonly numberOfSeatsForBonus = SeatsNumber.Two
 
   public getAction(actionNumber: number): MovieAction | undefined {
-    return getMovieAction(this.actions, actionNumber)
+    return getMovieAction(this, actionNumber)
   }
 
   public getBonusAction(theaterTile: TheaterTile): MovieAction | undefined {
-    return getBonusAction(theaterTile, 2, MovieAction.PlaceExitZoneGuestInBag)
-  }
-
-  public getColor(): MovieColor {
-    return MovieColor.Green
-  }
-
-  public getMovieType(): MovieCardType {
-    return MovieCardType.Movie
+    return getBonusAction(this, theaterTile)
   }
 
   public getPrice(row: LocationType.FeaturesRowSpot | LocationType.PremiersRowSpot): number {
-    return getMoviePriceForRow(1, row)
-  }
-
-  public isFirstMovie(): boolean {
-    return false
+    return getMoviePriceForRow(this, row)
   }
 }

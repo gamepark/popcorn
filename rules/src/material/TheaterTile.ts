@@ -143,3 +143,8 @@ export type TheaterTileId = {
   front?: TheaterTile
   back: SeatsNumber
 }
+
+export type BuyableTheaterTileId = {
+  front?: Exclude<TheaterTile, TheaterTile.DefaultOneSeatTile | TheaterTile.DefaultTwoSeatTile>
+  back: Exclude<SeatsNumber, SeatsNumber.Default>
+}

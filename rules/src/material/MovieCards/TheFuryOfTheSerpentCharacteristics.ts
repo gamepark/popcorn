@@ -1,37 +1,31 @@
 import { LocationType } from '../LocationType'
 import { MovieAction, MovieCardType, MovieColor } from '../MovieCard'
-import { TheaterTile } from '../TheaterTile'
+import { SeatsNumber, TheaterTile } from '../TheaterTile'
 import { getBonusAction, getMovieAction, getMoviePriceForRow, MovieCardCharacteristics } from './MovieCardCharacteristics'
 
 export class TheFuryOfTheSerpentCharacteristics implements MovieCardCharacteristics {
-  private readonly actions: MovieAction[] = [
+  public readonly actions: MovieAction[] = [
     MovieAction.PlaceExitZoneGuestInBag,
     MovieAction.Get2Popcorn,
     MovieAction.Get2Money,
     MovieAction.AudienceTrackAdvance
   ]
+  public readonly color = MovieColor.Red
+  public readonly movieType = MovieCardType.Movie
+  public readonly isFirstMovie = false
+  public readonly basePrice = 1
+  public readonly bonusAction = MovieAction.Get1Popcorn
+  public readonly numberOfSeatsForBonus = SeatsNumber.One
 
   public getAction(actionNumber: number): MovieAction | undefined {
-    return getMovieAction(this.actions, actionNumber)
+    return getMovieAction(this, actionNumber)
   }
 
   public getBonusAction(theaterTile: TheaterTile): MovieAction | undefined {
-    return getBonusAction(theaterTile, 1, MovieAction.Get1Popcorn)
-  }
-
-  public getColor(): MovieColor {
-    return MovieColor.Red
-  }
-
-  public getMovieType(): MovieCardType {
-    return MovieCardType.Movie
+    return getBonusAction(this, theaterTile)
   }
 
   public getPrice(row: LocationType.FeaturesRowSpot | LocationType.PremiersRowSpot): number {
-    return getMoviePriceForRow(1, row)
-  }
-
-  public isFirstMovie(): boolean {
-    return false
+    return getMoviePriceForRow(this, row)
   }
 }

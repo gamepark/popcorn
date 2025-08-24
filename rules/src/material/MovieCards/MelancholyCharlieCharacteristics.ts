@@ -4,34 +4,28 @@ import { TheaterTile } from '../TheaterTile'
 import { getMovieAction, getMoviePriceForRow, MovieCardCharacteristics } from './MovieCardCharacteristics'
 
 export class MelancholyCharlieCharacteristics implements MovieCardCharacteristics {
-  private readonly actions: MovieAction[] = [
+  public readonly actions: MovieAction[] = [
     MovieAction.None,
     MovieAction.Get1Popcorn,
     MovieAction.AdvertisingTokenOnYellowGuest,
     MovieAction.AudienceTrackAdvance
   ]
+  public readonly color = MovieColor.Yellow
+  public readonly movieType = MovieCardType.Movie
+  public readonly isFirstMovie = false
+  public readonly basePrice = 0
+  public readonly bonusAction = undefined
+  public readonly numberOfSeatsForBonus = undefined
 
   public getAction(actionNumber: number): MovieAction | undefined {
-    return getMovieAction(this.actions, actionNumber)
+    return getMovieAction(this, actionNumber)
   }
 
   public getBonusAction(_theaterTile: TheaterTile): MovieAction | undefined {
     return undefined
   }
 
-  public getColor(): MovieColor {
-    return MovieColor.Yellow
-  }
-
-  public getMovieType(): MovieCardType {
-    return MovieCardType.Movie
-  }
-
   public getPrice(row: LocationType.FeaturesRowSpot | LocationType.PremiersRowSpot): number {
-    return getMoviePriceForRow(0, row)
-  }
-
-  public isFirstMovie(): boolean {
-    return false
+    return getMoviePriceForRow(this, row)
   }
 }

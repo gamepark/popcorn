@@ -5,7 +5,7 @@ import { LocationType } from '@gamepark/popcorn/material/LocationType'
 import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
 import { RuleId } from '@gamepark/popcorn/rules/RuleId'
-import { CardDescription, ItemContext, ItemMenuButton } from '@gamepark/react-game'
+import { CardDescription, ItemContext, ItemMenuButton, MaterialContext } from '@gamepark/react-game'
 import { isMoveItemType, MaterialItem, MaterialMove } from '@gamepark/rules-api'
 import React from 'react'
 import { Trans } from 'react-i18next'
@@ -84,6 +84,10 @@ class AwardCardDescription extends CardDescription<PlayerColor, MaterialType, Lo
       return this.getItemMenuForDealAndDiscardRule(item, context, legalMoves)
     }
     return super.getItemMenu(item, context, legalMoves)
+  }
+
+  public isFlippedInDialog(item: Partial<MaterialItem<PlayerColor, LocationType>>, context: MaterialContext<PlayerColor, MaterialType, LocationType>): boolean {
+    return super.isFlippedInDialog(item, context)
   }
 
   private getItemMenuForDealAndDiscardRule(

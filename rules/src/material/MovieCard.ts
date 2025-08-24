@@ -202,9 +202,13 @@ export const movieCards = getEnumValues(MovieCard)
 
 export const firstMovieCards = movieCards.slice(0, 4)
 
-export const movieCardsWithoutFinalShowing = movieCards.slice(4, 48)
+export const movieCardsWithoutFinalShowing = movieCards.slice(4, 48) as Exclude<MovieCard, MovieCard.FinalShowing>[]
 
 export type MovieCardId = {
   front?: MovieCard
   back: MovieCardType
+}
+
+export type BuyableMovieCardId = Omit<MovieCardId, 'front'> & {
+  front?: Exclude<MovieCard, MovieCard.FinalShowing>
 }
