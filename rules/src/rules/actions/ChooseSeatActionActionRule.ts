@@ -29,17 +29,23 @@ export class ChooseSeatActionActionRule extends ActionRule<ChooseSeatActionActio
       const guestPawnMaterial = this.material(MaterialType.GuestPawns).index(this.action.guestIndex)
       const guestPawn = guestPawnMaterial.getItems<GuestPawn>()[0]
       const parentTheaterTile = this.material(MaterialType.TheaterTiles).index(guestPawn.location.parent).getItems<Required<TheaterTileId>>()[0]
-      if (parentTheaterTile.location.player === undefined) {
+      const player = parentTheaterTile.location.player
+      if (player === undefined) {
         throw new Error('Cannot find owning player for guest pawn')
       }
-      const consequences: MaterialMove<PlayerColor, MaterialType, LocationType>[] = [
-        guestPawnMaterial.unselectItem(),
-        guestPawnMaterial.moveItem({
-          type: LocationType.GuestPawnExitZoneSpotOnTopPlayerCinemaBoard,
-          player: parentTheaterTile.location.player
-        })
-      ]
-      this.removeCurrentActionForPlayer(parentTheaterTile.location.player)
+      this.removeCurrentActionForPlayer(player)
+      const consequences: MaterialMove<PlayerColor, MaterialType, LocationType>[] = []
+      const guestPendingMovieAction = this.remind<Actions[]>(Memory.PendingActions, player).find(
+        (action) => action.type === ActionType.ChooseMovieAction && action.guestIndex === this.action.guestIndex
+      )
+      if (guestPendingMovieAction === undefined) {
+        consequences.push(
+          guestPawnMaterial.moveItem({
+            type: LocationType.GuestPawnExitZoneSpotOnTopPlayerCinemaBoard,
+            player: parentTheaterTile.location.player
+          })
+        )
+      }
       return consequences
     }
     return super.onCustomMove(move, _context)
