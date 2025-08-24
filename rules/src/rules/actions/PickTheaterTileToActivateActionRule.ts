@@ -42,13 +42,19 @@ export class PickTheaterTileToActivateActionRule extends ActionRule<PickTheaterT
         throw new Error('Cannot find player owning theater tile')
       }
       const tileCharacteristics = theaterTilesCharacteristics[theaterTileItem.id.front]
-      const guestPawnsOnTileMaterial = this.material(MaterialType.GuestPawns).location(LocationType.GuestPawnSpotOnTheaterTile).parent(move.itemIndex)
+      const guestPawnsOnTileMaterial = this.material(MaterialType.GuestPawns)
+        .location(LocationType.GuestPawnSpotOnTheaterTile)
+        .parent(move.itemIndex)
+        .sort((item) => item.location.x ?? 0)
       const guestPawnsOnTile = guestPawnsOnTileMaterial.getItems<GuestPawn>()
       const guestPawnsOnTileIndexes = guestPawnsOnTileMaterial.getIndexes()
       this.removeCurrentActionForPlayer(player)
       this.memorize<Actions[]>(
         Memory.PendingActions,
-        (pendingActions) => this.buildPendingActions(guestPawnsOnTile, tileCharacteristics, guestPawnsOnTileIndexes).concat(pendingActions),
+        (pendingActions) => {
+          pendingActions.unshift(...this.buildPendingActions(guestPawnsOnTile, tileCharacteristics, guestPawnsOnTileIndexes))
+          return pendingActions
+        },
         player
       )
       return []

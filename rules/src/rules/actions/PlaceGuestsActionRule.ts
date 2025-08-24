@@ -92,21 +92,18 @@ export class PlaceGuestsActionRule extends ActionRule<PlaceGuestAction> {
     })
   }
 
-  private getMoveForSeatAction(_player: PlayerColor): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
-    /*const currentTheaterTileIndex = this.remind<PlayerActionMemory>(Memory.PlayerActions, player)[RuleId.ShowingsPhaseRule].currentTheaterTileIndex
-    if (currentTheaterTileIndex === undefined) {
-      throw new Error('Issue with current theater tile')
-    }
+  private getMoveForSeatAction(player: PlayerColor): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+    const guestPawnMaterial = this.material(MaterialType.GuestPawns).player(player).location(LocationType.GuestPawnSpotOnTheaterTile)
     const validDestinationSpots = this.material(MaterialType.MovieCards)
       .location(LocationType.MovieCardSpotOnBottomPlayerCinemaBoard)
       .player(player)
       .getItems<Required<MovieCardId>>()
       .map((item) => item.location.x)
     const destinationTilesIndexes = this.material(MaterialType.TheaterTiles)
-      .location(LocationType.TheaterTileSpotOnTopPlayerCinemaBoard)
       .player(player)
+      .location(LocationType.TheaterTileSpotOnTopPlayerCinemaBoard)
       .location((location) => validDestinationSpots.includes(location.x))
-      .filter((item, index) => !item.selected || index === currentTheaterTileIndex)
+      .filter((_, index) => guestPawnMaterial.parent(index).length > 0)
       .getIndexes()
     return destinationTilesIndexes.flatMap((tileItemIndex) => {
       const parentTile = this.material(MaterialType.TheaterTiles).index(tileItemIndex).getItems<Required<TheaterTileId>>()[0]
@@ -127,8 +124,7 @@ export class PlaceGuestsActionRule extends ActionRule<PlaceGuestAction> {
       } else {
         return this.getMoveForFirstUnoccupiedSeatOnTile(seatsNumber, tileItemIndex, player)
       }
-    })*/
-    return []
+    })
   }
 
   private getMoveForFirstUnoccupiedSeatOnTile(

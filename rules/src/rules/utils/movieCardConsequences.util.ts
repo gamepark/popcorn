@@ -1,15 +1,15 @@
 import { MaterialItem, MaterialMove, MaterialRulesPart } from '@gamepark/rules-api'
-import { Actions } from '../../material/Actions/Actions'
 import { ActionType } from '../../material/Actions/ActionType'
 import { AdvertisingTokenSpot } from '../../material/AdvertisingTokenSpot'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 import { moneyTokens } from '../../material/MoneyToken'
-import { BuyableMovieCardId, MovieAction, MovieCard, movieCardCharacteristics, MovieCardId } from '../../material/MovieCard'
+import { PlayableMovieCardId, MovieAction, MovieCard, movieCardCharacteristics, MovieCardId } from '../../material/MovieCard'
 import { popcornTokens } from '../../material/PopcornToken'
 import { TheaterTileId } from '../../material/TheaterTile'
 import { AvailableMovieActionsMemory, Memory } from '../../Memory'
 import { PlayerColor } from '../../PlayerColor'
+import { addPendingActionForPlayer } from '../actions/utils/addPendingActionForPlayer.util'
 import { RuleId } from '../RuleId'
 
 const getAdvertisingTokenSpotFromMovieAction = (
@@ -203,17 +203,6 @@ const getMovesForMovieAction = (
   }
 }
 
-const addPendingActionForPlayer = (rule: MaterialRulesPart<PlayerColor, MaterialType, LocationType, RuleId>, action: Actions, player: PlayerColor): void => {
-  rule.memorize<Actions[]>(
-    Memory.PendingActions,
-    (pendingActions) => {
-      pendingActions.unshift(action)
-      return pendingActions
-    },
-    player
-  )
-}
-
 const getBonusActionForMovie = (
   rule: MaterialRulesPart<PlayerColor, MaterialType, LocationType>,
   player: PlayerColor,
@@ -236,7 +225,7 @@ const getBonusActionForMovie = (
 export const getBuyingFilmCardConsequences = (
   rule: MaterialRulesPart<PlayerColor, MaterialType, LocationType>,
   player: PlayerColor,
-  boughtCard: MaterialItem<PlayerColor, LocationType, Required<BuyableMovieCardId>>,
+  boughtCard: MaterialItem<PlayerColor, LocationType, Required<PlayableMovieCardId>>,
   destinationSpot: 0 | 1 | 2
 ): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] => {
   if (boughtCard.location.type !== LocationType.PremiersRowSpot && boughtCard.location.type !== LocationType.FeaturesRowSpot) {

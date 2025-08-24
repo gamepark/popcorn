@@ -6,11 +6,13 @@ import { MaterialType } from '../../material/MaterialType'
 import { PlayerColor } from '../../PlayerColor'
 import { BuyMovieCardActionRule } from '../actions/BuyMovieCardActionRule'
 import { BuyTheaterTileActionRule } from '../actions/BuyTheaterTileActionRule'
+import { ChooseMovieActionRule } from '../actions/ChooseMovieActionRule'
 import { ChooseSeatActionActionRule } from '../actions/ChooseSeatActionActionRule'
 import { DiscardAwardCardActionRule } from '../actions/DiscardAwardCardActionRule'
 import { PickGuestFromReserveOrExitZoneActionRule } from '../actions/PickGuestFromReserveOrExitZoneActionRule'
 import { PickTheaterTileToActivateActionRule } from '../actions/PickTheaterTileToActivateActionRule'
 import { PlaceCinemaGuestInReserveActionRule } from '../actions/PlaceCinemaGuestInReserveActionRule'
+import { PlaceExitZoneGuestInBagActionRule } from '../actions/PlaceExitZoneGuestInBagActionRule'
 import { PlaceGuestsActionRule } from '../actions/PlaceGuestsActionRule'
 import { UseAdvertisingTokenActionRule } from '../actions/UseAdvertisingTokenActionRule'
 import { RuleId } from '../RuleId'
@@ -21,6 +23,8 @@ export const getActionRule = (action: Actions, rule: MaterialRulesPart<PlayerCol
       return new BuyMovieCardActionRule(rule.game, action)
     case ActionType.BuyTheaterTile:
       return new BuyTheaterTileActionRule(rule.game, action)
+    case ActionType.ChooseMovieAction:
+      return new ChooseMovieActionRule(rule.game, action)
     case ActionType.ChooseSeatAction:
       return new ChooseSeatActionActionRule(rule.game, action)
     case ActionType.DiscardAwardCard:
@@ -31,6 +35,8 @@ export const getActionRule = (action: Actions, rule: MaterialRulesPart<PlayerCol
       return new PickTheaterTileToActivateActionRule(rule.game, action)
     case ActionType.PlaceCinemaGuestInReserve:
       return new PlaceCinemaGuestInReserveActionRule(rule.game, action)
+    case ActionType.PlaceExitZoneGuestInBag:
+      return new PlaceExitZoneGuestInBagActionRule(rule.game, action)
     case ActionType.PlaceGuests:
       return new PlaceGuestsActionRule(rule.game, action)
     case ActionType.UseAdvertisingToken:

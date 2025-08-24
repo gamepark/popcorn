@@ -96,8 +96,8 @@ class TheaterTileDescription extends TokenDescription<PlayerColor, MaterialType,
   ): React.ReactNode {
     if (context.player !== undefined) {
       if (context.rules.game.rule?.id === RuleId.ShowingsPhaseRule && context.rules.game.players.includes(context.player)) {
-        const pendingAction = context.rules.remind<Actions[]>(Memory.PendingActions, context.player)[0]
-        if (pendingAction.type === ActionType.PickTheaterTileToActivate) {
+        const pendingActions = context.rules.remind<Actions[]>(Memory.PendingActions, context.player)
+        if (pendingActions.length > 0 && pendingActions[0].type === ActionType.PickTheaterTileToActivate) {
           const currentItemIndex = context.rules
             .material(MaterialType.TheaterTiles)
             .location(item.location.type)
@@ -138,8 +138,8 @@ class TheaterTileDescription extends TokenDescription<PlayerColor, MaterialType,
   public isMenuAlwaysVisible(item: MaterialItem<PlayerColor, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType>): boolean {
     if (context.player !== undefined) {
       if (context.rules.game.rule?.id === RuleId.ShowingsPhaseRule && context.rules.game.players.includes(context.player)) {
-        const pendingAction = context.rules.remind<Actions[]>(Memory.PendingActions, context.player)[0]
-        if (pendingAction.type === ActionType.PickTheaterTileToActivate) {
+        const pendingActions = context.rules.remind<Actions[]>(Memory.PendingActions, context.player)
+        if (pendingActions.length > 0 && pendingActions[0].type === ActionType.PickTheaterTileToActivate) {
           return item.location.player === context.player && !item.selected
         }
       }

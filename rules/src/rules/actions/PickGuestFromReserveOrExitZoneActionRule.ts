@@ -6,11 +6,11 @@ import { PickReserveOrExitZoneGuestAction } from '../../material/Actions/PickRes
 import { GuestPawn } from '../../material/GuestPawn'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
-import { BuyableMovieCardId } from '../../material/MovieCard'
+import { PlayableMovieCardId } from '../../material/MovieCard'
 import { Memory } from '../../Memory'
 import { PlayerColor } from '../../PlayerColor'
 import { RuleId } from '../RuleId'
-import { getBuyingFilmCardConsequences } from '../utils/BuyingFilmConsequencesHelper'
+import { getBuyingFilmCardConsequences } from '../utils/movieCardConsequences.util'
 import { ActionRule } from './ActionRule'
 
 export class PickGuestFromReserveOrExitZoneActionRule extends ActionRule<PickReserveOrExitZoneGuestAction> {
@@ -71,7 +71,7 @@ export class PickGuestFromReserveOrExitZoneActionRule extends ActionRule<PickRes
       const playerDoingAction = this.getPlayerDoingAction(move)
       this.removeCurrentActionForPlayer(playerDoingAction)
       if (this.currentPhase === GamePhase.BuyingPhase && this.action.boughtCardData !== undefined) {
-        const boughtCard = this.material(MaterialType.MovieCards).index(this.action.boughtCardData.boughtCardIndex).getItem<Required<BuyableMovieCardId>>()
+        const boughtCard = this.material(MaterialType.MovieCards).index(this.action.boughtCardData.boughtCardIndex).getItem<Required<PlayableMovieCardId>>()
         if (boughtCard === undefined) {
           throw new Error('Invalid buying card move')
         }

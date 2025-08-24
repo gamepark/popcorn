@@ -8,7 +8,7 @@ import { MaterialType } from '../material/MaterialType'
 import { Memory } from '../Memory'
 import { PlayerColor } from '../PlayerColor'
 import { RuleId } from './RuleId'
-import { getActionRule } from './utils/GetActionRule'
+import { getActionRule } from './utils/getActionRule.util'
 
 export class BuyingPhaseRule extends PlayerTurnRule<PlayerColor, MaterialType, LocationType, RuleId> {
   private get pendingActions(): Actions[] {
@@ -17,6 +17,9 @@ export class BuyingPhaseRule extends PlayerTurnRule<PlayerColor, MaterialType, L
 
   public getPlayerMoves(): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     const pendingActions = this.pendingActions
+    if (pendingActions.length === 0) {
+      return []
+    }
     if (
       pendingActions[0].type !== ActionType.BuyMovieCard &&
       pendingActions[0].type !== ActionType.BuyTheaterTile &&
