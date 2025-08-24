@@ -8,12 +8,13 @@ import { GuestPawn } from '../../material/GuestPawn'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 import { MoneyToken, moneyTokens } from '../../material/MoneyToken'
-import { BuyableMovieCardId, MovieCard, movieCardCharacteristics, MovieColor } from '../../material/MovieCard'
+import { PlayableMovieCardId, MovieCard, movieCardCharacteristics, MovieColor } from '../../material/MovieCard'
 import { Memory } from '../../Memory'
 import { PlayerColor } from '../../PlayerColor'
 import { RuleId } from '../RuleId'
-import { getBuyingFilmCardConsequences } from '../utils/BuyingFilmConsequencesHelper'
+import { getBuyingFilmCardConsequences } from '../utils/movieCardConsequences.util'
 import { ActionRule } from './ActionRule'
+import { addPendingActionForPlayer } from './utils/addPendingActionForPlayer.util'
 
 export class BuyMovieCardActionRule extends ActionRule<BuyMovieCardAction> {
   public consequencesBeforeRuleForPlayer(): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
@@ -48,7 +49,7 @@ export class BuyMovieCardActionRule extends ActionRule<BuyMovieCardAction> {
 
   public onCustomMove(move: CustomMove<CustomMoveType>, context?: PlayMoveContext): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
     if (isBuyMovieCardCustomMove(move)) {
-      const boughtCard = this.material(MaterialType.MovieCards).index(move.data.boughtCardIndex).getItem<Required<BuyableMovieCardId>>()
+      const boughtCard = this.material(MaterialType.MovieCards).index(move.data.boughtCardIndex).getItem<Required<PlayableMovieCardId>>()
       if (
         boughtCard === undefined ||
         (boughtCard.location.type !== LocationType.PremiersRowSpot && boughtCard.location.type !== LocationType.FeaturesRowSpot)
@@ -65,15 +66,12 @@ export class BuyMovieCardActionRule extends ActionRule<BuyMovieCardAction> {
           player: move.data.player
         })
       if (boughtCard.location.type === LocationType.PremiersRowSpot) {
-        this.memorize<Actions[]>(
-          Memory.PendingActions,
-          (pendingActions) => {
-            pendingActions.unshift({
-              type: ActionType.PickReserveOrExitZoneGuest,
-              guest: BuyMovieCardActionRule.getGuestPawnColorFromMovieId(boughtCard.id.front),
-              boughtCardData: move.data
-            })
-            return pendingActions
+        addPendingActionForPlayer(
+          this,
+          {
+            type: ActionType.PickReserveOrExitZoneGuest,
+            guest: BuyMovieCardActionRule.getGuestPawnColorFromMovieId(boughtCard.id.front),
+            boughtCardData: move.data
           },
           move.data.player
         )
@@ -93,11 +91,10 @@ export class BuyMovieCardActionRule extends ActionRule<BuyMovieCardAction> {
     destination: Location<PlayerColor, LocationType>,
     row: LocationType.FeaturesRowSpot | LocationType.PremiersRowSpot
   ): MoveItem<PlayerColor, MaterialType, LocationType>[] {
-    const moves = this.material(MaterialType.MovieCards)
+    return this.material(MaterialType.MovieCards)
       .location(row)
-      .id<Required<BuyableMovieCardId>>((id) => movieCardCharacteristics[id.front].getPrice(row) <= playerMoney)
+      .id<Required<PlayableMovieCardId>>((id) => movieCardCharacteristics[id.front].getPrice(row) <= playerMoney)
       .moveItems(destination)
-    return moves
   }
 
   private mapMovieCardMoveToCustomMove(move: MoveItem<PlayerColor, MaterialType, LocationType>): CustomMove<CustomMoveType> {

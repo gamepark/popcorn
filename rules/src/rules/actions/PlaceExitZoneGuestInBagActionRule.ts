@@ -32,7 +32,18 @@ export class PlaceExitZoneGuestInBagActionRule extends ActionRule<PlaceExitZoneG
         throw new Error('Cannot find player from target location')
       }
       this.removeCurrentActionForPlayer(player)
-      return [this.material(MaterialType.GuestPawns).location(LocationType.PlayerGuestPawnsUnderClothBagSpot).player(player).shuffle()]
+      const consequences: MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] = [
+        this.material(MaterialType.GuestPawns).location(LocationType.PlayerGuestPawnsUnderClothBagSpot).player(player).shuffle()
+      ]
+      if (this.action.guestIndexToMoveToExitZone !== undefined && move.itemIndex !== this.action.guestIndexToMoveToExitZone) {
+        consequences.push(
+          this.material(MaterialType.GuestPawns).index(this.action.guestIndexToMoveToExitZone).moveItem({
+            type: LocationType.GuestPawnExitZoneSpotOnTopPlayerCinemaBoard,
+            player: player
+          })
+        )
+      }
+      return consequences
     }
     return super.afterItemMove(move, _context)
   }

@@ -7,10 +7,7 @@ import { PlaceCinemaGuestInReserveActionRule } from './rules/actions/PlaceCinema
 import { RuleId } from './rules/RuleId'
 
 export enum Memory {
-  PlayerActions = 1,
-  GuestPawnColorToDraw,
-  CurrentPhase,
-  AvailableMovieActions,
+  AvailableMovieActions = 1,
   PendingActions
 }
 
