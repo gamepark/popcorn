@@ -1,10 +1,12 @@
 import { faBan, faHandPointer } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { isPassSeatActionCustomMove } from '@gamepark/popcorn/material/CustomMoveType'
+import { Actions } from '@gamepark/popcorn/material/Actions/Actions'
+import { ActionType } from '@gamepark/popcorn/material/Actions/ActionType'
+import { isPassCurrentActionCustomMove } from '@gamepark/popcorn/material/CustomMoveType'
 import { GuestPawn } from '@gamepark/popcorn/material/GuestPawn'
 import { LocationType } from '@gamepark/popcorn/material/LocationType'
 import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
-import { Memorize, PlayerActionMemory } from '@gamepark/popcorn/Memorize'
+import { Memory } from '@gamepark/popcorn/Memory'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
 import { RuleId } from '@gamepark/popcorn/rules/RuleId'
 import { ItemContext, ItemMenuButton, TokenDescription } from '@gamepark/react-game'
@@ -31,10 +33,8 @@ class GuestPawnDescription extends TokenDescription<PlayerColor, MaterialType, L
   public isMenuAlwaysVisible(item: MaterialItem<PlayerColor, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType>): boolean {
     if (context.player !== undefined) {
       if (context.rules.game.rule?.id === RuleId.ShowingsPhaseRule && context.rules.game.players.includes(context.player)) {
-        const actionsMemory = context.rules.remind<PlayerActionMemory>(Memorize.PlayerActions, context.player)[RuleId.ShowingsPhaseRule]
-        if (actionsMemory.guestPlaced && actionsMemory.currentTheaterTileIndex !== undefined) {
-          return item.location.parent === actionsMemory.currentTheaterTileIndex
-        }
+        const pendingAction = context.rules.remind<Actions[]>(Memory.PendingActions, context.player)[0]
+        return pendingAction.type === ActionType.ChooseSeatAction
       }
     }
     return super.isMenuAlwaysVisible(item, context)
@@ -47,12 +47,8 @@ class GuestPawnDescription extends TokenDescription<PlayerColor, MaterialType, L
   ): React.ReactNode {
     if (context.player !== undefined) {
       if (context.rules.game.rule?.id === RuleId.ShowingsPhaseRule && context.rules.game.players.includes(context.player)) {
-        const actionsMemory = context.rules.remind<PlayerActionMemory>(Memorize.PlayerActions, context.player)[RuleId.ShowingsPhaseRule]
-        if (
-          actionsMemory.guestPlaced &&
-          actionsMemory.currentTheaterTileIndex !== undefined &&
-          item.location.parent === actionsMemory.currentTheaterTileIndex
-        ) {
+        const pendingAction = context.rules.remind<Actions[]>(Memory.PendingActions, context.player)[0]
+        if (pendingAction.type === ActionType.ChooseSeatAction && pendingAction.guestIndex === context.index) {
           const currentItemIndex = context.rules
             .material(MaterialType.GuestPawns)
             .location(item.location.type)
@@ -62,7 +58,7 @@ class GuestPawnDescription extends TokenDescription<PlayerColor, MaterialType, L
           const selectCurrentGuestMoves = _legalMoves
             .filter(isSelectItemType<PlayerColor, MaterialType, LocationType>(MaterialType.GuestPawns))
             .filter((move) => move.itemIndex === currentItemIndex)
-          const passCurrentGuestMoves = _legalMoves.filter(isPassSeatActionCustomMove).filter((move) => move.data.guestPawnIndex === currentItemIndex)
+          const passCurrentGuestMoves = _legalMoves.filter(isPassCurrentActionCustomMove)
           return passCurrentGuestMoves.length > 0 && selectCurrentGuestMoves.length > 0 ? (
             <>
               {selectCurrentGuestMoves.map((move) => (

@@ -4,11 +4,13 @@ import { TheaterTile } from '../TheaterTile'
 import { getMovieAction, MovieCardCharacteristics } from './MovieCardCharacteristics'
 
 export class RosebudCharacteristics implements MovieCardCharacteristics {
-  private readonly actions = [MovieAction.AudienceTrackAdvance, MovieAction.AdvertisingTokenOnBlueGuest, MovieAction.Get2Money]
-
-  public getColor(): MovieColor {
-    return MovieColor.Blue
-  }
+  public readonly actions = [MovieAction.AudienceTrackAdvance, MovieAction.AdvertisingTokenOnBlueGuest, MovieAction.Get2Money]
+  public readonly color = MovieColor.Blue
+  public readonly movieType = MovieCardType.FirstMovie
+  public readonly isFirstMovie = true
+  public readonly basePrice = 0
+  public readonly bonusAction = undefined
+  public readonly numberOfSeatsForBonus = undefined
 
   public getPrice(_row: LocationType.FeaturesRowSpot | LocationType.PremiersRowSpot): number {
     return 0
@@ -19,14 +21,6 @@ export class RosebudCharacteristics implements MovieCardCharacteristics {
   }
 
   public getAction(actionNumber: number): MovieAction | undefined {
-    return getMovieAction(this.actions, actionNumber)
-  }
-
-  public isFirstMovie(): boolean {
-    return true
-  }
-
-  public getMovieType(): MovieCardType {
-    return MovieCardType.FirstMovie
+    return getMovieAction(this, actionNumber)
   }
 }

@@ -1,11 +1,16 @@
-import { isMoveItemType, ItemMove, MaterialMove, PlayMoveContext, SimultaneousRule } from '@gamepark/rules-api'
-import { LocationType } from '../material/LocationType'
-import { MaterialType } from '../material/MaterialType'
-import { Memorize } from '../Memorize'
-import { PlayerColor } from '../PlayerColor'
-import { RuleId } from './RuleId'
+import { isMoveItemType, ItemMove, MaterialMove, PlayMoveContext } from '@gamepark/rules-api'
+import { PlaceExitZoneGuestInBagAction } from '../../material/Actions/PlaceExitZoneGuestInBagAction'
+import { LocationType } from '../../material/LocationType'
+import { MaterialType } from '../../material/MaterialType'
+import { PlayerColor } from '../../PlayerColor'
+import { RuleId } from '../RuleId'
+import { ActionRule } from './ActionRule'
 
-export class PlaceExitZoneGuestInBagRule extends SimultaneousRule<PlayerColor, MaterialType, LocationType> {
+export class PlaceExitZoneGuestInBagActionRule extends ActionRule<PlaceExitZoneGuestInBagAction> {
+  public consequencesBeforeRuleForPlayer(): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
+    return []
+  }
+
   public getActivePlayerLegalMoves(player: PlayerColor): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     const moves = this.material(MaterialType.GuestPawns).location(LocationType.GuestPawnExitZoneSpotOnTopPlayerCinemaBoard).player(player).moveItems({
       type: LocationType.PlayerGuestPawnsUnderClothBagSpot,
@@ -26,13 +31,8 @@ export class PlaceExitZoneGuestInBagRule extends SimultaneousRule<PlayerColor, M
       if (player === undefined) {
         throw new Error('Cannot find player from target location')
       }
-      const consequences: MaterialMove<PlayerColor, MaterialType, LocationType>[] = [
-        this.material(MaterialType.GuestPawns).location(LocationType.PlayerGuestPawnsUnderClothBagSpot).player(player).shuffle()
-      ]
-      if (this.remind<RuleId.BuyingPhaseRule | RuleId.ShowingsPhaseRule>(Memorize.CurrentPhase) === RuleId.BuyingPhaseRule) {
-        consequences.push(this.endPlayerTurn(player), this.startPlayerTurn<PlayerColor, RuleId>(RuleId.BuyingPhaseRule, player))
-      }
-      return consequences
+      this.removeCurrentActionForPlayer(player)
+      return [this.material(MaterialType.GuestPawns).location(LocationType.PlayerGuestPawnsUnderClothBagSpot).player(player).shuffle()]
     }
     return super.afterItemMove(move, _context)
   }

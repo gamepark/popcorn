@@ -1,25 +1,30 @@
-import { isMoveItemType, ItemMove, MaterialMove, PlayMoveContext, SimultaneousRule } from '@gamepark/rules-api'
-import { LocationType } from '../material/LocationType'
-import { MaterialType } from '../material/MaterialType'
-import { MovieCardId } from '../material/MovieCard'
-import { getMaximumNumberOfGuests, SeatsNumber, TheaterTileId, theaterTilesCharacteristics } from '../material/TheaterTile'
-import { Memorize, PlayerActionMemory } from '../Memorize'
-import { PlayerColor } from '../PlayerColor'
-import { RuleId } from './RuleId'
-import { SeatActionSubRules } from './ShowingsPhaseSubRules'
+import { isMoveItemType, ItemMove, MaterialMove, PlayMoveContext } from '@gamepark/rules-api'
+import { Actions } from '../../material/Actions/Actions'
+import { ActionType } from '../../material/Actions/ActionType'
+import { PlaceGuestAction } from '../../material/Actions/PlaceGuestAction'
+import { LocationType } from '../../material/LocationType'
+import { MaterialType } from '../../material/MaterialType'
+import { MovieCardId } from '../../material/MovieCard'
+import { getMaximumNumberOfGuests, SeatsNumber, TheaterTileId, theaterTilesCharacteristics } from '../../material/TheaterTile'
+import { Memory } from '../../Memory'
+import { PlayerColor } from '../../PlayerColor'
+import { RuleId } from '../RuleId'
+import { ActionRule } from './ActionRule'
 
-export class ShowingsPhasePlaceGuestsRule extends SimultaneousRule<PlayerColor, MaterialType, LocationType> {
+export class PlaceGuestsActionRule extends ActionRule<PlaceGuestAction> {
+  public consequencesBeforeRuleForPlayer(): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
+    return []
+  }
+
   public getActivePlayerLegalMoves(player: PlayerColor): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
-    const afterSeatMovieAction =
-      this.remind<PlayerActionMemory>(Memorize.PlayerActions, player)[RuleId.ShowingsPhaseRule].seatActionSubRule === SeatActionSubRules.DrawGuestAndPlaceThem
-    return afterSeatMovieAction ? this.getMoveForSeatAction(player) : this.getMovesForPlacingGuestsPhase(player)
+    return this.action.placeOneGuest ? this.getMoveForSeatAction(player) : this.getMovesForPlacingGuestsPhase(player)
   }
 
   public getMovesAfterPlayersDone(): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     return []
   }
 
-  public beforeItemMove(
+  public afterItemMove(
     move: ItemMove<PlayerColor, MaterialType, LocationType>,
     _context?: PlayMoveContext
   ): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
@@ -29,6 +34,9 @@ export class ShowingsPhasePlaceGuestsRule extends SimultaneousRule<PlayerColor, 
       move.location.parent !== undefined
     ) {
       const player = this.material(MaterialType.GuestPawns).index(move.itemIndex).getItems()[0].location.player
+      if (player === undefined) {
+        throw new Error('Invalid move')
+      }
       const movieSpots = this.material(MaterialType.MovieCards)
         .player(player)
         .location(LocationType.MovieCardSpotOnBottomPlayerCinemaBoard)
@@ -42,24 +50,15 @@ export class ShowingsPhasePlaceGuestsRule extends SimultaneousRule<PlayerColor, 
       const maxNumberOfGuestsForPlayer = playerTheaterTileMaterial
         .getItems<Required<TheaterTileId>>()
         .reduce((previousTotal, currentTile) => previousTotal + getMaximumNumberOfGuests(theaterTilesCharacteristics[currentTile.id.front].getSeatsNumber()), 0)
-      const numberOfPlacedGuests =
-        this.material(MaterialType.GuestPawns)
-          .location(LocationType.GuestPawnSpotOnTheaterTile)
-          .parent((parent) => parent !== undefined && playerTheaterTileIndexes.includes(parent)).length + 1
-      const remainingGuestMaterial = this.material(MaterialType.GuestPawns)
-        .location(LocationType.PlayerShowingsDrawnGuestSpot)
-        .player(player)
-        .index((pawnIndex) => pawnIndex !== move.itemIndex)
+      const numberOfPlacedGuests = this.material(MaterialType.GuestPawns)
+        .location(LocationType.GuestPawnSpotOnTheaterTile)
+        .parent((parent) => parent !== undefined && playerTheaterTileIndexes.includes(parent)).length
+      const remainingGuestMaterial = this.material(MaterialType.GuestPawns).location(LocationType.PlayerShowingsDrawnGuestSpot).player(player)
       if (remainingGuestMaterial.length === 0 || maxNumberOfGuestsForPlayer === numberOfPlacedGuests) {
-        this.memorize<PlayerActionMemory>(
-          Memorize.PlayerActions,
-          (memory) => {
-            memory[RuleId.ShowingsPhaseRule].guestPlaced = true
-            if (memory[RuleId.ShowingsPhaseRule].seatActionSubRule !== undefined) {
-              memory[RuleId.ShowingsPhaseRule].seatActionSubRule = undefined
-            }
-            return memory
-          },
+        this.removeCurrentActionForPlayer(player)
+        this.memorize<Actions[]>(
+          Memory.PendingActions,
+          (pendingActions) => pendingActions.concat(playerTheaterTileIndexes.map((_) => ({ type: ActionType.PickTheaterTileToActivate }))),
           player
         )
         if (numberOfPlacedGuests === maxNumberOfGuestsForPlayer && remainingGuestMaterial.length > 0) {
@@ -93,8 +92,8 @@ export class ShowingsPhasePlaceGuestsRule extends SimultaneousRule<PlayerColor, 
     })
   }
 
-  private getMoveForSeatAction(player: PlayerColor): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
-    const currentTheaterTileIndex = this.remind<PlayerActionMemory>(Memorize.PlayerActions, player)[RuleId.ShowingsPhaseRule].currentTheaterTileIndex
+  private getMoveForSeatAction(_player: PlayerColor): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+    /*const currentTheaterTileIndex = this.remind<PlayerActionMemory>(Memory.PlayerActions, player)[RuleId.ShowingsPhaseRule].currentTheaterTileIndex
     if (currentTheaterTileIndex === undefined) {
       throw new Error('Issue with current theater tile')
     }
@@ -128,7 +127,8 @@ export class ShowingsPhasePlaceGuestsRule extends SimultaneousRule<PlayerColor, 
       } else {
         return this.getMoveForFirstUnoccupiedSeatOnTile(seatsNumber, tileItemIndex, player)
       }
-    })
+    })*/
+    return []
   }
 
   private getMoveForFirstUnoccupiedSeatOnTile(
