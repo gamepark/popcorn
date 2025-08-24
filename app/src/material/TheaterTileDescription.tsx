@@ -1,9 +1,11 @@
 import { faHandPointer } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Actions } from '@gamepark/popcorn/material/Actions/Actions'
+import { ActionType } from '@gamepark/popcorn/material/Actions/ActionType'
 import { LocationType } from '@gamepark/popcorn/material/LocationType'
 import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
 import { SeatsNumber, TheaterTile, TheaterTileId } from '@gamepark/popcorn/material/TheaterTile'
-import { Memorize, PlayerActionMemory } from '@gamepark/popcorn/Memorize'
+import { Memory } from '@gamepark/popcorn/Memory'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
 import { RuleId } from '@gamepark/popcorn/rules/RuleId'
 import { ItemContext, ItemMenuButton, TokenDescription } from '@gamepark/react-game'
@@ -94,8 +96,8 @@ class TheaterTileDescription extends TokenDescription<PlayerColor, MaterialType,
   ): React.ReactNode {
     if (context.player !== undefined) {
       if (context.rules.game.rule?.id === RuleId.ShowingsPhaseRule && context.rules.game.players.includes(context.player)) {
-        const actionsMemory = context.rules.remind<PlayerActionMemory>(Memorize.PlayerActions, context.player)[RuleId.ShowingsPhaseRule]
-        if (actionsMemory.guestPlaced && actionsMemory.seatActionSubRule === undefined && actionsMemory.theaterTilesActivated.some((activated) => !activated)) {
+        const pendingAction = context.rules.remind<Actions[]>(Memory.PendingActions, context.player)[0]
+        if (pendingAction.type === ActionType.PickTheaterTileToActivate) {
           const currentItemIndex = context.rules
             .material(MaterialType.TheaterTiles)
             .location(item.location.type)
@@ -136,8 +138,8 @@ class TheaterTileDescription extends TokenDescription<PlayerColor, MaterialType,
   public isMenuAlwaysVisible(item: MaterialItem<PlayerColor, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType>): boolean {
     if (context.player !== undefined) {
       if (context.rules.game.rule?.id === RuleId.ShowingsPhaseRule && context.rules.game.players.includes(context.player)) {
-        const actionsMemory = context.rules.remind<PlayerActionMemory>(Memorize.PlayerActions, context.player)[RuleId.ShowingsPhaseRule]
-        if (actionsMemory.guestPlaced && actionsMemory.seatActionSubRule === undefined && actionsMemory.theaterTilesActivated.some((activated) => !activated)) {
+        const pendingAction = context.rules.remind<Actions[]>(Memory.PendingActions, context.player)[0]
+        if (pendingAction.type === ActionType.PickTheaterTileToActivate) {
           return item.location.player === context.player && !item.selected
         }
       }

@@ -1,6 +1,6 @@
-import { faHandPointer } from '@fortawesome/free-solid-svg-icons'
+import { faHandPointer, faHandPointLeft } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { isBuyMovieCardCustomMove } from '@gamepark/popcorn/material/CustomMoveType'
+import { isBuyMovieCardCustomMove, isMovieActionCustomMove } from '@gamepark/popcorn/material/CustomMoveType'
 import { LocationType } from '@gamepark/popcorn/material/LocationType'
 import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
 import { MovieCard, MovieCardId, MovieCardType } from '@gamepark/popcorn/material/MovieCard'
@@ -142,6 +142,14 @@ export class MovieCardDescription extends CardDescription<PlayerColor, MaterialT
     return super.getMoveDropLocations(context, move)
   }
 
+  public isMenuAlwaysVisible(_item: MaterialItem<PlayerColor, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType>): boolean {
+    // if (context.player !== undefined && context.rules.game.rule?.id === RuleId.ShowingsPhaseRule) {
+    //   const subRule = context.rules.remind<PlayerActionMemory>(Memory.PlayerActions, context.player)[RuleId.ShowingsPhaseRule].seatActionSubRule
+    //   return subRule === SeatActionSubRules.MovieAction
+    // }
+    return super.isMenuAlwaysVisible(_item, context)
+  }
+
   public getItemMenu(
     item: MaterialItem<PlayerColor, LocationType, MovieCardId>,
     context: ItemContext<PlayerColor, MaterialType, LocationType>,
@@ -153,6 +161,29 @@ export class MovieCardDescription extends CardDescription<PlayerColor, MaterialT
     ) {
       return this.createItemMenuForBuyingPhase(item, context, legalMoves)
     }
+    if (context.rules.game.rule?.id === RuleId.ShowingsPhaseRule && item.location.type === LocationType.MovieCardSpotOnBottomPlayerCinemaBoard) {
+      const movieCardIndex = context.index
+      const moves = legalMoves.filter(isMovieActionCustomMove).filter((move) => move.data.movieCardIndex === movieCardIndex)
+      if (moves.length > 0) {
+        return (
+          <>
+            {moves.map((move, index) => (
+              <ItemMenuButton
+                key={`movieAction-${movieCardIndex}-${index}`}
+                move={move}
+                label={<Trans defaults={'testLabel'} />}
+                x={-1}
+                y={-2.75 + 1.35 * index}
+                style={{ width: '1.25em', height: '1.25em' }}
+              >
+                <FontAwesomeIcon icon={faHandPointLeft} size="sm" />
+              </ItemMenuButton>
+            ))}
+          </>
+        )
+      }
+      return
+    }
     return
   }
 
@@ -161,7 +192,7 @@ export class MovieCardDescription extends CardDescription<PlayerColor, MaterialT
     context: ItemContext<PlayerColor, MaterialType, LocationType>,
     legalMoves: MaterialMove<PlayerColor, MaterialType, LocationType>[]
   ): React.ReactNode {
-    const cardIndex = context.rules.material(MaterialType.MovieCards).id<MovieCardId>(item.id).getIndex()
+    const cardIndex = context.index
     const movesForCard = legalMoves.filter(isBuyMovieCardCustomMove).filter((move) => move.data.boughtCardIndex === cardIndex)
     return movesForCard.length > 0 ? (
       <>

@@ -23,7 +23,7 @@ describe('Game setup tests', () => {
     const movieCardsMaterial = new Material(MaterialType.MovieCards, game.items[MaterialType.MovieCards])
     const firstMovieCards = movieCardsMaterial.location(LocationType.MovieCardSpotOnBottomPlayerCinemaBoard).getItems<MovieCardId>()
     const allMovieCards = movieCardsMaterial
-      .id<MovieCardId>((id) => id.front === MovieCard.FinalShowing || movieCardCharacteristics[id.front!].getMovieType() === MovieCardType.Movie)
+      .id<MovieCardId>((id) => id.front === MovieCard.FinalShowing || movieCardCharacteristics[id.front!].movieType === MovieCardType.Movie)
       .getItems<MovieCardId>()
     const movieCardsInDeck = movieCardsMaterial.location(LocationType.MovieCardDeckSpot).getItems<MovieCardId>()
     const movieCardsInFeaturesRow = movieCardsMaterial.location(LocationType.FeaturesRowSpot).getItems<MovieCardId>()

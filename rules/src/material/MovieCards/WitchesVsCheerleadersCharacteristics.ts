@@ -1,37 +1,31 @@
 import { LocationType } from '../LocationType'
 import { MovieAction, MovieCardType, MovieColor } from '../MovieCard'
-import { TheaterTile } from '../TheaterTile'
+import { SeatsNumber, TheaterTile } from '../TheaterTile'
 import { getBonusAction, getMovieAction, getMoviePriceForRow, MovieCardCharacteristics } from './MovieCardCharacteristics'
 
 export class WitchesVsCheerleadersCharacteristics implements MovieCardCharacteristics {
-  private readonly actions: MovieAction[] = [
+  public readonly actions: MovieAction[] = [
     MovieAction.AdvertisingTokenOnGreenGuest,
     MovieAction.Get3Money,
     MovieAction.AudienceTrackAdvance,
     MovieAction.AdvertisingTokenOnWhiteGuestToBag
   ]
+  public readonly color = MovieColor.Green
+  public readonly movieType = MovieCardType.Movie
+  public readonly isFirstMovie = false
+  public readonly basePrice = 3
+  public readonly bonusAction = MovieAction.DrawAwardCard
+  public readonly numberOfSeatsForBonus = SeatsNumber.Two
 
   public getAction(actionNumber: number): MovieAction | undefined {
-    return getMovieAction(this.actions, actionNumber)
+    return getMovieAction(this, actionNumber)
   }
 
   public getBonusAction(theaterTile: TheaterTile): MovieAction | undefined {
-    return getBonusAction(theaterTile, 2, MovieAction.DrawAwardCard)
-  }
-
-  public getColor(): MovieColor {
-    return MovieColor.Green
-  }
-
-  public getMovieType(): MovieCardType {
-    return MovieCardType.Movie
+    return getBonusAction(this, theaterTile)
   }
 
   public getPrice(row: LocationType.FeaturesRowSpot | LocationType.PremiersRowSpot): number {
-    return getMoviePriceForRow(3, row)
-  }
-
-  public isFirstMovie(): boolean {
-    return false
+    return getMoviePriceForRow(this, row)
   }
 }

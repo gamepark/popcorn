@@ -3,26 +3,37 @@ import { MovieAction, MovieCardType, MovieColor } from '../MovieCard'
 import { SeatsNumber, TheaterTile, theaterTilesCharacteristics } from '../TheaterTile'
 
 export interface MovieCardCharacteristics {
-  getColor(): MovieColor
+  get actions(): MovieAction[]
+
+  get numberOfSeatsForBonus(): SeatsNumber | undefined
+
+  get bonusAction(): MovieAction | undefined
+
+  get basePrice(): number
+
+  get color(): MovieColor
+
+  get isFirstMovie(): boolean
+
+  get movieType(): MovieCardType
 
   getPrice(row: LocationType.FeaturesRowSpot | LocationType.PremiersRowSpot): number
 
   getBonusAction(theaterTile: TheaterTile): MovieAction | undefined
 
   getAction(actionNumber: number): MovieAction | undefined
-
-  isFirstMovie(): boolean
-
-  getMovieType(): MovieCardType
 }
 
-export const getMoviePriceForRow = (basePrice: number, row: LocationType.FeaturesRowSpot | LocationType.PremiersRowSpot): number =>
-  basePrice + (row === LocationType.PremiersRowSpot ? 2 : 0)
+export const getMoviePriceForRow = (
+  movieCardCharacteristics: MovieCardCharacteristics,
+  row: LocationType.FeaturesRowSpot | LocationType.PremiersRowSpot
+): number => movieCardCharacteristics.basePrice + (row === LocationType.PremiersRowSpot ? 2 : 0)
 
-export const getMovieAction = (actions: MovieAction[], actionNumber: number): MovieAction | undefined =>
-  actionNumber in actions ? actions[actionNumber] : undefined
+export const getMovieAction = (movieCardCharacteristics: MovieCardCharacteristics, actionNumber: number): MovieAction | undefined =>
+  actionNumber in movieCardCharacteristics.actions ? movieCardCharacteristics.actions[actionNumber] : undefined
 
-export const getBonusAction = (theaterTile: TheaterTile, numberOfSeatsForBonus: 1 | 2 | 3, action: MovieAction): MovieAction | undefined => {
-  const targetSeatsNumber = numberOfSeatsForBonus === 1 ? SeatsNumber.One : numberOfSeatsForBonus === 2 ? SeatsNumber.Two : SeatsNumber.Three
-  return theaterTilesCharacteristics[theaterTile].getSeatsNumber() === targetSeatsNumber ? action : undefined
+export const getBonusAction = (movieCardCharacteristics: MovieCardCharacteristics, theaterTile: TheaterTile): MovieAction | undefined => {
+  return theaterTilesCharacteristics[theaterTile].getSeatsNumber() === movieCardCharacteristics.numberOfSeatsForBonus
+    ? movieCardCharacteristics.bonusAction
+    : undefined
 }
