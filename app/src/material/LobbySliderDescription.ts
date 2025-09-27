@@ -20,6 +20,7 @@ class LobbySliderDescription extends BoardDescription<PlayerColor, MaterialType,
   width = 2.0
   height = 6.6
   thickness = 0.2
+  transparency = true
 
   images = {
     [LobbySlider.Cyan1]: cyan1LobbySlider,

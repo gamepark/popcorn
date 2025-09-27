@@ -11,6 +11,7 @@ import purplePopcornCup from '../images/Cups/PurpleCup.png'
 class PopcornCupDescription extends FlatMaterialDescription<PlayerColor, MaterialType, LocationType, PlayerColor> {
   width = 6.15
   height = 5.35
+  transparency = true
 
   images = {
     [PlayerColor.Cyan]: cyanPopcornCup,

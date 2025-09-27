@@ -16,6 +16,8 @@ class TheaterTrophyDescription extends TokenDescription<PlayerColor, MaterialTyp
     return trophySizes[id]
   }
 
+  transparency = true
+
   images = {
     [TheaterTrophy.TrophyFirst]: trophyFirst,
     [TheaterTrophy.TrophySecond]: trophySecond

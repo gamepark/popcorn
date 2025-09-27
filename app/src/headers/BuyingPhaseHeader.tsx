@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
 import { PopcornRules } from '@gamepark/popcorn/PopcornRules'
 import { usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'

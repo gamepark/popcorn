@@ -102,7 +102,7 @@ class AwardCardDescription extends CardDescription<PlayerColor, MaterialType, Lo
     return movesForCard.length > 0 ? (
       <>
         {movesForCard.map((move, index) => (
-          <ItemMenuButton key={`awardCard-discard-${index}`} move={move} label={<Trans defaults="awardCard.itemMenu.discard" />} angle={0} radius={1.25}>
+          <ItemMenuButton key={`awardCard-discard-${index}`} move={move} label={<Trans i18nKey="awardCard.itemMenu.discard" />} angle={0} radius={1.25}>
             <FontAwesomeIcon icon={faHandPointer} size="lg" />
           </ItemMenuButton>
         ))}

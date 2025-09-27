@@ -12,6 +12,7 @@ class TopCinemaBoardDescription extends BoardDescription<PlayerColor, MaterialTy
   width = 24.2
   height = 16.7
   thickness = 0.2
+  transparency = true
 
   images = {
     [PlayerColor.Cyan]: cyanTopCinemaBoard,

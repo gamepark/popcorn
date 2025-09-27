@@ -21,6 +21,7 @@ import yellowGuestPawn from '../images/GuestPawns/YellowGuestPawn.png'
 class GuestPawnDescription extends TokenDescription<PlayerColor, MaterialType, LocationType, GuestPawn> {
   width = 1.8
   height = 1.8
+  transparency = true
 
   images = {
     [GuestPawn.Blue]: blueGuestPawn,

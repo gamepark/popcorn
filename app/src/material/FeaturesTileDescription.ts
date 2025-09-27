@@ -9,6 +9,7 @@ class FeaturesTileDescription extends TokenDescription<PlayerColor, MaterialType
   width = 5
   height = 7
   thickness = 0.2
+  transparency = true
 
   staticItem = {
     location: {

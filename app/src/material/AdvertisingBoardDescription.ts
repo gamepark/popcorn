@@ -8,6 +8,7 @@ class AdvertisingBoardDescription extends BoardDescription<PlayerColor, Material
   width = 7.38
   height = 18.96
   thickness = 0.2
+  transparency = true
 
   image = advertisingBoard
 

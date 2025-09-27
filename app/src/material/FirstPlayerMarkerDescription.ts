@@ -7,6 +7,7 @@ import firstPlayerMarker from '../images/Tokens/FirstPlayerToken.png'
 class FirstPlayerMarkerDescription extends TokenDescription<PlayerColor, MaterialType, LocationType> {
   width = 5.55
   height = 6.59
+  transparency = true
 
   image = firstPlayerMarker
 }

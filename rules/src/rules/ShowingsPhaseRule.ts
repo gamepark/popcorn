@@ -13,7 +13,7 @@ import {
   RuleStep,
   SimultaneousRule
 } from '@gamepark/rules-api'
-import { uniq } from 'lodash'
+import { uniq } from 'es-toolkit'
 import { Actions } from '../material/Actions/Actions'
 import { ActionType } from '../material/Actions/ActionType'
 import { CustomMoveType, isMovieActionCustomMove, isPassCurrentActionCustomMove } from '../material/CustomMoveType'
@@ -86,7 +86,7 @@ export class ShowingsPhaseRule extends SimultaneousRule<PlayerColor, MaterialTyp
         throw new Error('Undefined played after shuffle')
       }
       const pendingAction = this.remind<Actions[]>(Memory.PendingActions, player)[0]
-      if (pendingAction.type === ActionType.PlaceGuests) {
+      if (pendingAction?.type === ActionType.PlaceGuests) {
         const numberOfRemainingGuestToDraw = pendingAction.placeOneGuest
           ? 1
           : this.getNumberOfGuestsToDraw(player) -
@@ -130,7 +130,6 @@ export class ShowingsPhaseRule extends SimultaneousRule<PlayerColor, MaterialTyp
       const subRule = getActionRule(pendingActions[0], this)
       consequences.push(...subRule.beforeItemMove(move, context))
     }
-    this.addEndPlayerTurnConsequenceIfNecessary(move, player, consequences, true)
     return consequences
   }
 

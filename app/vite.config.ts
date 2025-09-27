@@ -8,11 +8,11 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd())
   return {
     server: {
-      port: 3000,
+      port: 3000
     },
     resolve: {
       alias: {
-        '@gamepark/game-template': path.resolve(__dirname, '../rules/src')
+        '@gamepark/popcorn': path.resolve(__dirname, '../rules/src')
       },
       dedupe: ['react', 'react-dom', 'react-redux', '@dnd-kit/core', '@emotion/react', 'react-i18next']
     },

@@ -1,5 +1,5 @@
 import { MaterialGameSetup } from '@gamepark/rules-api'
-import { shuffle } from 'lodash'
+import { shuffle } from 'es-toolkit'
 import { Actions } from './material/Actions/Actions'
 import { ActionType } from './material/Actions/ActionType'
 import { awardCards } from './material/AwardCard'

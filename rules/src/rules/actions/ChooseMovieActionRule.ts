@@ -1,5 +1,5 @@
 import { CustomMove, MaterialMove, PlayMoveContext } from '@gamepark/rules-api'
-import { cloneDeep } from 'lodash'
+import { cloneDeep } from 'es-toolkit'
 import { Actions } from '../../material/Actions/Actions'
 import { ActionType } from '../../material/Actions/ActionType'
 import { ChooseMovieActionAction } from '../../material/Actions/ChooseMovieActionAction'

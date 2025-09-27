@@ -173,7 +173,7 @@ export class MovieCardDescription extends CardDescription<PlayerColor, MaterialT
               <ItemMenuButton
                 key={`movieAction-${movieCardIndex}-${index}`}
                 move={move}
-                label={<Trans defaults={'buttons.movieCard.chooseAction'} />}
+                label={<Trans i18nKey={'buttons.movieCard.chooseAction'} />}
                 labelPosition="left"
                 x={-3.35}
                 y={-2.75 + 1.35 * index}
@@ -226,11 +226,11 @@ export class MovieCardDescription extends CardDescription<PlayerColor, MaterialT
   private getMenuLabelForDestination(x: number | undefined): React.ReactNode {
     switch (x) {
       case 0:
-        return <Trans defaults="movieCard.itemMenu.buyingPhase.destination.leftTheater" />
+        return <Trans i18nKey="movieCard.itemMenu.buyingPhase.destination.leftTheater" />
       case 1:
-        return <Trans defaults="movieCard.itemMenu.buyingPhase.destination.centerTheater" />
+        return <Trans i18nKey="movieCard.itemMenu.buyingPhase.destination.centerTheater" />
       case 2:
-        return <Trans defaults="movieCard.itemMenu.buyingPhase.destination.leftTheater" />
+        return <Trans i18nKey="movieCard.itemMenu.buyingPhase.destination.leftTheater" />
       default:
         throw new Error('Unknown destination slot')
     }

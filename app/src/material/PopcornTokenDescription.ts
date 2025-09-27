@@ -4,7 +4,7 @@ import { PopcornToken, popcornTokens } from '@gamepark/popcorn/material/PopcornT
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
 import { ComponentSize, MaterialContext, TokenDescription } from '@gamepark/react-game'
 import { MaterialItem } from '@gamepark/rules-api'
-import { random } from 'lodash'
+import { randomInt } from 'es-toolkit'
 import popcorn1Back1 from '../images/Tokens/Popcorn/Popcorn1Back1.png'
 import popcorn1Front1 from '../images/Tokens/Popcorn/Popcorn1Front1.png'
 import popcorn3Back1 from '../images/Tokens/Popcorn/Popcorn3Back1.png'
@@ -33,7 +33,7 @@ class PopcornTokenDescription extends TokenDescription<PlayerColor, MaterialType
   thickness = 0.2
 
   private popcornTokenNumber = popcornTokens.reduce(
-    (previousValue, currentValue) => ({ ...previousValue, [currentValue]: random(5, 10, false) }),
+    (previousValue, currentValue) => ({ ...previousValue, [currentValue]: randomInt(5, 11) }),
     {} as Record<PopcornToken, number>
   )
 

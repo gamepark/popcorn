@@ -12,8 +12,8 @@ export enum LobbySlider {
   Orange1 = 1 | (PlayerColor.Orange << 2),
   Orange2 = 2 | (PlayerColor.Orange << 2),
   Orange3 = 3 | (PlayerColor.Orange << 2),
-  Purple1 = 3 | (PlayerColor.Purple << 2),
-  Purple2 = 3 | (PlayerColor.Purple << 2),
+  Purple1 = 1 | (PlayerColor.Purple << 2),
+  Purple2 = 2 | (PlayerColor.Purple << 2),
   Purple3 = 3 | (PlayerColor.Purple << 2)
 }
 

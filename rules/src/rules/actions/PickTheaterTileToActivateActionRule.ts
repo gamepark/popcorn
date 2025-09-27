@@ -1,5 +1,5 @@
 import { isSelectItemType, ItemMove, MaterialItem, MaterialMove, PlayMoveContext } from '@gamepark/rules-api'
-import { range } from 'lodash'
+import { range } from 'es-toolkit'
 import { Actions } from '../../material/Actions/Actions'
 import { ActionType } from '../../material/Actions/ActionType'
 import { PickTheaterTileToActivateAction } from '../../material/Actions/PickTheaterTileToActivateAction'

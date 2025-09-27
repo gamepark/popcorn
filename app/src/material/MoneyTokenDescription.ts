@@ -4,7 +4,7 @@ import { MoneyToken, moneyTokens } from '@gamepark/popcorn/material/MoneyToken'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
 import { MaterialContext, RoundTokenDescription } from '@gamepark/react-game'
 import { MaterialItem } from '@gamepark/rules-api'
-import { random } from 'lodash'
+import { randomInt } from 'es-toolkit'
 import money1Back from '../images/Tokens/Money/Money1Back.jpg'
 import money1Front from '../images/Tokens/Money/Money1Front.jpg'
 import money5Back from '../images/Tokens/Money/Money5Back.jpg'
@@ -12,8 +12,8 @@ import money5Front from '../images/Tokens/Money/Money5Front.jpg'
 
 class MoneyTokenDescription extends RoundTokenDescription<PlayerColor, MaterialType, LocationType, MoneyToken> {
   private moneyTokensNumber = {
-    [MoneyToken.Money1]: random(5, 10, false),
-    [MoneyToken.Money5]: random(5, 10, false)
+    [MoneyToken.Money1]: randomInt(5, 11),
+    [MoneyToken.Money5]: randomInt(5, 11)
   }
 
   diameter = 2.2

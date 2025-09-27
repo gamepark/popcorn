@@ -7,6 +7,7 @@ import audienceCube from '../images/AudienceCube.png'
 class AudienceCubeDescription extends TokenDescription<PlayerColor, MaterialType, LocationType> {
   width = 1
   height = 1
+  transparency = true
 
   image = audienceCube
 }

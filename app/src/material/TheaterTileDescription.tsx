@@ -48,6 +48,7 @@ class TheaterTileDescription extends TokenDescription<PlayerColor, MaterialType,
   width = 4.3
   height = 4.3
   thickness = 0.2
+  transparency = true
 
   images = {
     [TheaterTile.DefaultOneSeatTile]: emptyTile,
@@ -115,7 +116,7 @@ class TheaterTileDescription extends TokenDescription<PlayerColor, MaterialType,
                   move={move}
                   x={-1.25}
                   y={this.height / 2}
-                  //label={<Trans defaults="button.theaterTile.showingsPhase.activateTheater" />}
+                  //label={<Trans i18nKey="button.theaterTile.showingsPhase.activateTheater" />}
                   labelPosition="left"
                 >
                   <FontAwesomeIcon icon={faHandPointer} size="lg" />
