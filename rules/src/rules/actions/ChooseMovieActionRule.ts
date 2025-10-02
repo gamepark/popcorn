@@ -32,13 +32,15 @@ export class ChooseMovieActionRule extends ActionRule<ChooseMovieActionAction> {
     const currentMovieIndex = currentMovieMaterial.getIndex()
     return (
       this.remind<AvailableMovieActionsMemory>(Memory.AvailableMovieActions)
-        [currentMovie.id.front]?.filter((isAvailable) => isAvailable)
-        .map((_, index) =>
+        [currentMovie.id.front]?.entries()
+        .filter(([_, isAvailable]) => isAvailable)
+        .map(([actionIndex, _]) =>
           this.customMove<CustomMoveType>(CustomMoveType.MovieAction, {
             movieCardIndex: currentMovieIndex,
-            movieActionNumber: index
+            movieActionNumber: actionIndex
           })
         )
+        .toArray()
         .concat(this.customMove<CustomMoveType>(CustomMoveType.PassCurrentAction, { player: player })) ?? []
     )
   }

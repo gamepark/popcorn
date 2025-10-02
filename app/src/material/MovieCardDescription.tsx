@@ -176,7 +176,7 @@ export class MovieCardDescription extends CardDescription<PlayerColor, MaterialT
                 label={<Trans i18nKey={'buttons.movieCard.chooseAction'} />}
                 labelPosition="left"
                 x={-3.35}
-                y={-2.75 + 1.35 * index}
+                y={-2.75 + 1.35 * move.data.movieActionNumber}
                 style={{ width: '1.25em', height: '1.25em' }}
               >
                 <FontAwesomeIcon icon={faHandPointRight} size="sm" />

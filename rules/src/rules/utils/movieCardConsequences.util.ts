@@ -29,7 +29,7 @@ const getAdvertisingTokenSpotFromMovieAction = (
     case MovieAction.AdvertisingTokenOnRedGuest:
       return AdvertisingTokenSpot.RedGuestPawn
     case MovieAction.AdvertisingTokenOnYellowGuest:
-      return AdvertisingTokenSpot.RedGuestPawn
+      return AdvertisingTokenSpot.YellowGuestPawn
     case MovieAction.AdvertisingTokenOnAnyGuest:
       return AdvertisingTokenSpot.AnyGuestPawn
     case MovieAction.AdvertisingTokenOnWhiteGuestToBag:
