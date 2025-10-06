@@ -11,6 +11,7 @@ import { BuyableTheaterTileId, SeatsNumber, TheaterTileId, theaterTilesCharacter
 import { Memory } from '../../Memory'
 import { PlayerColor } from '../../PlayerColor'
 import { RuleId } from '../RuleId'
+import { getAudienceTrackMove } from '../utils/movieCardConsequences.util'
 import { ActionRule } from './ActionRule'
 
 const availableLocationTypes = [LocationType.OneSeatTheaterTileRowSpot, LocationType.TwoSeatTheaterTileRowSpot, LocationType.ThreeSeatTheaterTileRowSpot]
@@ -75,6 +76,8 @@ export class BuyTheaterTileActionRule extends ActionRule<BuyTheaterTileAction> {
               }))
             : previousTileMaterial.deleteItem()
         )
+      } else if (moveData.destinationSpot === 2 && previousTileMaterial.length === 0) {
+        consequences.push(...getAudienceTrackMove(this, moveData.player))
       }
       consequences.push(
         boughtTileMaterial.moveItem({
