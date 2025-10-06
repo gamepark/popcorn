@@ -15,7 +15,8 @@ export class EndOfRoundPhaseRule extends PlayerTurnRule<PlayerColor, MaterialTyp
     _context?: PlayMoveContext
   ): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
     this.initializePlayersPendingActions()
-    return this.getTheatricalRunConsequences()
+    return this.unselectTheaterTiles()
+      .concat(this.getTheatricalRunConsequences())
       .concat(this.getNewLineupConsequences())
       .concat(
         this.material(MaterialType.FirstPlayerMarker).moveItem({
@@ -89,5 +90,9 @@ export class EndOfRoundPhaseRule extends PlayerTurnRule<PlayerColor, MaterialTyp
       }
       this.memorize<Actions[]>(Memory.PendingActions, playerPendingActions, player)
     })
+  }
+
+  private unselectTheaterTiles(): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+    return this.material(MaterialType.TheaterTiles).selected(true).unselectItems()
   }
 }
