@@ -5,37 +5,6 @@ __metadata:
   version: 8
   cacheKey: 10c0
 
-"@apollo/client@npm:^4.0.5":
-  version: 4.0.6
-  resolution: "@apollo/client@npm:4.0.6"
-  dependencies:
-    "@graphql-typed-document-node/core": "npm:^3.1.1"
-    "@wry/caches": "npm:^1.0.0"
-    "@wry/equality": "npm:^0.5.6"
-    "@wry/trie": "npm:^0.5.0"
-    graphql-tag: "npm:^2.12.6"
-    optimism: "npm:^0.18.0"
-    tslib: "npm:^2.3.0"
-  peerDependencies:
-    graphql: ^16.0.0
-    graphql-ws: ^5.5.5 || ^6.0.3
-    react: ^17.0.0 || ^18.0.0 || >=19.0.0-rc
-    react-dom: ^17.0.0 || ^18.0.0 || >=19.0.0-rc
-    rxjs: ^7.3.0
-    subscriptions-transport-ws: ^0.9.0 || ^0.11.0
-  peerDependenciesMeta:
-    graphql-ws:
-      optional: true
-    react:
-      optional: true
-    react-dom:
-      optional: true
-    subscriptions-transport-ws:
-      optional: true
-  checksum: 10c0/f8328786c5f551c0e0ee6dc41084bbbe8a4094e71cdcd6ca3bc2f92b12aa2b8fb73bc56d662c143d4818b7212c8b45c8d05180f0a924113e39a84e5072fb8d3b
-  languageName: node
-  linkType: hard
-
 "@babel/code-frame@npm:^7.0.0, @babel/code-frame@npm:^7.27.1":
   version: 7.27.1
   resolution: "@babel/code-frame@npm:7.27.1"
@@ -102,10 +71,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.18.3, @babel/runtime@npm:^7.27.6":
+"@babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.18.3":
   version: 7.28.4
   resolution: "@babel/runtime@npm:7.28.4"
   checksum: 10c0/792ce7af9750fb9b93879cc9d1db175701c4689da890e6ced242ea0207c9da411ccf16dc04e689cc01158b28d7898c40d75598f4559109f761c12ce01e959bf7
+  languageName: node
+  linkType: hard
+
+"@babel/runtime@npm:^7.28.4":
+  version: 7.28.6
+  resolution: "@babel/runtime@npm:7.28.6"
+  checksum: 10c0/358cf2429992ac1c466df1a21c1601d595c46930a13c1d4662fde908d44ee78ec3c183aaff513ecb01ef8c55c3624afe0309eeeb34715672dbfadb7feedb2c0d
   languageName: node
   linkType: hard
 
@@ -723,6 +699,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@gamepark/api-types@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@gamepark/api-types@npm:1.0.0"
+  peerDependencies:
+    "@trpc/server": ^11.8.0
+  checksum: 10c0/8d89e4007599d348657df72e2b3caafddb99dd4abbdb3e4c6b2dce07dc65aa98a4adad167877de1db8b454722e8e477bf8dfc3b7e17780ad3fd93a11d3e47135
+  languageName: node
+  linkType: hard
+
 "@gamepark/avataaars@npm:~3.0.0":
   version: 3.0.0
   resolution: "@gamepark/avataaars@npm:3.0.0"
@@ -743,8 +728,8 @@ __metadata:
     "@fortawesome/free-regular-svg-icons": "npm:^7.0.1"
     "@fortawesome/free-solid-svg-icons": "npm:^7.0.1"
     "@fortawesome/react-fontawesome": "npm:^3.0.2"
-    "@gamepark/react-game": "npm:~7.0.2"
-    "@gamepark/rules-api": "npm:~7.0.0"
+    "@gamepark/react-game": "npm:~7.3.2"
+    "@gamepark/rules-api": "npm:~7.2.0"
     "@types/node": "npm:^24.5.0"
     "@types/react": "npm:^19.1.13"
     "@types/react-dom": "npm:^19.1.9"
@@ -754,10 +739,10 @@ __metadata:
     eslint-plugin-react-hooks: "npm:^5.2.0"
     eslint-plugin-react-refresh: "npm:^0.4.20"
     globals: "npm:^16.4.0"
-    i18next: "npm:^25.5.2"
+    i18next: "npm:^25.8.5"
     react: "npm:^19.1.1"
     react-dom: "npm:^19.1.1"
-    react-i18next: "npm:^15.7.3"
+    react-i18next: "npm:^16.5.4"
     react-redux: "npm:^9.2.0"
     typescript: "npm:^5.9.2"
     typescript-eslint: "npm:^8.44.0"
@@ -770,7 +755,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@gamepark/popcorn@workspace:rules"
   dependencies:
-    "@gamepark/rules-api": "npm:~7.0.0"
+    "@gamepark/rules-api": "npm:~7.2.0"
     es-toolkit: "npm:^1.39.10"
   peerDependencies:
     "@gamepark/rules-api": ">=7"
@@ -778,41 +763,44 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@gamepark/react-client@npm:~7.0.0":
-  version: 7.0.0
-  resolution: "@gamepark/react-client@npm:7.0.0"
+"@gamepark/react-client@npm:~7.3.2":
+  version: 7.3.2
+  resolution: "@gamepark/react-client@npm:7.3.2"
   dependencies:
     "@reduxjs/toolkit": "npm:^2.9.0"
+    "@tanstack/react-query": "npm:^5.62.13"
+    "@trpc/client": "npm:^11.7.1"
+    "@trpc/react-query": "npm:^11.7.1"
+    "@trpc/server": "npm:^11.8.1"
     assert: "npm:^2.1.0"
     immer: "npm:^10.1.3"
     pusher-js: "npm:^8.4.0"
     redux: "npm:^5.0.1"
+    superjson: "npm:^2.2.5"
   peerDependencies:
-    "@apollo/client": ^4.0.5
-    "@gamepark/rules-api": ^7.0.0
+    "@gamepark/rules-api": ^7.2.0
     dayjs: ^1.11.18
     es-toolkit: ^1.39.10
-    graphql: ^16.11.0
     react: ^19.1.1
     react-dom: ^19.1.1
     react-redux: ^9.2.0
     rxjs: ^7.8.2
-  checksum: 10c0/3d5a348f43d2a7860cc8dfcc800deee348b493115242b0f3316cefeb25f48e38c586f9bfd0ce3014306a99d7ed473fef6e0642ee38462d0cb6d4a80a0f71151c
+  checksum: 10c0/3da01f8144c9d7640ee09339c2ec6e5331c51b9f568e7aef2bf045b3c6758438cf14fa117c3de4c5c84ceebfc67ac9263a8dff25394e7335d49b7c637b1078ce
   languageName: node
   linkType: hard
 
-"@gamepark/react-game@npm:~7.0.2":
-  version: 7.0.2
-  resolution: "@gamepark/react-game@npm:7.0.2"
+"@gamepark/react-game@npm:~7.3.2":
+  version: 7.3.2
+  resolution: "@gamepark/react-game@npm:7.3.2"
   dependencies:
-    "@apollo/client": "npm:^4.0.5"
     "@datadog/browser-logs": "npm:^6.19.0"
     "@dnd-kit/modifiers": "npm:^9.0.0"
+    "@gamepark/api-types": "npm:^1.0.0"
     "@gamepark/avataaars": "npm:~3.0.0"
-    "@gamepark/react-client": "npm:~7.0.0"
+    "@gamepark/react-client": "npm:~7.3.2"
     dayjs: "npm:^1.11.18"
     fscreen: "npm:^1.2.0"
-    graphql: "npm:^16.11.0"
+    i18next-http-backend: "npm:^3.0.2"
     i18next-icu: "npm:^2.4.0"
     immer: "npm:^10.1.3"
     intl-messageformat: "npm:^10.7.16"
@@ -830,32 +818,23 @@ __metadata:
     "@fortawesome/free-regular-svg-icons": ^7.0.1
     "@fortawesome/free-solid-svg-icons": ^7.0.1
     "@fortawesome/react-fontawesome": ^3.0.2
-    "@gamepark/rules-api": ^7.0.0
+    "@gamepark/rules-api": ^7.2.0
     es-toolkit: ^1.39.10
     i18next: ^25.5.2
     react: ^19.1.1
     react-dom: ^19.1.1
     react-i18next: ^15.7.3
     react-redux: ^9.2.0
-  checksum: 10c0/4e2c3a6c15a7ab3fcee84e2e3aee55a7b7309650424ec16b05d35a229cdc109a1a85a2b3791a30716dca0054564d6761abe9d2224417b28239e8383b0d6edf73
+  checksum: 10c0/9028a2e7b27d6e5447920b4e49751201d0336ae3273c690c63b73b2e35d8f030fb0cb35353c3137e40e2cd68ff8f8b246967ca9b2631404ea58a9aa7022177aa
   languageName: node
   linkType: hard
 
-"@gamepark/rules-api@npm:~7.0.0":
-  version: 7.0.3
-  resolution: "@gamepark/rules-api@npm:7.0.3"
+"@gamepark/rules-api@npm:~7.2.0":
+  version: 7.2.0
+  resolution: "@gamepark/rules-api@npm:7.2.0"
   peerDependencies:
     es-toolkit: ^1.39.10
-  checksum: 10c0/488e0b1441cc68a4454a7adca6eea1de2c6c77b051afc1355bc567cf4cbbaa35918ea099134995604fd6c22db49f5b5390ae27e5fe345fc1b67c674e5dff938b
-  languageName: node
-  linkType: hard
-
-"@graphql-typed-document-node/core@npm:^3.1.1":
-  version: 3.2.0
-  resolution: "@graphql-typed-document-node/core@npm:3.2.0"
-  peerDependencies:
-    graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
-  checksum: 10c0/94e9d75c1f178bbae8d874f5a9361708a3350c8def7eaeb6920f2c820e82403b7d4f55b3735856d68e145e86c85cbfe2adc444fdc25519cd51f108697e99346c
+  checksum: 10c0/5e007d94038b5eee9fa63594fce381645244cae82bafb074f172dadfc0d8d161fde74c58c5e6bce21bedcfa0fa1c96d3a23be1bb04119e272a96c4ce65d55019
   languageName: node
   linkType: hard
 
@@ -2178,6 +2157,56 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tanstack/query-core@npm:5.90.20":
+  version: 5.90.20
+  resolution: "@tanstack/query-core@npm:5.90.20"
+  checksum: 10c0/70637dfcecd5ed9d810629aa27f1632af8a4bcd083e75cf29408d058c32f8234704a3231ec280e2c4016ea0485b16124fdf70ab97793b5a7b670f43f7659e9fe
+  languageName: node
+  linkType: hard
+
+"@tanstack/react-query@npm:^5.62.13":
+  version: 5.90.21
+  resolution: "@tanstack/react-query@npm:5.90.21"
+  dependencies:
+    "@tanstack/query-core": "npm:5.90.20"
+  peerDependencies:
+    react: ^18 || ^19
+  checksum: 10c0/e8994c57f6ceb2c886a4d6486a8c6a3f89bc6b1220de3e732448d7fcbeb386e9358f03c73804de72004c6ac2668d0bf1b44cedbb273d3e4b33afcbaee7b7d24d
+  languageName: node
+  linkType: hard
+
+"@trpc/client@npm:^11.7.1":
+  version: 11.10.0
+  resolution: "@trpc/client@npm:11.10.0"
+  peerDependencies:
+    "@trpc/server": 11.10.0
+    typescript: ">=5.7.2"
+  checksum: 10c0/fc9a2e03c7548a5fae03c41193f3337843320180e76dd690dd32123d7e87674ddea7b412d0db523b93ab2d19fcd6918145e124f2ac812659a3a4488a7cd6c1a9
+  languageName: node
+  linkType: hard
+
+"@trpc/react-query@npm:^11.7.1":
+  version: 11.10.0
+  resolution: "@trpc/react-query@npm:11.10.0"
+  peerDependencies:
+    "@tanstack/react-query": ^5.80.3
+    "@trpc/client": 11.10.0
+    "@trpc/server": 11.10.0
+    react: ">=18.2.0"
+    typescript: ">=5.7.2"
+  checksum: 10c0/d743410951c2078073f665297dabaed2d81983186f2ffd98d1ad26e1fd3393d35eef3e5315fa74d00bebf5bf8fb769553340b814d3b05ae9925a1deb1e9e40dc
+  languageName: node
+  linkType: hard
+
+"@trpc/server@npm:^11.8.1":
+  version: 11.10.0
+  resolution: "@trpc/server@npm:11.10.0"
+  peerDependencies:
+    typescript: ">=5.7.2"
+  checksum: 10c0/008cfb4393b6076b31de8d650c72a35a5e7e6f1419f9c41664f04d25e06029ca37d9b1b124a4db5969ae2ca62ad46b3d68e46696d28e48149306a12db5b0c9ef
+  languageName: node
+  linkType: hard
+
 "@tufjs/canonical-json@npm:2.0.0":
   version: 2.0.0
   resolution: "@tufjs/canonical-json@npm:2.0.0"
@@ -2426,42 +2455,6 @@ __metadata:
   peerDependencies:
     vite: ^4 || ^5 || ^6 || ^7
   checksum: 10c0/f9e0f8cd1f6aab705895c9723904e7020ddf59b2525ac52865bf9b3b05ae3100f729796835b474fd2a03aea431165ce02e5535c03b1e8338c0de1a874b2315b5
-  languageName: node
-  linkType: hard
-
-"@wry/caches@npm:^1.0.0":
-  version: 1.0.1
-  resolution: "@wry/caches@npm:1.0.1"
-  dependencies:
-    tslib: "npm:^2.3.0"
-  checksum: 10c0/a7bca3377f1131d3f1080f2e39d0692c9d1ca86bfd55734786f167f46aad28a4c8e772107324e8319843fb8068fdf98abcdea376d8a589316b1f0cdadf81f8b1
-  languageName: node
-  linkType: hard
-
-"@wry/context@npm:^0.7.0":
-  version: 0.7.4
-  resolution: "@wry/context@npm:0.7.4"
-  dependencies:
-    tslib: "npm:^2.3.0"
-  checksum: 10c0/6cc8249b8ba195cda7643bffb30969e33d54a99f118a29dd12f1c34064ee0adf04253cfa0ba5b9893afde0a9588745828962877b9585106f7488e8299757638b
-  languageName: node
-  linkType: hard
-
-"@wry/equality@npm:^0.5.6":
-  version: 0.5.7
-  resolution: "@wry/equality@npm:0.5.7"
-  dependencies:
-    tslib: "npm:^2.3.0"
-  checksum: 10c0/8503ff6d4eb80f303d1387e71e51da59ccfc2160fa6d464618be80946fe43a654ea73f0c5b90d659fc4dfc3e38cbbdd6650d595fe5865be476636e444470853e
-  languageName: node
-  linkType: hard
-
-"@wry/trie@npm:^0.5.0":
-  version: 0.5.0
-  resolution: "@wry/trie@npm:0.5.0"
-  dependencies:
-    tslib: "npm:^2.3.0"
-  checksum: 10c0/8c8cfcac96ba4bc69dabf02740e19e613f501b398e80bacc32cd95e87228f75ecb41cd1a76a65abae9756c0f61ab3536e0da52de28857456f9381ffdf5995d3e
   languageName: node
   linkType: hard
 
@@ -3261,6 +3254,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"copy-anything@npm:^4":
+  version: 4.0.5
+  resolution: "copy-anything@npm:4.0.5"
+  dependencies:
+    is-what: "npm:^5.2.0"
+  checksum: 10c0/d0a4a4102334399dae8504a2c2e13f45ad05746a9fd5cc0df349a554e3749a05e8a6d62b3724a8049cd59fc0bbbf4f54c4edc94a428edc76211dffe3ac0af586
+  languageName: node
+  linkType: hard
+
 "core-util-is@npm:~1.0.0":
   version: 1.0.3
   resolution: "core-util-is@npm:1.0.3"
@@ -3295,6 +3297,15 @@ __metadata:
     path-type: "npm:^4.0.0"
     yaml: "npm:^1.10.0"
   checksum: 10c0/b923ff6af581638128e5f074a5450ba12c0300b71302398ea38dbeabd33bbcaa0245ca9adbedfcf284a07da50f99ede5658c80bb3e39e2ce770a99d28a21ef03
+  languageName: node
+  linkType: hard
+
+"cross-fetch@npm:4.0.0":
+  version: 4.0.0
+  resolution: "cross-fetch@npm:4.0.0"
+  dependencies:
+    node-fetch: "npm:^2.6.12"
+  checksum: 10c0/386727dc4c6b044746086aced959ff21101abb85c43df5e1d151547ccb6f338f86dec3f28b9dbddfa8ff5b9ec8662ed2263ad4607a93b2dc354fb7fe3bbb898a
   languageName: node
   linkType: hard
 
@@ -4480,24 +4491,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"graphql-tag@npm:^2.12.6":
-  version: 2.12.6
-  resolution: "graphql-tag@npm:2.12.6"
-  dependencies:
-    tslib: "npm:^2.1.0"
-  peerDependencies:
-    graphql: ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
-  checksum: 10c0/7763a72011bda454ed8ff1a0d82325f43ca6478e4ce4ab8b7910c4c651dd00db553132171c04d80af5d5aebf1ef6a8a9fd53ccfa33b90ddc00aa3d4be6114419
-  languageName: node
-  linkType: hard
-
-"graphql@npm:^16.11.0":
-  version: 16.11.0
-  resolution: "graphql@npm:16.11.0"
-  checksum: 10c0/124da7860a2292e9acf2fed0c71fc0f6a9b9ca865d390d112bdd563c1f474357141501c12891f4164fe984315764736ad67f705219c62f7580681d431a85db88
-  languageName: node
-  linkType: hard
-
 "handlebars@npm:^4.7.7":
   version: 4.7.8
   resolution: "handlebars@npm:4.7.8"
@@ -4648,6 +4641,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"i18next-http-backend@npm:^3.0.2":
+  version: 3.0.2
+  resolution: "i18next-http-backend@npm:3.0.2"
+  dependencies:
+    cross-fetch: "npm:4.0.0"
+  checksum: 10c0/2a08b018e4924fefae6ba4c09dfd1ca3aa892f2442779d77d2db52b086af7afe7fbb6f178743d7e02014ea12a711ad20fc03fb55c01bd80f1bc97ba2b3c6bc29
+  languageName: node
+  linkType: hard
+
 "i18next-icu@npm:^2.4.0":
   version: 2.4.0
   resolution: "i18next-icu@npm:2.4.0"
@@ -4657,17 +4659,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"i18next@npm:^25.5.2":
-  version: 25.5.2
-  resolution: "i18next@npm:25.5.2"
+"i18next@npm:^25.8.5":
+  version: 25.8.7
+  resolution: "i18next@npm:25.8.7"
   dependencies:
-    "@babel/runtime": "npm:^7.27.6"
+    "@babel/runtime": "npm:^7.28.4"
   peerDependencies:
     typescript: ^5
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 10c0/25db34d17e8f11f0cd52d9ddc9c2e5942800aaaa20d0f40563aa1c50e958abd553d82ab3acf2b50ed46530c8d5cf0d5d5ccaf4d75df660c96083f78c83553438
+  checksum: 10c0/dfb476d1eef4cb8ec2ff9e2d7bdbf54bf3ba2f3cbf1f3a33bb751d66cb116b0436f81189e5e554fb83ffdb33b8916ca5a98798f45db7df7b4bb3d8a163dfcf29
   languageName: node
   linkType: hard
 
@@ -5046,6 +5048,13 @@ __metadata:
   version: 0.1.0
   resolution: "is-unicode-supported@npm:0.1.0"
   checksum: 10c0/00cbe3455c3756be68d2542c416cab888aebd5012781d6819749fefb15162ff23e38501fe681b3d751c73e8ff561ac09a5293eba6f58fdf0178462ce6dcb3453
+  languageName: node
+  linkType: hard
+
+"is-what@npm:^5.2.0":
+  version: 5.5.0
+  resolution: "is-what@npm:5.5.0"
+  checksum: 10c0/065c8a4ac651988a495cc0211c2754c198788383c9fe1bbfdf6d237c423114a0c5f2fc3e26ad7ea43a63cd4169f4503f584305acbac91706d5308cc14dedd1bd
   languageName: node
   linkType: hard
 
@@ -5970,6 +5979,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"node-fetch@npm:^2.6.12":
+  version: 2.7.0
+  resolution: "node-fetch@npm:2.7.0"
+  dependencies:
+    whatwg-url: "npm:^5.0.0"
+  peerDependencies:
+    encoding: ^0.1.0
+  peerDependenciesMeta:
+    encoding:
+      optional: true
+  checksum: 10c0/b55786b6028208e6fbe594ccccc213cab67a72899c9234eb59dba51062a299ea853210fcf526998eaa2867b0963ad72338824450905679ff0fa304b8c5093ae8
+  languageName: node
+  linkType: hard
+
 "node-gyp@npm:^10.0.0":
   version: 10.3.1
   resolution: "node-gyp@npm:10.3.1"
@@ -6324,18 +6347,6 @@ __metadata:
     is-docker: "npm:^2.1.1"
     is-wsl: "npm:^2.2.0"
   checksum: 10c0/bb6b3a58401dacdb0aad14360626faf3fb7fba4b77816b373495988b724fb48941cad80c1b65d62bb31a17609b2cd91c41a181602caea597ca80dfbcc27e84c9
-  languageName: node
-  linkType: hard
-
-"optimism@npm:^0.18.0":
-  version: 0.18.1
-  resolution: "optimism@npm:0.18.1"
-  dependencies:
-    "@wry/caches": "npm:^1.0.0"
-    "@wry/context": "npm:^0.7.0"
-    "@wry/trie": "npm:^0.5.0"
-    tslib: "npm:^2.3.0"
-  checksum: 10c0/1c1cd065d306de2220c6a2bdd8701cb7f9aadace36a9f16d6e02db2bee23b0291f15a1219b92cde5c66d816bd33dca876dfdcdbad04b4cf9b2a7fc5a1a221e77
   languageName: node
   linkType: hard
 
@@ -6919,14 +6930,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-i18next@npm:^15.7.3":
-  version: 15.7.4
-  resolution: "react-i18next@npm:15.7.4"
+"react-i18next@npm:^16.5.4":
+  version: 16.5.4
+  resolution: "react-i18next@npm:16.5.4"
   dependencies:
-    "@babel/runtime": "npm:^7.27.6"
+    "@babel/runtime": "npm:^7.28.4"
     html-parse-stringify: "npm:^3.0.1"
+    use-sync-external-store: "npm:^1.6.0"
   peerDependencies:
-    i18next: ">= 23.4.0"
+    i18next: ">= 25.6.2"
     react: ">= 16.8.0"
     typescript: ^5
   peerDependenciesMeta:
@@ -6936,7 +6948,7 @@ __metadata:
       optional: true
     typescript:
       optional: true
-  checksum: 10c0/643c5d3ced4b44084c871a55e876159561c14f378f90bf53286c1291082703e293573da18ad692b43b357b60d2f7251bc417feb0b522de8cec5c414e5ebdf6c1
+  checksum: 10c0/41d0b76873addfa3abe0c6b8a10a796e01f205f3636bc2d090d0078b42222f2949c4303f18d7a80cc26cf1298918cb6220d96e39ae2b8644abfdbec3bb504b37
   languageName: node
   linkType: hard
 
@@ -7815,6 +7827,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"superjson@npm:^2.2.5":
+  version: 2.2.6
+  resolution: "superjson@npm:2.2.6"
+  dependencies:
+    copy-anything: "npm:^4"
+  checksum: 10c0/b63587656cc27effd12c9e13a66da673a7a1b3e1af41f17820fd37f07a4f29503e1f58eae6bd229039331b475e1be6990336fa887654e6adc80684ae4eed7965
+  languageName: node
+  linkType: hard
+
 "supports-color@npm:^7.1.0":
   version: 7.2.0
   resolution: "supports-color@npm:7.2.0"
@@ -8203,6 +8224,15 @@ __metadata:
   peerDependencies:
     react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
   checksum: 10c0/1b8663515c0be34fa653feb724fdcce3984037c78dd4a18f68b2c8be55cc1a1084c578d5b75f158d41b5ddffc2bf5600766d1af3c19c8e329bb20af2ec6f52f4
+  languageName: node
+  linkType: hard
+
+"use-sync-external-store@npm:^1.6.0":
+  version: 1.6.0
+  resolution: "use-sync-external-store@npm:1.6.0"
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+  checksum: 10c0/35e1179f872a53227bdf8a827f7911da4c37c0f4091c29b76b1e32473d1670ebe7bcd880b808b7549ba9a5605c233350f800ffab963ee4a4ee346ee983b6019b
   languageName: node
   linkType: hard
 
