@@ -3,7 +3,7 @@ import { Actions } from '../material/Actions/Actions'
 import { ActionType } from '../material/Actions/ActionType'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
-import { PlayableMovieCardId } from '../material/MovieCard'
+import { MovieCard, PlayableMovieCardId } from '../material/MovieCard'
 import { AvailableMovieActionsMemory, Memory } from '../Memory'
 import { PlayerColor } from '../PlayerColor'
 import { RuleId } from './RuleId'
@@ -56,7 +56,17 @@ export class EndOfRoundPhaseRule extends PlayerTurnRule<PlayerColor, MaterialTyp
     const movieCardMaterial = this.material(MaterialType.MovieCards)
     const movieCardDeck = movieCardMaterial.location(LocationType.MovieCardDeckSpot).deck()
     const numberOfCardsToDealInFeaturesRow = 3 - movieCardMaterial.location(LocationType.PremiersRowSpot).length
-    return [movieCardMaterial.location(LocationType.FeaturesRowSpot).deleteItemsAtOnce() as MaterialMove<PlayerColor, MaterialType, LocationType>]
+    const consequences: MaterialMove<PlayerColor, MaterialType, LocationType>[] = [movieCardMaterial.location(LocationType.FeaturesRowSpot).deleteItemsAtOnce()]
+    const finalShowingsCardMaterial = movieCardDeck.id(MovieCard.FinalShowing)
+    const finalShowingsCard = finalShowingsCardMaterial.getItem<MovieCard>()
+    if (finalShowingsCard !== undefined && (finalShowingsCard.location.x ?? 0) > movieCardDeck.length - 3 - numberOfCardsToDealInFeaturesRow) {
+      consequences.push(
+        finalShowingsCardMaterial.moveItem({
+          type: LocationType.MovieCardDiscardSpot
+        })
+      )
+    }
+    return consequences
       .concat(
         movieCardMaterial.location(LocationType.PremiersRowSpot).moveItems((item) => ({
           ...item.location,
