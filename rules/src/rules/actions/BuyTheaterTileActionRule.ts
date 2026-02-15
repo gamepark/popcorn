@@ -1,9 +1,9 @@
-import { CustomMove, MaterialMove, PlayMoveContext } from '@gamepark/rules-api'
+import { CustomMove, MaterialItem, MaterialMove, PlayMoveContext } from '@gamepark/rules-api'
 import { range } from 'es-toolkit'
 import { Actions } from '../../material/Actions/Actions'
 import { ActionType } from '../../material/Actions/ActionType'
 import { BuyTheaterTileAction } from '../../material/Actions/BuyTheaterTileAction'
-import { CustomMoveType, isBuyTheaterTileCustomMove } from '../../material/CustomMoveType'
+import { BuyTheaterTileCustomMove, BuyTheaterTileCustomMoveData, CustomMoveType, isBuyTheaterTileCustomMove } from '../../material/CustomMoveType'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 import { MoneyToken, moneyTokens } from '../../material/MoneyToken'
@@ -47,49 +47,75 @@ export class BuyTheaterTileActionRule extends ActionRule<BuyTheaterTileAction> {
 
   public onCustomMove(move: CustomMove, _context?: PlayMoveContext): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     if (isBuyTheaterTileCustomMove(move)) {
-      const moveData = move.data
-      const boughtTileMaterial = this.material(MaterialType.TheaterTiles).index(moveData.boughtTileIndex)
-      const boughtTile = boughtTileMaterial.getItem<Required<BuyableTheaterTileId>>()
-      if (boughtTile === undefined) {
-        throw new Error('Invalid move')
-      }
-      const boughTileCharacteristics = theaterTilesCharacteristics[boughtTile.id.front]
-      const consequences: MaterialMove<PlayerColor, MaterialType, LocationType>[] = this.material(MaterialType.MoneyTokens)
-        .money<MoneyToken>(moneyTokens)
-        .removeMoney(boughTileCharacteristics.getPrice(), {
-          type: LocationType.PlayerMoneyPileSpot,
-          player: move.data.player
-        })
-      const previousTileMaterial = this.material(MaterialType.TheaterTiles)
-        .player(move.data.player)
-        .location((location) => location.type === LocationType.TheaterTileSpotOnTopPlayerCinemaBoard && location.x === moveData.destinationSpot)
-      if (previousTileMaterial.length === 1) {
-        const previousTile = previousTileMaterial.getItem<Required<TheaterTileId>>()
-        if (previousTile === undefined) {
-          throw new Error('Invalid material given')
-        }
-        consequences.push(
-          previousTile.id.back !== SeatsNumber.Default
-            ? previousTileMaterial.moveItem<Required<BuyableTheaterTileId>, never, never>((item) => ({
-                type: this.getDestinationLocationTypeFromTheaterTileId(item.id),
-                x: 0
-              }))
-            : previousTileMaterial.deleteItem()
-        )
-      } else if (moveData.destinationSpot === 2 && previousTileMaterial.length === 0) {
-        consequences.push(...getAudienceTrackMove(this, moveData.player))
-      }
-      consequences.push(
+      return this.getConsequencesForTileBoughtMove(move)
+    }
+    return super.onCustomMove(move, _context)
+  }
+
+  private getConsequencesForTileBoughtMove(move: BuyTheaterTileCustomMove): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+    const moveData = move.data
+    const player = moveData.player
+    const boughtTileMaterial = this.material(MaterialType.TheaterTiles).index(moveData.boughtTileIndex)
+    const boughtTile = boughtTileMaterial.getItem<Required<BuyableTheaterTileId>>()
+    if (boughtTile === undefined) {
+      throw new Error('Invalid move')
+    }
+    const boughTileCharacteristics = theaterTilesCharacteristics[boughtTile.id.front]
+    const consequences: MaterialMove<PlayerColor, MaterialType, LocationType>[] = (
+      this.material(MaterialType.MoneyTokens).money<MoneyToken>(moneyTokens).removeMoney(boughTileCharacteristics.getPrice(), {
+        type: LocationType.PlayerMoneyPileSpot,
+        player: player
+      }) as MaterialMove<PlayerColor, MaterialType, LocationType>[]
+    )
+      .concat(this.getPreviousTileConsequences(moveData))
+      .concat(
         boughtTileMaterial.moveItem({
           type: LocationType.TheaterTileSpotOnTopPlayerCinemaBoard,
-          player: moveData.player,
+          player: player,
           x: moveData.destinationSpot
         })
       )
-      this.removeCurrentActionForPlayer(move.data.player)
-      return consequences
+      .concat(this.addNewTHeaterTileConsequence(boughtTile))
+    this.removeCurrentActionForPlayer(player)
+    return consequences
+  }
+
+  private addNewTHeaterTileConsequence(
+    boughtTile: MaterialItem<PlayerColor, LocationType, BuyableTheaterTileId>
+  ): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+    const originatingDeckLocationType = this.getOriginatingDeckFromTheaterTile(boughtTile)
+    const originatingDeckMaterial = this.material(MaterialType.TheaterTiles).location(originatingDeckLocationType).deck()
+    if (originatingDeckMaterial.length > 0) {
+      return [
+        originatingDeckMaterial.dealOne({
+          type: boughtTile.location.type
+        })
+      ]
     }
-    return super.onCustomMove(move, _context)
+    return []
+  }
+
+  private getPreviousTileConsequences(moveData: BuyTheaterTileCustomMoveData): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+    const previousTileMaterial = this.material(MaterialType.TheaterTiles)
+      .player(moveData.player)
+      .location((location) => location.type === LocationType.TheaterTileSpotOnTopPlayerCinemaBoard && location.x === moveData.destinationSpot)
+    if (previousTileMaterial.length === 1) {
+      const previousTile = previousTileMaterial.getItem<Required<TheaterTileId>>()
+      if (previousTile === undefined) {
+        throw new Error('Invalid material given')
+      }
+      return [
+        previousTile.id.back !== SeatsNumber.Default
+          ? previousTileMaterial.moveItem<Required<BuyableTheaterTileId>, never, never>((item) => ({
+              type: this.getDestinationLocationTypeFromTheaterTileId(item.id),
+              x: 0
+            }))
+          : previousTileMaterial.deleteItem()
+      ]
+    } else if (moveData.destinationSpot === 2 && previousTileMaterial.length === 0) {
+      return getAudienceTrackMove(this, moveData.player)
+    }
+    return []
   }
 
   private getDestinationLocationTypeFromTheaterTileId(id: Required<BuyableTheaterTileId>): LocationType {
@@ -108,5 +134,20 @@ export class BuyTheaterTileActionRule extends ActionRule<BuyTheaterTileAction> {
 
   protected override removeCurrentActionForPlayer(player: PlayerColor): void {
     this.memorize<Actions[]>(Memory.PendingActions, (pendingActions) => pendingActions.filter((action) => action.type !== ActionType.BuyTheaterTile), player)
+  }
+
+  private getOriginatingDeckFromTheaterTile(
+    boughtTile: MaterialItem<PlayerColor, LocationType, BuyableTheaterTileId>
+  ): LocationType.OneSeatTheaterTileDeckSpot | LocationType.TwoSeatTheaterTileDeckSpot | LocationType.ThreeSeatTheaterTileDeckSpot {
+    switch (boughtTile.location.type) {
+      case LocationType.OneSeatTheaterTileRowSpot:
+        return LocationType.OneSeatTheaterTileDeckSpot
+      case LocationType.TwoSeatTheaterTileRowSpot:
+        return LocationType.TwoSeatTheaterTileDeckSpot
+      case LocationType.ThreeSeatTheaterTileRowSpot:
+        return LocationType.ThreeSeatTheaterTileDeckSpot
+      default:
+        throw new Error('Invalid boughtTile.location.type')
+    }
   }
 }
