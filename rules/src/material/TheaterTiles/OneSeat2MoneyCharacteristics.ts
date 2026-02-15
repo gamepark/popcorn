@@ -3,7 +3,7 @@ import { getTheaterSeatAction, getTheaterSeatColor, TheaterTileCharacteristics }
 
 export class OneSeat2MoneyCharacteristics implements TheaterTileCharacteristics {
   private readonly seatActions: SeatAction[] = [SeatAction.Get2Money]
-  private readonly seatsColors: SeatColor[] = [SeatColor.Green]
+  private readonly seatsColors: SeatColor[] = [SeatColor.Grey]
 
   public getPrice(): number {
     return 3
