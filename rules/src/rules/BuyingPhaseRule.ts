@@ -56,7 +56,7 @@ export class BuyingPhaseRule extends PlayerTurnRule<PlayerColor, MaterialType, L
   public onCustomMove(move: CustomMove<CustomMoveType>, context?: PlayMoveContext): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     const subRules = this.pendingActions.map((pendingAction) => getActionRule(pendingAction, this))
     const consequences = subRules.flatMap((rule) => rule.onCustomMove(move, context))
-    if (consequences.length > 0 && this.pendingActions.length === 0) {
+    if (this.pendingActions.length === 0) {
       consequences.push(
         this.isLastPlayer
           ? this.startSimultaneousRule<PlayerColor, RuleId>(RuleId.ShowingsPhaseRule)
@@ -88,17 +88,27 @@ export class BuyingPhaseRule extends PlayerTurnRule<PlayerColor, MaterialType, L
   ): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
     const subRules = this.pendingActions.map((pendingAction) => getActionRule(pendingAction, this))
     const consequences = subRules.flatMap((rule) => rule.beforeItemMove(move, context))
-    if (consequences.length > 0 && this.pendingActions.length === 0) {
-      consequences.push(
-        this.isLastPlayer
-          ? this.startSimultaneousRule<PlayerColor, RuleId>(RuleId.ShowingsPhaseRule)
-          : this.startPlayerTurn<PlayerColor, RuleId>(RuleId.BuyingPhaseRule, this.nextPlayer)
-      )
-    }
+    // if (consequences.length > 0 && this.pendingActions.length === 0) {
+    //   consequences.push(
+    //     this.isLastPlayer
+    //       ? this.startSimultaneousRule<PlayerColor, RuleId>(RuleId.ShowingsPhaseRule)
+    //       : this.startPlayerTurn<PlayerColor, RuleId>(RuleId.BuyingPhaseRule, this.nextPlayer)
+    //   )
+    // }
     return consequences
   }
 
   private get isLastPlayer() {
-    return this.game.players.indexOf(this.player) === this.game.players.length - 1
+    const startingPlayerToken = this.material(MaterialType.FirstPlayerMarker).getItem()
+    if (startingPlayerToken?.location.player === undefined) {
+      return false
+    }
+    const startingPlayerIndex = this.game.players.indexOf(startingPlayerToken?.location.player)
+    if (startingPlayerIndex === -1) {
+      return false
+    }
+    const lastPlayerIndex = (startingPlayerIndex - 1 + this.game.players.length) % this.game.players.length
+    const lastPlayer = this.game.players[lastPlayerIndex]
+    return this.player === lastPlayer
   }
 }
