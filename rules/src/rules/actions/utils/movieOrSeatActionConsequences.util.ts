@@ -1,16 +1,17 @@
 import { MaterialItem, MaterialMove, MaterialRulesPart } from '@gamepark/rules-api'
-import { ActionType } from '../../material/Actions/ActionType'
-import { AdvertisingTokenSpot } from '../../material/AdvertisingTokenSpot'
-import { LocationType } from '../../material/LocationType'
-import { MaterialType } from '../../material/MaterialType'
-import { moneyTokens } from '../../material/MoneyToken'
-import { PlayableMovieCardId, MovieAction, MovieCard, movieCardCharacteristics, MovieCardId } from '../../material/MovieCard'
-import { popcornTokens } from '../../material/PopcornToken'
-import { TheaterTileId } from '../../material/TheaterTile'
-import { AvailableMovieActionsMemory, Memory } from '../../Memory'
-import { PlayerColor } from '../../PlayerColor'
-import { addPendingActionForPlayer } from '../actions/utils/addPendingActionForPlayer.util'
-import { RuleId } from '../RuleId'
+import { ActionType } from '../../../material/Actions/ActionType'
+import { AdvertisingTokenSpot } from '../../../material/AdvertisingTokenSpot'
+import { GuestPawn } from '../../../material/GuestPawn'
+import { LocationType } from '../../../material/LocationType'
+import { MaterialType } from '../../../material/MaterialType'
+import { moneyTokens } from '../../../material/MoneyToken'
+import { PlayableMovieCardId, MovieAction, MovieCard, movieCardCharacteristics, MovieCardId } from '../../../material/MovieCard'
+import { popcornTokens } from '../../../material/PopcornToken'
+import { getMaximumNumberOfGuests, TheaterTileId, theaterTilesCharacteristics } from '../../../material/TheaterTile'
+import { AvailableMovieActionsMemory, Memory } from '../../../Memory'
+import { PlayerColor } from '../../../PlayerColor'
+import { addPendingActionForPlayer } from './addPendingActionForPlayer.util'
+import { RuleId } from '../../RuleId'
 
 const getAdvertisingTokenSpotFromMovieAction = (
   bonusAction:
@@ -29,7 +30,7 @@ const getAdvertisingTokenSpotFromMovieAction = (
     case MovieAction.AdvertisingTokenOnRedGuest:
       return AdvertisingTokenSpot.RedGuestPawn
     case MovieAction.AdvertisingTokenOnYellowGuest:
-      return AdvertisingTokenSpot.RedGuestPawn
+      return AdvertisingTokenSpot.YellowGuestPawn
     case MovieAction.AdvertisingTokenOnAnyGuest:
       return AdvertisingTokenSpot.AnyGuestPawn
     case MovieAction.AdvertisingTokenOnWhiteGuestToBag:
@@ -71,15 +72,17 @@ export const getMoneyMove = (
   })
 }
 
+const MAX_AUDIENCE_TRACK_LOCATION_X = 9
+
 export const getAudienceTrackMove = (
   rule: MaterialRulesPart<PlayerColor, MaterialType, LocationType>,
   player: PlayerColor
 ): MaterialMove<PlayerColor, MaterialType, LocationType>[] => {
   const audienceCube = rule.material(MaterialType.AudienceCubes).player(player).getItem()
   if (audienceCube !== undefined) {
-    const newCubeSpot = Math.min((audienceCube.location.x ?? 0) + 1, 8)
-    if (newCubeSpot === 8) {
-      getMoneyMove(rule, player, MaterialType.PopcornTokens, 1)
+    const newCubeSpot = Math.min((audienceCube.location.x ?? 0) + 1, MAX_AUDIENCE_TRACK_LOCATION_X)
+    if (newCubeSpot === MAX_AUDIENCE_TRACK_LOCATION_X) {
+      return getMoneyMove(rule, player, MaterialType.PopcornTokens, 1)
     }
     const consequences: MaterialMove<PlayerColor, MaterialType, LocationType>[] = [
       rule
@@ -91,8 +94,7 @@ export const getAudienceTrackMove = (
           x: (item.location.x ?? 0) + 1
         }))
     ]
-    consequences.push(...getAudienceBonusMove(rule, player, newCubeSpot))
-    return consequences
+    return consequences.concat(getAudienceBonusMove(rule, player, newCubeSpot))
   }
   return []
 }
@@ -277,6 +279,59 @@ export const getBuyingFilmCardConsequences = (
   const bonusAction = getBonusActionForMovie(rule, player, destinationSpot, boughtCard)
   if (bonusAction !== undefined) {
     consequences.push(...getMovesForMovieAction(rule, player, bonusAction))
+  }
+  return consequences
+}
+
+export const canPlayerPlaceAGuestAfterSeatOrMovieAction = (rule: MaterialRulesPart<PlayerColor, MaterialType, LocationType>, player: PlayerColor): boolean => {
+  return (
+    rule
+      .material(MaterialType.TheaterTiles)
+      .player(player)
+      .location(LocationType.TheaterTileSpotOnTopPlayerCinemaBoard)
+      .filter<Required<TheaterTileId>>((theaterTile, tileIndex) => {
+        const guestOnTileMaterial = rule.material(MaterialType.GuestPawns).parent(tileIndex)
+        if (theaterTile.selected === true && guestOnTileMaterial.length === 0) {
+          // Tile has already been activated and all guests have been used, cannot use this tile
+          return false
+        } else {
+          const maxLocationXForTile = getMaximumNumberOfGuests(theaterTilesCharacteristics[theaterTile.id.front].getSeatsNumber()) - 1
+          const lastGuestOnTile = guestOnTileMaterial
+            .parent(tileIndex)
+            .maxBy((guestMaterial) => guestMaterial.location.x ?? 0)
+            .getItem<GuestPawn>()
+          return lastGuestOnTile === undefined || lastGuestOnTile.location.x! < maxLocationXForTile
+        }
+      }).length > 0
+  )
+}
+
+export const getDrawGuestMovesAndAddPendingActionIfNecessary = (
+  rule: MaterialRulesPart<PlayerColor, MaterialType, LocationType>,
+  player: PlayerColor
+): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] => {
+  const canPlaceANewGuest = canPlayerPlaceAGuestAfterSeatOrMovieAction(rule, player)
+  const consequences: MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] = []
+  const guestPawnInBagMaterial = rule.material(MaterialType.GuestPawns).player(player).location(LocationType.PlayerGuestPawnsUnderClothBagSpot)
+  if (guestPawnInBagMaterial.length > 0) {
+    consequences.push(
+      guestPawnInBagMaterial.deck().dealOne({
+        type: canPlaceANewGuest ? LocationType.PlayerShowingsDrawnGuestSpot : LocationType.GuestPawnExitZoneSpotOnTopPlayerCinemaBoard,
+        player: player
+      })
+    )
+  } else {
+    const exitZoneGuests = rule.material(MaterialType.GuestPawns).player(player).location(LocationType.GuestPawnExitZoneSpotOnTopPlayerCinemaBoard)
+    consequences.push(
+      exitZoneGuests.moveItemsAtOnce({
+        type: LocationType.PlayerGuestPawnsUnderClothBagSpot,
+        player: player
+      }),
+      exitZoneGuests.shuffle()
+    )
+  }
+  if (canPlaceANewGuest) {
+    addPendingActionForPlayer(rule, { type: ActionType.PlaceGuests, placeOneGuest: true }, player)
   }
   return consequences
 }

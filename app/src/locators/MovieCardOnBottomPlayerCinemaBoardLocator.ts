@@ -19,17 +19,6 @@ class MovieCardOnBottomPlayerCinemaBoardLocator extends ListLocator<PlayerColor,
   ): MaterialItem<PlayerColor, LocationType> | undefined {
     return bottomCinemaBoardDescription.getStaticItems(context).find((boardItem) => boardItem.location.player === location.player)
   }
-
-  // public getItemCoordinates(
-  //   item: MaterialItem<PlayerColor, LocationType>,
-  //   context: ItemContext<PlayerColor, MaterialType, LocationType>
-  // ): Partial<Coordinates> {
-  //   const originalCoordinates = super.getItemCoordinates(item, context) as Coordinates
-  //   if (item.location.y === 1) {
-  //     originalCoordinates.y -= 4.5
-  //   }
-  //   return originalCoordinates
-  // }
 }
 
 class MovieCardOnBottomPlayerCinemaBoardLocationDescription extends DropAreaDescription<PlayerColor, MaterialType, LocationType> {

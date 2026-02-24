@@ -12,7 +12,7 @@ import { PlayableMovieCardId, MovieCard, movieCardCharacteristics, MovieColor } 
 import { Memory } from '../../Memory'
 import { PlayerColor } from '../../PlayerColor'
 import { RuleId } from '../RuleId'
-import { getBuyingFilmCardConsequences } from '../utils/movieCardConsequences.util'
+import { getBuyingFilmCardConsequences } from './utils/movieOrSeatActionConsequences.util'
 import { ActionRule } from './ActionRule'
 import { addPendingActionForPlayer } from './utils/addPendingActionForPlayer.util'
 
@@ -35,12 +35,11 @@ export class BuyMovieCardActionRule extends ActionRule<BuyMovieCardAction> {
       x: destinationX
     }))
     const playerMoney = this.material(MaterialType.MoneyTokens).money(moneyTokens).location(LocationType.PlayerMoneyPileSpot).player(player).count
-    const moves = destinations.flatMap((destination) =>
+    return destinations.flatMap((destination) =>
       this.getMovesForMovieCardsInRow(playerMoney, destination, LocationType.FeaturesRowSpot)
         .concat(this.getMovesForMovieCardsInRow(playerMoney, destination, LocationType.PremiersRowSpot))
         .map((move) => this.mapMovieCardMoveToCustomMove(move))
     )
-    return moves
   }
 
   public getMovesAfterPlayersDone(): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {

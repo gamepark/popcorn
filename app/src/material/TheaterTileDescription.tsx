@@ -2,6 +2,7 @@ import { faHandPointer } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Actions } from '@gamepark/popcorn/material/Actions/Actions'
 import { ActionType } from '@gamepark/popcorn/material/Actions/ActionType'
+import { isBuyTheaterTileCustomMove } from '@gamepark/popcorn/material/CustomMoveType'
 import { LocationType } from '@gamepark/popcorn/material/LocationType'
 import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
 import { SeatsNumber, TheaterTile, TheaterTileId } from '@gamepark/popcorn/material/TheaterTile'
@@ -9,7 +10,7 @@ import { Memory } from '@gamepark/popcorn/Memory'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
 import { RuleId } from '@gamepark/popcorn/rules/RuleId'
 import { ItemContext, ItemMenuButton, TokenDescription } from '@gamepark/react-game'
-import { isSelectItemType, MaterialItem, MaterialMove } from '@gamepark/rules-api'
+import { isSelectItemType, Location, MaterialItem, MaterialMove } from '@gamepark/rules-api'
 import React from 'react'
 import oneSeat1Front from '../images/Tiles/TheaterTiles/1Seat1Front.png'
 import oneSeat2Front from '../images/Tiles/TheaterTiles/1Seat2Front.png'
@@ -90,6 +91,37 @@ class TheaterTileDescription extends TokenDescription<PlayerColor, MaterialType,
     [SeatsNumber.Default]: emptyTile
   }
 
+  public canDrag(move: MaterialMove<PlayerColor, MaterialType, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType>): boolean {
+    return super.canDrag(move, context) || (isBuyTheaterTileCustomMove(move) && move.data.boughtTileIndex === context.index)
+  }
+
+  public getMoveDropLocations(
+    context: ItemContext<PlayerColor, MaterialType, LocationType>,
+    move: MaterialMove<PlayerColor, MaterialType, LocationType>
+  ): Location<PlayerColor, LocationType>[] {
+    if (context.rules.game.rule?.id === RuleId.BuyingPhaseRule && isBuyTheaterTileCustomMove(move)) {
+      const destination = {
+        type: LocationType.TheaterTileSpotOnTopPlayerCinemaBoard,
+        player: move.data.player,
+        x: move.data.destinationSpot
+      }
+      return [destination]
+    }
+    return super.getMoveDropLocations(context, move)
+  }
+
+  public isMenuAlwaysVisible(item: MaterialItem<PlayerColor, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType>): boolean {
+    if (context.player !== undefined) {
+      if (context.rules.game.rule?.id === RuleId.ShowingsPhaseRule && context.rules.game.players.includes(context.player)) {
+        const pendingActions = context.rules.remind<Actions[]>(Memory.PendingActions, context.player)
+        if (pendingActions.length > 0 && pendingActions[0].type === ActionType.PickTheaterTileToActivate) {
+          return item.location.player === context.player && !item.selected
+        }
+      }
+    }
+    return super.isMenuAlwaysVisible(item, context)
+  }
+
   public getItemMenu(
     item: MaterialItem<PlayerColor, LocationType>,
     context: ItemContext<PlayerColor, MaterialType, LocationType>,
@@ -134,18 +166,6 @@ class TheaterTileDescription extends TokenDescription<PlayerColor, MaterialType,
       }
     }
     return super.getItemMenu(item, context, legalMoves)
-  }
-
-  public isMenuAlwaysVisible(item: MaterialItem<PlayerColor, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType>): boolean {
-    if (context.player !== undefined) {
-      if (context.rules.game.rule?.id === RuleId.ShowingsPhaseRule && context.rules.game.players.includes(context.player)) {
-        const pendingActions = context.rules.remind<Actions[]>(Memory.PendingActions, context.player)
-        if (pendingActions.length > 0 && pendingActions[0].type === ActionType.PickTheaterTileToActivate) {
-          return item.location.player === context.player && !item.selected
-        }
-      }
-    }
-    return super.isMenuAlwaysVisible(item, context)
   }
 }
 
