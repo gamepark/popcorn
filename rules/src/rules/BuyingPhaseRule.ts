@@ -1,4 +1,4 @@
-import { CustomMove, ItemMove, MaterialMove, PlayerTurnRule, PlayMoveContext } from '@gamepark/rules-api'
+import { CustomMove, isMoveItemType, ItemMove, MaterialMove, PlayerTurnRule, PlayMoveContext } from '@gamepark/rules-api'
 import { Actions } from '../material/Actions/Actions'
 import { ActionType } from '../material/Actions/ActionType'
 import { BuyMovieCardAction } from '../material/Actions/BuyMovieCardAction'
@@ -70,6 +70,17 @@ export class BuyingPhaseRule extends PlayerTurnRule<PlayerColor, MaterialType, L
     move: ItemMove<PlayerColor, MaterialType, LocationType>,
     context?: PlayMoveContext
   ): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
+    if (
+      isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.AwardCards)(move) &&
+      move.location.type === LocationType.AwardCardDeckSpot &&
+      this.pendingActions.length === 0
+    ) {
+      return [
+        this.isLastPlayer
+          ? this.startSimultaneousRule<PlayerColor, RuleId>(RuleId.ShowingsPhaseRule)
+          : this.startPlayerTurn<PlayerColor, RuleId>(RuleId.BuyingPhaseRule, this.nextPlayer)
+      ]
+    }
     const subRules = this.pendingActions.map((pendingAction) => getActionRule(pendingAction, this))
     const consequences = subRules.flatMap((rule) => rule.afterItemMove(move, context))
     if (consequences.length > 0 && this.pendingActions.length === 0) {
