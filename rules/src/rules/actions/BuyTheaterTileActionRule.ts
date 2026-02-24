@@ -11,7 +11,7 @@ import { BuyableTheaterTileId, SeatsNumber, TheaterTileId, theaterTilesCharacter
 import { Memory } from '../../Memory'
 import { PlayerColor } from '../../PlayerColor'
 import { RuleId } from '../RuleId'
-import { getAudienceTrackMove } from '../utils/movieCardConsequences.util'
+import { getAudienceTrackMove } from './utils/movieOrSeatActionConsequences.util'
 import { ActionRule } from './ActionRule'
 
 const availableLocationTypes = [LocationType.OneSeatTheaterTileRowSpot, LocationType.TwoSeatTheaterTileRowSpot, LocationType.ThreeSeatTheaterTileRowSpot]

@@ -12,7 +12,7 @@ import { PlayableMovieCardId, MovieCard, movieCardCharacteristics, MovieColor } 
 import { Memory } from '../../Memory'
 import { PlayerColor } from '../../PlayerColor'
 import { RuleId } from '../RuleId'
-import { getBuyingFilmCardConsequences } from '../utils/movieCardConsequences.util'
+import { getBuyingFilmCardConsequences } from './utils/movieOrSeatActionConsequences.util'
 import { ActionRule } from './ActionRule'
 import { addPendingActionForPlayer } from './utils/addPendingActionForPlayer.util'
 

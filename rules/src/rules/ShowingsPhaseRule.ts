@@ -22,6 +22,7 @@ import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { Memory } from '../Memory'
 import { PlayerColor } from '../PlayerColor'
+import { canPlayerPlaceAGuestAfterSeatOrMovieAction } from './actions/utils/movieOrSeatActionConsequences.util'
 import { RuleId } from './RuleId'
 import { getActionRule } from './utils/getActionRule.util'
 
@@ -95,14 +96,22 @@ export class ShowingsPhaseRule extends SimultaneousRule<PlayerColor, MaterialTyp
           ? 1
           : this.getNumberOfGuestsToDraw(player) -
             this.material(MaterialType.GuestPawns).location(LocationType.PlayerShowingsDrawnGuestSpot).player(player).length
+        const canPlaceGuest = canPlayerPlaceAGuestAfterSeatOrMovieAction(this, player)
         return [
-          this.material(MaterialType.GuestPawns).location(LocationType.PlayerGuestPawnsUnderClothBagSpot).player(player).deck().dealAtOnce(
-            {
-              type: LocationType.PlayerShowingsDrawnGuestSpot,
-              player: player
-            },
-            numberOfRemainingGuestToDraw
-          )
+          this.material(MaterialType.GuestPawns)
+            .location(LocationType.PlayerGuestPawnsUnderClothBagSpot)
+            .player(player)
+            .deck()
+            .dealAtOnce(
+              {
+                type:
+                  numberOfRemainingGuestToDraw !== 1 && canPlaceGuest
+                    ? LocationType.PlayerShowingsDrawnGuestSpot
+                    : LocationType.GuestPawnExitZoneSpotOnTopPlayerCinemaBoard,
+                player: player
+              },
+              numberOfRemainingGuestToDraw
+            )
         ]
       }
     }

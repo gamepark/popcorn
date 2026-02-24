@@ -6,14 +6,13 @@ import { CustomMoveType, isPassCurrentActionCustomMove } from '../../material/Cu
 import { GuestPawn } from '../../material/GuestPawn'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
-import { MoneyToken, moneyTokens } from '../../material/MoneyToken'
-import { PopcornToken, popcornTokens } from '../../material/PopcornToken'
 import { SeatAction, SeatColor, TheaterTileId, theaterTilesCharacteristics } from '../../material/TheaterTile'
 import { Memory } from '../../Memory'
 import { PlayerColor } from '../../PlayerColor'
 import { RuleId } from '../RuleId'
 import { ActionRule } from './ActionRule'
 import { addPendingActionForPlayer } from './utils/addPendingActionForPlayer.util'
+import { getDrawGuestMovesAndAddPendingActionIfNecessary, getMoneyMove } from './utils/movieOrSeatActionConsequences.util'
 
 export class ChooseSeatActionActionRule extends ActionRule<ChooseSeatActionAction> {
   public consequencesBeforeRuleForPlayer(): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
@@ -118,89 +117,32 @@ export class ChooseSeatActionActionRule extends ActionRule<ChooseSeatActionActio
   ): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
     switch (seatAction) {
       case SeatAction.Get1Money:
-        return this.material(MaterialType.MoneyTokens).money<MoneyToken>(moneyTokens).addMoney(1, {
-          type: LocationType.PlayerMoneyPileSpot,
-          player: player
-        })
+        return getMoneyMove(this, player, MaterialType.MoneyTokens, 1)
       case SeatAction.Get2Money:
-        return this.material(MaterialType.MoneyTokens).money<MoneyToken>(moneyTokens).addMoney(2, {
-          type: LocationType.PlayerMoneyPileSpot,
-          player: player
-        })
+        return getMoneyMove(this, player, MaterialType.MoneyTokens, 2)
       case SeatAction.Get3Money:
-        return this.material(MaterialType.MoneyTokens).money<MoneyToken>(moneyTokens).addMoney(3, {
-          type: LocationType.PlayerMoneyPileSpot,
-          player: player
-        })
+        return getMoneyMove(this, player, MaterialType.MoneyTokens, 3)
       case SeatAction.Get1Popcorn:
-        return this.material(MaterialType.PopcornTokens).money<PopcornToken>(popcornTokens).addMoney(1, {
-          type: LocationType.PlayerPopcornPileUnderPopcornCupSpot,
-          player: player
-        })
+        return getMoneyMove(this, player, MaterialType.PopcornTokens, 1)
       case SeatAction.Get2Popcorn:
-        return this.material(MaterialType.PopcornTokens).money<PopcornToken>(popcornTokens).addMoney(2, {
-          type: LocationType.PlayerPopcornPileUnderPopcornCupSpot,
-          player: player
-        })
+        return getMoneyMove(this, player, MaterialType.PopcornTokens, 2)
       case SeatAction.MovieAction:
-        this.memorize<Actions[]>(
-          Memory.PendingActions,
-          (pendingActions) => {
-            pendingActions.unshift({
-              type: ActionType.ChooseMovieAction,
-              guestIndex: guestPawnMaterial.getIndex()
-            })
-            return pendingActions
+        addPendingActionForPlayer(
+          this,
+          {
+            type: ActionType.ChooseMovieAction,
+            guestIndex: guestPawnMaterial.getIndex()
           },
           player
         )
         return []
       case SeatAction.PlaceGuestInReserve:
-        this.memorize<Actions[]>(
-          Memory.PendingActions,
-          (pendingActions) => {
-            pendingActions.unshift({
-              type: ActionType.PlaceCinemaGuestInReserve
-            })
-            return pendingActions
-          },
-          player
-        )
+        addPendingActionForPlayer(this, { type: ActionType.PlaceCinemaGuestInReserve }, player)
         return []
-      case SeatAction.DrawGuestAndPlaceThem: {
-        const consequences: MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] = []
-        const guestPawnInBagMaterial = this.material(MaterialType.GuestPawns).player(player).location(LocationType.PlayerGuestPawnsUnderClothBagSpot)
-        if (guestPawnInBagMaterial.length > 0) {
-          consequences.push(
-            guestPawnInBagMaterial.deck().dealOne({
-              type: LocationType.PlayerShowingsDrawnGuestSpot,
-              player: player
-            })
-          )
-        } else {
-          const exitZoneGuests = this.material(MaterialType.GuestPawns).player(player).location(LocationType.GuestPawnExitZoneSpotOnTopPlayerCinemaBoard)
-          consequences.push(
-            exitZoneGuests.moveItemsAtOnce({
-              type: LocationType.PlayerGuestPawnsUnderClothBagSpot,
-              player: player
-            }),
-            exitZoneGuests.shuffle()
-          )
-        }
-        addPendingActionForPlayer(this, { type: ActionType.PlaceGuests, placeOneGuest: true }, player)
-        return consequences
-      }
+      case SeatAction.DrawGuestAndPlaceThem:
+        return getDrawGuestMovesAndAddPendingActionIfNecessary(this, player)
       case SeatAction.MoveGuestFromExitZoneToBag:
-        this.memorize<Actions[]>(
-          Memory.PendingActions,
-          (pendingActions) => {
-            pendingActions.unshift({
-              type: ActionType.PlaceExitZoneGuestInBag
-            })
-            return pendingActions
-          },
-          player
-        )
+        addPendingActionForPlayer(this, { type: ActionType.PlaceExitZoneGuestInBag }, player)
         return []
       case undefined:
         return []

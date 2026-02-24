@@ -10,7 +10,7 @@ import { PlayableMovieCardId } from '../../material/MovieCard'
 import { Memory } from '../../Memory'
 import { PlayerColor } from '../../PlayerColor'
 import { RuleId } from '../RuleId'
-import { getBuyingFilmCardConsequences } from '../utils/movieCardConsequences.util'
+import { getBuyingFilmCardConsequences } from './utils/movieOrSeatActionConsequences.util'
 import { ActionRule } from './ActionRule'
 
 export class PickGuestFromReserveOrExitZoneActionRule extends ActionRule<PickReserveOrExitZoneGuestAction> {

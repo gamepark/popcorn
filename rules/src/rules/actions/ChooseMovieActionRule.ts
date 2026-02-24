@@ -12,7 +12,12 @@ import { TheaterTileId } from '../../material/TheaterTile'
 import { AvailableMovieActionsMemory, Memory } from '../../Memory'
 import { PlayerColor } from '../../PlayerColor'
 import { RuleId } from '../RuleId'
-import { getAdvertisingTokenMove, getAudienceTrackMove, getMoneyMove } from '../utils/movieCardConsequences.util'
+import {
+  getAdvertisingTokenMove,
+  getAudienceTrackMove,
+  getDrawGuestMovesAndAddPendingActionIfNecessary,
+  getMoneyMove
+} from './utils/movieOrSeatActionConsequences.util'
 import { ActionRule } from './ActionRule'
 import { addPendingActionForPlayer } from './utils/addPendingActionForPlayer.util'
 
@@ -97,28 +102,9 @@ export class ChooseMovieActionRule extends ActionRule<ChooseMovieActionAction> {
           )
           addPendingActionForPlayer(this, { type: ActionType.DiscardAwardCard }, player)
           break
-        case MovieAction.DrawGuestAndPlaceThem: {
-          const guestPawnInBagMaterial = this.material(MaterialType.GuestPawns).player(player).location(LocationType.PlayerGuestPawnsUnderClothBagSpot)
-          if (guestPawnInBagMaterial.length > 0) {
-            consequences.push(
-              guestPawnInBagMaterial.deck().dealOne({
-                type: LocationType.PlayerShowingsDrawnGuestSpot,
-                player: player
-              })
-            )
-          } else {
-            const exitZoneGuests = this.material(MaterialType.GuestPawns).player(player).location(LocationType.GuestPawnExitZoneSpotOnTopPlayerCinemaBoard)
-            consequences.push(
-              exitZoneGuests.moveItemsAtOnce({
-                type: LocationType.PlayerGuestPawnsUnderClothBagSpot,
-                player: player
-              }),
-              exitZoneGuests.shuffle()
-            )
-          }
-          addPendingActionForPlayer(this, { type: ActionType.PlaceGuests, placeOneGuest: true, guestIndexToMoveToExitZone: this.action.guestIndex }, player)
+        case MovieAction.DrawGuestAndPlaceThem:
+          consequences.push(...getDrawGuestMovesAndAddPendingActionIfNecessary(this, player))
           break
-        }
         case MovieAction.Get1Popcorn:
           consequences.push(...getMoneyMove(this, player, MaterialType.PopcornTokens, 1))
           break
