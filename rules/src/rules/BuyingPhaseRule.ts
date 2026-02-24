@@ -98,15 +98,7 @@ export class BuyingPhaseRule extends PlayerTurnRule<PlayerColor, MaterialType, L
     context?: PlayMoveContext
   ): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
     const subRules = this.pendingActions.map((pendingAction) => getActionRule(pendingAction, this))
-    const consequences = subRules.flatMap((rule) => rule.beforeItemMove(move, context))
-    // if (consequences.length > 0 && this.pendingActions.length === 0) {
-    //   consequences.push(
-    //     this.isLastPlayer
-    //       ? this.startSimultaneousRule<PlayerColor, RuleId>(RuleId.ShowingsPhaseRule)
-    //       : this.startPlayerTurn<PlayerColor, RuleId>(RuleId.BuyingPhaseRule, this.nextPlayer)
-    //   )
-    // }
-    return consequences
+    return subRules.flatMap((rule) => rule.beforeItemMove(move, context))
   }
 
   private get isLastPlayer() {
