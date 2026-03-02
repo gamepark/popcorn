@@ -9,7 +9,7 @@ import { MovieCard, MovieCardId, MovieCardType } from '@gamepark/popcorn/materia
 import { Memory } from '@gamepark/popcorn/Memory'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
 import { RuleId } from '@gamepark/popcorn/rules/RuleId'
-import { CardDescription, ItemContext, ItemMenuButton } from '@gamepark/react-game'
+import { CardDescription, ItemContext, ItemMenuButton, MaterialContext } from '@gamepark/react-game'
 import { Location, MaterialItem, MaterialMove } from '@gamepark/rules-api'
 import React from 'react'
 import { Trans } from 'react-i18next'
@@ -124,6 +124,21 @@ export class MovieCardDescription extends CardDescription<PlayerColor, MaterialT
   backImages = {
     [MovieCardType.FirstMovie]: firstMovieBack,
     [MovieCardType.Movie]: movieBack
+  }
+
+  public getStaticItems(_context: MaterialContext<PlayerColor, MaterialType, LocationType>): MaterialItem<PlayerColor, LocationType>[] {
+    const numberOfCardsBelowFinalShowing = _context.rules.players.length === 2 ? 5 : 10
+    const numberOfCardsInDeck = _context.rules.material(MaterialType.MovieCards).location(LocationType.MovieCardDeckSpot).length
+    return numberOfCardsInDeck <= numberOfCardsBelowFinalShowing
+      ? [
+          {
+            id: MovieCard.FinalShowing,
+            location: {
+              type: LocationType.FinalShowingCardSpot
+            }
+          }
+        ]
+      : []
   }
 
   public canDrag(move: MaterialMove<PlayerColor, MaterialType, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType>): boolean {

@@ -5,13 +5,13 @@ import { Locator, MaterialContext } from '@gamepark/react-game'
 import { Coordinates, Location } from '@gamepark/rules-api'
 import { offsetPlayerCinemaBoardCoordinates } from './utils/PlayerItemsUtils.ts'
 
-class PlayerPopcornPileLocator extends Locator<PlayerColor, MaterialType, LocationType> {
+class PlayerTheaterTrophyLocator extends Locator<PlayerColor, MaterialType, LocationType> {
   public getCoordinates(
     location: Location<PlayerColor, LocationType>,
     context: MaterialContext<PlayerColor, MaterialType, LocationType>
   ): Partial<Coordinates> {
-    return offsetPlayerCinemaBoardCoordinates(context, location.player, -16, -12.5)
+    return offsetPlayerCinemaBoardCoordinates(context, location.player, 15, -12)
   }
 }
 
-export const playerPopcornPileLocator = new PlayerPopcornPileLocator()
+export const playerTheaterTrophyLocator = new PlayerTheaterTrophyLocator()

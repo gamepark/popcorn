@@ -1,16 +1,16 @@
-import { LocationType } from '@gamepark/popcorn/material/LocationType'
-import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
-import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
+import { LocationType } from '@gamepark/popcorn/material/LocationType.ts'
+import { MaterialType } from '@gamepark/popcorn/material/MaterialType.ts'
+import { PlayerColor } from '@gamepark/popcorn/PlayerColor.ts'
 import { Locator, MaterialContext } from '@gamepark/react-game'
 import { Coordinates, Location } from '@gamepark/rules-api'
 
 const coordinatesByPlayerNumber: Record<number, Partial<Coordinates>> = {
-  2: { x: -42, y: -5.5 },
-  3: { x: -38, y: 2.5 },
-  4: { x: -17, y: -4 }
+  2: { x: -40, y: -13.5 },
+  3: { x: -55, y: 2.5 },
+  4: { x: -52.5, y: 0 }
 }
 
-class PremiersTileLocator extends Locator<PlayerColor, MaterialType, LocationType> {
+class FinalShowingCardLocator extends Locator<PlayerColor, MaterialType, LocationType> {
   public getCoordinates(
     _location: Location<PlayerColor, LocationType>,
     _context: MaterialContext<PlayerColor, MaterialType, LocationType>
@@ -19,4 +19,4 @@ class PremiersTileLocator extends Locator<PlayerColor, MaterialType, LocationTyp
   }
 }
 
-export const premiersTileLocator = new PremiersTileLocator()
+export const finalShowingCardLocator = new FinalShowingCardLocator()

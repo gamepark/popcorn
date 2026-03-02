@@ -14,7 +14,7 @@ export function App() {
   const loading = !game || isJustDisplayed || isImagesLoading
   return (
     <>
-      {!!game && <GameDisplay />}
+      {!!game && <GameDisplay players={game.players.length} />}
       <LoadingScreen display={loading} />
       <MaterialHeader rulesStepsHeaders={Headers} loading={loading} />
       <MaterialImageLoader onImagesLoad={() => setImagesLoading(false)} />
