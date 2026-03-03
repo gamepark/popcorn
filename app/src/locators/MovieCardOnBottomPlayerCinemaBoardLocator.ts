@@ -2,10 +2,11 @@ import { isBuyMovieCardCustomMove } from '@gamepark/popcorn/material/CustomMoveT
 import { LocationType } from '@gamepark/popcorn/material/LocationType'
 import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
-import { DropAreaDescription, ListLocator, MaterialContext } from '@gamepark/react-game'
+import { DropAreaDescription, ItemContext, ListLocator, MaterialContext } from '@gamepark/react-game'
 import { Location, MaterialItem, MaterialMove } from '@gamepark/rules-api'
 import { bottomCinemaBoardDescription } from '../material/BottomCinemaBoardDescription'
 import { movieCardDescription } from '../material/MovieCardDescription'
+import { hideItemIfOwningPlayerIsNotDisplayed } from './utils/hideItemIfOwningPlayerIsNotDisplayed.ts'
 
 class MovieCardOnBottomPlayerCinemaBoardLocator extends ListLocator<PlayerColor, MaterialType, LocationType> {
   parentItemType = MaterialType.BottomCinemaBoard
@@ -18,6 +19,10 @@ class MovieCardOnBottomPlayerCinemaBoardLocator extends ListLocator<PlayerColor,
     context: MaterialContext<PlayerColor, MaterialType, LocationType>
   ): MaterialItem<PlayerColor, LocationType> | undefined {
     return bottomCinemaBoardDescription.getStaticItems(context).find((boardItem) => boardItem.location.player === location.player)
+  }
+
+  public hide(item: MaterialItem<PlayerColor, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType>): boolean {
+    return hideItemIfOwningPlayerIsNotDisplayed(item, context)
   }
 }
 

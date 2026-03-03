@@ -1,9 +1,10 @@
 import { LocationType } from '@gamepark/popcorn/material/LocationType'
 import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
-import { Locator, MaterialContext } from '@gamepark/react-game'
+import { ItemContext, Locator, MaterialContext } from '@gamepark/react-game'
 import { Coordinates, Location, MaterialItem } from '@gamepark/rules-api'
 import { topCinemaBoardDescription } from '../material/TopCinemaBoardDescription'
+import { hideItemIfOwningPlayerIsNotDisplayed } from './utils/hideItemIfOwningPlayerIsNotDisplayed.ts'
 
 class LobbySliderOnTopCinemaBoardLocator extends Locator<PlayerColor, MaterialType, LocationType> {
   parentItemType = MaterialType.TopCinemaBoard
@@ -26,6 +27,10 @@ class LobbySliderOnTopCinemaBoardLocator extends Locator<PlayerColor, MaterialTy
       x: this.coordinates.x + this.gap.x * (location.x ?? 0),
       y: this.coordinates.y + this.gap.y * (location.y ?? 0)
     }
+  }
+
+  public hide(item: MaterialItem<PlayerColor, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType>): boolean {
+    return hideItemIfOwningPlayerIsNotDisplayed(item, context)
   }
 }
 

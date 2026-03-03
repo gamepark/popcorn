@@ -1,8 +1,9 @@
 import { LocationType } from '@gamepark/popcorn/material/LocationType'
 import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
-import { MaterialContext, PileLocator } from '@gamepark/react-game'
-import { Coordinates, Location } from '@gamepark/rules-api'
+import { ItemContext, MaterialContext, PileLocator } from '@gamepark/react-game'
+import { Coordinates, Location, MaterialItem } from '@gamepark/rules-api'
+import { hideItemIfOwningPlayerIsNotDisplayed } from './utils/hideItemIfOwningPlayerIsNotDisplayed.ts'
 import { offsetPlayerCinemaBoardCoordinates } from './utils/PlayerItemsUtils.ts'
 
 class PlayerAdvertisingTokenPileLocator extends PileLocator<PlayerColor, MaterialType, LocationType> {
@@ -18,6 +19,10 @@ class PlayerAdvertisingTokenPileLocator extends PileLocator<PlayerColor, Materia
 
   public getPositionDependencies(location: Location<PlayerColor, LocationType>, context: MaterialContext<PlayerColor, MaterialType, LocationType>): number {
     return super.getPositionDependencies(location, context)
+  }
+
+  public hide(item: MaterialItem<PlayerColor, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType>): boolean {
+    return hideItemIfOwningPlayerIsNotDisplayed(item, context)
   }
 }
 

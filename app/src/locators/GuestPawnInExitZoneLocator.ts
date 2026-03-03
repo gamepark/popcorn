@@ -4,6 +4,7 @@ import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
 import { ItemContext, MaterialContext, PileLocator } from '@gamepark/react-game'
 import { Location, MaterialItem } from '@gamepark/rules-api'
 import { topCinemaBoardDescription } from '../material/TopCinemaBoardDescription'
+import { hideItemIfOwningPlayerIsNotDisplayed } from './utils/hideItemIfOwningPlayerIsNotDisplayed.ts'
 
 class GuestPawnInExitZoneLocator extends PileLocator<PlayerColor, MaterialType, LocationType> {
   parentItemType = MaterialType.TopCinemaBoard
@@ -15,6 +16,8 @@ class GuestPawnInExitZoneLocator extends PileLocator<PlayerColor, MaterialType, 
 
   maxAngle = 90
 
+  minimumDistance = 0.75
+
   public getParentItem(
     location: Location<PlayerColor, LocationType>,
     context: MaterialContext<PlayerColor, MaterialType, LocationType>
@@ -24,6 +27,10 @@ class GuestPawnInExitZoneLocator extends PileLocator<PlayerColor, MaterialType, 
 
   public getPileId(item: MaterialItem<PlayerColor, LocationType>, _context: ItemContext<PlayerColor, MaterialType, LocationType>): string {
     return `guest-exit-${item.id}-${item.location.player}`
+  }
+
+  public hide(item: MaterialItem<PlayerColor, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType>): boolean {
+    return hideItemIfOwningPlayerIsNotDisplayed(item, context)
   }
 }
 

@@ -9,7 +9,7 @@ class TwoSeatTheaterTilesDeckLocator extends DeckLocator<PlayerColor, MaterialTy
     _location: Location<PlayerColor, LocationType>,
     _context: MaterialContext<PlayerColor, MaterialType, LocationType>
   ): Partial<Coordinates> {
-    return offsetAdvertisingBoardCoordinates(_context, 14, -7.5)
+    return offsetAdvertisingBoardCoordinates(_context, 12.8, -7.5)
   }
 }
 

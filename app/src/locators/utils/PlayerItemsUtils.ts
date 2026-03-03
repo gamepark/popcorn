@@ -21,17 +21,9 @@ const offsetOtherLocatorCoordinates = (
         type: locationType
       }
   const locatorCoordinates = context.locators[locationType]?.getCoordinates(location, context)
-  const numberOfPlayers = context.rules.players.length
-  const playerRelativeIndex = getRelativePlayerIndex(context, player)
-  // Should multiply by -1 when
-  //  - location is a player location
-  //  - relative index is > 0 when less than 4 players
-  //  - relative index is > 1 with 4 players
-  const isPLayerLocationRequiringNegativeMultiplier = isPlayerItemLocator && ((numberOfPlayers < 4 && playerRelativeIndex > 0) || playerRelativeIndex > 1)
-  const multiplier = isPLayerLocationRequiringNegativeMultiplier ? -1 : 1
   return {
-    x: (locatorCoordinates?.x ?? 0) + multiplier * xOffset,
-    y: (locatorCoordinates?.y ?? 0) + multiplier * yOffset
+    x: (locatorCoordinates?.x ?? 0) + xOffset,
+    y: (locatorCoordinates?.y ?? 0) + yOffset
   }
 }
 

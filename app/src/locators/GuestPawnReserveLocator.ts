@@ -23,7 +23,7 @@ class GuestPawnReserveLocator extends ListLocator<PlayerColor, MaterialType, Loc
     if (location.id === undefined) {
       throw new Error('Cannot have ')
     }
-    return offsetAdvertisingBoardCoordinates(_context, 24, yOffsetByGuestColor[location.id])
+    return offsetAdvertisingBoardCoordinates(_context, 21, yOffsetByGuestColor[location.id])
   }
 }
 
