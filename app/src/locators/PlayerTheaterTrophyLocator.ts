@@ -4,14 +4,14 @@ import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
 import { ItemContext, Locator, MaterialContext } from '@gamepark/react-game'
 import { Coordinates, Location, MaterialItem } from '@gamepark/rules-api'
 import { hideItemIfOwningPlayerIsNotDisplayed } from './utils/hideItemIfOwningPlayerIsNotDisplayed.ts'
-import { offsetPlayerCinemaBoardCoordinates } from './utils/PlayerItemsUtils'
+import { offsetPlayerCinemaBoardCoordinates } from './utils/PlayerItemsUtils.ts'
 
-class PlayerClothBagLocator extends Locator<PlayerColor, MaterialType, LocationType> {
+class PlayerTheaterTrophyLocator extends Locator<PlayerColor, MaterialType, LocationType> {
   public getCoordinates(
-    _location: Location<PlayerColor, LocationType>,
-    _context: MaterialContext<PlayerColor, MaterialType, LocationType>
+    location: Location<PlayerColor, LocationType>,
+    context: MaterialContext<PlayerColor, MaterialType, LocationType>
   ): Partial<Coordinates> {
-    return offsetPlayerCinemaBoardCoordinates(_context, _location.player, -16, 4)
+    return offsetPlayerCinemaBoardCoordinates(context, location.player, 15, -12)
   }
 
   public hide(item: MaterialItem<PlayerColor, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType>): boolean {
@@ -19,4 +19,4 @@ class PlayerClothBagLocator extends Locator<PlayerColor, MaterialType, LocationT
   }
 }
 
-export const playerClothBagLocator = new PlayerClothBagLocator()
+export const playerTheaterTrophyLocator = new PlayerTheaterTrophyLocator()

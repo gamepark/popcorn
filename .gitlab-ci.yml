@@ -17,9 +17,12 @@ format-check-job:
   tags:
     - docker
     - shared
-  image: node:23-alpine
+  image: node:25-alpine
   script:
     - echo "Running prettier format check... This may take a while."
+    - npm uninstall -g yarn pnpm
+    - npm install -g corepack
+    - corepack enable
     - yarn install
     - yarn workspace @gamepark/popcorn run prettier --check **/*.{js,ts,tsx}
     - yarn workspace @gamepark/popcorn-app run prettier --check **/*.{js,ts,tsx}
@@ -32,9 +35,12 @@ lint-job:
   tags:
     - docker
     - shared
-  image: node:23-alpine
+  image: node:25-alpine
   script:
     - echo "Running linter... This may take a while."
+    - npm uninstall -g yarn pnpm
+    - npm install -g corepack
+    - corepack enable
     - yarn install
     - yarn run lint
 
@@ -45,9 +51,12 @@ test-job:
   tags:
     - docker
     - shared
-  image: node:23-alpine
+  image: node:25-alpine
   script:
     - echo "Running tests... This may take a while."
+    - npm uninstall -g yarn pnpm
+    - npm install -g corepack
+    - corepack enable
     - yarn install
     - yarn workspace @gamepark/popcorn test
 
@@ -58,9 +67,12 @@ build:
   tags:
     - docker
     - shared
-  image: node:23-alpine
+  image: node:25-alpine
   script:
     - echo "Build app and rules... This may take a while."
+    - npm uninstall -g yarn pnpm
+    - npm install -g corepack
+    - corepack enable
     - yarn install
     - yarn workspace @gamepark/popcorn run build
     - yarn workspace @gamepark/popcorn-app run build

@@ -1,26 +1,10 @@
 import { LocationType } from '@gamepark/popcorn/material/LocationType'
 import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
-import { getRelativePlayerIndex, MaterialContext, PileLocator } from '@gamepark/react-game'
-import { Coordinates, Location, XYCoordinates } from '@gamepark/rules-api'
-
-const coordinates: Record<number, Record<number, XYCoordinates>> = {
-  2: {
-    0: { x: -22, y: 20 },
-    1: { x: 22, y: -20 }
-  },
-  3: {
-    0: { x: -22, y: 20 },
-    1: { x: -15, y: -20 },
-    2: { x: 45, y: -20 }
-  },
-  4: {
-    0: { x: 15, y: 20 },
-    1: { x: -45, y: 20 },
-    2: { x: -15, y: -20 },
-    3: { x: 45, y: -20 }
-  }
-}
+import { ItemContext, MaterialContext, PileLocator } from '@gamepark/react-game'
+import { Coordinates, Location, MaterialItem } from '@gamepark/rules-api'
+import { hideItemIfOwningPlayerIsNotDisplayed } from './utils/hideItemIfOwningPlayerIsNotDisplayed.ts'
+import { offsetPlayerCinemaBoardCoordinates } from './utils/PlayerItemsUtils.ts'
 
 class PlayerAdvertisingTokenPileLocator extends PileLocator<PlayerColor, MaterialType, LocationType> {
   radius = 2
@@ -30,7 +14,15 @@ class PlayerAdvertisingTokenPileLocator extends PileLocator<PlayerColor, Materia
     location: Location<PlayerColor, LocationType>,
     context: MaterialContext<PlayerColor, MaterialType, LocationType>
   ): Partial<Coordinates> {
-    return coordinates[context.rules.players.length][getRelativePlayerIndex(context, location.player)]
+    return offsetPlayerCinemaBoardCoordinates(context, location.player, -22, -6)
+  }
+
+  public getPositionDependencies(location: Location<PlayerColor, LocationType>, context: MaterialContext<PlayerColor, MaterialType, LocationType>): number {
+    return super.getPositionDependencies(location, context)
+  }
+
+  public hide(item: MaterialItem<PlayerColor, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType>): boolean {
+    return hideItemIfOwningPlayerIsNotDisplayed(item, context)
   }
 }
 

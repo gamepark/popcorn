@@ -2,8 +2,9 @@ import { LocationType } from '@gamepark/popcorn/material/LocationType'
 import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
 import { SeatsNumber, TheaterTileId, theaterTilesCharacteristics } from '@gamepark/popcorn/material/TheaterTile'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
-import { Locator, MaterialContext } from '@gamepark/react-game'
-import { Coordinates, Location, XYCoordinates } from '@gamepark/rules-api'
+import { ItemContext, Locator, MaterialContext } from '@gamepark/react-game'
+import { Coordinates, Location, MaterialItem, XYCoordinates } from '@gamepark/rules-api'
+import { hideItemIfOwningPlayerIsNotDisplayed } from './utils/hideItemIfOwningPlayerIsNotDisplayed.ts'
 
 const coordinatesOnTile: Record<Exclude<SeatsNumber, SeatsNumber.Default>, Record<number, XYCoordinates>> = {
   [SeatsNumber.One]: {
@@ -44,6 +45,10 @@ class GuestPawnOnTheaterTileLocator extends Locator<PlayerColor, MaterialType, L
       throw new Error('Location cannot have a missing x')
     }
     return coordinatesOnTile[backId][location.x]
+  }
+
+  public hide(item: MaterialItem<PlayerColor, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType>): boolean {
+    return hideItemIfOwningPlayerIsNotDisplayed(item, context)
   }
 }
 

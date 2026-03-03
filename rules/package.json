@@ -22,11 +22,13 @@
     "test": "jest --passWithNoTests"
   },
   "peerDependencies": {
-    "@gamepark/rules-api": ">=7",
+    "@gamepark/rules-api": "^7.4.1",
     "es-toolkit": "^1.39.10"
   },
   "devDependencies": {
     "@gamepark/rules-api": "~7.2.0",
-    "es-toolkit": "^1.39.10"
+    "es-toolkit": "^1.39.10",
+    "vite-tsconfig-paths": "^6.1.1",
+    "vitest": "^4.0.18"
   }
 }

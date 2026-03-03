@@ -4,7 +4,7 @@ import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
 import { DeckLocator } from '@gamepark/react-game'
 
 class AwardCardDeckLocator extends DeckLocator<PlayerColor, MaterialType, LocationType> {
-  coordinates = { x: -25, y: 4.5 }
+  coordinates = { x: -2.52, y: -5 }
   gap = { x: -0.02, y: -0.02 }
 }
 

@@ -4,7 +4,7 @@ import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
 import { Locator } from '@gamepark/react-game'
 
 class AdvertisingBoardLocator extends Locator<PlayerColor, MaterialType, LocationType> {
-  coordinates = { x: 15, y: 0 }
+  coordinates = { x: -35, y: 12.5 }
 }
 
 export const advertisingBoardLocator = new AdvertisingBoardLocator()

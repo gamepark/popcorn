@@ -138,7 +138,7 @@ class TheaterTileDescription extends TokenDescription<PlayerColor, MaterialType,
             .id(item.id)
             .getIndex()
           const selectCurrentTileLegalMove = legalMoves
-            .filter(isSelectItemType<PlayerColor, MaterialType, LocationType>(MaterialType.TheaterTiles))
+            .filter(isSelectItemType(MaterialType.TheaterTiles))
             .filter((move) => move.itemIndex === currentItemIndex)
           return selectCurrentTileLegalMove.length > 0 ? (
             <>
