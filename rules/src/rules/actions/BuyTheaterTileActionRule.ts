@@ -75,12 +75,12 @@ export class BuyTheaterTileActionRule extends ActionRule<BuyTheaterTileAction> {
           x: moveData.destinationSpot
         })
       )
-      .concat(this.addNewTHeaterTileConsequence(boughtTile))
+      .concat(this.addNewTheaterTileConsequence(boughtTile))
     this.removeCurrentActionForPlayer(player)
     return consequences
   }
 
-  private addNewTHeaterTileConsequence(
+  private addNewTheaterTileConsequence(
     boughtTile: MaterialItem<PlayerColor, LocationType, BuyableTheaterTileId>
   ): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     const originatingDeckLocationType = this.getOriginatingDeckFromTheaterTile(boughtTile)
