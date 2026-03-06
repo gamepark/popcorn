@@ -74,7 +74,7 @@ export class ShowingsPhaseRule extends SimultaneousRule<PlayerColor, MaterialTyp
     if (firstPlayerOfRound === undefined) {
       throw new Error('Invalid game state')
     }
-    return [this.startPlayerTurn<PlayerColor, RuleId>(RuleId.EndOfRoundPhaseRule, firstPlayerOfRound)]
+    return [this.startPlayerTurn<PlayerColor, RuleId>(RuleId.EndOfRoundPhaseTheatricalRunRule, firstPlayerOfRound)]
   }
 
   public afterItemMove(
