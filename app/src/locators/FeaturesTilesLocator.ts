@@ -3,7 +3,7 @@ import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
 import { Locator, MaterialContext } from '@gamepark/react-game'
 import { Coordinates, Location } from '@gamepark/rules-api'
-import { offsetPremiersTileCoordinates } from './utils/PlayerItemsUtils.ts'
+import { offsetPremiersTileCoordinates } from './utils/offsetLocatorCoordinates.ts'
 
 class FeaturesTilesLocator extends Locator<PlayerColor, MaterialType, LocationType> {
   public getCoordinates(

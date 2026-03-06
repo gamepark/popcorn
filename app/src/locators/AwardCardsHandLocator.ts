@@ -4,7 +4,7 @@ import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
 import { HandLocator, ItemContext, MaterialContext } from '@gamepark/react-game'
 import { Coordinates, Location, MaterialItem } from '@gamepark/rules-api'
 import { hideItemIfOwningPlayerIsNotDisplayed } from './utils/hideItemIfOwningPlayerIsNotDisplayed.ts'
-import { offsetPlayerCinemaBoardCoordinates } from './utils/PlayerItemsUtils.ts'
+import { offsetPlayerCinemaBoardCoordinates } from './utils/offsetLocatorCoordinates.ts'
 
 class AwardCardsHandLocator extends HandLocator<PlayerColor, MaterialType, LocationType> {
   radius = 100

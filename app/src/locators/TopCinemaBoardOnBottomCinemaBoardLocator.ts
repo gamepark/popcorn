@@ -5,6 +5,7 @@ import { ItemContext, Locator, MaterialContext } from '@gamepark/react-game'
 import { Location, MaterialItem } from '@gamepark/rules-api'
 import { bottomCinemaBoardDescription } from '../material/BottomCinemaBoardDescription'
 import { movieCardDescription } from '../material/MovieCardDescription'
+import { hideItemIfOwningPlayerIsNotDisplayed } from './utils/hideItemIfOwningPlayerIsNotDisplayed.ts'
 
 class TopCinemaBoardOnBottomCinemaBoardLocator extends Locator<PlayerColor, MaterialType, LocationType> {
   parentItemType = MaterialType.BottomCinemaBoard
@@ -18,8 +19,7 @@ class TopCinemaBoardOnBottomCinemaBoardLocator extends Locator<PlayerColor, Mate
   }
 
   public hide(item: MaterialItem<PlayerColor, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType>): boolean {
-    const displayedPlayer = (context.rules.game.view as PlayerColor) ?? context.player ?? context.rules.players[0]
-    return item.location.player !== displayedPlayer
+    return hideItemIfOwningPlayerIsNotDisplayed(item, context)
   }
 }
 
