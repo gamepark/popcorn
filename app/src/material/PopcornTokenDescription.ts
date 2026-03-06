@@ -2,7 +2,7 @@ import { LocationType } from '@gamepark/popcorn/material/LocationType'
 import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
 import { PopcornToken, popcornTokens } from '@gamepark/popcorn/material/PopcornToken'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
-import { ComponentSize, MaterialContext, TokenDescription } from '@gamepark/react-game'
+import { ComponentSize, TokenDescription } from '@gamepark/react-game'
 import { MaterialItem } from '@gamepark/rules-api'
 import { randomInt } from 'es-toolkit'
 import popcorn1Back1 from '../images/Tokens/Popcorn/Popcorn1Back1.png'
@@ -53,7 +53,7 @@ class PopcornTokenDescription extends TokenDescription<PlayerColor, MaterialType
     [PopcornToken.Token5]: popcorn5Back1
   }
 
-  public getStaticItems(_context: MaterialContext<PlayerColor, MaterialType, LocationType>): MaterialItem<PlayerColor, LocationType>[] {
+  public getStaticItems(): MaterialItem<PlayerColor, LocationType>[] {
     return popcornTokens.map((id) => ({
       id: id,
       quantity: this.popcornTokenNumber[id],

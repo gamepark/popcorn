@@ -9,9 +9,9 @@ import { offsetPlayerCinemaBoardCoordinates } from './utils/offsetLocatorCoordin
 class PlayerMovieArchiveDeckLocator extends DeckLocator<PlayerColor, MaterialType, LocationType> {
   public getCoordinates(
     location: Location<PlayerColor, LocationType>,
-    _context: MaterialContext<PlayerColor, MaterialType, LocationType>
+    context: MaterialContext<PlayerColor, MaterialType, LocationType>
   ): Partial<Coordinates> {
-    return offsetPlayerCinemaBoardCoordinates(_context, location.player, 25, 4)
+    return offsetPlayerCinemaBoardCoordinates(context, location.player, 25, 4)
   }
 
   public hide(item: MaterialItem<PlayerColor, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType>): boolean {

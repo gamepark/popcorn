@@ -10,9 +10,9 @@ class TwoSeatTheaterTilesRowLocator extends ListLocator<PlayerColor, MaterialTyp
 
   public getCoordinates(
     _location: Location<PlayerColor, LocationType>,
-    _context: MaterialContext<PlayerColor, MaterialType, LocationType>
+    context: MaterialContext<PlayerColor, MaterialType, LocationType>
   ): Partial<Coordinates> {
-    return offsetAdvertisingBoardCoordinates(_context, 12.8, -2)
+    return offsetAdvertisingBoardCoordinates(context, 12.8, -2)
   }
 }
 

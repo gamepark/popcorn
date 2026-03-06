@@ -10,9 +10,9 @@ class FeatureMovieCardsRowLocator extends ListLocator<PlayerColor, MaterialType,
 
   public getCoordinates(
     _location: Location<PlayerColor, LocationType>,
-    _context: MaterialContext<PlayerColor, MaterialType, LocationType>
+    context: MaterialContext<PlayerColor, MaterialType, LocationType>
   ): Partial<Coordinates> {
-    return offsetPremiersTileCoordinates(_context, 7, 8)
+    return offsetPremiersTileCoordinates(context, 7, 8)
   }
 }
 

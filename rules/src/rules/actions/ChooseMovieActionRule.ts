@@ -35,9 +35,10 @@ export class ChooseMovieActionRule extends ActionRule<ChooseMovieActionAction> {
       .location((location) => location.type === LocationType.MovieCardSpotOnBottomPlayerCinemaBoard && location.x === currentTile.location.x)
     const currentMovie = currentMovieMaterial.getItems<Required<MovieCardId>>()[0]
     const currentMovieIndex = currentMovieMaterial.getIndex()
+    const availableMovieActions = this.remind<AvailableMovieActionsMemory>(Memory.AvailableMovieActions)
     return (
-      this.remind<AvailableMovieActionsMemory>(Memory.AvailableMovieActions)
-        [currentMovie.id.front]?.entries()
+      availableMovieActions[currentMovie.id.front]
+        ?.map((isAvailable, index) => [index, isAvailable])
         .filter(([_, isAvailable]) => isAvailable)
         .map(([actionIndex, _]) =>
           this.customMove<CustomMoveType>(CustomMoveType.MovieAction, {
@@ -45,7 +46,6 @@ export class ChooseMovieActionRule extends ActionRule<ChooseMovieActionAction> {
             movieActionNumber: actionIndex
           })
         )
-        .toArray()
         .concat(this.customMove<CustomMoveType>(CustomMoveType.PassCurrentAction, { player: player })) ?? []
     )
   }

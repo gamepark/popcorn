@@ -8,15 +8,7 @@ import { getSliderColor, getSlidersForPlayers } from './material/LobbySlider'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { moneyTokens } from './material/MoneyToken'
-import {
-  firstMovieCards,
-  MovieCard,
-  movieCardCharacteristics,
-  movieCardsWithoutFinalShowing,
-  MovieCardType,
-  MovieColor,
-  PlayableMovieCardId
-} from './material/MovieCard'
+import { firstMovieCards, movieCardCharacteristics, movieCardsWithoutFinalShowing, MovieColor, PlayableMovieCardId } from './material/MovieCard'
 import { SeatsNumber, theaterTiles, theaterTilesCharacteristics, theaterTilesWithoutDefault } from './material/TheaterTile'
 import { theaterTrophy } from './material/TheaterTrophy'
 import { AvailableMovieActionsMemory, Memory } from './Memory'
@@ -176,16 +168,6 @@ export class PopcornSetup extends MaterialGameSetup<PlayerColor, MaterialType, L
       })
     )
     this.material(MaterialType.MovieCards).shuffle()
-    this.material(MaterialType.MovieCards).createItem({
-      id: {
-        front: MovieCard.FinalShowing,
-        back: MovieCardType.Movie
-      },
-      location: {
-        type: LocationType.MovieCardDeckSpot,
-        x: this.players.length === 2 ? 9 : 4
-      }
-    })
     const movieCardDeck = this.material(MaterialType.MovieCards).deck()
     movieCardDeck.dealAtOnce(
       {

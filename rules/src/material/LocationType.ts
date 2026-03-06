@@ -37,5 +37,6 @@ export enum LocationType {
   PlayerPopcornPileUnderPopcornCupSpot,
   PlayerTheaterTrophySpot,
   PlayerShowingsDrawnGuestSpot,
-  MovieActionSpotOnMovieCard
+  MovieActionSpotOnMovieCard,
+  FinalShowingCardSpot
 }

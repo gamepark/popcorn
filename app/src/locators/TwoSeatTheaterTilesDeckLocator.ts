@@ -8,9 +8,9 @@ import { offsetAdvertisingBoardCoordinates } from './utils/offsetLocatorCoordina
 class TwoSeatTheaterTilesDeckLocator extends DeckLocator<PlayerColor, MaterialType, LocationType> {
   public getCoordinates(
     _location: Location<PlayerColor, LocationType>,
-    _context: MaterialContext<PlayerColor, MaterialType, LocationType>
+    context: MaterialContext<PlayerColor, MaterialType, LocationType>
   ): Partial<Coordinates> {
-    return offsetAdvertisingBoardCoordinates(_context, 12.8, -7.5)
+    return offsetAdvertisingBoardCoordinates(context, 12.8, -7.5)
   }
 }
 

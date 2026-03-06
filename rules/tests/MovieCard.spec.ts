@@ -1,9 +1,10 @@
+import { describe, test, expect } from 'vitest'
 import { LocationType } from '../src/material/LocationType'
 import { MovieAction, MovieCard, movieCardCharacteristics, MovieColor } from '../src/material/MovieCard'
 import { TheaterTile } from '../src/material/TheaterTile'
 
 describe('Movie card tests', () => {
-  test.each([
+  test.for([
     {
       film: MovieCard.BlueTheGodmother as Exclude<MovieCard, MovieCard.FinalShowing>,
       filmName: MovieCard[MovieCard.BlueTheGodmother],
@@ -57,10 +58,10 @@ describe('Movie card tests', () => {
     const color = movieCardCharacteristics[film].color
 
     // Then
-    expect(color).toEqual(expectedFilmColor)
+    expect(color).to.equal(expectedFilmColor)
   })
 
-  test.each([
+  test.for([
     {
       film: MovieCard.FirstMovieGreenEndOfTheWorld as Exclude<MovieCard, MovieCard.FinalShowing>,
       filmName: MovieCard[MovieCard.FirstMovieGreenEndOfTheWorld],
@@ -91,10 +92,10 @@ describe('Movie card tests', () => {
     const price = movieCardCharacteristics[film].getPrice(LocationType.FeaturesRowSpot)
 
     // Then
-    expect(price).toEqual(expectedPrice)
+    expect(price).to.equal(expectedPrice)
   })
 
-  test.each([
+  test.for([
     {
       film: MovieCard.Blue5678 as Exclude<MovieCard, MovieCard.FinalShowing>,
       filmName: MovieCard[MovieCard.Blue5678],
@@ -128,10 +129,10 @@ describe('Movie card tests', () => {
     const action = movieCardCharacteristics[film].getBonusAction(theaterTile)
 
     // Then
-    expect(action).toEqual(expectedBonusAction)
+    expect(action).to.equal(expectedBonusAction)
   })
 
-  test.each([
+  test.for([
     {
       film: MovieCard.FirstMovieBlueRosebud as Exclude<MovieCard, MovieCard.FinalShowing>,
       filmName: MovieCard[MovieCard.FirstMovieBlueRosebud],
@@ -215,10 +216,10 @@ describe('Movie card tests', () => {
       const fourthAction = testMovieCharacteristics.getAction(3)
 
       // Then
-      expect(firstAction).toEqual(expectedFirstAction)
-      expect(secondAction).toEqual(expectedSecondAction)
-      expect(thirdAction).toEqual(expectedThirdAction)
-      expect(fourthAction).toEqual(expectedFourthAction)
+      expect(firstAction).to.equal(expectedFirstAction)
+      expect(secondAction).to.equal(expectedSecondAction)
+      expect(thirdAction).to.equal(expectedThirdAction)
+      expect(fourthAction).to.equal(expectedFourthAction)
     }
   )
 })
