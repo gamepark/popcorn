@@ -111,7 +111,15 @@ const getAudienceBonusMove = (
       return getMoneyMove(rule, player, MaterialType.MoneyTokens, 3)
     case 6:
       addPendingActionForPlayer(rule, { type: ActionType.DiscardAwardCard }, player)
-      return []
+      return [
+        rule.material(MaterialType.AwardCards).location(LocationType.AwardCardDeckSpot).deck().dealAtOnce(
+          {
+            type: LocationType.PlayerAwardCardHand,
+            player: player
+          },
+          2
+        )
+      ]
     case 7:
       return getMoneyMove(rule, player, MaterialType.PopcornTokens, 3)
     default:

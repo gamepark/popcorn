@@ -100,7 +100,7 @@ export class ChooseMovieActionRule extends ActionRule<ChooseMovieActionAction> {
               2
             )
           )
-          addPendingActionForPlayer(this, { type: ActionType.DiscardAwardCard }, player)
+          addPendingActionForPlayer(this, { type: ActionType.DiscardAwardCard, guestIndexToMove: this.action.guestIndex }, player)
           break
         case MovieAction.DrawGuestAndPlaceThem:
           consequences.push(...getDrawGuestMovesAndAddPendingActionIfNecessary(this, player))
