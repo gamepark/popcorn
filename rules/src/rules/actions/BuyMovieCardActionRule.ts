@@ -8,13 +8,13 @@ import { GuestPawn } from '../../material/GuestPawn'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 import { MoneyToken, moneyTokens } from '../../material/MoneyToken'
-import { PlayableMovieCardId, MovieCard, movieCardCharacteristics, MovieColor } from '../../material/MovieCard'
+import { MovieCard, movieCardCharacteristics, MovieColor, PlayableMovieCardId } from '../../material/MovieCard'
 import { Memory } from '../../Memory'
 import { PlayerColor } from '../../PlayerColor'
 import { RuleId } from '../RuleId'
-import { getBuyingFilmCardConsequences } from './utils/movieOrSeatActionConsequences.util'
 import { ActionRule } from './ActionRule'
 import { addPendingActionForPlayer } from './utils/addPendingActionForPlayer.util'
+import { getBuyingFilmCardConsequences } from './utils/movieOrSeatActionConsequences.util'
 
 export class BuyMovieCardActionRule extends ActionRule<BuyMovieCardAction> {
   public consequencesBeforeRuleForPlayer(): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
@@ -57,24 +57,29 @@ export class BuyMovieCardActionRule extends ActionRule<BuyMovieCardAction> {
       }
       this.removeCurrentActionForPlayer(move.data.player)
       const consequences: MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] = this.material(MaterialType.MoneyTokens)
-        .player(move.data.player)
-        .location(LocationType.PlayerMoneyPileSpot)
         .money<MoneyToken>(moneyTokens)
         .removeMoney(movieCardCharacteristics[boughtCard.id.front].getPrice(boughtCard.location.type), {
           type: LocationType.PlayerMoneyPileSpot,
           player: move.data.player
         })
       if (boughtCard.location.type === LocationType.PremiersRowSpot) {
-        addPendingActionForPlayer(
-          this,
-          {
-            type: ActionType.PickReserveOrExitZoneGuest,
-            guest: BuyMovieCardActionRule.getGuestPawnColorFromMovieId(boughtCard.id.front),
-            boughtCardData: move.data
-          },
-          move.data.player
-        )
-        return consequences
+        const guestColorToPick = BuyMovieCardActionRule.getGuestPawnColorFromMovieId(boughtCard.id.front)
+        const guestPawnsInExitZones = this.material(MaterialType.GuestPawns)
+          .location(LocationType.GuestPawnExitZoneSpotOnTopPlayerCinemaBoard)
+          .player((p) => p !== undefined && p !== move.data.player)
+          .id(guestColorToPick)
+        if (guestPawnsInExitZones.length > 0) {
+          addPendingActionForPlayer(
+            this,
+            {
+              type: ActionType.PickReserveOrExitZoneGuest,
+              guest: guestColorToPick,
+              boughtCardData: move.data
+            },
+            move.data.player
+          )
+          return consequences
+        }
       }
       return consequences.concat(getBuyingFilmCardConsequences(this, move.data.player, boughtCard, move.data.destinationSpot))
     }

@@ -14,7 +14,7 @@ export class SchoolOfZombiesCharacteristics implements MovieCardCharacteristics 
   public readonly movieType = MovieCardType.Movie
   public readonly isFirstMovie = false
   public readonly basePrice = 2
-  public readonly bonusAction = MovieAction.AdvertisingTokenOnYellowGuest
+  public readonly bonusAction = MovieAction.PlaceExitZoneGuestInBag
   public readonly numberOfSeatsForBonus = SeatsNumber.One
 
   public getAction(actionNumber: number): MovieAction | undefined {

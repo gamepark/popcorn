@@ -1,4 +1,5 @@
 import { getEnumValues } from '@gamepark/rules-api'
+import { GuestPawn } from './GuestPawn'
 import { DefaultOneSeatTileCharacteristics } from './TheaterTiles/DefaultOneSeatTileCharacteristics'
 import { DefaultTwoSeatTileCharacteristics } from './TheaterTiles/DefaultTwoSeatTileCharacteristics'
 import { OneSeat1MoneyCharacteristics } from './TheaterTiles/OneSeat1MoneyCharacteristics'
@@ -93,7 +94,7 @@ export enum TheaterTile {
 
 export const theaterTiles = getEnumValues(TheaterTile)
 
-export const theaterTilesWithoutDefault = theaterTiles.slice(2)
+export const theaterTilesWithoutDefault = theaterTiles.filter((id) => id !== TheaterTile.DefaultOneSeatTile && id !== TheaterTile.DefaultTwoSeatTile)
 
 export const getMaximumNumberOfGuests = (seatNumber: Exclude<SeatsNumber, SeatsNumber.Default>): number => {
   switch (seatNumber) {
@@ -147,4 +148,19 @@ export type TheaterTileId = {
 export type BuyableTheaterTileId = {
   front?: Exclude<TheaterTile, TheaterTile.DefaultOneSeatTile | TheaterTile.DefaultTwoSeatTile>
   back: Exclude<SeatsNumber, SeatsNumber.Default>
+}
+
+export const getSeatColorFromGuestPawn = (guestPawn: GuestPawn): SeatColor | undefined => {
+  switch (guestPawn) {
+    case GuestPawn.Blue:
+      return SeatColor.Blue
+    case GuestPawn.Green:
+      return SeatColor.Green
+    case GuestPawn.Red:
+      return SeatColor.Red
+    case GuestPawn.Yellow:
+      return SeatColor.Yellow
+    case GuestPawn.White:
+      return undefined
+  }
 }

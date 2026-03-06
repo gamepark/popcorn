@@ -1,4 +1,5 @@
 import { getEnumValues } from '@gamepark/rules-api'
+import { GuestPawn } from './GuestPawn'
 import { AbracadabCharacteristics } from './MovieCards/AbracadabCharacteristics'
 import { AdrianCharacteristics } from './MovieCards/AdrianCharacteristics'
 import { AMonsterInTheShipCharacteristics } from './MovieCards/AMonsterInTheShipCharacteristics'
@@ -211,4 +212,19 @@ export type MovieCardId = {
 
 export type PlayableMovieCardId = Omit<MovieCardId, 'front'> & {
   front?: Exclude<MovieCard, MovieCard.FinalShowing>
+}
+
+export const getMovieColorFromGuestPawn = (guestPawn: GuestPawn): MovieColor | undefined => {
+  switch (guestPawn) {
+    case GuestPawn.Blue:
+      return MovieColor.Blue
+    case GuestPawn.Green:
+      return MovieColor.Green
+    case GuestPawn.Red:
+      return MovieColor.Red
+    case GuestPawn.Yellow:
+      return MovieColor.Yellow
+    case GuestPawn.White:
+      return undefined
+  }
 }
