@@ -4,7 +4,7 @@ import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
 import { DeckLocator, ItemContext, MaterialContext } from '@gamepark/react-game'
 import { Coordinates, Location, MaterialItem } from '@gamepark/rules-api'
 import { hideItemIfOwningPlayerIsNotDisplayed } from './utils/hideItemIfOwningPlayerIsNotDisplayed.ts'
-import { getPlayerItemRotateZ, offsetPlayerCinemaBoardCoordinates } from './utils/PlayerItemsUtils'
+import { offsetPlayerCinemaBoardCoordinates } from './utils/offsetLocatorCoordinates.ts'
 
 class PlayerMovieArchiveDeckLocator extends DeckLocator<PlayerColor, MaterialType, LocationType> {
   public getCoordinates(
@@ -12,10 +12,6 @@ class PlayerMovieArchiveDeckLocator extends DeckLocator<PlayerColor, MaterialTyp
     _context: MaterialContext<PlayerColor, MaterialType, LocationType>
   ): Partial<Coordinates> {
     return offsetPlayerCinemaBoardCoordinates(_context, location.player, 25, 4)
-  }
-
-  public getRotateZ(location: Location<PlayerColor, LocationType>, context: MaterialContext<PlayerColor, MaterialType, LocationType>): number {
-    return getPlayerItemRotateZ(location, context)
   }
 
   public hide(item: MaterialItem<PlayerColor, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType>): boolean {

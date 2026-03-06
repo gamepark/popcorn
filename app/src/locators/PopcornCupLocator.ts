@@ -4,7 +4,7 @@ import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
 import { ItemContext, Locator, MaterialContext } from '@gamepark/react-game'
 import { Coordinates, Location, MaterialItem } from '@gamepark/rules-api'
 import { hideItemIfOwningPlayerIsNotDisplayed } from './utils/hideItemIfOwningPlayerIsNotDisplayed.ts'
-import { offsetPlayerCinemaBoardCoordinates } from './utils/PlayerItemsUtils'
+import { offsetPlayerCinemaBoardCoordinates } from './utils/offsetLocatorCoordinates.ts'
 
 class PopcornCupLocator extends Locator<PlayerColor, MaterialType, LocationType> {
   public getCoordinates(

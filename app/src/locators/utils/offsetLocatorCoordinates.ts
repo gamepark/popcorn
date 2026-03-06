@@ -1,8 +1,7 @@
-import { LocationType } from '@gamepark/popcorn/material/LocationType'
-import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
-import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
-import { getRelativePlayerIndex, MaterialContext } from '@gamepark/react-game'
-import { Location } from '@gamepark/rules-api'
+import { LocationType } from '@gamepark/popcorn/material/LocationType.ts'
+import { MaterialType } from '@gamepark/popcorn/material/MaterialType.ts'
+import { PlayerColor } from '@gamepark/popcorn/PlayerColor.ts'
+import { MaterialContext } from '@gamepark/react-game'
 
 const offsetOtherLocatorCoordinates = (
   context: MaterialContext<PlayerColor, MaterialType, LocationType>,
@@ -24,21 +23,6 @@ const offsetOtherLocatorCoordinates = (
   return {
     x: (locatorCoordinates?.x ?? 0) + xOffset,
     y: (locatorCoordinates?.y ?? 0) + yOffset
-  }
-}
-
-export const getPlayerItemRotateZ = (
-  location: Location<PlayerColor, LocationType>,
-  context: MaterialContext<PlayerColor, MaterialType, LocationType>
-): number => {
-  switch (context.rules.players.length) {
-    case 2:
-    case 3:
-      return getRelativePlayerIndex(context, location.player) === 0 ? 0 : 180
-    case 4:
-      return getRelativePlayerIndex(context, location.player) < 2 ? 0 : 180
-    default:
-      throw new Error('Invalid number of players')
   }
 }
 

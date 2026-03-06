@@ -2,9 +2,9 @@ import { GuestPawn } from '@gamepark/popcorn/material/GuestPawn'
 import { LocationType } from '@gamepark/popcorn/material/LocationType'
 import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
-import { ListLocator, MaterialContext } from '@gamepark/react-game'
+import { FlexLocator, MaterialContext } from '@gamepark/react-game'
 import { Coordinates, Location } from '@gamepark/rules-api'
-import { offsetAdvertisingBoardCoordinates } from './utils/PlayerItemsUtils.ts'
+import { offsetAdvertisingBoardCoordinates } from './utils/offsetLocatorCoordinates.ts'
 
 const yOffsetByGuestColor = {
   [GuestPawn.Blue]: -7.5,
@@ -14,8 +14,12 @@ const yOffsetByGuestColor = {
   [GuestPawn.White]: 4.5
 }
 
-class GuestPawnReserveLocator extends ListLocator<PlayerColor, MaterialType, LocationType> {
+class GuestPawnReserveLocator extends FlexLocator<PlayerColor, MaterialType, LocationType> {
   gap = { x: 1.5 }
+  lineSize = 3
+  lineGap = { y: 1 }
+  maxLines = 3
+
   public getCoordinates(
     location: Location<PlayerColor, LocationType, GuestPawn>,
     _context: MaterialContext<PlayerColor, MaterialType, LocationType>
