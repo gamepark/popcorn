@@ -4,6 +4,7 @@ import {
   isMoveItem,
   isMoveItemsAtOnce,
   isMoveItemType,
+  isMoveItemTypeAtOnce,
   isSelectItem,
   isShuffleItemType,
   ItemMove,
@@ -32,7 +33,6 @@ export class ShowingsPhaseRule extends SimultaneousRule<PlayerColor, MaterialTyp
     _previousRule?: RuleStep,
     _context?: PlayMoveContext
   ): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
-    this.game.players.forEach((player) => this.memorize<Actions[]>(Memory.PendingActions, [{ type: ActionType.PlaceGuests } as Actions], player))
     return this.game.players.flatMap((player) => {
       const theoreticalNumberOfGuestsToDraw = this.getNumberOfGuestsToDraw(player)
       const playerGuestInBagMaterial = this.material(MaterialType.GuestPawns).location(LocationType.PlayerGuestPawnsUnderClothBagSpot).player(player)
@@ -74,7 +74,7 @@ export class ShowingsPhaseRule extends SimultaneousRule<PlayerColor, MaterialTyp
     if (firstPlayerOfRound === undefined) {
       throw new Error('Invalid game state')
     }
-    return [this.startPlayerTurn<PlayerColor, RuleId>(RuleId.EndOfRoundPhaseRule, firstPlayerOfRound)]
+    return [this.startPlayerTurn<PlayerColor, RuleId>(RuleId.EndOfRoundPhaseTheatricalRunRule, firstPlayerOfRound)]
   }
 
   public afterItemMove(
@@ -104,10 +104,7 @@ export class ShowingsPhaseRule extends SimultaneousRule<PlayerColor, MaterialTyp
             .deck()
             .dealAtOnce(
               {
-                type:
-                  numberOfRemainingGuestToDraw !== 1 && canPlaceGuest
-                    ? LocationType.PlayerShowingsDrawnGuestSpot
-                    : LocationType.GuestPawnExitZoneSpotOnTopPlayerCinemaBoard,
+                type: canPlaceGuest ? LocationType.PlayerShowingsDrawnGuestSpot : LocationType.GuestPawnExitZoneSpotOnTopPlayerCinemaBoard,
                 player: player
               },
               numberOfRemainingGuestToDraw
@@ -142,6 +139,12 @@ export class ShowingsPhaseRule extends SimultaneousRule<PlayerColor, MaterialTyp
     if (pendingActions.length > 0) {
       const subRule = getActionRule(pendingActions[0], this)
       consequences.push(...subRule.beforeItemMove(move, context))
+    }
+    if (isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.GuestPawns)(move) && move.location.type === LocationType.GuestPawnReserveSpot) {
+      const guestPawnBeingMoved = this.material(move.itemType).index(move.itemIndex).getItem()!
+      if (guestPawnBeingMoved.location.type === LocationType.GuestPawnSpotOnTheaterTile && guestPawnBeingMoved.location.player === player) {
+        this.addEndPlayerTurnConsequenceIfNecessary(move, player, consequences, true)
+      }
     }
     return consequences
   }
@@ -234,9 +237,12 @@ export class ShowingsPhaseRule extends SimultaneousRule<PlayerColor, MaterialTyp
     before = false
   ): void {
     if (
-      isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.GuestPawns)(move) &&
+      (isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.GuestPawns)(move) ||
+        isMoveItemTypeAtOnce<PlayerColor, MaterialType, LocationType>(MaterialType.GuestPawns)(move)) &&
+      move.location.type !== LocationType.PlayerShowingsDrawnGuestSpot &&
+      move.location.type !== LocationType.PlayerGuestPawnsUnderClothBagSpot &&
       this.material(MaterialType.GuestPawns).player(player).location(LocationType.GuestPawnSpotOnTheaterTile).length === (before ? 1 : 0) &&
-      this.game.players.includes(player)
+      this.activePlayers.includes(player)
     ) {
       consequences.push(this.endPlayerTurn<PlayerColor>(player))
     }

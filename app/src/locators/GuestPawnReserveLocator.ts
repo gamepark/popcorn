@@ -22,12 +22,12 @@ class GuestPawnReserveLocator extends FlexLocator<PlayerColor, MaterialType, Loc
 
   public getCoordinates(
     location: Location<PlayerColor, LocationType, GuestPawn>,
-    _context: MaterialContext<PlayerColor, MaterialType, LocationType>
+    context: MaterialContext<PlayerColor, MaterialType, LocationType>
   ): Partial<Coordinates> {
     if (location.id === undefined) {
       throw new Error('Cannot have ')
     }
-    return offsetAdvertisingBoardCoordinates(_context, 21, yOffsetByGuestColor[location.id])
+    return offsetAdvertisingBoardCoordinates(context, 21, yOffsetByGuestColor[location.id])
   }
 }
 

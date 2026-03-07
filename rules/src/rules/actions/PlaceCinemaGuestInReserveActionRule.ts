@@ -21,7 +21,6 @@ export class PlaceCinemaGuestInReserveActionRule extends ActionRule<PlaceCinemaG
       .location((l) => l.type !== LocationType.PlayerGuestPawnsUnderClothBagSpot)
       .moveItems((item) => ({
         type: LocationType.GuestPawnReserveSpot,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         id: item.id
       }))
   }

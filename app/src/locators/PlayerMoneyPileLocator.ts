@@ -16,7 +16,7 @@ class PlayerMoneyPileLocator extends PileLocator<PlayerColor, MaterialType, Loca
     return offsetPlayerCinemaBoardCoordinates(context, location.player, -16, -6)
   }
 
-  public getPileId(item: MaterialItem<PlayerColor, LocationType>, _context: ItemContext<PlayerColor, MaterialType, LocationType>): string {
+  public getPileId(item: MaterialItem<PlayerColor, LocationType>): string {
     return `${item.location.player}-${item.id}`
   }
 

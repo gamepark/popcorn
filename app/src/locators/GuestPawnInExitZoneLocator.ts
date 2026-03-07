@@ -25,7 +25,7 @@ class GuestPawnInExitZoneLocator extends PileLocator<PlayerColor, MaterialType, 
     return topCinemaBoardDescription.getStaticItems(context).find((boardItem) => boardItem.location.player === location.player)
   }
 
-  public getPileId(item: MaterialItem<PlayerColor, LocationType>, _context: ItemContext<PlayerColor, MaterialType, LocationType>): string {
+  public getPileId(item: MaterialItem<PlayerColor, LocationType>): string {
     return `guest-exit-${item.id}-${item.location.player}`
   }
 

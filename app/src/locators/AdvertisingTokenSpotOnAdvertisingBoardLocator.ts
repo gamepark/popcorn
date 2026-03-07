@@ -2,7 +2,7 @@ import { AdvertisingTokenSpot } from '@gamepark/popcorn/material/AdvertisingToke
 import { LocationType } from '@gamepark/popcorn/material/LocationType'
 import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
-import { MaterialContext, PileLocator } from '@gamepark/react-game'
+import { PileLocator } from '@gamepark/react-game'
 import { Coordinates, Location, XYCoordinates } from '@gamepark/rules-api'
 
 const spotCoordinates: Record<AdvertisingTokenSpot, XYCoordinates> = {
@@ -19,10 +19,7 @@ class AdvertisingTokenSpotOnAdvertisingBoardLocator extends PileLocator<PlayerCo
   radius = { x: 2, y: 0.4 }
   limit = 24
 
-  public getCoordinates(
-    location: Location<PlayerColor, LocationType, AdvertisingTokenSpot>,
-    _context: MaterialContext<PlayerColor, MaterialType, LocationType>
-  ): Partial<Coordinates> {
+  public getCoordinates(location: Location<PlayerColor, LocationType, AdvertisingTokenSpot>): Partial<Coordinates> {
     if (location.id === undefined) {
       throw new Error('Advertising tokens cannot have an undefined location.id')
     }

@@ -59,7 +59,7 @@ class GuestPawnDescription extends TokenDescription<PlayerColor, MaterialType, L
               .id(item.id)
               .getIndex()
             const selectCurrentGuestMoves = _legalMoves
-              .filter(isSelectItemType<PlayerColor, MaterialType, LocationType>(MaterialType.GuestPawns))
+              .filter(isSelectItemType<MaterialType>(MaterialType.GuestPawns))
               .filter((move) => move.itemIndex === currentItemIndex)
             const passCurrentGuestMoves = _legalMoves.filter(isPassCurrentActionCustomMove)
             return passCurrentGuestMoves.length > 0 && selectCurrentGuestMoves.length > 0 ? (

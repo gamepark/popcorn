@@ -2,12 +2,14 @@ import { isSelectItemType, ItemMove, MaterialItem, MaterialMove, PlayMoveContext
 import { range } from 'es-toolkit'
 import { Actions } from '../../material/Actions/Actions'
 import { ActionType } from '../../material/Actions/ActionType'
+import { ChooseMovieActionAction } from '../../material/Actions/ChooseMovieActionAction'
+import { ChooseSeatActionAction } from '../../material/Actions/ChooseSeatActionAction'
 import { PickTheaterTileToActivateAction } from '../../material/Actions/PickTheaterTileToActivateAction'
 import { GuestPawn } from '../../material/GuestPawn'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
-import { movieCardCharacteristics, MovieColor } from '../../material/MovieCard'
-import { BuyableTheaterTileId, SeatColor, TheaterTileId, theaterTilesCharacteristics } from '../../material/TheaterTile'
+import { getMovieColorFromGuestPawn, movieCardCharacteristics } from '../../material/MovieCard'
+import { BuyableTheaterTileId, getSeatColorFromGuestPawn, SeatColor, TheaterTileId, theaterTilesCharacteristics } from '../../material/TheaterTile'
 import { TheaterTileCharacteristics } from '../../material/TheaterTiles/TheaterTileCharacteristics'
 import { Memory } from '../../Memory'
 import { PlayerColor } from '../../PlayerColor'
@@ -49,15 +51,40 @@ export class PickTheaterTileToActivateActionRule extends ActionRule<PickTheaterT
       const guestPawnsOnTile = guestPawnsOnTileMaterial.getItems<GuestPawn>()
       const guestPawnsOnTileIndexes = guestPawnsOnTileMaterial.getIndexes()
       this.removeCurrentActionForPlayer(player)
-      this.memorize<Actions[]>(
-        Memory.PendingActions,
-        (pendingActions) => {
-          pendingActions.unshift(...this.buildPendingActions(guestPawnsOnTile, tileCharacteristics, guestPawnsOnTileIndexes))
-          return pendingActions
-        },
-        player
-      )
-      return []
+      const addedPendingActions = this.buildPendingActions(guestPawnsOnTile, tileCharacteristics, guestPawnsOnTileIndexes)
+      if (addedPendingActions.length > 0) {
+        this.memorize<Actions[]>(
+          Memory.PendingActions,
+          (pendingActions) => {
+            pendingActions.unshift(...this.buildPendingActions(guestPawnsOnTile, tileCharacteristics, guestPawnsOnTileIndexes))
+            return pendingActions
+          },
+          player
+        )
+        const consequences: MaterialMove<PlayerColor, MaterialType, LocationType>[] = []
+        let firstGuestWithActionFound = false
+        guestPawnsOnTileIndexes.forEach((guestPawnIndex) => {
+          if (!firstGuestWithActionFound) {
+            firstGuestWithActionFound = addedPendingActions.some((action) => action.guestIndex === guestPawnIndex)
+            if (!firstGuestWithActionFound) {
+              consequences.push(
+                guestPawnsOnTileMaterial.index(guestPawnIndex).moveItem({
+                  type: LocationType.GuestPawnExitZoneSpotOnTopPlayerCinemaBoard,
+                  player: player
+                })
+              )
+            }
+          }
+        })
+        return consequences
+      } else {
+        return [
+          guestPawnsOnTileMaterial.moveItemsAtOnce({
+            type: LocationType.GuestPawnExitZoneSpotOnTopPlayerCinemaBoard,
+            player: player
+          })
+        ]
+      }
     }
     return super.afterItemMove(move, _context)
   }
@@ -66,13 +93,13 @@ export class PickTheaterTileToActivateActionRule extends ActionRule<PickTheaterT
     guestPawnsOnTile: MaterialItem<PlayerColor, LocationType, GuestPawn>[],
     tileCharacteristics: TheaterTileCharacteristics,
     guestPawnsOnTileIndexes: number[]
-  ): Actions[] {
+  ): (ChooseSeatActionAction | ChooseMovieActionAction)[] {
     return range(0, guestPawnsOnTile.length).flatMap((index) => {
-      const actionsToPush: Actions[] = []
+      const actionsToPush: (ChooseSeatActionAction | ChooseMovieActionAction)[] = []
       const guestPawn = guestPawnsOnTile[index]
       const guestPawnColor = guestPawn.id
       const seatColor = tileCharacteristics.getSeatColor(guestPawn.location.x ?? 0)
-      if (seatColor !== undefined && (seatColor === SeatColor.Grey || seatColor === this.getSeatColorFromGuestPawn(guestPawnColor))) {
+      if (seatColor !== undefined && (seatColor === SeatColor.Grey || seatColor === getSeatColorFromGuestPawn(guestPawnColor))) {
         actionsToPush.push({
           type: ActionType.ChooseSeatAction,
           guestIndex: guestPawnsOnTileIndexes[index]
@@ -85,7 +112,7 @@ export class PickTheaterTileToActivateActionRule extends ActionRule<PickTheaterT
         .location((l) => l.x === parentTheaterTile.location.x)
         .getItems<Required<BuyableTheaterTileId>>()[0]
       const movieCharacteristics = movieCardCharacteristics[movieCard.id.front]
-      if (movieCharacteristics.color === this.getMovieColorFromGuestPawn(guestPawnColor)) {
+      if (movieCharacteristics.color === getMovieColorFromGuestPawn(guestPawnColor)) {
         actionsToPush.push({
           type: ActionType.ChooseMovieAction,
           guestIndex: guestPawnsOnTileIndexes[index]
@@ -97,35 +124,5 @@ export class PickTheaterTileToActivateActionRule extends ActionRule<PickTheaterT
 
   public getMovesAfterPlayersDone(): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     return []
-  }
-
-  private getSeatColorFromGuestPawn(guestPawn: GuestPawn) {
-    switch (guestPawn) {
-      case GuestPawn.Blue:
-        return SeatColor.Blue
-      case GuestPawn.Green:
-        return SeatColor.Green
-      case GuestPawn.Red:
-        return SeatColor.Red
-      case GuestPawn.Yellow:
-        return SeatColor.Yellow
-      case GuestPawn.White:
-        return undefined
-    }
-  }
-
-  private getMovieColorFromGuestPawn(guestPawn: GuestPawn) {
-    switch (guestPawn) {
-      case GuestPawn.Blue:
-        return MovieColor.Blue
-      case GuestPawn.Green:
-        return MovieColor.Green
-      case GuestPawn.Red:
-        return MovieColor.Red
-      case GuestPawn.Yellow:
-        return MovieColor.Yellow
-      case GuestPawn.White:
-        return undefined
-    }
   }
 }

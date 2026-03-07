@@ -2,7 +2,7 @@ import { LocationType } from '@gamepark/popcorn/material/LocationType'
 import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
 import { MoneyToken, moneyTokens } from '@gamepark/popcorn/material/MoneyToken'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
-import { MaterialContext, RoundTokenDescription } from '@gamepark/react-game'
+import { RoundTokenDescription } from '@gamepark/react-game'
 import { MaterialItem } from '@gamepark/rules-api'
 import { randomInt } from 'es-toolkit'
 import money1Back from '../images/Tokens/Money/Money1Back.jpg'
@@ -33,7 +33,7 @@ class MoneyTokenDescription extends RoundTokenDescription<PlayerColor, MaterialT
     [MoneyToken.Money5]: money5Back
   }
 
-  public getStaticItems(_context: MaterialContext<PlayerColor, MaterialType, LocationType>): MaterialItem<PlayerColor, LocationType>[] {
+  public getStaticItems(): MaterialItem<PlayerColor, LocationType>[] {
     return moneyTokens.map((id) => ({
       id: id,
       quantity: this.moneyTokensNumber[id],

@@ -58,9 +58,22 @@ export class DiscardAwardCardActionRule extends ActionRule<DiscardAwardCardActio
         throw new Error('Unable to find player owning card')
       }
       this.removeCurrentActionForPlayer(card.location.player)
-      return this.currentPhase === GamePhase.Setup
-        ? [this.endPlayerTurn(card.location.player)]
-        : [this.startPlayerTurn<PlayerColor, RuleId>(RuleId.BuyingPhaseRule, card.location.player)]
+      switch (this.currentPhase) {
+        case GamePhase.Setup:
+          return [this.endPlayerTurn(card.location.player)]
+        case GamePhase.ShowingsPhase:
+          if (this.action.guestIndexToMove !== undefined) {
+            return [
+              this.material(MaterialType.GuestPawns).index(this.action.guestIndexToMove).moveItem({
+                type: LocationType.GuestPawnExitZoneSpotOnTopPlayerCinemaBoard,
+                player: card.location.player
+              })
+            ]
+          }
+          return []
+        default:
+          return []
+      }
     }
     return []
   }

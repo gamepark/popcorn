@@ -19,7 +19,8 @@
     "prepublishOnly": "tsc",
     "publish": "lerna publish",
     "lint": "eslint",
-    "test": "jest --passWithNoTests"
+    "prettier": "prettier",
+    "test": "vitest --passWithNoTests"
   },
   "peerDependencies": {
     "@gamepark/rules-api": "^7.4.1",
@@ -28,6 +29,8 @@
   "devDependencies": {
     "@gamepark/rules-api": "~7.2.0",
     "es-toolkit": "^1.39.10",
+    "prettier": "^3.8.1",
+    "typescript": "^5.9.3",
     "vite-tsconfig-paths": "^6.1.1",
     "vitest": "^4.0.18"
   }

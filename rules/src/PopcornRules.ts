@@ -15,7 +15,9 @@ import { MaterialType } from './material/MaterialType'
 import { PlayerColor } from './PlayerColor'
 import { DiscardAwardCardActionRule } from './rules/actions/DiscardAwardCardActionRule'
 import { BuyingPhaseRule } from './rules/BuyingPhaseRule'
-import { EndOfRoundPhaseRule } from './rules/EndOfRoundPhaseRule'
+import { EndOfRoundPendingActionsNextPhaseTransitionRule } from './rules/EndOfRoundPhase/EndOfRoundPendingActionsNextPhaseTransitionRule'
+import { EndOfRoundPhaseNewLineUpRule } from './rules/EndOfRoundPhase/EndOfRoundPhaseNewLineUpRule'
+import { EndOfRoundPhaseTheatricalRunRule } from './rules/EndOfRoundPhase/EndOfRoundPhaseTheatricalRunRule'
 import { RuleId } from './rules/RuleId'
 import { ShowingsPhaseRule } from './rules/ShowingsPhaseRule'
 
@@ -26,13 +28,19 @@ import { ShowingsPhaseRule } from './rules/ShowingsPhaseRule'
 export class PopcornRules
   extends SecretMaterialRules<PlayerColor, MaterialType, LocationType, RuleId>
   implements
-    TimeLimit<MaterialGame<PlayerColor, MaterialType, LocationType, RuleId>, MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>, PlayerColor>
+    TimeLimit<
+      MaterialGame<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>,
+      MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>,
+      PlayerColor
+    >
 {
   rules = {
     [RuleId.DealAndDiscardAwardCards]: DiscardAwardCardActionRule,
     [RuleId.BuyingPhaseRule]: BuyingPhaseRule,
     [RuleId.ShowingsPhaseRule]: ShowingsPhaseRule,
-    [RuleId.EndOfRoundPhaseRule]: EndOfRoundPhaseRule
+    [RuleId.EndOfRoundPhaseTheatricalRunRule]: EndOfRoundPhaseTheatricalRunRule,
+    [RuleId.EndOfRoundPhaseNewLineUpRule]: EndOfRoundPhaseNewLineUpRule,
+    [RuleId.EndOfRoundPendingActionsNextPhaseTransitionRule]: EndOfRoundPendingActionsNextPhaseTransitionRule
   }
 
   hidingStrategies = {

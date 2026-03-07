@@ -1,4 +1,4 @@
-import { CustomMove, isMoveItemType, ItemMove, MaterialMove, PlayerTurnRule, PlayMoveContext } from '@gamepark/rules-api'
+import { CustomMove, isMoveItemType, isStartSimultaneousRule, ItemMove, MaterialMove, PlayerTurnRule, PlayMoveContext, RuleMove } from '@gamepark/rules-api'
 import { Actions } from '../material/Actions/Actions'
 import { ActionType } from '../material/Actions/ActionType'
 import { BuyMovieCardAction } from '../material/Actions/BuyMovieCardAction'
@@ -113,5 +113,14 @@ export class BuyingPhaseRule extends PlayerTurnRule<PlayerColor, MaterialType, L
     const lastPlayerIndex = (startingPlayerIndex - 1 + this.game.players.length) % this.game.players.length
     const lastPlayer = this.game.players[lastPlayerIndex]
     return this.player === lastPlayer
+  }
+
+  public onRuleEnd(move: RuleMove<PlayerColor, RuleId>, _context?: PlayMoveContext): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
+    if (isStartSimultaneousRule<PlayerColor, MaterialType, LocationType, RuleId>(move) && move.id === RuleId.ShowingsPhaseRule) {
+      this.game.players.forEach((player) => {
+        this.memorize<Actions[]>(Memory.PendingActions, [{ type: ActionType.PlaceGuests }], player)
+      })
+    }
+    return super.onRuleEnd(move)
   }
 }

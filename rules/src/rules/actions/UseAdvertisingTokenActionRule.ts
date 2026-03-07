@@ -41,18 +41,22 @@ export class UseAdvertisingTokenActionRule extends ActionRule<UseAdvertisingToke
     ) {
       const tokenSourceMaterial = this.material(MaterialType.AdvertisingTokens).index(move.itemIndex)
       const tokenSource = tokenSourceMaterial.getItem<PlayerColor>()?.location.id as AdvertisingTokenSpot
-      this.memorize<Actions[]>(Memory.PendingActions, (pendingActions) => {
-        pendingActions.unshift({
-          type: ActionType.PickReserveOrExitZoneGuest,
-          guest: tokenSource === AdvertisingTokenSpot.AnyGuestPawn ? undefined : this.getGuestColorForAdvertisingSpot(tokenSource)
-        })
-        if (
-          this.material(MaterialType.AdvertisingTokens).player(move.location.player).location(LocationType.AdvertisingTokenSpotOnAdvertisingBoard).length === 1
-        ) {
-          return pendingActions.filter((pendingAction) => pendingAction.type === ActionType.UseAdvertisingToken)
-        }
-        return pendingActions
-      })
+      this.memorize<Actions[]>(
+        Memory.PendingActions,
+        (pendingActions) => {
+          pendingActions.unshift({
+            type: ActionType.PickReserveOrExitZoneGuest,
+            guest: tokenSource === AdvertisingTokenSpot.AnyGuestPawn ? undefined : this.getGuestColorForAdvertisingSpot(tokenSource)
+          })
+          if (
+            this.material(MaterialType.AdvertisingTokens).id(move.location.player).location(LocationType.AdvertisingTokenSpotOnAdvertisingBoard).length === 1
+          ) {
+            return pendingActions.filter((pendingAction) => pendingAction.type !== ActionType.UseAdvertisingToken)
+          }
+          return pendingActions
+        },
+        move.location.player
+      )
       return [tokenSourceMaterial.unselectItem()]
     }
     return []

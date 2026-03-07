@@ -96,9 +96,7 @@ class AwardCardDescription extends CardDescription<PlayerColor, MaterialType, Lo
     legalMoves: MaterialMove<PlayerColor, MaterialType, LocationType>[]
   ): React.ReactNode {
     const cardIndex = context.rules.material(MaterialType.AwardCards).id<AwardCard>(item.id).getIndex()
-    const movesForCard = legalMoves
-      .filter(isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.AwardCards))
-      .filter((move) => move.itemIndex === cardIndex)
+    const movesForCard = legalMoves.filter(isMoveItemType<MaterialType>(MaterialType.AwardCards)).filter((move) => move.itemIndex === cardIndex)
     return movesForCard.length > 0 ? (
       <>
         {movesForCard.map((move, index) => (
