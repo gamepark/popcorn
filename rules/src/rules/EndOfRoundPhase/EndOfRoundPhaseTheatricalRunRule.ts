@@ -1,9 +1,9 @@
 import { MaterialMove, PlayerTurnRule, PlayMoveContext, RuleMove, RuleStep } from '@gamepark/rules-api'
-import { LocationType } from '../material/LocationType'
-import { MaterialType } from '../material/MaterialType'
-import { PlayableMovieCardId } from '../material/MovieCard'
-import { PlayerColor } from '../PlayerColor'
-import { RuleId } from './RuleId'
+import { LocationType } from '../../material/LocationType'
+import { MaterialType } from '../../material/MaterialType'
+import { PlayableMovieCardId } from '../../material/MovieCard'
+import { PlayerColor } from '../../PlayerColor'
+import { RuleId } from '../RuleId'
 
 export class EndOfRoundPhaseTheatricalRunRule extends PlayerTurnRule<PlayerColor, MaterialType, LocationType, RuleId> {
   public onRuleStart(

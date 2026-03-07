@@ -1,17 +1,20 @@
 import { MaterialItem, MaterialMove, MaterialRulesPart } from '@gamepark/rules-api'
+import { Actions } from '../../../material/Actions/Actions'
 import { ActionType } from '../../../material/Actions/ActionType'
+import { PlaceGuestAction } from '../../../material/Actions/PlaceGuestAction'
 import { AdvertisingTokenSpot } from '../../../material/AdvertisingTokenSpot'
 import { GuestPawn } from '../../../material/GuestPawn'
 import { LocationType } from '../../../material/LocationType'
 import { MaterialType } from '../../../material/MaterialType'
 import { moneyTokens } from '../../../material/MoneyToken'
-import { PlayableMovieCardId, MovieAction, MovieCard, movieCardCharacteristics, MovieCardId } from '../../../material/MovieCard'
+import { MovieAction, MovieCard, movieCardCharacteristics, MovieCardId, PlayableMovieCardId } from '../../../material/MovieCard'
 import { popcornTokens } from '../../../material/PopcornToken'
 import { getMaximumNumberOfGuests, TheaterTileId, theaterTilesCharacteristics } from '../../../material/TheaterTile'
 import { AvailableMovieActionsMemory, Memory } from '../../../Memory'
 import { PlayerColor } from '../../../PlayerColor'
-import { addPendingActionForPlayer } from './addPendingActionForPlayer.util'
 import { RuleId } from '../../RuleId'
+import { ActionRule } from '../ActionRule'
+import { addPendingActionForPlayer } from './addPendingActionForPlayer.util'
 
 const getAdvertisingTokenSpotFromMovieAction = (
   bonusAction:
@@ -315,8 +318,9 @@ export const canPlayerPlaceAGuestAfterSeatOrMovieAction = (rule: MaterialRulesPa
 }
 
 export const getDrawGuestMovesAndAddPendingActionIfNecessary = (
-  rule: MaterialRulesPart<PlayerColor, MaterialType, LocationType>,
-  player: PlayerColor
+  rule: ActionRule<Actions>,
+  player: PlayerColor,
+  guestIndex?: number
 ): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] => {
   const canPlaceANewGuest = canPlayerPlaceAGuestAfterSeatOrMovieAction(rule, player)
   const consequences: MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] = []
@@ -339,7 +343,11 @@ export const getDrawGuestMovesAndAddPendingActionIfNecessary = (
     )
   }
   if (canPlaceANewGuest) {
-    addPendingActionForPlayer(rule, { type: ActionType.PlaceGuests, placeOneGuest: true }, player)
+    const action: PlaceGuestAction = { type: ActionType.PlaceGuests, placeOneGuest: true }
+    if (guestIndex !== undefined && guestIndex !== null) {
+      action.guestIndexToMoveToExitZone = guestIndex
+    }
+    addPendingActionForPlayer(rule, action, player)
   }
   return consequences
 }

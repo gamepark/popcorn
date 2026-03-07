@@ -3,15 +3,15 @@ import { GamePhase } from '../../GamePhase'
 import { Actions } from '../../material/Actions/Actions'
 import { ActionType } from '../../material/Actions/ActionType'
 import { PickReserveOrExitZoneGuestAction } from '../../material/Actions/PickReserveOrExitZoneGuestAction'
-import { GuestPawn } from '../../material/GuestPawn'
+import { GuestPawn, guestPawns } from '../../material/GuestPawn'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 import { PlayableMovieCardId } from '../../material/MovieCard'
 import { Memory } from '../../Memory'
 import { PlayerColor } from '../../PlayerColor'
 import { RuleId } from '../RuleId'
-import { getBuyingFilmCardConsequences } from './utils/movieOrSeatActionConsequences.util'
 import { ActionRule } from './ActionRule'
+import { getBuyingFilmCardConsequences } from './utils/movieOrSeatActionConsequences.util'
 
 export class PickGuestFromReserveOrExitZoneActionRule extends ActionRule<PickReserveOrExitZoneGuestAction> {
   public getActivePlayerLegalMoves(currentPlayer: PlayerColor): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
@@ -32,32 +32,38 @@ export class PickGuestFromReserveOrExitZoneActionRule extends ActionRule<PickRes
           })
       )
     }
-    const reserveGuestMaterial =
-      guestColor === undefined
-        ? this.material(MaterialType.GuestPawns)
-            .location(LocationType.GuestPawnReserveSpot)
-            .id<GuestPawn>((id) => id !== GuestPawn.White)
-        : this.material(MaterialType.GuestPawns).location(LocationType.GuestPawnReserveSpot).id<GuestPawn>(guestColor)
-    if (reserveGuestMaterial.length > 0) {
-      return reserveGuestMaterial.moveItems({
+    if (guestColor !== undefined) {
+      const reserveGuestMaterial = this.material(MaterialType.GuestPawns).location(LocationType.GuestPawnReserveSpot).id<GuestPawn>(guestColor)
+      if (reserveGuestMaterial.length > 0) {
+        return reserveGuestMaterial.moveItems({
+          type: LocationType.PlayerGuestPawnsUnderClothBagSpot,
+          player: currentPlayer
+        })
+      }
+      const exitZoneGuestsMaterial = this.material(MaterialType.GuestPawns)
+        .location(LocationType.GuestPawnExitZoneSpotOnTopPlayerCinemaBoard)
+        .player((player) => player !== currentPlayer)
+        .id<GuestPawn>(guestColor)
+      return exitZoneGuestsMaterial.moveItems({
         type: LocationType.PlayerGuestPawnsUnderClothBagSpot,
         player: currentPlayer
       })
+    } else {
+      const reservePawnMaterial = this.material(MaterialType.GuestPawns).location(LocationType.GuestPawnReserveSpot)
+      const exitZonePawnMaterial = this.material(MaterialType.GuestPawns)
+        .location(LocationType.GuestPawnExitZoneSpotOnTopPlayerCinemaBoard)
+        .player((player) => player !== currentPlayer)
+      const playerBagLocation = { type: LocationType.PlayerGuestPawnsUnderClothBagSpot, player: currentPlayer }
+      return guestPawns
+        .filter((color) => color !== GuestPawn.White)
+        .flatMap((color) => {
+          const guestInReserve = reservePawnMaterial.id(color)
+          if (guestInReserve.length > 0) {
+            return guestInReserve.moveItems(playerBagLocation)
+          }
+          return exitZonePawnMaterial.id(color).moveItems(playerBagLocation)
+        })
     }
-    const exitZoneGuestsMaterial =
-      guestColor === undefined
-        ? this.material(MaterialType.GuestPawns)
-            .location(LocationType.GuestPawnExitZoneSpotOnTopPlayerCinemaBoard)
-            .player((player) => player !== currentPlayer)
-            .id<GuestPawn>((id) => id !== GuestPawn.White)
-        : this.material(MaterialType.GuestPawns)
-            .location(LocationType.GuestPawnExitZoneSpotOnTopPlayerCinemaBoard)
-            .player((player) => player !== currentPlayer)
-            .id<GuestPawn>(guestColor)
-    return exitZoneGuestsMaterial.moveItems({
-      type: LocationType.PlayerGuestPawnsUnderClothBagSpot,
-      player: currentPlayer
-    })
   }
 
   public afterItemMove(

@@ -1,8 +1,10 @@
-import { CustomMove, MaterialMove, PlayMoveContext } from '@gamepark/rules-api'
+import { CustomMove, Material, MaterialMove, MoveItem, PlayMoveContext } from '@gamepark/rules-api'
 import { cloneDeep } from 'es-toolkit'
 import { Actions } from '../../material/Actions/Actions'
 import { ActionType } from '../../material/Actions/ActionType'
 import { ChooseMovieActionAction } from '../../material/Actions/ChooseMovieActionAction'
+import { PlaceCinemaGuestInReserveAction } from '../../material/Actions/PlaceCinemaGuestInReserveAction'
+import { PlaceExitZoneGuestInBagAction } from '../../material/Actions/PlaceExitZoneGuestInBagAction'
 import { CustomMoveType, isMovieActionCustomMove, isPassCurrentActionCustomMove } from '../../material/CustomMoveType'
 import { GuestPawn } from '../../material/GuestPawn'
 import { LocationType } from '../../material/LocationType'
@@ -12,16 +14,22 @@ import { TheaterTileId } from '../../material/TheaterTile'
 import { AvailableMovieActionsMemory, Memory } from '../../Memory'
 import { PlayerColor } from '../../PlayerColor'
 import { RuleId } from '../RuleId'
+import { ActionRule } from './ActionRule'
+import { addPendingActionForPlayer } from './utils/addPendingActionForPlayer.util'
 import {
+  canPlayerPlaceAGuestAfterSeatOrMovieAction,
   getAdvertisingTokenMove,
   getAudienceTrackMove,
   getDrawGuestMovesAndAddPendingActionIfNecessary,
   getMoneyMove
 } from './utils/movieOrSeatActionConsequences.util'
-import { ActionRule } from './ActionRule'
-import { addPendingActionForPlayer } from './utils/addPendingActionForPlayer.util'
 
-const MOVIE_ACTIONS_NOT_NEEDING_GUEST_MOVE = [MovieAction.PlaceGuestInReserve, MovieAction.PlaceExitZoneGuestInBag, MovieAction.DrawGuestAndPlaceThem]
+const MOVIE_ACTIONS_NOT_NEEDING_GUEST_MOVE = [
+  MovieAction.PlaceGuestInReserve,
+  MovieAction.PlaceExitZoneGuestInBag,
+  MovieAction.DrawGuestAndPlaceThem,
+  MovieAction.DrawAwardCard
+]
 
 export class ChooseMovieActionRule extends ActionRule<ChooseMovieActionAction> {
   public consequencesBeforeRuleForPlayer(): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
@@ -52,13 +60,12 @@ export class ChooseMovieActionRule extends ActionRule<ChooseMovieActionAction> {
 
   public onCustomMove(move: CustomMove, context?: PlayMoveContext): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     const pawnMaterial = this.material(MaterialType.GuestPawns).index(this.action.guestIndex)
+    const pawnToExitZoneMove = pawnMaterial.moveItem({
+      type: LocationType.GuestPawnExitZoneSpotOnTopPlayerCinemaBoard,
+      player: move.data.player
+    })
     if (isPassCurrentActionCustomMove(move)) {
-      return [
-        pawnMaterial.moveItem({
-          type: LocationType.GuestPawnExitZoneSpotOnTopPlayerCinemaBoard,
-          player: move.data.player
-        })
-      ]
+      return [pawnToExitZoneMove]
     }
     if (isMovieActionCustomMove(move)) {
       const movieCard = this.material(MaterialType.MovieCards).index(move.data.movieCardIndex).getItems<Required<PlayableMovieCardId>>()[0]
@@ -78,83 +85,134 @@ export class ChooseMovieActionRule extends ActionRule<ChooseMovieActionAction> {
         return newValue
       })
       const movieAction = movieCardCharacteristics[movieCard.id.front].getAction(move.data.movieActionNumber)
-      switch (movieAction) {
-        case MovieAction.AdvertisingTokenOnAnyGuest:
-        case MovieAction.AdvertisingTokenOnBlueGuest:
-        case MovieAction.AdvertisingTokenOnGreenGuest:
-        case MovieAction.AdvertisingTokenOnRedGuest:
-        case MovieAction.AdvertisingTokenOnYellowGuest:
-        case MovieAction.AdvertisingTokenOnWhiteGuestToBag:
-          consequences.push(...getAdvertisingTokenMove(this, player, movieAction))
-          break
-        case MovieAction.AudienceTrackAdvance:
-          consequences.push(...getAudienceTrackMove(this, player))
-          break
-        case MovieAction.DrawAwardCard:
-          consequences.push(
-            this.material(MaterialType.AwardCards).location(LocationType.AwardCardDeckSpot).deck().dealAtOnce(
-              {
-                type: LocationType.PlayerAwardCardHand,
-                player: player
-              },
-              2
-            )
-          )
-          addPendingActionForPlayer(this, { type: ActionType.DiscardAwardCard, guestIndexToMove: this.action.guestIndex }, player)
-          break
-        case MovieAction.DrawGuestAndPlaceThem:
-          consequences.push(...getDrawGuestMovesAndAddPendingActionIfNecessary(this, player))
-          break
-        case MovieAction.Get1Popcorn:
-          consequences.push(...getMoneyMove(this, player, MaterialType.PopcornTokens, 1))
-          break
-        case MovieAction.Get2Popcorn:
-          consequences.push(...getMoneyMove(this, player, MaterialType.PopcornTokens, 2))
-          break
-        case MovieAction.Get3Popcorn:
-          consequences.push(...getMoneyMove(this, player, MaterialType.PopcornTokens, 3))
-          break
-        case MovieAction.Get4Popcorn:
-          consequences.push(...getMoneyMove(this, player, MaterialType.PopcornTokens, 4))
-          break
-        case MovieAction.Get1Money:
-          consequences.push(...getMoneyMove(this, player, MaterialType.MoneyTokens, 1))
-          break
-        case MovieAction.Get2Money:
-          consequences.push(...getMoneyMove(this, player, MaterialType.MoneyTokens, 2))
-          break
-        case MovieAction.Get3Money:
-          consequences.push(...getMoneyMove(this, player, MaterialType.MoneyTokens, 3))
-          break
-        case MovieAction.Get4Money:
-          consequences.push(...getMoneyMove(this, player, MaterialType.MoneyTokens, 4))
-          break
-        case MovieAction.PlaceGuestInReserve:
-          addPendingActionForPlayer(this, { type: ActionType.PlaceCinemaGuestInReserve, guestIndexToMoveToExitZone: this.action.guestIndex }, player)
-          break
-        case MovieAction.PlaceExitZoneGuestInBag:
-          addPendingActionForPlayer(this, { type: ActionType.PlaceExitZoneGuestInBag, guestIndexToMoveToExitZone: this.action.guestIndex }, player)
-          break
-        case MovieAction.None:
-          break
-      }
-      if (
-        !this.remind<Actions[]>(Memory.PendingActions, player).some(
-          (action) => action.type === ActionType.ChooseMovieAction && action.guestIndex === this.action.guestIndex
-        )
-      ) {
-        if (movieAction === undefined || !MOVIE_ACTIONS_NOT_NEEDING_GUEST_MOVE.includes(movieAction)) {
-          consequences.push(
-            pawnMaterial.moveItem({
-              type: LocationType.GuestPawnExitZoneSpotOnTopPlayerCinemaBoard,
-              player: player
-            })
-          )
-        }
+      consequences.push(...this.processMovieActionAndBuildConsequences(movieAction, player))
+      const pendingActions = this.remind<Actions[]>(Memory.PendingActions, player)
+      if (!pendingActions.some((action) => action.type === ActionType.ChooseMovieAction && action.guestIndex === this.action.guestIndex)) {
+        consequences.push(...this.addMovePawnConsequence(movieAction, player, pawnMaterial, pendingActions, pawnToExitZoneMove))
       }
       return consequences
     }
     return super.onCustomMove(move, context)
+  }
+
+  private addMovePawnConsequence(
+    movieAction: MovieAction | undefined,
+    player: PlayerColor,
+    pawnMaterial: Material<PlayerColor, MaterialType, LocationType>,
+    pendingActions: Actions[],
+    pawnToExitZoneMove: MoveItem<PlayerColor, MaterialType, LocationType>
+  ): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+    if (
+      movieAction === undefined ||
+      (movieAction === MovieAction.DrawGuestAndPlaceThem && !canPlayerPlaceAGuestAfterSeatOrMovieAction(this, player)) ||
+      !MOVIE_ACTIONS_NOT_NEEDING_GUEST_MOVE.includes(movieAction)
+    ) {
+      const currentTileIndex = pawnMaterial.getItem()!.location.parent
+      const otherGuestsOnSameTile = this.material(MaterialType.GuestPawns)
+        .location(LocationType.GuestPawnSpotOnTheaterTile)
+        .player(player)
+        .parent(currentTileIndex)
+        .index((i) => i !== this.action.guestIndex)
+        .getIndexes()
+      const guestIndexesToMove = otherGuestsOnSameTile.reduce(
+        (accumulator, currentIndex) => {
+          if (!accumulator.firstGuestWithActionFound) {
+            accumulator.firstGuestWithActionFound = pendingActions.some((a) => 'guestIndex' in a && a.guestIndex === currentIndex)
+            if (!accumulator.firstGuestWithActionFound) {
+              accumulator.indexesToMove.push(currentIndex)
+            }
+          }
+          return accumulator
+        },
+        { firstGuestWithActionFound: false, indexesToMove: [] as number[] }
+      ).indexesToMove
+      return [
+        guestIndexesToMove.length === 0
+          ? pawnToExitZoneMove
+          : this.material(MaterialType.GuestPawns).index(guestIndexesToMove.concat(this.action.guestIndex)).moveItemsAtOnce({
+              type: LocationType.GuestPawnExitZoneSpotOnTopPlayerCinemaBoard,
+              player: player
+            })
+      ]
+    }
+    return []
+  }
+
+  private processMovieActionAndBuildConsequences(
+    movieAction: MovieAction | undefined,
+    player: PlayerColor
+  ): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+    switch (movieAction) {
+      case MovieAction.AdvertisingTokenOnAnyGuest:
+      case MovieAction.AdvertisingTokenOnBlueGuest:
+      case MovieAction.AdvertisingTokenOnGreenGuest:
+      case MovieAction.AdvertisingTokenOnRedGuest:
+      case MovieAction.AdvertisingTokenOnYellowGuest:
+      case MovieAction.AdvertisingTokenOnWhiteGuestToBag:
+        return getAdvertisingTokenMove(this, player, movieAction)
+      case MovieAction.AudienceTrackAdvance:
+        return getAudienceTrackMove(this, player)
+      case MovieAction.DrawAwardCard:
+        addPendingActionForPlayer(
+          this,
+          {
+            type: ActionType.DiscardAwardCard,
+            guestIndexToMove: this.action.guestIndex
+          },
+          player
+        )
+        return [
+          this.material(MaterialType.AwardCards).location(LocationType.AwardCardDeckSpot).deck().dealAtOnce(
+            {
+              type: LocationType.PlayerAwardCardHand,
+              player: player
+            },
+            2
+          )
+        ]
+      case MovieAction.DrawGuestAndPlaceThem: {
+        const guestIndex = this.existRemainingChooseMovieActionForGuest(this.action.guestIndex, player) ? undefined : this.action.guestIndex
+        return getDrawGuestMovesAndAddPendingActionIfNecessary(this, player, guestIndex)
+      }
+      case MovieAction.Get1Popcorn:
+        return getMoneyMove(this, player, MaterialType.PopcornTokens, 1)
+      case MovieAction.Get2Popcorn:
+        return getMoneyMove(this, player, MaterialType.PopcornTokens, 2)
+      case MovieAction.Get3Popcorn:
+        return getMoneyMove(this, player, MaterialType.PopcornTokens, 3)
+      case MovieAction.Get4Popcorn:
+        return getMoneyMove(this, player, MaterialType.PopcornTokens, 4)
+      case MovieAction.Get1Money:
+        return getMoneyMove(this, player, MaterialType.MoneyTokens, 1)
+      case MovieAction.Get2Money:
+        return getMoneyMove(this, player, MaterialType.MoneyTokens, 2)
+      case MovieAction.Get3Money:
+        return getMoneyMove(this, player, MaterialType.MoneyTokens, 3)
+      case MovieAction.Get4Money:
+        return getMoneyMove(this, player, MaterialType.MoneyTokens, 4)
+      case MovieAction.PlaceGuestInReserve: {
+        const action: PlaceCinemaGuestInReserveAction = { type: ActionType.PlaceCinemaGuestInReserve }
+        if (!this.existRemainingChooseMovieActionForGuest(this.action.guestIndex, player)) {
+          action.guestIndexToMoveToExitZone = this.action.guestIndex
+        }
+        addPendingActionForPlayer(this, action, player)
+        return []
+      }
+      case MovieAction.PlaceExitZoneGuestInBag: {
+        const action: PlaceExitZoneGuestInBagAction = { type: ActionType.PlaceExitZoneGuestInBag }
+        if (!this.existRemainingChooseMovieActionForGuest(this.action.guestIndex, player)) {
+          action.guestIndexToMoveToExitZone = this.action.guestIndex
+        }
+        addPendingActionForPlayer(this, action, player)
+        return []
+      }
+      default:
+        return []
+    }
+  }
+
+  private existRemainingChooseMovieActionForGuest(guestIndex: number, player: PlayerColor): boolean {
+    return this.remind<Actions[]>(Memory.PendingActions, player).some((a) => a.type === ActionType.ChooseMovieAction && a.guestIndex === guestIndex)
   }
 
   public getMovesAfterPlayersDone(): MaterialMove<PlayerColor, MaterialType, LocationType>[] {

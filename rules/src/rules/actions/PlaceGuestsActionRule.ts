@@ -55,6 +55,15 @@ export class PlaceGuestsActionRule extends ActionRule<PlaceGuestAction> {
         .parent((parent) => parent !== undefined && playerTheaterTileIndexes.includes(parent)).length
       const remainingGuestMaterial = this.material(MaterialType.GuestPawns).location(LocationType.PlayerShowingsDrawnGuestSpot).player(player)
       if (remainingGuestMaterial.length === 0 || maxNumberOfGuestsForPlayer === numberOfPlacedGuests) {
+        const consequences: MaterialMove<PlayerColor, MaterialType, LocationType>[] = []
+        if (this.action.guestIndexToMoveToExitZone !== undefined) {
+          consequences.push(
+            this.material(MaterialType.GuestPawns).index(this.action.guestIndexToMoveToExitZone).moveItem({
+              type: LocationType.GuestPawnExitZoneSpotOnTopPlayerCinemaBoard,
+              player: player
+            })
+          )
+        }
         this.removeCurrentActionForPlayer(player)
         this.memorize<Actions[]>(
           Memory.PendingActions,
@@ -62,13 +71,14 @@ export class PlaceGuestsActionRule extends ActionRule<PlaceGuestAction> {
           player
         )
         if (numberOfPlacedGuests === maxNumberOfGuestsForPlayer && remainingGuestMaterial.length > 0) {
-          return [
+          return consequences.concat(
             remainingGuestMaterial.moveItemsAtOnce({
               type: LocationType.GuestPawnExitZoneSpotOnTopPlayerCinemaBoard,
               player: player
             })
-          ]
+          )
         }
+        return consequences
       }
     }
     return super.afterItemMove(move, _context)

@@ -2,6 +2,7 @@ import { CustomMove, isSelectItemType, ItemMove, Material, MaterialMove, PlayMov
 import { Actions } from '../../material/Actions/Actions'
 import { ActionType } from '../../material/Actions/ActionType'
 import { ChooseSeatActionAction } from '../../material/Actions/ChooseSeatActionAction'
+import { PlaceExitZoneGuestInBagAction } from '../../material/Actions/PlaceExitZoneGuestInBagAction'
 import { CustomMoveType, isPassCurrentActionCustomMove } from '../../material/CustomMoveType'
 import { GuestPawn } from '../../material/GuestPawn'
 import { LocationType } from '../../material/LocationType'
@@ -78,7 +79,8 @@ export class ChooseSeatActionActionRule extends ActionRule<ChooseSeatActionActio
       }
       if (
         !this.remind<Actions[]>(Memory.PendingActions, player).some(
-          (action) => action.type === ActionType.ChooseMovieAction && action.guestIndex === this.action.guestIndex
+          (action) =>
+            (action.type === ActionType.ChooseMovieAction && action.guestIndex === this.action.guestIndex) || action.type === ActionType.PlaceExitZoneGuestInBag
         )
       ) {
         consequences.push(
@@ -141,9 +143,19 @@ export class ChooseSeatActionActionRule extends ActionRule<ChooseSeatActionActio
         return []
       case SeatAction.DrawGuestAndPlaceThem:
         return getDrawGuestMovesAndAddPendingActionIfNecessary(this, player)
-      case SeatAction.MoveGuestFromExitZoneToBag:
-        addPendingActionForPlayer(this, { type: ActionType.PlaceExitZoneGuestInBag }, player)
+      case SeatAction.MoveGuestFromExitZoneToBag: {
+        const action: PlaceExitZoneGuestInBagAction = { type: ActionType.PlaceExitZoneGuestInBag }
+        const guestIndex = guestPawnMaterial.getIndex()
+        if (
+          !this.remind<Actions[]>(Memory.PendingActions, player).some(
+            (action) => action.type === ActionType.ChooseMovieAction && action.guestIndex === guestIndex
+          )
+        ) {
+          action.guestIndexToMoveToExitZone = guestIndex
+        }
+        addPendingActionForPlayer(this, action, player)
         return []
+      }
       case undefined:
         return []
     }
