@@ -1,4 +1,5 @@
 import {
+  CompetitiveScore,
   FillGapStrategy,
   hideFront,
   hideFrontToOthers,
@@ -12,12 +13,16 @@ import {
 } from '@gamepark/rules-api'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
+import { moneyTokens } from './material/MoneyToken'
+import { popcornTokens } from './material/PopcornToken'
+import { TheaterTrophy } from './material/TheaterTrophy'
 import { PlayerColor } from './PlayerColor'
 import { DiscardAwardCardActionRule } from './rules/actions/DiscardAwardCardActionRule'
 import { BuyingPhaseRule } from './rules/BuyingPhaseRule'
 import { EndOfRoundPendingActionsNextPhaseTransitionRule } from './rules/EndOfRoundPhase/EndOfRoundPendingActionsNextPhaseTransitionRule'
 import { EndOfRoundPhaseNewLineUpRule } from './rules/EndOfRoundPhase/EndOfRoundPhaseNewLineUpRule'
 import { EndOfRoundPhaseTheatricalRunRule } from './rules/EndOfRoundPhase/EndOfRoundPhaseTheatricalRunRule'
+import { FinalEndOfRoundPhaseRule } from './rules/FinalEndOfRoundPhase/FinalEndOfRoundPhaseRule'
 import { RuleId } from './rules/RuleId'
 import { ShowingsPhaseRule } from './rules/ShowingsPhaseRule'
 
@@ -32,7 +37,8 @@ export class PopcornRules
       MaterialGame<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>,
       MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>,
       PlayerColor
-    >
+    >,
+    CompetitiveScore<MaterialGame<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>>
 {
   rules = {
     [RuleId.DealAndDiscardAwardCards]: DiscardAwardCardActionRule,
@@ -40,7 +46,8 @@ export class PopcornRules
     [RuleId.ShowingsPhaseRule]: ShowingsPhaseRule,
     [RuleId.EndOfRoundPhaseTheatricalRunRule]: EndOfRoundPhaseTheatricalRunRule,
     [RuleId.EndOfRoundPhaseNewLineUpRule]: EndOfRoundPhaseNewLineUpRule,
-    [RuleId.EndOfRoundPendingActionsNextPhaseTransitionRule]: EndOfRoundPendingActionsNextPhaseTransitionRule
+    [RuleId.EndOfRoundPendingActionsNextPhaseTransitionRule]: EndOfRoundPendingActionsNextPhaseTransitionRule,
+    [RuleId.FinalEndOfRoundPhaseRule]: FinalEndOfRoundPhaseRule
   }
 
   hidingStrategies = {
@@ -96,5 +103,33 @@ export class PopcornRules
 
   giveTime(): number {
     return 60
+  }
+
+  public getScore(playerId: PlayerColor): number {
+    const popcornScore = this.getPopcornScore(playerId)
+    const moneyScore = this.getMoneyScore(playerId)
+    const trophySCore = this.getTrophyScore(playerId)
+    const awardCardsScore = 0
+    return popcornScore + moneyScore + trophySCore + awardCardsScore
+  }
+
+  public getPopcornScore(player: PlayerColor): number {
+    return this.material(MaterialType.PopcornTokens).location(LocationType.PlayerPopcornPileUnderPopcornCupSpot).player(player).money(popcornTokens).count
+  }
+
+  public getMoneyScore(player: PlayerColor): number {
+    return Math.floor(this.material(MaterialType.MoneyTokens).location(LocationType.PlayerMoneyPileSpot).player(player).money(moneyTokens).count / 5)
+  }
+
+  public getTrophyScore(player: PlayerColor): number {
+    const trophy = this.material(MaterialType.TheaterTrophies).location(LocationType.PlayerTheaterTrophySpot).player(player).getItem<TheaterTrophy>()?.id
+    return trophy === undefined ? 0 : trophy === TheaterTrophy.TrophyFirst ? 5 : 3
+  }
+
+  public getTieBreaker(tieBreaker: number, playerId: PlayerColor): number | undefined {
+    if (tieBreaker === 1) {
+      return -this.material(MaterialType.MovieCards).location(LocationType.PlayerMovieCardArchiveSpot).player(playerId).length
+    }
+    return undefined
   }
 }

@@ -21,6 +21,7 @@ import { CustomMoveType, isMovieActionCustomMove, isPassCurrentActionCustomMove 
 import { GuestPawn } from '../material/GuestPawn'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
+import { popcornTokens } from '../material/PopcornToken'
 import { Memory } from '../Memory'
 import { PlayerColor } from '../PlayerColor'
 import { canPlayerPlaceAGuestAfterSeatOrMovieAction } from './actions/utils/movieOrSeatActionConsequences.util'
@@ -74,7 +75,12 @@ export class ShowingsPhaseRule extends SimultaneousRule<PlayerColor, MaterialTyp
     if (firstPlayerOfRound === undefined) {
       throw new Error('Invalid game state')
     }
-    return [this.startPlayerTurn<PlayerColor, RuleId>(RuleId.EndOfRoundPhaseTheatricalRunRule, firstPlayerOfRound)]
+    const nextRule = this.isFinalRound() ? RuleId.FinalEndOfRoundPhaseRule : RuleId.EndOfRoundPhaseTheatricalRunRule
+    if (nextRule === RuleId.FinalEndOfRoundPhaseRule) {
+      const popCornMaterial = this.material(MaterialType.PopcornTokens).location(LocationType.PlayerPopcornPileUnderPopcornCupSpot).money(popcornTokens)
+      this.game.players.forEach((player) => this.memorize<number>(Memory.GamePopcornScoreBeforeFinalRoundScore, popCornMaterial.player(player).count, player))
+    }
+    return [this.startPlayerTurn<PlayerColor, RuleId>(nextRule, firstPlayerOfRound)]
   }
 
   public afterItemMove(
@@ -246,5 +252,11 @@ export class ShowingsPhaseRule extends SimultaneousRule<PlayerColor, MaterialTyp
     ) {
       consequences.push(this.endPlayerTurn<PlayerColor>(player))
     }
+  }
+
+  private isFinalRound(): boolean {
+    const numberOfPlayers = this.game.players.length
+    const numberOfCardsInDeckForFinalRound = numberOfPlayers === 2 ? 10 : 5
+    return this.material(MaterialType.MovieCards).location(LocationType.MovieCardDeckSpot).length <= numberOfCardsInDeckForFinalRound
   }
 }
