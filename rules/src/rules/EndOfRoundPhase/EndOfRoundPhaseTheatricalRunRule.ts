@@ -1,11 +1,19 @@
-import { MaterialMove, PlayerTurnRule, PlayMoveContext, RuleMove, RuleStep } from '@gamepark/rules-api'
+import { MaterialMove, PlayMoveContext, RuleMove, RuleStep, SimultaneousRule } from '@gamepark/rules-api'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 import { PlayableMovieCardId } from '../../material/MovieCard'
 import { PlayerColor } from '../../PlayerColor'
 import { RuleId } from '../RuleId'
 
-export class EndOfRoundPhaseTheatricalRunRule extends PlayerTurnRule<PlayerColor, MaterialType, LocationType, RuleId> {
+export class EndOfRoundPhaseTheatricalRunRule extends SimultaneousRule<PlayerColor, MaterialType, LocationType, RuleId> {
+  public getActivePlayerLegalMoves(_player: PlayerColor): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
+    return []
+  }
+
+  public getMovesAfterPlayersDone(): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
+    return []
+  }
+
   public onRuleStart(
     _move: RuleMove<PlayerColor, RuleId>,
     _previousRule?: RuleStep,
@@ -14,7 +22,7 @@ export class EndOfRoundPhaseTheatricalRunRule extends PlayerTurnRule<PlayerColor
     return this.unselectTheaterTiles()
       .concat(this.selectAdvertisingTokens())
       .concat(this.getTheatricalRunConsequences())
-      .concat(this.startPlayerTurn(RuleId.EndOfRoundPhaseNewLineUpRule, this.player))
+      .concat(this.startSimultaneousRule(RuleId.EndOfRoundPhaseNewLineUpRule, []))
   }
 
   private getTheatricalRunConsequences(): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {

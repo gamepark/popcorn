@@ -1,22 +1,32 @@
-import { MaterialMove, PlayerTurnRule, PlayMoveContext, RuleMove, RuleStep } from '@gamepark/rules-api'
+import { MaterialMove, PlayMoveContext, RuleMove, RuleStep, SimultaneousRule } from '@gamepark/rules-api'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 import { PlayerColor } from '../../PlayerColor'
 import { RuleId } from '../RuleId'
 
-export class EndOfRoundPhaseNewLineUpRule extends PlayerTurnRule<PlayerColor, MaterialType, LocationType, RuleId> {
+export class EndOfRoundPhaseNewLineUpRule extends SimultaneousRule<PlayerColor, MaterialType, LocationType, RuleId> {
+  public getActivePlayerLegalMoves(_player: PlayerColor): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
+    return []
+  }
+
+  public getMovesAfterPlayersDone(): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
+    return []
+  }
+
   public onRuleStart(
     _move: RuleMove<PlayerColor, RuleId>,
     _previousRule?: RuleStep,
     _context?: PlayMoveContext
   ): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
-    return this.getNewLineupConsequences().concat(this.startPlayerTurn(RuleId.EndOfRoundPendingActionsNextPhaseTransitionRule, this.player))
+    return this.getNewLineupConsequences().concat(this.startSimultaneousRule(RuleId.EndOfRoundPendingActionsNextPhaseTransitionRule, []))
   }
 
   private getNewLineupConsequences(): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
     const movieCardMaterial = this.material(MaterialType.MovieCards)
     const movieCardDeck = movieCardMaterial.location(LocationType.MovieCardDeckSpot).deck()
     const numberOfCardsToDealInFeaturesRow = 3 - movieCardMaterial.location(LocationType.PremiersRowSpot).length
+    const currentFirstPlayer = this.material(MaterialType.FirstPlayerMarker).getItem()!.location.player!
+    const nextPLayer = this.game.players[(this.game.players.indexOf(currentFirstPlayer) + 1) % this.game.players.length]
     return ([movieCardMaterial.location(LocationType.FeaturesRowSpot).deleteItemsAtOnce()] as MaterialMove<PlayerColor, MaterialType, LocationType>[])
       .concat(
         movieCardMaterial.location(LocationType.PremiersRowSpot).moveItems((item) => ({
@@ -41,7 +51,7 @@ export class EndOfRoundPhaseNewLineUpRule extends PlayerTurnRule<PlayerColor, Ma
       .concat(
         this.material(MaterialType.FirstPlayerMarker).moveItem({
           type: LocationType.FirstPlayerMarkerSpot,
-          player: this.nextPlayer
+          player: nextPLayer
         })
       )
   }

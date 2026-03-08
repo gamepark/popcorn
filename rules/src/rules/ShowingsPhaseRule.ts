@@ -80,7 +80,7 @@ export class ShowingsPhaseRule extends SimultaneousRule<PlayerColor, MaterialTyp
       const popCornMaterial = this.material(MaterialType.PopcornTokens).location(LocationType.PlayerPopcornPileUnderPopcornCupSpot).money(popcornTokens)
       this.game.players.forEach((player) => this.memorize<number>(Memory.GamePopcornScoreBeforeFinalRoundScore, popCornMaterial.player(player).count, player))
     }
-    return [this.startPlayerTurn<PlayerColor, RuleId>(nextRule, firstPlayerOfRound)]
+    return [this.startSimultaneousRule<PlayerColor, RuleId>(nextRule, [])]
   }
 
   public afterItemMove(
