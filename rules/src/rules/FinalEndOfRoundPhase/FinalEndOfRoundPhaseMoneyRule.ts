@@ -50,5 +50,6 @@ export class FinalEndOfRoundPhaseMoneyRule extends SimultaneousRule<PlayerColor,
             })
           )
       })
+      .concat(this.startSimultaneousRule<PlayerColor, RuleId>(RuleId.FinalEndOfRoundPhaseTheaterTrophyRule, []))
   }
 }
