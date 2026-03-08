@@ -22,7 +22,7 @@ import { BuyingPhaseRule } from './rules/BuyingPhaseRule'
 import { EndOfRoundPendingActionsNextPhaseTransitionRule } from './rules/EndOfRoundPhase/EndOfRoundPendingActionsNextPhaseTransitionRule'
 import { EndOfRoundPhaseNewLineUpRule } from './rules/EndOfRoundPhase/EndOfRoundPhaseNewLineUpRule'
 import { EndOfRoundPhaseTheatricalRunRule } from './rules/EndOfRoundPhase/EndOfRoundPhaseTheatricalRunRule'
-import { FinalEndOfRoundPhaseRule } from './rules/FinalEndOfRoundPhase/FinalEndOfRoundPhaseRule'
+import { FinalEndOfRoundPhaseMoneyRule } from './rules/FinalEndOfRoundPhase/FinalEndOfRoundPhaseMoneyRule'
 import { RuleId } from './rules/RuleId'
 import { ShowingsPhaseRule } from './rules/ShowingsPhaseRule'
 
@@ -47,7 +47,7 @@ export class PopcornRules
     [RuleId.EndOfRoundPhaseTheatricalRunRule]: EndOfRoundPhaseTheatricalRunRule,
     [RuleId.EndOfRoundPhaseNewLineUpRule]: EndOfRoundPhaseNewLineUpRule,
     [RuleId.EndOfRoundPendingActionsNextPhaseTransitionRule]: EndOfRoundPendingActionsNextPhaseTransitionRule,
-    [RuleId.FinalEndOfRoundPhaseRule]: FinalEndOfRoundPhaseRule
+    [RuleId.FinalEndOfRoundMoneyRule]: FinalEndOfRoundPhaseMoneyRule
   }
 
   hidingStrategies = {

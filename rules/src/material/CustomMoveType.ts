@@ -1,5 +1,7 @@
 import { CustomMove, isCustomMoveType, MaterialMove } from '@gamepark/rules-api'
 import { PlayerColor } from '../PlayerColor'
+import { RuleId } from '../rules/RuleId'
+import { AwardCard } from './AwardCard'
 import { LocationType } from './LocationType'
 import { MaterialType } from './MaterialType'
 
@@ -7,7 +9,8 @@ export enum CustomMoveType {
   BuyMovieCard = 1,
   BuyTheaterTile,
   MovieAction,
-  PassCurrentAction
+  PassCurrentAction,
+  AwardCardPopcorn
 }
 
 export type BuyMovieCardCustomMoveData = {
@@ -47,14 +50,27 @@ export type PassCurrentActionCustomMove = Omit<CustomMove, 'data'> & {
   data: PassCurrentActionCustomMoveData
 }
 
-export const isBuyMovieCardCustomMove = (move: MaterialMove<PlayerColor, MaterialType, LocationType>): move is BuyMovieCardCustomMove =>
+export type AwardCardPopcornCustomMoveData = {
+  cardId: AwardCard
+  player: PlayerColor
+  popcorn: number
+}
+
+export type AwardCardPopcornCustomMove = Omit<CustomMove, 'data'> & {
+  data: AwardCardPopcornCustomMoveData
+}
+
+export const isBuyMovieCardCustomMove = (move: MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>): move is BuyMovieCardCustomMove =>
   isCustomMoveType<CustomMoveType, PlayerColor, MaterialType, LocationType>(CustomMoveType.BuyMovieCard)(move)
 
-export const isBuyTheaterTileCustomMove = (move: MaterialMove<PlayerColor, MaterialType, LocationType>): move is BuyTheaterTileCustomMove =>
+export const isBuyTheaterTileCustomMove = (move: MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>): move is BuyTheaterTileCustomMove =>
   isCustomMoveType<CustomMoveType, PlayerColor, MaterialType, LocationType>(CustomMoveType.BuyTheaterTile)(move)
 
-export const isMovieActionCustomMove = (move: MaterialMove<PlayerColor, MaterialType, LocationType>): move is MovieActionCustomMove =>
+export const isMovieActionCustomMove = (move: MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>): move is MovieActionCustomMove =>
   isCustomMoveType<CustomMoveType, PlayerColor, MaterialType, LocationType>(CustomMoveType.MovieAction)(move)
 
-export const isPassCurrentActionCustomMove = (move: MaterialMove<PlayerColor, MaterialType, LocationType>): move is PassCurrentActionCustomMove =>
+export const isPassCurrentActionCustomMove = (move: MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>): move is PassCurrentActionCustomMove =>
   isCustomMoveType<CustomMoveType, PlayerColor, MaterialType, LocationType>(CustomMoveType.PassCurrentAction)(move)
+
+export const isAwardCardPopcornCustomMove = (move: MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>): move is AwardCardPopcornCustomMove =>
+  isCustomMoveType<CustomMoveType, PlayerColor, MaterialType, LocationType>(CustomMoveType.AwardCardPopcorn)(move)
