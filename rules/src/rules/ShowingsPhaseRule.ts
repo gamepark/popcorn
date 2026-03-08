@@ -71,12 +71,8 @@ export class ShowingsPhaseRule extends SimultaneousRule<PlayerColor, MaterialTyp
   }
 
   public getMovesAfterPlayersDone(): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
-    const firstPlayerOfRound = this.material(MaterialType.FirstPlayerMarker).getItems()[0].location.player
-    if (firstPlayerOfRound === undefined) {
-      throw new Error('Invalid game state')
-    }
-    const nextRule = this.isFinalRound() ? RuleId.FinalEndOfRoundPhaseRule : RuleId.EndOfRoundPhaseTheatricalRunRule
-    if (nextRule === RuleId.FinalEndOfRoundPhaseRule) {
+    const nextRule = this.isFinalRound() ? RuleId.FinalEndOfRoundPhaseAdvertisingTokenMovesRule : RuleId.EndOfRoundPhaseTheatricalRunRule
+    if (nextRule === RuleId.FinalEndOfRoundPhaseAdvertisingTokenMovesRule) {
       const popCornMaterial = this.material(MaterialType.PopcornTokens).location(LocationType.PlayerPopcornPileUnderPopcornCupSpot).money(popcornTokens)
       this.game.players.forEach((player) => this.memorize<number>(Memory.GamePopcornScoreBeforeFinalRoundScore, popCornMaterial.player(player).count, player))
     }

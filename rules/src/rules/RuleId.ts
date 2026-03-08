@@ -5,5 +5,6 @@ export enum RuleId {
   EndOfRoundPhaseTheatricalRunRule,
   EndOfRoundPhaseNewLineUpRule,
   EndOfRoundPendingActionsNextPhaseTransitionRule,
+  FinalEndOfRoundPhaseAdvertisingTokenMovesRule,
   FinalEndOfRoundMoneyRule,
 }
