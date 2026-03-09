@@ -1,4 +1,8 @@
-import { getEnumValues } from '@gamepark/rules-api'
+import { getEnumValues, Material } from '@gamepark/rules-api'
+import { PlayerColor } from '../PlayerColor'
+import { GuestPawn } from './GuestPawn'
+import { LocationType } from './LocationType'
+import { MaterialType } from './MaterialType'
 
 export enum AwardCard {
   BlueRedMoviePair = 1,
@@ -30,3 +34,10 @@ export enum AwardCard {
 }
 
 export const awardCards = getEnumValues(AwardCard)
+
+export type AwardCardPointFunction = (
+  playerMovieCardArchiveMaterial: Material<PlayerColor, MaterialType, LocationType>,
+  playerTheaterTilesMaterial: Material<PlayerColor, MaterialType, LocationType>,
+  guestNumberByColor: Partial<Record<GuestPawn, number>>,
+  numberOfGuestsToDraw: number
+) => number

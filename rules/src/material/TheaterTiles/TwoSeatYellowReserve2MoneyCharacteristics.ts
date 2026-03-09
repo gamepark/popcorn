@@ -20,4 +20,8 @@ export class TwoSeatYellowReserve2MoneyCharacteristics implements TheaterTileCha
   public getSeatsNumber(): Exclude<SeatsNumber, SeatsNumber.Default> {
     return SeatsNumber.Two
   }
+
+  public getSeatColors(): SeatColor[] {
+    return this.seatColors
+  }
 }

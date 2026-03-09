@@ -20,4 +20,8 @@ export class OneSeat1PopcornCharacteristics implements TheaterTileCharacteristic
   public getSeatsNumber(): Exclude<SeatsNumber, SeatsNumber.Default> {
     return SeatsNumber.One
   }
+
+  public getSeatColors(): SeatColor[] {
+    return this.seatColors
+  }
 }

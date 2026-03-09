@@ -20,4 +20,8 @@ export class OneSeatBlue3MoneyCharacteristics implements TheaterTileCharacterist
   public getSeatsNumber(): Exclude<SeatsNumber, SeatsNumber.Default> {
     return SeatsNumber.One
   }
+
+  public getSeatColors(): SeatColor[] {
+    return this.seatColors
+  }
 }

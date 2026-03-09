@@ -20,4 +20,8 @@ export class TwoSeatBlue2PopcornMovieActionCharacteristic implements TheaterTile
   public getSeatsNumber(): Exclude<SeatsNumber, SeatsNumber.Default> {
     return SeatsNumber.Two
   }
+
+  public getSeatColors(): SeatColor[] {
+    return this.seatColors
+  }
 }

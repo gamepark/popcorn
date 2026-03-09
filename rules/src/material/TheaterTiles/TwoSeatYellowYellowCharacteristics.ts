@@ -20,4 +20,8 @@ export class TwoSeatYellowYellowCharacteristics implements TheaterTileCharacteri
   public getSeatsNumber(): Exclude<SeatsNumber, SeatsNumber.Default> {
     return SeatsNumber.Two
   }
+
+  public getSeatColors(): SeatColor[] {
+    return this.seatColors
+  }
 }

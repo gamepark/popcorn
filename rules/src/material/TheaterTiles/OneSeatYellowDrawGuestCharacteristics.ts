@@ -20,4 +20,8 @@ export class OneSeatYellowDrawGuestCharacteristics implements TheaterTileCharact
   public getSeatsNumber(): Exclude<SeatsNumber, SeatsNumber.Default> {
     return SeatsNumber.One
   }
+
+  public getSeatColors(): SeatColor[] {
+    return this.seatColors
+  }
 }
