@@ -83,7 +83,12 @@ export class BuyingPhaseRule extends PlayerTurnRule<PlayerColor, MaterialType, L
     }
     const subRules = this.pendingActions.map((pendingAction) => getActionRule(pendingAction, this))
     const consequences = subRules.flatMap((rule) => rule.afterItemMove(move, context))
-    if (consequences.length > 0 && this.pendingActions.length === 0) {
+    if (
+      this.pendingActions.length === 0 &&
+      (consequences.length > 0 ||
+        (isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.GuestPawns)(move) &&
+          move.location.type === LocationType.PlayerGuestPawnsUnderClothBagSpot))
+    ) {
       consequences.push(
         this.isLastPlayer
           ? this.startSimultaneousRule<PlayerColor, RuleId>(RuleId.ShowingsPhaseRule)
