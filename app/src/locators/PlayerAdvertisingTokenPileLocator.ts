@@ -17,10 +17,6 @@ class PlayerAdvertisingTokenPileLocator extends PileLocator<PlayerColor, Materia
     return offsetPlayerCinemaBoardCoordinates(context, location.player, -22, -6)
   }
 
-  public getPositionDependencies(location: Location<PlayerColor, LocationType>, context: MaterialContext<PlayerColor, MaterialType, LocationType>): number {
-    return super.getPositionDependencies(location, context)
-  }
-
   public hide(item: MaterialItem<PlayerColor, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType>): boolean {
     return hideItemIfOwningPlayerIsNotDisplayed(item, context)
   }

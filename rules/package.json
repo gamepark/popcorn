@@ -23,7 +23,7 @@
     "test": "vitest --passWithNoTests"
   },
   "peerDependencies": {
-    "@gamepark/rules-api": "^7.4.1",
+    "@gamepark/rules-api": "^7.5.0",
     "es-toolkit": "^1.39.10"
   },
   "devDependencies": {
