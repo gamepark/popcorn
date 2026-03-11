@@ -59,10 +59,13 @@ export class ChooseMovieActionRule extends ActionRule<ChooseMovieActionAction> {
   }
 
   public onCustomMove(move: CustomMove, context?: PlayMoveContext): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+    if (!isMovieActionCustomMove(move) && !isPassCurrentActionCustomMove(move)) {
+      throw new Error(`Unexpected move type: ${CustomMoveType[move.type]}`)
+    }
     const pawnMaterial = this.material(MaterialType.GuestPawns).index(this.action.guestIndex)
     const pawnToExitZoneMove = pawnMaterial.moveItem({
       type: LocationType.GuestPawnExitZoneSpotOnTopPlayerCinemaBoard,
-      player: move.data.player
+      player: pawnMaterial.getItem()!.location.player!
     })
     if (isPassCurrentActionCustomMove(move)) {
       return [pawnToExitZoneMove]
