@@ -62,9 +62,9 @@ export class DiscardAwardCardActionRule extends ActionRule<DiscardAwardCardActio
         case GamePhase.Setup:
           return [this.endPlayerTurn(card.location.player)]
         case GamePhase.ShowingsPhase:
-          if (this.action.guestIndexToMove !== undefined) {
+          if (this.action.guestIndexToMoveToExitZone !== undefined) {
             return [
-              this.material(MaterialType.GuestPawns).index(this.action.guestIndexToMove).moveItem({
+              this.material(MaterialType.GuestPawns).index(this.action.guestIndexToMoveToExitZone).moveItem({
                 type: LocationType.GuestPawnExitZoneSpotOnTopPlayerCinemaBoard,
                 player: card.location.player
               })

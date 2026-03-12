@@ -22,7 +22,7 @@ export class BuyTheaterTileActionRule extends ActionRule<BuyTheaterTileAction> {
   }
 
   public getActivePlayerLegalMoves(player: PlayerColor): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
-    const playerMoney = this.material(MaterialType.MoneyTokens).money<MoneyToken>(moneyTokens).location(LocationType.PlayerMoneyPileSpot).count
+    const playerMoney = this.material(MaterialType.MoneyTokens).money<MoneyToken>(moneyTokens).location(LocationType.PlayerMoneyPileSpot).player(player).count
     return range(0, 3).flatMap((index) =>
       this.material(MaterialType.TheaterTiles)
         .location((location) => availableLocationTypes.includes(location.type))

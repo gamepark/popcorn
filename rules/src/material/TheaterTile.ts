@@ -13,6 +13,7 @@ import { OneSeatYellowDrawGuestCharacteristics } from './TheaterTiles/OneSeatYel
 import { TheaterTileCharacteristics } from './TheaterTiles/TheaterTileCharacteristics'
 import { ThreeSeatBlueBlueGreyCharacteristics } from './TheaterTiles/ThreeSeatBlueBlueGreyCharacteristics'
 import { ThreeSeatBlueGreyGreyCharacteristics } from './TheaterTiles/ThreeSeatBlueGreyGreyCharacteristics'
+import { ThreeSeatGreenGreenGreyCharacteristics } from './TheaterTiles/ThreeSeatGreenGreenGreyCharacteristics'
 import { ThreeSeatGreenGreyGreyCharacteristics } from './TheaterTiles/ThreeSeatGreenGreyGreyCharacteristics'
 import { ThreeSeatRedGreyGreyCharacteristics } from './TheaterTiles/ThreeSeatRedGreyGreyCharacteristics'
 import { ThreeSeatYellow3MoneyRedGreyCharacteristics } from './TheaterTiles/ThreeSeatYellow3MoneyRedGreyCharacteristics'
@@ -137,7 +138,7 @@ export const theaterTilesCharacteristics: Record<TheaterTile, TheaterTileCharact
   [TheaterTile.ThreeSeatYellowExitRedGrey]: new ThreeSeatYellowExitRedGreyCharacteristics(),
   [TheaterTile.ThreeSeatYellow3MoneyRedGrey]: new ThreeSeatYellow3MoneyRedGreyCharacteristics(),
   [TheaterTile.ThreeSeatBlueBlueGrey]: new ThreeSeatBlueBlueGreyCharacteristics(),
-  [TheaterTile.ThreeSeatGreenGreenGrey]: new ThreeSeatGreenGreyGreyCharacteristics()
+  [TheaterTile.ThreeSeatGreenGreenGrey]: new ThreeSeatGreenGreenGreyCharacteristics()
 }
 
 export type TheaterTileId = {

@@ -7,8 +7,9 @@ import { CustomMoveType, isPassCurrentActionCustomMove } from '../../material/Cu
 import { GuestPawn } from '../../material/GuestPawn'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
+import { PlayableMovieCardId } from '../../material/MovieCard'
 import { SeatAction, SeatColor, TheaterTileId, theaterTilesCharacteristics } from '../../material/TheaterTile'
-import { Memory } from '../../Memory'
+import { AvailableMovieActionsMemory, Memory } from '../../Memory'
 import { PlayerColor } from '../../PlayerColor'
 import { RuleId } from '../RuleId'
 import { ActionRule } from './ActionRule'
@@ -77,6 +78,11 @@ export class ChooseSeatActionActionRule extends ActionRule<ChooseSeatActionActio
       if (seatColor === SeatColor.Grey || guestPawn.id === this.getGuestColorCorrespondingToSeatColor(seatColor)) {
         consequences.push(...this.getConsequencesForSeatAction(parentTileCharacteristics.getSeatAction(guestPawn.location.x), player, guestPawnMaterial))
       }
+      const movieCard = this.material(MaterialType.MovieCards)
+        .location(LocationType.MovieCardSpotOnBottomPlayerCinemaBoard)
+        .location((l) => l.x === parentTheaterTile.location.x)
+        .getItems<Required<PlayableMovieCardId>>()[0]
+      const movieRemainingAvailableActions = this.remind<AvailableMovieActionsMemory>(Memory.AvailableMovieActions)[movieCard.id.front]!
       if (
         !this.remind<Actions[]>(Memory.PendingActions, player).some(
           (action) =>
@@ -89,6 +95,8 @@ export class ChooseSeatActionActionRule extends ActionRule<ChooseSeatActionActio
             player: player
           })
         )
+      } else if (!movieRemainingAvailableActions.some((available) => available)) {
+        consequences.push(this.customMove(CustomMoveType.PassCurrentAction, { player: player }))
       }
       return consequences
     }
