@@ -7,7 +7,7 @@ export class MountainHotelCharacteristics implements MovieCardCharacteristics {
   public readonly actions: MovieAction[] = [
     MovieAction.AdvertisingTokenOnWhiteGuestToBag,
     MovieAction.PlaceExitZoneGuestInBag,
-    MovieAction.PlaceGuestInReserve,
+    MovieAction.AdvertisingTokenOnGreenGuest,
     MovieAction.Get1Popcorn
   ]
   public readonly color = MovieColor.Green
