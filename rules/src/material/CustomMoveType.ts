@@ -39,12 +39,12 @@ export type MovieActionCustomMove = Omit<CustomMove, 'data'> & {
   data: MovieActionCustomMoveData
 }
 
-export type PassCurrentActionCustomeMoveData = {
+export type PassCurrentActionCustomMoveData = {
   player: PlayerColor
 }
 
 export type PassCurrentActionCustomMove = Omit<CustomMove, 'data'> & {
-  data: PassCurrentActionCustomeMoveData
+  data: PassCurrentActionCustomMoveData
 }
 
 export const isBuyMovieCardCustomMove = (move: MaterialMove<PlayerColor, MaterialType, LocationType>): move is BuyMovieCardCustomMove =>

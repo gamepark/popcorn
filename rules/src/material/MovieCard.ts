@@ -80,6 +80,22 @@ export enum MovieAction {
   DrawAwardCard
 }
 
+export const MOVIE_ACTIONS_NOT_NEEDING_GUEST_MOVE = [
+  MovieAction.PlaceGuestInReserve,
+  MovieAction.PlaceExitZoneGuestInBag,
+  MovieAction.DrawGuestAndPlaceThem,
+  MovieAction.DrawAwardCard
+]
+
+export const MOVIE_ACTIONS_NEEDING_AVAILABLE_ADVERTISING_TOKEN = [
+  MovieAction.AdvertisingTokenOnYellowGuest,
+  MovieAction.AdvertisingTokenOnRedGuest,
+  MovieAction.AdvertisingTokenOnGreenGuest,
+  MovieAction.AdvertisingTokenOnBlueGuest,
+  MovieAction.AdvertisingTokenOnAnyGuest,
+  MovieAction.AdvertisingTokenOnWhiteGuestToBag
+]
+
 export enum MovieCard {
   // First movies
   FirstMovieBlueRosebud = 1,
