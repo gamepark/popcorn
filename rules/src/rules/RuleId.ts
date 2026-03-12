@@ -7,5 +7,6 @@ export enum RuleId {
   EndOfRoundPendingActionsNextPhaseTransitionRule,
   FinalEndOfRoundPhaseAdvertisingTokenMovesRule,
   FinalEndOfRoundMoneyRule,
-  FinalEndOfRoundPhaseTheaterTrophyRule
+  FinalEndOfRoundPhaseTheaterTrophyRule,
+  FinalEndOfRoundPhaseAwardCardPointsRule
 }

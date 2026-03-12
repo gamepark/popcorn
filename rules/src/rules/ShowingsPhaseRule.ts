@@ -27,6 +27,7 @@ import { PlayerColor } from '../PlayerColor'
 import { canPlayerPlaceAGuestAfterSeatOrMovieAction } from './actions/utils/movieOrSeatActionConsequences.util'
 import { RuleId } from './RuleId'
 import { getActionRule } from './utils/getActionRule.util'
+import { getAudienceFromCubeLocation } from './utils/getAudienceFromCubeLocation'
 
 export class ShowingsPhaseRule extends SimultaneousRule<PlayerColor, MaterialType, LocationType, RuleId> {
   public onRuleStart(
@@ -178,24 +179,7 @@ export class ShowingsPhaseRule extends SimultaneousRule<PlayerColor, MaterialTyp
 
   private getNumberOfGuestsToDraw(player: PlayerColor): number {
     const audienceCubeLocation = this.material(MaterialType.AudienceCubes).player(player).getItems()[0].location
-    switch (audienceCubeLocation.x ?? 0) {
-      case 0:
-        return 3
-      case 1:
-      case 2:
-        return 4
-      case 3:
-      case 4:
-        return 5
-      case 5:
-      case 6:
-      case 7:
-        return 6
-      case 8:
-        return 7
-      default:
-        throw new Error('Invalid audience cube spot')
-    }
+    return getAudienceFromCubeLocation(audienceCubeLocation)
   }
 
   private getPlayerFromMove(move: ItemMove<PlayerColor, MaterialType, LocationType>): PlayerColor | undefined {

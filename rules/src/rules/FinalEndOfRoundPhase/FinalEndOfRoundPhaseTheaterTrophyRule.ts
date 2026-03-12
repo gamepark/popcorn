@@ -61,6 +61,6 @@ export class FinalEndOfRoundPhaseTheaterTrophyRule extends SimultaneousRule<Play
         )
       )
     }
-    return consequences
+    return consequences.concat(this.startSimultaneousRule<PlayerColor, RuleId>(RuleId.FinalEndOfRoundPhaseAwardCardPointsRule, []))
   }
 }

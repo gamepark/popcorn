@@ -23,6 +23,7 @@ import { EndOfRoundPendingActionsNextPhaseTransitionRule } from './rules/EndOfRo
 import { EndOfRoundPhaseNewLineUpRule } from './rules/EndOfRoundPhase/EndOfRoundPhaseNewLineUpRule'
 import { EndOfRoundPhaseTheatricalRunRule } from './rules/EndOfRoundPhase/EndOfRoundPhaseTheatricalRunRule'
 import { FinalEndOfRoundPhaseAdvertisingTokenMovesRule } from './rules/FinalEndOfRoundPhase/FinalEndOfRoundPhaseAdvertisingTokenMovesRule'
+import { FinalEndOfRoundPhaseAwardCardsPoints } from './rules/FinalEndOfRoundPhase/FinalEndOfRoundPhaseAwardCardsPoints'
 import { FinalEndOfRoundPhaseMoneyRule } from './rules/FinalEndOfRoundPhase/FinalEndOfRoundPhaseMoneyRule'
 import { FinalEndOfRoundPhaseTheaterTrophyRule } from './rules/FinalEndOfRoundPhase/FinalEndOfRoundPhaseTheaterTrophyRule'
 import { RuleId } from './rules/RuleId'
@@ -51,7 +52,8 @@ export class PopcornRules
     [RuleId.EndOfRoundPendingActionsNextPhaseTransitionRule]: EndOfRoundPendingActionsNextPhaseTransitionRule,
     [RuleId.FinalEndOfRoundPhaseAdvertisingTokenMovesRule]: FinalEndOfRoundPhaseAdvertisingTokenMovesRule,
     [RuleId.FinalEndOfRoundMoneyRule]: FinalEndOfRoundPhaseMoneyRule,
-    [RuleId.FinalEndOfRoundPhaseTheaterTrophyRule]: FinalEndOfRoundPhaseTheaterTrophyRule
+    [RuleId.FinalEndOfRoundPhaseTheaterTrophyRule]: FinalEndOfRoundPhaseTheaterTrophyRule,
+    [RuleId.FinalEndOfRoundPhaseAwardCardPointsRule]: FinalEndOfRoundPhaseAwardCardsPoints
   }
 
   hidingStrategies = {
