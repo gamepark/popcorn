@@ -6,8 +6,7 @@ import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
 import { RuleId } from '@gamepark/popcorn/rules/RuleId'
 import { CardDescription, ItemContext, ItemMenuButton, MaterialContext } from '@gamepark/react-game'
-import { isMoveItemType, MaterialItem, MaterialMove } from '@gamepark/rules-api'
-import React from 'react'
+import { isMoveItemType, MaterialItem, MaterialMove, MaterialMoveBuilder, Location } from '@gamepark/rules-api'
 import { Trans } from 'react-i18next'
 import audienceGreaterThanOrEqualToSix from '../images/Cards/Awards/AudienceGreaterThanOrEqualTo6.jpg'
 import awardBack from '../images/Cards/Awards/AwardBack.jpg'
@@ -36,8 +35,10 @@ import threeSeatTheater from '../images/Cards/Awards/ThreeSeatTheater.jpg'
 import twoFourOfAKindGuest from '../images/Cards/Awards/TwoFourOfAKindGuest.jpg'
 import whiteGuestCount from '../images/Cards/Awards/WhiteGuestCount.jpg'
 import yellowTwoSeatsGuestsMoviesSet from '../images/Cards/Awards/YellowTwoSeatsGuestsMoviesSet.jpg'
+import { AwardCardHelp } from './help/AwardCardHelp.tsx'
+import displayLocationHelp = MaterialMoveBuilder.displayLocationHelp
 
-class AwardCardDescription extends CardDescription<PlayerColor, MaterialType, LocationType, AwardCard> {
+class AwardCardDescription extends CardDescription<PlayerColor, MaterialType, LocationType, AwardCard | undefined> {
   height = 4.5
   width = 6.3
 
@@ -71,6 +72,8 @@ class AwardCardDescription extends CardDescription<PlayerColor, MaterialType, Lo
   }
   backImage = awardBack
 
+  help = AwardCardHelp
+
   public getItemMenu(
     item: MaterialItem<PlayerColor, LocationType, AwardCard>,
     context: ItemContext<PlayerColor, MaterialType, LocationType>,
@@ -88,6 +91,33 @@ class AwardCardDescription extends CardDescription<PlayerColor, MaterialType, Lo
 
   public isFlippedInDialog(item: Partial<MaterialItem<PlayerColor, LocationType>>, context: MaterialContext<PlayerColor, MaterialType, LocationType>): boolean {
     return super.isFlippedInDialog(item, context)
+  }
+
+  public isFlippedOnTable(item: Partial<MaterialItem<PlayerColor, LocationType>>, context: MaterialContext<PlayerColor, MaterialType, LocationType>): boolean {
+    if (
+      item.location?.type === LocationType.AwardCardDeckSpot ||
+      (item.location?.type === LocationType.PlayerAwardCardHand && context.player !== item.location?.player)
+    ) {
+      return true
+    }
+    return super.isFlippedOnTable(item, context)
+  }
+
+  public displayHelp(
+    item: MaterialItem<PlayerColor, LocationType, AwardCard | undefined>,
+    context: ItemContext<PlayerColor, MaterialType, LocationType>
+  ): MaterialMove<PlayerColor, MaterialType, LocationType> | undefined {
+    if (
+      item.location.type === LocationType.AwardCardDeckSpot ||
+      (item.location.type === LocationType.PlayerAwardCardHand && context.player !== item.location.player)
+    ) {
+      const location = { type: item.location.type } as Location<PlayerColor, LocationType>
+      if (item.location.player !== undefined) {
+        location.player = item.location.player
+      }
+      return displayLocationHelp(location)
+    }
+    return super.displayHelp(item, context)
   }
 
   private getItemMenuForDealAndDiscardRule(
