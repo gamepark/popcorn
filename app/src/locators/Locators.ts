@@ -2,6 +2,7 @@ import { LocationType } from '@gamepark/popcorn/material/LocationType'
 import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
 import { Locator } from '@gamepark/react-game'
+import { actionsHelpCardLocator } from './ActionsHelpCardLocator.ts'
 import { advertisingBoardLocator } from './AdvertisingBoardLocator'
 import { advertisingTokenSpotOnAdvertisingBoardLocator } from './AdvertisingTokenSpotOnAdvertisingBoardLocator'
 import { audienceCubeSpotOnTopCinenaBoardLocator } from './AudienceCubeSpotOnTopCinemaBoardLocator'
@@ -21,6 +22,7 @@ import { movieCardOnBottomPlayerCinemaBoardLocator } from './MovieCardOnBottomPl
 import { movieCardsDeckLocator } from './MovieCardsDeckLocator'
 import { oneSeatTheaterTilesDeckLocator } from './OneSeatTheaterTilesDeckLocator'
 import { oneSeatTheaterTilesRowLocator } from './OneSeatTheaterTilesRowLocator'
+import { phasesHelpCardLocator } from './PhasesHelpCardLocator.ts'
 import { playerAdvertisingTokenPileLocator } from './PlayerAdvertisingTokenPileLocator'
 import { playerClothBagLocator } from './PlayerClothBagLocator'
 import { playerGuestPawnUnderClothBagLocator } from './PlayerGuestPawnUnderClothBagLocator'
@@ -79,5 +81,7 @@ export const Locators: Partial<Record<LocationType, Locator<PlayerColor, Materia
   [LocationType.PlayerPopcornPileUnderPopcornCupSpot]: playerPopcornPileLocator,
   [LocationType.PlayerTheaterTrophySpot]: playerTheaterTrophyLocator,
   [LocationType.PlayerShowingsDrawnGuestSpot]: playerShowingsDrawnGuestsLocator,
-  [LocationType.FinalShowingCardSpot]: finalShowingCardLocator
+  [LocationType.FinalShowingCardSpot]: finalShowingCardLocator,
+  [LocationType.PhasesHelpCardSpot]: phasesHelpCardLocator,
+  [LocationType.ActionsHelpCardSpot]: actionsHelpCardLocator
 }

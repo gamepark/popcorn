@@ -8,8 +8,10 @@ import { bottomCinemaBoardDescription } from './BottomCinemaBoardDescription'
 import { clothBagDescription } from './ClothBagDescription'
 import { featuresTileDescription } from './FeaturesTileDescription'
 import { firstPlayerMarkerDescription } from './FirstPlayerMarkerDescription'
+import { frenchHelpCardsDescription } from './FrenchHelpCardsDescription.ts'
 import { frenchMovieCardDescription } from './FrenchMovieCardDescription'
 import { guestPawnDescription } from './GuestPawnDescription'
+import { helpCardDescription } from './HelpCardDescription.ts'
 import { lobbySliderDescription } from './LobbySliderDescription'
 import { moneyTokenDescription } from './MoneyTokenDescription'
 import { movieCardDescription } from './MovieCardDescription'
@@ -38,11 +40,13 @@ export const Material: Partial<Record<MaterialType, MaterialDescription>> = {
   [MaterialType.TheaterTrophies]: theaterTrophyDescription,
   [MaterialType.FirstPlayerMarker]: firstPlayerMarkerDescription,
   [MaterialType.ClothBag]: clothBagDescription,
-  [MaterialType.PopcornCup]: popcornCupDescription
+  [MaterialType.PopcornCup]: popcornCupDescription,
+  [MaterialType.HelpCards]: helpCardDescription
 }
 
 export const popcornMaterialI18n: Record<string, Partial<Record<MaterialType, MaterialDescription>>> = {
   fr: {
-    [MaterialType.MovieCards]: frenchMovieCardDescription
+    [MaterialType.MovieCards]: frenchMovieCardDescription,
+    [MaterialType.HelpCards]: frenchHelpCardsDescription
   }
 }
