@@ -3,6 +3,7 @@ import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
 import { TokenDescription } from '@gamepark/react-game'
 import featureTile from '../images/Tiles/MovieTiles/FeaturesTile.png'
+import { FeaturesTileHelp } from './help/FeaturesTileHelp.tsx'
 
 class FeaturesTileDescription extends TokenDescription<PlayerColor, MaterialType, LocationType> {
   image = featureTile
@@ -16,6 +17,8 @@ class FeaturesTileDescription extends TokenDescription<PlayerColor, MaterialType
       type: LocationType.FeaturesTileSpot
     }
   }
+
+  help = FeaturesTileHelp
 }
 
 export const featuresTileDescription = new FeaturesTileDescription()
