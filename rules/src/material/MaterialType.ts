@@ -16,5 +16,6 @@ export enum MaterialType {
   FeaturesTile,
   PremiersTile,
   ClothBag,
-  PopcornCup
+  PopcornCup,
+  HelpCards
 }
