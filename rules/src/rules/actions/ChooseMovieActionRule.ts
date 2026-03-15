@@ -1,4 +1,4 @@
-import { CustomMove, Material, MaterialMove, MoveItem, PlayMoveContext } from '@gamepark/rules-api'
+import { CustomMove, Material, MaterialItem, MaterialMove, MoveItem, PlayMoveContext } from '@gamepark/rules-api'
 import { cloneDeep } from 'es-toolkit'
 import { Actions } from '../../material/Actions/Actions'
 import { ActionType } from '../../material/Actions/ActionType'
@@ -6,7 +6,7 @@ import { ChooseMovieActionAction } from '../../material/Actions/ChooseMovieActio
 import { DiscardAwardCardAction } from '../../material/Actions/DiscardAwardCardAction'
 import { PlaceCinemaGuestInReserveAction } from '../../material/Actions/PlaceCinemaGuestInReserveAction'
 import { PlaceExitZoneGuestInBagAction } from '../../material/Actions/PlaceExitZoneGuestInBagAction'
-import { CustomMoveType, isMovieActionCustomMove, isPassCurrentActionCustomMove } from '../../material/CustomMoveType'
+import { CustomMoveType, isMovieActionCustomMove, isPassCurrentActionCustomMove, MovieActionCustomMove } from '../../material/CustomMoveType'
 import { GuestPawn } from '../../material/GuestPawn'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
@@ -87,24 +87,47 @@ export class ChooseMovieActionRule extends ActionRule<ChooseMovieActionAction> {
       }
       const consequences: MaterialMove<PlayerColor, MaterialType, LocationType>[] = []
       this.removeCurrentActionForPlayer(player)
-      this.memorize<AvailableMovieActionsMemory>(Memory.AvailableMovieActions, (previousValue) => {
-        const newValue = cloneDeep(previousValue)
-        const movieActionsAvailabilities = newValue[movieCard.id.front]
-        if (movieActionsAvailabilities === undefined) {
-          throw new Error('Error with memory handling')
-        }
-        movieActionsAvailabilities[move.data.movieActionNumber] = false
-        return newValue
-      })
+      this.removeAvailableActionFromMemory(movieCard, move)
       const movieAction = movieCardCharacteristics[movieCard.id.front].getAction(move.data.movieActionNumber)
       consequences.push(...this.processMovieActionAndBuildConsequences(movieAction, player))
       const pendingActions = this.remind<Actions[]>(Memory.PendingActions, player)
-      if (!pendingActions.some((action) => action.type === ActionType.ChooseMovieAction && action.guestIndex === this.action.guestIndex)) {
+      const existsAvailableMovieAction = this.remind<AvailableMovieActionsMemory>(Memory.AvailableMovieActions)[movieCard.id.front]!.some(
+        (available) => available
+      )
+      if (
+        !pendingActions.some((action) => action.type === ActionType.ChooseMovieAction && action.guestIndex === this.action.guestIndex) ||
+        !existsAvailableMovieAction
+      ) {
         consequences.push(...this.addMovePawnConsequence(movieAction, player, pawnMaterial, pendingActions, pawnToExitZoneMove))
+        if (!existsAvailableMovieAction) {
+          this.removeChooseMovieActionIfNoActionsAvailable(player)
+        }
       }
       return consequences
     }
     return super.onCustomMove(move, context)
+  }
+
+  private removeChooseMovieActionIfNoActionsAvailable = (player: PlayerColor): void => {
+    this.memorize<Actions[]>(
+      Memory.PendingActions,
+      (pendingActions) => pendingActions.filter((action) => !(action.type === ActionType.ChooseMovieAction && action.guestIndex === this.action.guestIndex)),
+      player
+    )
+  }
+  private removeAvailableActionFromMemory = (
+    movieCard: MaterialItem<PlayerColor, LocationType, Required<PlayableMovieCardId>>,
+    move: MovieActionCustomMove
+  ): void => {
+    this.memorize<AvailableMovieActionsMemory>(Memory.AvailableMovieActions, (previousValue) => {
+      const newValue = cloneDeep(previousValue)
+      const movieActionsAvailabilities = newValue[movieCard.id.front]
+      if (movieActionsAvailabilities === undefined) {
+        throw new Error('Error with memory handling')
+      }
+      movieActionsAvailabilities[move.data.movieActionNumber] = false
+      return newValue
+    })
   }
 
   private addMovePawnConsequence(

@@ -145,10 +145,13 @@ export const getAdvertisingTokenMove = (
   const advertisingTokenMaterial = rule.material(MaterialType.AdvertisingTokens).location(LocationType.PlayerAdvertisingTokenSpot).player(player)
   if (advertisingTokenMaterial.length > 0) {
     return [
-      advertisingTokenMaterial.moveItem({
-        type: LocationType.AdvertisingTokenSpotOnAdvertisingBoard,
-        id: destinationLocationId
-      }),
+      advertisingTokenMaterial.moveItem(
+        {
+          type: LocationType.AdvertisingTokenSpotOnAdvertisingBoard,
+          id: destinationLocationId
+        },
+        1
+      ),
       advertisingTokenMaterial.unselectItem()
     ]
   }

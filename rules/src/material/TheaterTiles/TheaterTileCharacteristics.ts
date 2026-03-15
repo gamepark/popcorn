@@ -5,6 +5,8 @@ export interface TheaterTileCharacteristics {
   getSeatsNumber(): Exclude<SeatsNumber, SeatsNumber.Default>
   getSeatColor(seatNumber: number): SeatColor | undefined
   getSeatAction(seatNumber: number): SeatAction | undefined
+  getSeatColors(): SeatColor[]
+  getActions(): SeatAction[]
 }
 
 export const getTheaterSeatColor = (seatColors: SeatColor[], seatNumber: number): SeatColor | undefined =>

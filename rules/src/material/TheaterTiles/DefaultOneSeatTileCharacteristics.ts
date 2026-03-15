@@ -20,4 +20,12 @@ export class DefaultOneSeatTileCharacteristics implements TheaterTileCharacteris
   public getSeatsNumber(): Exclude<SeatsNumber, SeatsNumber.Default> {
     return SeatsNumber.One
   }
+
+  public getSeatColors(): SeatColor[] {
+    return this.seatColors
+  }
+
+  public getActions(): SeatAction[] {
+    return this.seatActions
+  }
 }

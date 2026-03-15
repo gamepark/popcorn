@@ -1,4 +1,4 @@
-import { MaterialMove, PlayerTurnRule, PlayMoveContext, RuleMove, RuleStep } from '@gamepark/rules-api'
+import { MaterialMove, PlayMoveContext, RuleMove, RuleStep, SimultaneousRule } from '@gamepark/rules-api'
 import { Actions } from '../../material/Actions/Actions'
 import { ActionType } from '../../material/Actions/ActionType'
 import { LocationType } from '../../material/LocationType'
@@ -16,7 +16,15 @@ const BUYABLE_THEATER_TILES_LOCATION_TYPES = [
   LocationType.ThreeSeatTheaterTileRowSpot
 ]
 
-export class EndOfRoundPendingActionsNextPhaseTransitionRule extends PlayerTurnRule<PlayerColor, MaterialType, LocationType, RuleId> {
+export class EndOfRoundPendingActionsNextPhaseTransitionRule extends SimultaneousRule<PlayerColor, MaterialType, LocationType, RuleId> {
+  public getActivePlayerLegalMoves(_player: PlayerColor): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
+    return []
+  }
+
+  public getMovesAfterPlayersDone(): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
+    return []
+  }
+
   public onRuleStart(
     _move: RuleMove<PlayerColor, RuleId>,
     _previousRule?: RuleStep,
@@ -26,25 +34,25 @@ export class EndOfRoundPendingActionsNextPhaseTransitionRule extends PlayerTurnR
     pendingActionsPerPlayer.forEach(({ player, pendingActions }) => {
       this.memorize(Memory.PendingActions, pendingActions, player)
     })
+    const movieCardIds = this.material(MaterialType.MovieCards)
+      .location(LocationType.MovieCardSpotOnBottomPlayerCinemaBoard)
+      .getItems<Required<PlayableMovieCardId>>()
+      .map((movieCard) => movieCard.id.front)
     this.memorize<AvailableMovieActionsMemory>(Memory.AvailableMovieActions, (previousAvailableMovieActionsMemory) => {
-      return Object.entries(previousAvailableMovieActionsMemory)
-        .map<[Exclude<MovieCard, MovieCard.FinalShowing>, boolean[]]>(([key, previousAvailableActions]) => [
-          parseInt(key) as Exclude<MovieCard, MovieCard.FinalShowing>,
-          previousAvailableActions
-        ])
-        .reduce(
-          (newAvailableMovieActions, [movieCardId, previousAvailableMovieActions]) => {
-            return {
-              ...newAvailableMovieActions,
-              [movieCardId]: movieCardCharacteristics[movieCardId].actions
-                .map((movieAction) => movieAction !== MovieAction.None)
-                .slice(0, previousAvailableMovieActions.length - 1)
-            }
-          },
-          {} as Partial<Record<MovieCard, boolean[]>>
-        )
+      return movieCardIds.reduce(
+        (newAvailableMovieActions, movieCardId) => {
+          return {
+            ...newAvailableMovieActions,
+            [movieCardId]: movieCardCharacteristics[movieCardId].actions
+              .map((movieAction) => movieAction !== MovieAction.None)
+              .slice(0, previousAvailableMovieActionsMemory[movieCardId]!.length - 1)
+          }
+        },
+        {} as Partial<Record<MovieCard, boolean[]>>
+      )
     })
-    const nextPlayerIndex = this.game.players.indexOf(this.nextPlayer)
+    const nextPlayer = this.material(MaterialType.FirstPlayerMarker).getItem()!.location.player!
+    const nextPlayerIndex = this.game.players.indexOf(nextPlayer)
     const playerTurnOrder = this.game.players.slice(nextPlayerIndex).concat(this.game.players.slice(0, nextPlayerIndex))
     const nextPlayerToPlay = playerTurnOrder.find((p) =>
       pendingActionsPerPlayer.find(({ player, pendingActions }) => player === p && pendingActions.length > 0)

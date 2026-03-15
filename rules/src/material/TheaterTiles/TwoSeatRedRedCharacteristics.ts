@@ -20,4 +20,12 @@ export class TwoSeatRedRedCharacteristics implements TheaterTileCharacteristics 
   public getSeatsNumber(): Exclude<SeatsNumber, SeatsNumber.Default> {
     return SeatsNumber.Two
   }
+
+  public getSeatColors(): SeatColor[] {
+    return this.seatColors
+  }
+
+  public getActions(): SeatAction[] {
+    return this.seatActions
+  }
 }

@@ -5,7 +5,7 @@ import { SeatsNumber, TheaterTile, theaterTilesCharacteristics } from '../Theate
 export interface MovieCardCharacteristics {
   get actions(): MovieAction[]
 
-  get numberOfSeatsForBonus(): SeatsNumber | undefined
+  get numberOfSeatsForBonus(): Exclude<SeatsNumber, SeatsNumber.Default> | undefined
 
   get bonusAction(): MovieAction | undefined
 

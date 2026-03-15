@@ -1,23 +1,31 @@
 import {
+  CompetitiveScore,
   FillGapStrategy,
   hideFront,
   hideFrontToOthers,
   hideItemId,
   hideItemIdToOthers,
+  isStartSimultaneousRule,
   MaterialGame,
   MaterialMove,
   PositiveSequenceStrategy,
   SecretMaterialRules,
   TimeLimit
 } from '@gamepark/rules-api'
+import { GamePhase } from './GamePhase'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
+import { popcornTokens } from './material/PopcornToken'
 import { PlayerColor } from './PlayerColor'
 import { DiscardAwardCardActionRule } from './rules/actions/DiscardAwardCardActionRule'
 import { BuyingPhaseRule } from './rules/BuyingPhaseRule'
 import { EndOfRoundPendingActionsNextPhaseTransitionRule } from './rules/EndOfRoundPhase/EndOfRoundPendingActionsNextPhaseTransitionRule'
 import { EndOfRoundPhaseNewLineUpRule } from './rules/EndOfRoundPhase/EndOfRoundPhaseNewLineUpRule'
 import { EndOfRoundPhaseTheatricalRunRule } from './rules/EndOfRoundPhase/EndOfRoundPhaseTheatricalRunRule'
+import { FinalEndOfRoundPhaseAdvertisingTokenMovesRule } from './rules/FinalEndOfRoundPhase/FinalEndOfRoundPhaseAdvertisingTokenMovesRule'
+import { FinalEndOfRoundPhaseAwardCardsPoints } from './rules/FinalEndOfRoundPhase/FinalEndOfRoundPhaseAwardCardsPoints'
+import { FinalEndOfRoundPhaseMoneyRule } from './rules/FinalEndOfRoundPhase/FinalEndOfRoundPhaseMoneyRule'
+import { FinalEndOfRoundPhaseTheaterTrophyRule } from './rules/FinalEndOfRoundPhase/FinalEndOfRoundPhaseTheaterTrophyRule'
 import { RuleId } from './rules/RuleId'
 import { ShowingsPhaseRule } from './rules/ShowingsPhaseRule'
 
@@ -32,7 +40,8 @@ export class PopcornRules
       MaterialGame<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>,
       MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>,
       PlayerColor
-    >
+    >,
+    CompetitiveScore<MaterialGame<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>>
 {
   rules = {
     [RuleId.DealAndDiscardAwardCards]: DiscardAwardCardActionRule,
@@ -40,7 +49,11 @@ export class PopcornRules
     [RuleId.ShowingsPhaseRule]: ShowingsPhaseRule,
     [RuleId.EndOfRoundPhaseTheatricalRunRule]: EndOfRoundPhaseTheatricalRunRule,
     [RuleId.EndOfRoundPhaseNewLineUpRule]: EndOfRoundPhaseNewLineUpRule,
-    [RuleId.EndOfRoundPendingActionsNextPhaseTransitionRule]: EndOfRoundPendingActionsNextPhaseTransitionRule
+    [RuleId.EndOfRoundPendingActionsNextPhaseTransitionRule]: EndOfRoundPendingActionsNextPhaseTransitionRule,
+    [RuleId.FinalEndOfRoundPhaseAdvertisingTokenMovesRule]: FinalEndOfRoundPhaseAdvertisingTokenMovesRule,
+    [RuleId.FinalEndOfRoundMoneyRule]: FinalEndOfRoundPhaseMoneyRule,
+    [RuleId.FinalEndOfRoundPhaseTheaterTrophyRule]: FinalEndOfRoundPhaseTheaterTrophyRule,
+    [RuleId.FinalEndOfRoundPhaseAwardCardPointsRule]: FinalEndOfRoundPhaseAwardCardsPoints
   }
 
   hidingStrategies = {
@@ -96,5 +109,36 @@ export class PopcornRules
 
   giveTime(): number {
     return 60
+  }
+
+  public get currentPhase(): GamePhase {
+    switch (this.game.rule?.id) {
+      case RuleId.DealAndDiscardAwardCards:
+        return GamePhase.Setup
+      case RuleId.BuyingPhaseRule:
+        return GamePhase.BuyingPhase
+      case RuleId.ShowingsPhaseRule:
+        return GamePhase.ShowingsPhase
+      default:
+        return GamePhase.EndOfRoundPhase
+    }
+  }
+
+  public getScore(playerId: PlayerColor): number {
+    return this.material(MaterialType.PopcornTokens).money(popcornTokens).location(LocationType.PlayerPopcornPileUnderPopcornCupSpot).player(playerId).count
+  }
+
+  public getTieBreaker(tieBreaker: number, playerId: PlayerColor): number | undefined {
+    if (tieBreaker === 1) {
+      return -this.material(MaterialType.MovieCards).location(LocationType.PlayerMovieCardArchiveSpot).player(playerId).length
+    }
+    return undefined
+  }
+
+  public isUnpredictableMove(move: MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>, player: PlayerColor): boolean {
+    return (
+      (isStartSimultaneousRule<PlayerColor, MaterialType, LocationType, RuleId>(move) && move.id === RuleId.FinalEndOfRoundPhaseAwardCardPointsRule) ||
+      super.isUnpredictableMove(move, player)
+    )
   }
 }

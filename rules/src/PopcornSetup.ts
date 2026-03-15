@@ -10,7 +10,6 @@ import { MaterialType } from './material/MaterialType'
 import { moneyTokens } from './material/MoneyToken'
 import { firstMovieCards, movieCardCharacteristics, movieCardsWithoutFinalShowing, MovieColor, PlayableMovieCardId } from './material/MovieCard'
 import { SeatsNumber, theaterTiles, theaterTilesCharacteristics, theaterTilesWithoutDefault } from './material/TheaterTile'
-import { theaterTrophy } from './material/TheaterTrophy'
 import { AvailableMovieActionsMemory, Memory } from './Memory'
 import { PlayerColor } from './PlayerColor'
 import { PopcornOptions } from './PopcornOptions'
@@ -24,7 +23,6 @@ export class PopcornSetup extends MaterialGameSetup<PlayerColor, MaterialType, L
   Rules = PopcornRules
 
   setupMaterial(_options: PopcornOptions) {
-    this.createTheaterTrophyTokens()
     this.createAwardCards()
     this.createAndPopulateTheaterTileRivers()
     this.createAndDealGeneralGuestPawns()
@@ -46,17 +44,6 @@ export class PopcornSetup extends MaterialGameSetup<PlayerColor, MaterialType, L
 
   start() {
     this.startSimultaneousRule(RuleId.DealAndDiscardAwardCards)
-  }
-
-  private createTheaterTrophyTokens(): void {
-    this.material(MaterialType.TheaterTrophies).createItemsAtOnce(
-      theaterTrophy.map((id) => ({
-        id: id,
-        location: {
-          type: LocationType.TheaterTrophyReserveSpot
-        }
-      }))
-    )
   }
 
   private createAwardCards(): void {

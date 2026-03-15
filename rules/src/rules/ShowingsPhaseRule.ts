@@ -21,11 +21,13 @@ import { CustomMoveType, isMovieActionCustomMove, isPassCurrentActionCustomMove 
 import { GuestPawn } from '../material/GuestPawn'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
+import { popcornTokens } from '../material/PopcornToken'
 import { Memory } from '../Memory'
 import { PlayerColor } from '../PlayerColor'
 import { canPlayerPlaceAGuestAfterSeatOrMovieAction } from './actions/utils/movieOrSeatActionConsequences.util'
 import { RuleId } from './RuleId'
 import { getActionRule } from './utils/getActionRule.util'
+import { getAudienceFromCubeLocation } from './utils/getAudienceFromCubeLocation'
 
 export class ShowingsPhaseRule extends SimultaneousRule<PlayerColor, MaterialType, LocationType, RuleId> {
   public onRuleStart(
@@ -70,11 +72,18 @@ export class ShowingsPhaseRule extends SimultaneousRule<PlayerColor, MaterialTyp
   }
 
   public getMovesAfterPlayersDone(): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
-    const firstPlayerOfRound = this.material(MaterialType.FirstPlayerMarker).getItems()[0].location.player
-    if (firstPlayerOfRound === undefined) {
-      throw new Error('Invalid game state')
+    if (this.isFinalRound()) {
+      const playersToActivate = uniq(
+        this.material(MaterialType.AdvertisingTokens)
+          .location(LocationType.AdvertisingTokenSpotOnAdvertisingBoard)
+          .getItems<PlayerColor>()
+          .map((token) => token.id)
+      )
+      const popCornMaterial = this.material(MaterialType.PopcornTokens).location(LocationType.PlayerPopcornPileUnderPopcornCupSpot).money(popcornTokens)
+      this.game.players.forEach((player) => this.memorize<number>(Memory.GamePopcornScoreBeforeFinalRoundScore, popCornMaterial.player(player).count, player))
+      return [this.startSimultaneousRule<PlayerColor, RuleId>(RuleId.FinalEndOfRoundPhaseAdvertisingTokenMovesRule, playersToActivate)]
     }
-    return [this.startPlayerTurn<PlayerColor, RuleId>(RuleId.EndOfRoundPhaseTheatricalRunRule, firstPlayerOfRound)]
+    return [this.startSimultaneousRule<PlayerColor, RuleId>(RuleId.EndOfRoundPhaseTheatricalRunRule, [])]
   }
 
   public afterItemMove(
@@ -176,24 +185,7 @@ export class ShowingsPhaseRule extends SimultaneousRule<PlayerColor, MaterialTyp
 
   private getNumberOfGuestsToDraw(player: PlayerColor): number {
     const audienceCubeLocation = this.material(MaterialType.AudienceCubes).player(player).getItems()[0].location
-    switch (audienceCubeLocation.x ?? 0) {
-      case 0:
-        return 3
-      case 1:
-      case 2:
-        return 4
-      case 3:
-      case 4:
-        return 5
-      case 5:
-      case 6:
-      case 7:
-        return 6
-      case 8:
-        return 7
-      default:
-        throw new Error('Invalid audience cube spot')
-    }
+    return getAudienceFromCubeLocation(audienceCubeLocation)
   }
 
   private getPlayerFromMove(move: ItemMove<PlayerColor, MaterialType, LocationType>): PlayerColor | undefined {
@@ -246,5 +238,11 @@ export class ShowingsPhaseRule extends SimultaneousRule<PlayerColor, MaterialTyp
     ) {
       consequences.push(this.endPlayerTurn<PlayerColor>(player))
     }
+  }
+
+  private isFinalRound(): boolean {
+    const numberOfPlayers = this.game.players.length
+    const numberOfCardsInDeckForFinalRound = numberOfPlayers === 2 ? 10 : 5
+    return this.material(MaterialType.MovieCards).location(LocationType.MovieCardDeckSpot).length <= numberOfCardsInDeckForFinalRound
   }
 }

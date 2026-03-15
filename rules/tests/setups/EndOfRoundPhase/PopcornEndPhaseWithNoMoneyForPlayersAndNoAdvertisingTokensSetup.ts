@@ -1,10 +1,10 @@
-import { PopcornSetup } from '../../src'
-import { LocationType } from '../../src/material/LocationType'
-import { MaterialType } from '../../src/material/MaterialType'
-import { moneyTokens } from '../../src/material/MoneyToken'
-import { movieCardCharacteristics, PlayableMovieCardId } from '../../src/material/MovieCard'
-import { PopcornOptions } from '../../src/PopcornOptions'
-import { RuleId } from '../../src/rules/RuleId'
+import { PopcornSetup } from '../../../src'
+import { LocationType } from '../../../src/material/LocationType'
+import { MaterialType } from '../../../src/material/MaterialType'
+import { moneyTokens } from '../../../src/material/MoneyToken'
+import { movieCardCharacteristics, PlayableMovieCardId } from '../../../src/material/MovieCard'
+import { PopcornOptions } from '../../../src/PopcornOptions'
+import { RuleId } from '../../../src/rules/RuleId'
 
 export class PopcornEndPhaseWithNoMoneyForPlayersAndNoAdvertisingTokensSetup extends PopcornSetup {
   public setupMaterial(options: PopcornOptions): void {

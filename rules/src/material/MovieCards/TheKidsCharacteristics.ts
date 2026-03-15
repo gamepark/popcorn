@@ -5,7 +5,7 @@ import { getBonusAction, getMovieAction, getMoviePriceForRow, MovieCardCharacter
 
 export class TheKidsCharacteristics implements MovieCardCharacteristics {
   public readonly actions: MovieAction[] = [
-    MovieAction.PlaceExitZoneGuestInBag,
+    MovieAction.AdvertisingTokenOnWhiteGuestToBag,
     MovieAction.AdvertisingTokenOnYellowGuest,
     MovieAction.Get2Money,
     MovieAction.AudienceTrackAdvance

@@ -64,11 +64,14 @@ export class BuyMovieCardActionRule extends ActionRule<BuyMovieCardAction> {
         })
       if (boughtCard.location.type === LocationType.PremiersRowSpot) {
         const guestColorToPick = BuyMovieCardActionRule.getGuestPawnColorFromMovieId(boughtCard.id.front)
-        const guestPawnsInExitZones = this.material(MaterialType.GuestPawns)
-          .location(LocationType.GuestPawnExitZoneSpotOnTopPlayerCinemaBoard)
-          .player((p) => p !== undefined && p !== move.data.player)
+        const pickableGuestsMaterial = this.material(MaterialType.GuestPawns)
+          .location(
+            (l) =>
+              (l.type === LocationType.GuestPawnExitZoneSpotOnTopPlayerCinemaBoard && l.player !== move.data.player) ||
+              l.type === LocationType.GuestPawnReserveSpot
+          )
           .id(guestColorToPick)
-        if (guestPawnsInExitZones.length > 0) {
+        if (pickableGuestsMaterial.length > 0) {
           addPendingActionForPlayer(
             this,
             {

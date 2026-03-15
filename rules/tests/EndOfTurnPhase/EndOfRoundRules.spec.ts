@@ -2,7 +2,7 @@ import { describe, expect, test } from 'vitest'
 import { PlayerColor } from '../../src/PlayerColor'
 import { PopcornOptions } from '../../src/PopcornOptions'
 import { RuleId } from '../../src/rules/RuleId'
-import { PopcornEndPhaseWithNoMoneyForPlayersAndNoAdvertisingTokensSetup } from '../setups/PopcornEndPhaseWithNoMoneyForPlayersAndNoAdvertisingTokensSetup'
+import { PopcornEndPhaseWithNoMoneyForPlayersAndNoAdvertisingTokensSetup } from '../setups/EndOfRoundPhase/PopcornEndPhaseWithNoMoneyForPlayersAndNoAdvertisingTokensSetup'
 
 describe('EndOfRoundPhaseRules tests', () => {
   test('Should players have no money and advertising token, next phase should be the Showings Phase', () => {
