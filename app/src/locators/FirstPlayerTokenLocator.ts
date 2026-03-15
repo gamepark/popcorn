@@ -11,7 +11,7 @@ class FirstPlayerTokenLocator extends Locator<PlayerColor, MaterialType, Locatio
     location: Location<PlayerColor, LocationType>,
     context: MaterialContext<PlayerColor, MaterialType, LocationType>
   ): Partial<Coordinates> {
-    return offsetPlayerCinemaBoardCoordinates(context, location.player, 25, -6)
+    return offsetPlayerCinemaBoardCoordinates(context, location.player, 15, -12)
   }
 
   public hide(item: MaterialItem<PlayerColor, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType>): boolean {
