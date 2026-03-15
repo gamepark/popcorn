@@ -24,4 +24,8 @@ export class TwoSeatBlue2PopcornMovieActionCharacteristic implements TheaterTile
   public getSeatColors(): SeatColor[] {
     return this.seatColors
   }
+
+  public getActions(): SeatAction[] {
+    return this.seatActions
+  }
 }

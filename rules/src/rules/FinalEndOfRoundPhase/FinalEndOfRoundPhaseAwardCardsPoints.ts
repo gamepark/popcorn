@@ -7,6 +7,7 @@ import { GuestPawn } from '../../material/GuestPawn'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 import { popcornTokens } from '../../material/PopcornToken'
+import { Memory } from '../../Memory'
 import { PlayerColor } from '../../PlayerColor'
 import { RuleId } from '../RuleId'
 import { getAudienceFromCubeLocation } from '../utils/getAudienceFromCubeLocation'
@@ -31,6 +32,9 @@ export class FinalEndOfRoundPhaseAwardCardsPoints extends SimultaneousRule<Playe
     const guestMaterial = this.material(MaterialType.GuestPawns).location(LocationType.GuestPawnExitZoneSpotOnTopPlayerCinemaBoard)
     const audienceCubesMaterial = this.material(MaterialType.AudienceCubes).location(LocationType.AudienceCubeSpotOnTopPlayerCinemaBoard)
     const advertisingTokensMaterial = this.material(MaterialType.AdvertisingTokens).location(LocationType.AdvertisingTokenSpotOnAdvertisingBoard)
+    if (awardCardsMaterial.getItems<AwardCard>().some((card) => card.id === undefined)) {
+      return []
+    }
     return this.game.players
       .flatMap((player) => {
         const playerMoviesMaterial = movieCardsMaterial.player(player)
@@ -47,17 +51,19 @@ export class FinalEndOfRoundPhaseAwardCardsPoints extends SimultaneousRule<Playe
           (guestColor) => guestColor
         )
         const audience = getAudienceFromCubeLocation(audienceCubesMaterial.player(player).getItem()?.location)
+        this.memorize<number>(Memory.AwardCardPopcorn, 0, player)
         return awardCardsMaterial
           .player(player)
           .getItems<AwardCard>()
-          .map(
-            (card) =>
-              this.customMove(CustomMoveType.AwardCardPopcorn, {
-                cardId: card.id,
-                player: player,
-                popcorn: awardCardPointFunctions[card.id](playerMoviesMaterial, playerTheaterTilesMaterial, guestCountsByColor, audience)
-              } as AwardCardPopcornCustomMoveData) as MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>
-          )
+          .map((card) => {
+            const awardCardPoints = awardCardPointFunctions[card.id](playerMoviesMaterial, playerTheaterTilesMaterial, guestCountsByColor, audience)
+            this.memorize<number>(Memory.AwardCardPopcorn, (oldValue) => oldValue + awardCardPoints, player)
+            return this.customMove(CustomMoveType.AwardCardPopcorn, {
+              cardId: card.id,
+              player: player,
+              popcorn: awardCardPoints
+            } as AwardCardPopcornCustomMoveData) as MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>
+          })
       })
       .concat(this.endGame())
   }

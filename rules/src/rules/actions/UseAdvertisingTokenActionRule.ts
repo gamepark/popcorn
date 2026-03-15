@@ -21,10 +21,13 @@ export class UseAdvertisingTokenActionRule extends ActionRule<UseAdvertisingToke
       .location(LocationType.AdvertisingTokenSpotOnAdvertisingBoard)
       .id<PlayerColor>(player)
       .selected(true)
-      .moveItems({
-        type: LocationType.PlayerAdvertisingTokenSpot,
-        player: player
-      })
+      .moveItems(
+        {
+          type: LocationType.PlayerAdvertisingTokenSpot,
+          player: player
+        },
+        1
+      )
   }
 
   public getMovesAfterPlayersDone(): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {

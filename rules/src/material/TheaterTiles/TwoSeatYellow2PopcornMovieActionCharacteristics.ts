@@ -24,4 +24,8 @@ export class TwoSeatYellow2PopcornMovieActionCharacteristics implements TheaterT
   public getSeatColors(): SeatColor[] {
     return this.seatColors
   }
+
+  public getActions(): SeatAction[] {
+    return this.seatActions
+  }
 }

@@ -24,4 +24,8 @@ export class ThreeSeatGreenGreenGreyCharacteristics implements TheaterTileCharac
   public getSeatColors(): SeatColor[] {
     return this.seatColors
   }
+
+  public getActions(): SeatAction[] {
+    return this.seatActions
+  }
 }

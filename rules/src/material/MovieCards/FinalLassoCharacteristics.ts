@@ -4,7 +4,12 @@ import { SeatsNumber, TheaterTile } from '../TheaterTile'
 import { getBonusAction, getMovieAction, getMoviePriceForRow, MovieCardCharacteristics } from './MovieCardCharacteristics'
 
 export class FinalLassoCharacteristics implements MovieCardCharacteristics {
-  public readonly actions: MovieAction[] = [MovieAction.PlaceExitZoneGuestInBag, MovieAction.Get2Popcorn, MovieAction.Get3Money, MovieAction.DrawAwardCard]
+  public readonly actions: MovieAction[] = [
+    MovieAction.AdvertisingTokenOnWhiteGuestToBag,
+    MovieAction.Get2Popcorn,
+    MovieAction.Get3Money,
+    MovieAction.DrawAwardCard
+  ]
   public readonly color = MovieColor.Red
   public readonly movieType = MovieCardType.Movie
   public readonly isFirstMovie = false

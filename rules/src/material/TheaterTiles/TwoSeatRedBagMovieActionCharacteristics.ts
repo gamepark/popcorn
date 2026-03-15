@@ -24,4 +24,8 @@ export class TwoSeatRedBagMovieActionCharacteristics implements TheaterTileChara
   public getSeatColors(): SeatColor[] {
     return this.seatColors
   }
+
+  public getActions(): SeatAction[] {
+    return this.seatActions
+  }
 }

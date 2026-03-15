@@ -5,17 +5,17 @@ import {
   hideFrontToOthers,
   hideItemId,
   hideItemIdToOthers,
+  isStartSimultaneousRule,
   MaterialGame,
   MaterialMove,
   PositiveSequenceStrategy,
   SecretMaterialRules,
   TimeLimit
 } from '@gamepark/rules-api'
+import { GamePhase } from './GamePhase'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
-import { moneyTokens } from './material/MoneyToken'
 import { popcornTokens } from './material/PopcornToken'
-import { TheaterTrophy } from './material/TheaterTrophy'
 import { PlayerColor } from './PlayerColor'
 import { DiscardAwardCardActionRule } from './rules/actions/DiscardAwardCardActionRule'
 import { BuyingPhaseRule } from './rules/BuyingPhaseRule'
@@ -111,25 +111,21 @@ export class PopcornRules
     return 60
   }
 
+  public get currentPhase(): GamePhase {
+    switch (this.game.rule?.id) {
+      case RuleId.DealAndDiscardAwardCards:
+        return GamePhase.Setup
+      case RuleId.BuyingPhaseRule:
+        return GamePhase.BuyingPhase
+      case RuleId.ShowingsPhaseRule:
+        return GamePhase.ShowingsPhase
+      default:
+        return GamePhase.EndOfRoundPhase
+    }
+  }
+
   public getScore(playerId: PlayerColor): number {
-    const popcornScore = this.getPopcornScore(playerId)
-    const moneyScore = this.getMoneyScore(playerId)
-    const trophySCore = this.getTrophyScore(playerId)
-    const awardCardsScore = 0
-    return popcornScore + moneyScore + trophySCore + awardCardsScore
-  }
-
-  public getPopcornScore(player: PlayerColor): number {
-    return this.material(MaterialType.PopcornTokens).location(LocationType.PlayerPopcornPileUnderPopcornCupSpot).player(player).money(popcornTokens).count
-  }
-
-  public getMoneyScore(player: PlayerColor): number {
-    return Math.floor(this.material(MaterialType.MoneyTokens).location(LocationType.PlayerMoneyPileSpot).player(player).money(moneyTokens).count / 5)
-  }
-
-  public getTrophyScore(player: PlayerColor): number {
-    const trophy = this.material(MaterialType.TheaterTrophies).location(LocationType.PlayerTheaterTrophySpot).player(player).getItem<TheaterTrophy>()?.id
-    return trophy === undefined ? 0 : trophy === TheaterTrophy.TrophyFirst ? 5 : 3
+    return this.material(MaterialType.PopcornTokens).money(popcornTokens).location(LocationType.PlayerPopcornPileUnderPopcornCupSpot).player(playerId).count
   }
 
   public getTieBreaker(tieBreaker: number, playerId: PlayerColor): number | undefined {
@@ -137,5 +133,12 @@ export class PopcornRules
       return -this.material(MaterialType.MovieCards).location(LocationType.PlayerMovieCardArchiveSpot).player(playerId).length
     }
     return undefined
+  }
+
+  public isUnpredictableMove(move: MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>, player: PlayerColor): boolean {
+    return (
+      (isStartSimultaneousRule<PlayerColor, MaterialType, LocationType, RuleId>(move) && move.id === RuleId.FinalEndOfRoundPhaseAwardCardPointsRule) ||
+      super.isUnpredictableMove(move, player)
+    )
   }
 }

@@ -24,4 +24,8 @@ export class TwoSeatYellowYellowCharacteristics implements TheaterTileCharacteri
   public getSeatColors(): SeatColor[] {
     return this.seatColors
   }
+
+  public getActions(): SeatAction[] {
+    return this.seatActions
+  }
 }

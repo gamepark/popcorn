@@ -11,12 +11,14 @@ export const addPendingActionForPlayer = (
   action: Actions,
   player: PlayerColor
 ): void => {
-  rule.memorize<Actions[]>(
-    Memory.PendingActions,
-    (pendingActions) => {
-      pendingActions.unshift(action)
-      return pendingActions
-    },
-    player
-  )
+  addPendingActionsForPlayer(rule, [action], player, true)
+}
+
+export const addPendingActionsForPlayer = (
+  rule: MaterialRulesPart<PlayerColor, MaterialType, LocationType, RuleId>,
+  actions: Actions[],
+  player: PlayerColor,
+  before?: boolean
+): void => {
+  rule.memorize<Actions[]>(Memory.PendingActions, (pendingActions) => (before ? actions.concat(pendingActions) : pendingActions.concat(actions)), player)
 }

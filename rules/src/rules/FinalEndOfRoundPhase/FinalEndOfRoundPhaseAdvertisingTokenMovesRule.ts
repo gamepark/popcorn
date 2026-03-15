@@ -1,4 +1,4 @@
-import { Material, MaterialMove, PlayMoveContext, RuleMove, RuleStep, SimultaneousRule } from '@gamepark/rules-api'
+import { isMoveItemType, ItemMove, Material, MaterialMove, PlayMoveContext, RuleMove, RuleStep, SimultaneousRule } from '@gamepark/rules-api'
 import { AdvertisingTokenSpot } from '../../material/AdvertisingTokenSpot'
 import { GuestPawn } from '../../material/GuestPawn'
 import { LocationType } from '../../material/LocationType'
@@ -30,7 +30,7 @@ export class FinalEndOfRoundPhaseAdvertisingTokenMovesRule extends SimultaneousR
       .location(LocationType.GuestPawnExitZoneSpotOnTopPlayerCinemaBoard)
       .player(player)
     return this.buildAnyGuestTokenMoves(anyGuestTokens)
-      .concat(this.buildReturnTokenTOPlayerReserveMove(playerAdvertisingTokens, player))
+      .concat(this.buildReturnTokenToPlayerReserveMove(playerAdvertisingTokens, player))
       .concat(this.buildWhiteGuestToReserveMovesIfAvailable(whiteGuestPawnTokens, whiteGuestPawns))
       .concat(this.endPlayerTurn(player))
   }
@@ -41,12 +41,13 @@ export class FinalEndOfRoundPhaseAdvertisingTokenMovesRule extends SimultaneousR
   ): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
     return whiteGuestPawnTokens.length > 0 && whiteGuestPawns.length > 0
       ? whiteGuestPawns.moveItems({
-          type: LocationType.GuestPawnReserveSpot
+          type: LocationType.GuestPawnReserveSpot,
+          id: GuestPawn.White
         })
       : []
   }
 
-  private buildReturnTokenTOPlayerReserveMove(
+  private buildReturnTokenToPlayerReserveMove(
     playerAdvertisingTokens: Material<PlayerColor, MaterialType, LocationType>,
     player: PlayerColor
   ): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
@@ -86,5 +87,28 @@ export class FinalEndOfRoundPhaseAdvertisingTokenMovesRule extends SimultaneousR
             }) as MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>
       )
       .concat(this.startPlayerTurn<PlayerColor, RuleId>(RuleId.FinalEndOfRoundMoneyRule, this.game.players[0]))
+  }
+
+  public beforeItemMove(
+    move: ItemMove<PlayerColor, MaterialType, LocationType>,
+    _context?: PlayMoveContext
+  ): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
+    if (isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.GuestPawns)(move)) {
+      const movedGuestPawn = this.material(MaterialType.GuestPawns).index(move.itemIndex).getItem<GuestPawn>()!
+      const player = movedGuestPawn.location.player!
+      const whiteGuestPawnTokens = this.material(MaterialType.AdvertisingTokens)
+        .id<PlayerColor>(player)
+        .locationId<AdvertisingTokenSpot>(AdvertisingTokenSpot.PlaceWhiteTokenIntoAnyBag)
+      if (whiteGuestPawnTokens.length === 0) {
+        throw new Error('Unable to move the guest pawn as no available advertising token')
+      }
+      return [
+        whiteGuestPawnTokens.moveItem({
+          type: LocationType.PlayerAdvertisingTokenSpot,
+          player: player
+        })
+      ]
+    }
+    return super.afterItemMove(move, _context)
   }
 }

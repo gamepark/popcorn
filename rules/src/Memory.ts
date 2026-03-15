@@ -3,7 +3,9 @@ import { MovieCard } from './material/MovieCard'
 export enum Memory {
   AvailableMovieActions = 1,
   PendingActions,
-  GamePopcornScoreBeforeFinalRoundScore
+  GamePopcornScoreBeforeFinalRoundScore,
+  AwardCardPopcorn,
+  MoneyPopcorn
 }
 
 export type AvailableMovieActionsMemory = Partial<Record<MovieCard, boolean[]>>

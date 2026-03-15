@@ -51,7 +51,7 @@ import { WhatABunchOfIdiots3Characteristics } from './MovieCards/WhatABunchOfIdi
 import { WitchesVsCheerleadersCharacteristics } from './MovieCards/WitchesVsCheerleadersCharacteristics'
 
 export enum MovieColor {
-  Yellow = 0,
+  Yellow = 1,
   Red,
   Green,
   Blue

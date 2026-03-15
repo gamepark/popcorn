@@ -2,6 +2,7 @@ import { MaterialMove, PlayMoveContext, RuleMove, RuleStep, SimultaneousRule } f
 import { groupBy, maxBy } from 'es-toolkit'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
+import { popcornTokens } from '../../material/PopcornToken'
 import { TheaterTileId, theaterTilesCharacteristics } from '../../material/TheaterTile'
 import { TheaterTrophy } from '../../material/TheaterTrophy'
 import { PlayerColor } from '../../PlayerColor'
@@ -38,26 +39,42 @@ export class FinalEndOfRoundPhaseTheaterTrophyRule extends SimultaneousRule<Play
       .map<[number, { player: PlayerColor; totalTheaterCost: number }[]]>(([key, playersWithCost]) => [parseInt(key), playersWithCost])
       .sort((a, b) => b[0] - a[0])
     const firstGroup = maxBy(entriesSortedByDescendingCost, ([cost, _playerWithCost]) => cost)![1]
-    const consequences: MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] = firstGroup.map(({ player }) =>
-      theaterTrophyMaterial.createItem({
-        id: TheaterTrophy.TrophyFirst,
-        location: {
-          type: LocationType.PlayerTheaterTrophySpot,
-          player: player
-        }
-      })
-    )
-    if (this.game.players.length > 2 && firstGroup.length === 1) {
-      const secondGroup = maxBy(entriesSortedByDescendingCost.slice(1), ([cost, _playerWithCost]) => cost)![1]
-      consequences.push(
-        ...secondGroup.map(({ player }) =>
+    const consequences: MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] = firstGroup.flatMap(
+      ({ player }) =>
+        [
           theaterTrophyMaterial.createItem({
-            id: TheaterTrophy.TrophySecond,
+            id: this.game.players.length === 2 ? TheaterTrophy.TrophySecond : TheaterTrophy.TrophyFirst,
             location: {
               type: LocationType.PlayerTheaterTrophySpot,
               player: player
             }
-          })
+          }),
+          ...this.material(MaterialType.PopcornTokens)
+            .money(popcornTokens)
+            .addMoney(this.game.players.length === 2 ? 3 : 5, {
+              type: LocationType.PlayerPopcornPileUnderPopcornCupSpot,
+              player: player
+            })
+        ] as MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[]
+    )
+    if (this.game.players.length > 2 && firstGroup.length === 1) {
+      const secondGroup = maxBy(entriesSortedByDescendingCost.slice(1), ([cost, _playerWithCost]) => cost)![1]
+      consequences.push(
+        ...secondGroup.flatMap(
+          ({ player }) =>
+            [
+              theaterTrophyMaterial.createItem({
+                id: TheaterTrophy.TrophySecond,
+                location: {
+                  type: LocationType.PlayerTheaterTrophySpot,
+                  player: player
+                }
+              }),
+              ...this.material(MaterialType.PopcornTokens).money(popcornTokens).addMoney(3, {
+                type: LocationType.PlayerPopcornPileUnderPopcornCupSpot,
+                player: player
+              })
+            ] as MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[]
         )
       )
     }

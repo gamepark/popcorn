@@ -34,23 +34,22 @@ export class EndOfRoundPendingActionsNextPhaseTransitionRule extends Simultaneou
     pendingActionsPerPlayer.forEach(({ player, pendingActions }) => {
       this.memorize(Memory.PendingActions, pendingActions, player)
     })
+    const movieCardIds = this.material(MaterialType.MovieCards)
+      .location(LocationType.MovieCardSpotOnBottomPlayerCinemaBoard)
+      .getItems<Required<PlayableMovieCardId>>()
+      .map((movieCard) => movieCard.id.front)
     this.memorize<AvailableMovieActionsMemory>(Memory.AvailableMovieActions, (previousAvailableMovieActionsMemory) => {
-      return Object.entries(previousAvailableMovieActionsMemory)
-        .map<[Exclude<MovieCard, MovieCard.FinalShowing>, boolean[]]>(([key, previousAvailableActions]) => [
-          parseInt(key) as Exclude<MovieCard, MovieCard.FinalShowing>,
-          previousAvailableActions
-        ])
-        .reduce(
-          (newAvailableMovieActions, [movieCardId, previousAvailableMovieActions]) => {
-            return {
-              ...newAvailableMovieActions,
-              [movieCardId]: movieCardCharacteristics[movieCardId].actions
-                .map((movieAction) => movieAction !== MovieAction.None)
-                .slice(0, previousAvailableMovieActions.length - 1)
-            }
-          },
-          {} as Partial<Record<MovieCard, boolean[]>>
-        )
+      return movieCardIds.reduce(
+        (newAvailableMovieActions, movieCardId) => {
+          return {
+            ...newAvailableMovieActions,
+            [movieCardId]: movieCardCharacteristics[movieCardId].actions
+              .map((movieAction) => movieAction !== MovieAction.None)
+              .slice(0, previousAvailableMovieActionsMemory[movieCardId]!.length - 1)
+          }
+        },
+        {} as Partial<Record<MovieCard, boolean[]>>
+      )
     })
     const nextPlayer = this.material(MaterialType.FirstPlayerMarker).getItem()!.location.player!
     const nextPlayerIndex = this.game.players.indexOf(nextPlayer)

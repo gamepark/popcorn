@@ -3,6 +3,7 @@ import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 import { moneyTokens } from '../../material/MoneyToken'
 import { popcornTokens } from '../../material/PopcornToken'
+import { Memory } from '../../Memory'
 import { PlayerColor } from '../../PlayerColor'
 import { RuleId } from '../RuleId'
 
@@ -27,6 +28,7 @@ export class FinalEndOfRoundPhaseMoneyRule extends SimultaneousRule<PlayerColor,
       .flatMap((player) => {
         const playerMoney = moneyTokenMaterial.player(player).count
         const equivalentPopcornToAdd = Math.floor(playerMoney / 5)
+        this.memorize(Memory.MoneyPopcorn, equivalentPopcornToAdd, player)
         return (
           playerMovieSliderMaterial
             .player(player)

@@ -24,4 +24,8 @@ export class OneSeat3MoneyCharacteristics implements TheaterTileCharacteristics 
   public getSeatColors(): SeatColor[] {
     return this.seatColors
   }
+
+  public getActions(): SeatAction[] {
+    return this.seatActions
+  }
 }

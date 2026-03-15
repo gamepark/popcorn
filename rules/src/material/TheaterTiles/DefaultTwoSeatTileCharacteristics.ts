@@ -24,4 +24,8 @@ export class DefaultTwoSeatTileCharacteristics implements TheaterTileCharacteris
   public getSeatColors(): SeatColor[] {
     return this.seatColors
   }
+
+  public getActions(): SeatAction[] {
+    return this.seatActions
+  }
 }
