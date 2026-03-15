@@ -10,6 +10,8 @@ import { LocalMoveType, MoveKind } from '@gamepark/rules-api'
 import { createPortal } from 'react-dom'
 import { moneyTokenDescription } from '../material/MoneyTokenDescription.ts'
 import { popcornTokenDescription } from '../material/PopcornTokenDescription.ts'
+import unknownGuestPawn from '../images/GuestPawns/UnknownGuestPawn.png'
+import unknownGuestPawnExit from '../images/GuestPawns/UnknownGuestPawnExit.png'
 
 export const PlayerPanels = () => {
   const players = usePlayers<PlayerColor>({ sortFromMe: true })
@@ -27,6 +29,7 @@ export const PlayerPanels = () => {
     <>
       {players.map((player, index) => {
         const isClickable = player.id != currentView
+        const isGameOver = rules?.isOver() ?? false
         const moneyCounter = {
           value:
             rules?.material(MaterialType.MoneyTokens).location(LocationType.PlayerMoneyPileSpot).player(player.id).money<MoneyToken>(moneyTokens).count ?? 0,
@@ -35,19 +38,27 @@ export const PlayerPanels = () => {
             border-radius: 50%;
           `
         }
+        const mainCounter =
+          activePlayer?.id === player.id || isGameOver
+            ? {
+                value:
+                  rules
+                    ?.material(MaterialType.PopcornTokens)
+                    .location(LocationType.PlayerPopcornPileUnderPopcornCupSpot)
+                    .player(player.id)
+                    .money<PopcornToken>(popcornTokens).count ?? 0,
+                image: popcornTokenDescription.images[PopcornToken.Token1]
+              }
+            : undefined
+        const guestLocationType = isGameOver ? LocationType.GuestPawnExitZoneSpotOnTopPlayerCinemaBoard : LocationType.PlayerGuestPawnsUnderClothBagSpot
         const counters: CounterProps[] =
-          activePlayer?.id === player.id
+          activePlayer?.id === player.id || isGameOver
             ? [
+                moneyCounter,
                 {
-                  value:
-                    rules
-                      ?.material(MaterialType.PopcornTokens)
-                      .location(LocationType.PlayerPopcornPileUnderPopcornCupSpot)
-                      .player(player.id)
-                      .money<PopcornToken>(popcornTokens).count ?? 0,
-                  image: popcornTokenDescription.images[PopcornToken.Token1]
-                },
-                moneyCounter
+                  value: rules?.material(MaterialType.GuestPawns).location(guestLocationType).player(player.id).length ?? 0,
+                  image: isGameOver ? unknownGuestPawnExit : unknownGuestPawn
+                }
               ]
             : [moneyCounter]
         return (
@@ -56,7 +67,9 @@ export const PlayerPanels = () => {
             player={player}
             css={[panelPosition(index), isClickable && clickablePanel]}
             activeRing
+            mainCounter={mainCounter}
             counters={counters}
+            countersPerLine={3}
             onClick={(e) => {
               e.preventDefault()
               e.stopPropagation()
