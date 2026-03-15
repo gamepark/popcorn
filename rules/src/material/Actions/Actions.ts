@@ -6,7 +6,6 @@ import { PickTheaterTileToActivateAction } from './PickTheaterTileToActivateActi
 import { PlaceGuestAction } from './PlaceGuestAction'
 import { DiscardAwardCardAction } from './DiscardAwardCardAction'
 import { PickReserveOrExitZoneGuestAction } from './PickReserveOrExitZoneGuestAction'
-import { PlaceAdvertisingTokenAction } from './PlaceAdvertisingTokenAction'
 import { PlaceCinemaGuestInReserveAction } from './PlaceCinemaGuestInReserveAction'
 import { PlaceExitZoneGuestInBagAction } from './PlaceExitZoneGuestInBagAction'
 import { UseAdvertisingTokenAction } from './UseAdvertisingTokenAction'
@@ -19,7 +18,6 @@ export type Actions =
   | DiscardAwardCardAction
   | PickReserveOrExitZoneGuestAction
   | PickTheaterTileToActivateAction
-  | PlaceAdvertisingTokenAction
   | PlaceCinemaGuestInReserveAction
   | PlaceExitZoneGuestInBagAction
   | PlaceGuestAction

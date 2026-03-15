@@ -1,9 +1,13 @@
 import { RuleId } from '@gamepark/popcorn/rules/RuleId'
 import { ComponentType } from 'react'
+import { DiscardAwardCardHeader } from './actions/DiscardAwardCardHeader.tsx'
 import { BuyingPhaseHeader } from './BuyingPhaseHeader'
-import { DealAndDiscardAwardCardsHeader } from './DealAndDiscardAwardCardsHeader'
+import { FinalEndOfRoundPhaseAdvertisingTokenMovesHeader } from './FinalEndOfRoundPhaseAdvertisingTokenMovesHeader.tsx'
+import { ShowingsPhaseHeader } from './ShowingsPhaseHeader.tsx'
 
 export const Headers: Partial<Record<RuleId, ComponentType>> = {
-  [RuleId.DealAndDiscardAwardCards]: DealAndDiscardAwardCardsHeader,
-  [RuleId.BuyingPhaseRule]: BuyingPhaseHeader
+  [RuleId.DealAndDiscardAwardCards]: DiscardAwardCardHeader,
+  [RuleId.BuyingPhaseRule]: BuyingPhaseHeader,
+  [RuleId.ShowingsPhaseRule]: ShowingsPhaseHeader,
+  [RuleId.FinalEndOfRoundPhaseAdvertisingTokenMovesRule]: FinalEndOfRoundPhaseAdvertisingTokenMovesHeader
 }
