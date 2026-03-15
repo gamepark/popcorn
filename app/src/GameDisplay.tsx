@@ -1,5 +1,5 @@
 import { css } from '@emotion/react'
-import { GameTable, GameTableNavigation, DevToolsHub } from '@gamepark/react-game'
+import { DevToolsHub, GameTable, GameTableNavigation } from '@gamepark/react-game'
 import { PlayerPanels } from './panels/PlayerPanels'
 
 export function GameDisplay() {

@@ -38,5 +38,7 @@ export enum LocationType {
   PlayerTheaterTrophySpot,
   PlayerShowingsDrawnGuestSpot,
   MovieActionSpotOnMovieCard,
-  FinalShowingCardSpot
+  FinalShowingCardSpot,
+  PhasesHelpCardSpot,
+  ActionsHelpCardSpot
 }

@@ -9,8 +9,8 @@ import { SeatsNumber, TheaterTile, TheaterTileId } from '@gamepark/popcorn/mater
 import { Memory } from '@gamepark/popcorn/Memory'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
 import { RuleId } from '@gamepark/popcorn/rules/RuleId'
-import { ItemContext, ItemMenuButton, TokenDescription } from '@gamepark/react-game'
-import { isSelectItemType, Location, MaterialItem, MaterialMove } from '@gamepark/rules-api'
+import { ItemContext, ItemMenuButton, MaterialContext, TokenDescription } from '@gamepark/react-game'
+import { isSelectItemType, Location, MaterialItem, MaterialMove, MaterialMoveBuilder } from '@gamepark/rules-api'
 import React from 'react'
 import oneSeat1Front from '../images/Tiles/TheaterTiles/1Seat1Front.png'
 import oneSeat2Front from '../images/Tiles/TheaterTiles/1Seat2Front.png'
@@ -44,6 +44,14 @@ import threeSeat7Front from '../images/Tiles/TheaterTiles/3Seat7Front.png'
 import threeSeat8Front from '../images/Tiles/TheaterTiles/3Seat8Front.png'
 import threeSeatBack from '../images/Tiles/TheaterTiles/3SeatBack.png'
 import emptyTile from '../images/Tiles/TheaterTiles/EmptyTile.png'
+import { TheaterTileHelp } from './help/TheaterTileHelp.tsx'
+import displayLocationHelp = MaterialMoveBuilder.displayLocationHelp
+
+const LOCATION_TYPES_WHERE_FLIPPED_ON_TABLE = [
+  LocationType.OneSeatTheaterTileDeckSpot,
+  LocationType.TwoSeatTheaterTileDeckSpot,
+  LocationType.ThreeSeatTheaterTileDeckSpot
+]
 
 class TheaterTileDescription extends TokenDescription<PlayerColor, MaterialType, LocationType, TheaterTileId> {
   width = 4.3
@@ -91,6 +99,8 @@ class TheaterTileDescription extends TokenDescription<PlayerColor, MaterialType,
     [SeatsNumber.Default]: emptyTile
   }
 
+  help = TheaterTileHelp
+
   public canDrag(move: MaterialMove<PlayerColor, MaterialType, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType>): boolean {
     return super.canDrag(move, context) || (isBuyTheaterTileCustomMove(move) && move.data.boughtTileIndex === context.index)
   }
@@ -110,7 +120,10 @@ class TheaterTileDescription extends TokenDescription<PlayerColor, MaterialType,
     return super.getMoveDropLocations(context, move)
   }
 
-  public isMenuAlwaysVisible(item: MaterialItem<PlayerColor, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType>): boolean {
+  public isMenuAlwaysVisible(
+    item: MaterialItem<PlayerColor, LocationType, TheaterTileId>,
+    context: ItemContext<PlayerColor, MaterialType, LocationType>
+  ): boolean {
     if (context.player !== undefined) {
       if (context.rules.game.rule?.id === RuleId.ShowingsPhaseRule && context.rules.game.players.includes(context.player)) {
         const pendingActions = context.rules.remind<Actions[]>(Memory.PendingActions, context.player)
@@ -123,7 +136,7 @@ class TheaterTileDescription extends TokenDescription<PlayerColor, MaterialType,
   }
 
   public getItemMenu(
-    item: MaterialItem<PlayerColor, LocationType>,
+    item: MaterialItem<PlayerColor, LocationType, TheaterTileId>,
     context: ItemContext<PlayerColor, MaterialType, LocationType>,
     legalMoves: MaterialMove<PlayerColor, MaterialType, LocationType>[]
   ): React.ReactNode {
@@ -166,6 +179,25 @@ class TheaterTileDescription extends TokenDescription<PlayerColor, MaterialType,
       }
     }
     return super.getItemMenu(item, context, legalMoves)
+  }
+
+  public isFlippedOnTable(item: Partial<MaterialItem<PlayerColor, LocationType>>, context: MaterialContext<PlayerColor, MaterialType, LocationType>): boolean {
+    if (LOCATION_TYPES_WHERE_FLIPPED_ON_TABLE.includes(item.location?.type ?? LocationType.OneSeatTheaterTileRowSpot)) {
+      return true
+    }
+    return super.isFlippedOnTable(item, context)
+  }
+
+  public displayHelp(
+    item: MaterialItem<PlayerColor, LocationType, TheaterTileId>,
+    context: ItemContext<PlayerColor, MaterialType, LocationType>
+  ): MaterialMove<PlayerColor, MaterialType, LocationType> | undefined {
+    if (!context.rules.isOver() && LOCATION_TYPES_WHERE_FLIPPED_ON_TABLE.includes(item.location.type)) {
+      return displayLocationHelp({
+        type: item.location.type
+      })
+    }
+    return super.displayHelp(item, context)
   }
 }
 

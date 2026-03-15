@@ -11,7 +11,7 @@ class PlayerTheaterTrophyLocator extends Locator<PlayerColor, MaterialType, Loca
     location: Location<PlayerColor, LocationType>,
     context: MaterialContext<PlayerColor, MaterialType, LocationType>
   ): Partial<Coordinates> {
-    return offsetPlayerCinemaBoardCoordinates(context, location.player, 15, -12)
+    return offsetPlayerCinemaBoardCoordinates(context, location.player, -22, 4)
   }
 
   public hide(item: MaterialItem<PlayerColor, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType>): boolean {

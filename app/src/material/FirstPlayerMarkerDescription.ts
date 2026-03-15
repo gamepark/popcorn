@@ -3,6 +3,7 @@ import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
 import { TokenDescription } from '@gamepark/react-game'
 import firstPlayerMarker from '../images/Tokens/FirstPlayerToken.png'
+import { FirstPlayerMarkerHelp } from './help/FirstPlayerMarkerHelp.tsx'
 
 class FirstPlayerMarkerDescription extends TokenDescription<PlayerColor, MaterialType, LocationType> {
   width = 5.55
@@ -10,6 +11,8 @@ class FirstPlayerMarkerDescription extends TokenDescription<PlayerColor, Materia
   transparency = true
 
   image = firstPlayerMarker
+
+  help = FirstPlayerMarkerHelp
 }
 
 export const firstPlayerMarkerDescription = new FirstPlayerMarkerDescription()

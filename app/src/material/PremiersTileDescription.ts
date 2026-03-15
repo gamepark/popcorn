@@ -3,6 +3,7 @@ import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
 import { TokenDescription } from '@gamepark/react-game'
 import premiersTile from '../images/Tiles/MovieTiles/PremiersTile.png'
+import { PremiersTileHelp } from './help/PremiersTileHelp.tsx'
 
 class PremiersTileDescription extends TokenDescription<PlayerColor, MaterialType, LocationType> {
   width = 5
@@ -17,6 +18,8 @@ class PremiersTileDescription extends TokenDescription<PlayerColor, MaterialType
       type: LocationType.PremiersTileSpot
     }
   }
+
+  help = PremiersTileHelp
 }
 
 export const premiersTileDescription = new PremiersTileDescription()

@@ -2,7 +2,7 @@ import { AdvertisingTokenSpot } from '@gamepark/popcorn/material/AdvertisingToke
 import { LocationType } from '@gamepark/popcorn/material/LocationType'
 import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
-import { PileLocator } from '@gamepark/react-game'
+import { DropAreaDescription, PileLocator } from '@gamepark/react-game'
 import { Coordinates, Location, XYCoordinates } from '@gamepark/rules-api'
 
 const spotCoordinates: Record<AdvertisingTokenSpot, XYCoordinates> = {
@@ -18,6 +18,7 @@ class AdvertisingTokenSpotOnAdvertisingBoardLocator extends PileLocator<PlayerCo
   parentItemType = MaterialType.AdvertisingBoard
   radius = { x: 2, y: 0.4 }
   limit = 24
+  locationDescription = new AdvertisingTokenSpotOnAdvertisingBoardLocationDescription()
 
   public getCoordinates(location: Location<PlayerColor, LocationType, AdvertisingTokenSpot>): Partial<Coordinates> {
     if (location.id === undefined) {
@@ -25,6 +26,11 @@ class AdvertisingTokenSpotOnAdvertisingBoardLocator extends PileLocator<PlayerCo
     }
     return spotCoordinates[location.id]
   }
+}
+
+class AdvertisingTokenSpotOnAdvertisingBoardLocationDescription extends DropAreaDescription {
+  height = 2.44
+  width = 4.76
 }
 
 export const advertisingTokenSpotOnAdvertisingBoardLocator = new AdvertisingTokenSpotOnAdvertisingBoardLocator()
