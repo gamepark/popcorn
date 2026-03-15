@@ -1,31 +1,65 @@
+import { Actions } from '@gamepark/popcorn/material/Actions/Actions.ts'
+import { ActionType } from '@gamepark/popcorn/material/Actions/ActionType.ts'
 import { LocationType } from '@gamepark/popcorn/material/LocationType.ts'
 import { MaterialType } from '@gamepark/popcorn/material/MaterialType.ts'
+import { Memory } from '@gamepark/popcorn/Memory.ts'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
-import { PopcornRules } from '@gamepark/popcorn/PopcornRules'
-import { PlayMoveButton, useLegalMoves, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
+import { PopcornRules } from '@gamepark/popcorn/PopcornRules.ts'
+import { isFirstTurn } from '@gamepark/popcorn/rules/utils/isFirstTurn.util.ts'
+import { HeaderText, PlayMoveButton, useLegalMoves, useRules } from '@gamepark/react-game'
 import { isStartPlayerTurn, isStartSimultaneousRule, MaterialMove } from '@gamepark/rules-api'
 import { FC } from 'react'
-
-// const PASS_MOVE_TIME = 30
+import { Trans } from 'react-i18next'
+import { getPendingActionHeader } from './utils/getPendingActionHeader.tsx'
 
 export const BuyingPhaseHeader: FC = () => {
-  //const passMove = useLegalMove<MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>>(is)
-  const me = usePlayerId<PlayerColor>()
   const rules = useRules<PopcornRules>()
-  const activePlayer = rules?.getActivePlayer()
-  const playerName = usePlayerName(activePlayer)
   const moves = useLegalMoves<MaterialMove<PlayerColor, MaterialType, LocationType>>()
   const passMove = moves.find(isStartPlayerTurn) ?? moves.find(isStartSimultaneousRule)
   const isPassOnlyMove = moves.length === 1 && passMove !== undefined
-  if (me === activePlayer) {
+  const pendingActions = rules?.remind<Actions[]>(Memory.PendingActions, rules?.activePlayer)
+  if (pendingActions !== undefined && pendingActions.length > 0) {
+    const pendingAction = pendingActions[0]
+    if (
+      pendingAction.type !== ActionType.BuyMovieCard &&
+      pendingAction.type !== ActionType.BuyTheaterTile &&
+      pendingAction.type !== ActionType.UseAdvertisingToken
+    ) {
+      return getPendingActionHeader(pendingAction)
+    }
+  }
+  if (isFirstTurn(rules)) {
     return (
-      <>
-        You can buy a movie, a theater, activate an advertising token or{' '}
-        <PlayMoveButton move={passMove} {...(isPassOnlyMove ? { auto: 10 } : {})}>
-          PASS
-        </PlayMoveButton>
-      </>
+      <HeaderText
+        code="buyingPhase.firstTurn"
+        defaults={{
+          you: 'You can buy a movie or <pass/>',
+          player: '{player} can buy a movie or pass'
+        }}
+        components={{
+          pass: (
+            <PlayMoveButton move={passMove} {...(isPassOnlyMove ? { auto: 10 } : {})}>
+              <Trans i18nKey="header.button.passMove" defaults="pass" />
+            </PlayMoveButton>
+          )
+        }}
+      />
     )
   }
-  return <>{playerName} can buy a movie, a theater, activate an advertising token or pass</>
+  return (
+    <HeaderText
+      code="buyingPhase"
+      defaults={{
+        you: 'You can buy a movie, a theater, activate an advertising token or <pass/>',
+        player: '{player} can buy a movie, a theater, activate an advertising token or pass'
+      }}
+      components={{
+        pass: (
+          <PlayMoveButton move={passMove} {...(isPassOnlyMove ? { auto: 10 } : {})}>
+            <Trans i18nKey="header.button.passMove" defaults="pass" />
+          </PlayMoveButton>
+        )
+      }}
+    />
+  )
 }

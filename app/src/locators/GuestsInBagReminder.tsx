@@ -38,15 +38,15 @@ const reminderStyle = css`
 `
 
 const pictureStyle = css`
-  height: 1.5em;
+  height: 1.25em;
   flex: 1;
   align-self: center;
-  padding-left: 0.2em;
+  padding-left: 0.4em;
   padding-top: 0.2em;
 `
 
 const numberStyle = css`
-  font-size: 1.5em;
+  font-size: 1.25em;
   padding: 0.2em;
   overflow: hidden;
   white-space: nowrap;
