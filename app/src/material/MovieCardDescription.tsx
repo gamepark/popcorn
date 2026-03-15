@@ -10,7 +10,7 @@ import { Memory } from '@gamepark/popcorn/Memory'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
 import { RuleId } from '@gamepark/popcorn/rules/RuleId'
 import { CardDescription, ItemContext, ItemMenuButton, MaterialContext } from '@gamepark/react-game'
-import { Location, MaterialItem, MaterialMove } from '@gamepark/rules-api'
+import { Location, MaterialItem, MaterialMove, MaterialMoveBuilder } from '@gamepark/rules-api'
 import React from 'react'
 import { Trans } from 'react-i18next'
 import blue5678 from '../images/Cards/Movies/en/Blue5678.jpg'
@@ -64,10 +64,16 @@ import yellowTheAdventuresOfPewPew from '../images/Cards/Movies/en/YellowTheAdve
 import yellowTheFirePrincess from '../images/Cards/Movies/en/YellowTheFirePrincess.jpg'
 import yellowTheKids from '../images/Cards/Movies/en/YellowTheKids.jpg'
 import yellowWhatABunchOfIdiots3 from '../images/Cards/Movies/en/YellowWhatABunchOfIdiots3.jpg'
+import { MovieCardHelp } from './help/MovieCardHelp.tsx'
+import displayLocationHelp = MaterialMoveBuilder.displayLocationHelp
 
 export class MovieCardDescription extends CardDescription<PlayerColor, MaterialType, LocationType, MovieCardId> {
   width = 7
   height = 7
+
+  stockLocation = {
+    type: LocationType.MovieCardDeckSpot
+  }
 
   images = {
     [MovieCard.FirstMovieBlueRosebud]: firstMovieBlueRosebud,
@@ -126,13 +132,18 @@ export class MovieCardDescription extends CardDescription<PlayerColor, MaterialT
     [MovieCardType.Movie]: movieBack
   }
 
-  public getStaticItems(_context: MaterialContext<PlayerColor, MaterialType, LocationType>): MaterialItem<PlayerColor, LocationType>[] {
-    const numberOfCardsBelowFinalShowing = _context.rules.players.length === 2 ? 5 : 10
-    const numberOfCardsInDeck = _context.rules.material(MaterialType.MovieCards).location(LocationType.MovieCardDeckSpot).length
+  help = MovieCardHelp
+
+  public getStaticItems(context: MaterialContext<PlayerColor, MaterialType, LocationType>): MaterialItem<PlayerColor, LocationType>[] {
+    const numberOfCardsBelowFinalShowing = context.rules.players.length === 2 ? 10 : 5
+    const numberOfCardsInDeck = context.rules.material(MaterialType.MovieCards).location(LocationType.MovieCardDeckSpot).length
     return numberOfCardsInDeck <= numberOfCardsBelowFinalShowing
       ? [
           {
-            id: MovieCard.FinalShowing,
+            id: {
+              front: MovieCard.FinalShowing,
+              back: MovieCardType.Movie
+            },
             location: {
               type: LocationType.FinalShowingCardSpot
             }
@@ -208,6 +219,34 @@ export class MovieCardDescription extends CardDescription<PlayerColor, MaterialT
       return
     }
     return
+  }
+
+  public isFlippedOnTable(item: Partial<MaterialItem<PlayerColor, LocationType>>, context: MaterialContext<PlayerColor, MaterialType, LocationType>): boolean {
+    if (
+      item.location?.type === LocationType.MovieCardDeckSpot ||
+      (item.location?.type === LocationType.PlayerMovieCardArchiveSpot && context.player !== item.location.player)
+    ) {
+      return true
+    }
+    return super.isFlippedOnTable(item, context)
+  }
+
+  public displayHelp(
+    item: MaterialItem<PlayerColor, LocationType>,
+    context: ItemContext<PlayerColor, MaterialType, LocationType>
+  ): MaterialMove<PlayerColor, MaterialType, LocationType> | undefined {
+    if (
+      !context.rules.isOver() &&
+      (item.location.type === LocationType.MovieCardDeckSpot ||
+        (item.location.type === LocationType.PlayerMovieCardArchiveSpot && context.player !== item.location.player))
+    ) {
+      const location = { type: item.location.type } as Location<PlayerColor, LocationType>
+      if (item.location.player !== undefined) {
+        location.player = item.location.player
+      }
+      return displayLocationHelp(location)
+    }
+    return super.displayHelp(item, context)
   }
 
   private createItemMenuForBuyingPhase(
