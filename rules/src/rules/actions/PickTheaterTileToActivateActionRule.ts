@@ -1,20 +1,20 @@
 import { isSelectItemType, ItemMove, MaterialItem, MaterialMove, PlayMoveContext } from '@gamepark/rules-api'
 import { range } from 'es-toolkit'
 import { Actions } from '../../material/Actions/Actions'
-import { ActionType } from '../../material/Actions/ActionType'
 import { ChooseMovieActionAction } from '../../material/Actions/ChooseMovieActionAction'
 import { ChooseSeatActionAction } from '../../material/Actions/ChooseSeatActionAction'
 import { PickTheaterTileToActivateAction } from '../../material/Actions/PickTheaterTileToActivateAction'
 import { GuestPawn } from '../../material/GuestPawn'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
-import { getMovieColorFromGuestPawn, movieCardCharacteristics } from '../../material/MovieCard'
-import { BuyableTheaterTileId, getSeatColorFromGuestPawn, SeatColor, TheaterTileId, theaterTilesCharacteristics } from '../../material/TheaterTile'
+import { TheaterTileId, theaterTilesCharacteristics } from '../../material/TheaterTile'
 import { TheaterTileCharacteristics } from '../../material/TheaterTiles/TheaterTileCharacteristics'
 import { Memory } from '../../Memory'
 import { PlayerColor } from '../../PlayerColor'
 import { RuleId } from '../RuleId'
 import { ActionRule } from './ActionRule'
+import { buildPendingActionsForGuest } from './utils/buildPendingActionsForGuest'
+import { getMovieColorFromSpot } from './utils/getMovieColorFromSpot'
 
 export class PickTheaterTileToActivateActionRule extends ActionRule<PickTheaterTileToActivateAction> {
   public consequencesBeforeRuleForPlayer(): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
@@ -95,30 +95,13 @@ export class PickTheaterTileToActivateActionRule extends ActionRule<PickTheaterT
     guestPawnsOnTileIndexes: number[]
   ): (ChooseSeatActionAction | ChooseMovieActionAction)[] {
     return range(0, guestPawnsOnTile.length).flatMap((index) => {
-      const actionsToPush: (ChooseSeatActionAction | ChooseMovieActionAction)[] = []
       const guestPawn = guestPawnsOnTile[index]
       const guestPawnColor = guestPawn.id
+      const guestPawnIndex = guestPawnsOnTileIndexes[index]
       const seatColor = tileCharacteristics.getSeatColor(guestPawn.location.x ?? 0)
-      if (seatColor !== undefined && (seatColor === SeatColor.Grey || seatColor === getSeatColorFromGuestPawn(guestPawnColor))) {
-        actionsToPush.push({
-          type: ActionType.ChooseSeatAction,
-          guestIndex: guestPawnsOnTileIndexes[index]
-        })
-      }
       const parentTheaterTile = this.material(MaterialType.TheaterTiles).index(guestPawn.location.parent).getItems<Required<TheaterTileId>>()[0]
-      const movieCard = this.material(MaterialType.MovieCards)
-        .player(parentTheaterTile.location.player)
-        .location(LocationType.MovieCardSpotOnBottomPlayerCinemaBoard)
-        .location((l) => l.x === parentTheaterTile.location.x)
-        .getItems<Required<BuyableTheaterTileId>>()[0]
-      const movieCharacteristics = movieCardCharacteristics[movieCard.id.front]
-      if (movieCharacteristics.color === getMovieColorFromGuestPawn(guestPawnColor)) {
-        actionsToPush.push({
-          type: ActionType.ChooseMovieAction,
-          guestIndex: guestPawnsOnTileIndexes[index]
-        })
-      }
-      return actionsToPush
+      const movieColor = getMovieColorFromSpot(this, parentTheaterTile.location.player!, parentTheaterTile.location.x ?? 0)
+      return buildPendingActionsForGuest(seatColor, guestPawnColor, guestPawnIndex, movieColor)
     })
   }
 
