@@ -1,10 +1,11 @@
-import { MaterialMove, PlayMoveContext, RuleMove, RuleStep, SimultaneousRule } from '@gamepark/rules-api'
+import { PlayMoveContext, RuleMove, RuleStep, SimultaneousRule } from '@gamepark/rules-api'
 import { Actions } from '../../material/Actions/Actions'
 import { ActionType } from '../../material/Actions/ActionType'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 import { MoneyToken, moneyTokens } from '../../material/MoneyToken'
 import { MovieAction, MovieCard, movieCardCharacteristics, PlayableMovieCardId } from '../../material/MovieCard'
+import { PopcornMove } from '../../material/PopcornMoves'
 import { BuyableTheaterTileId, theaterTilesCharacteristics } from '../../material/TheaterTile'
 import { AvailableMovieActionsMemory, Memory } from '../../Memory'
 import { PlayerColor } from '../../PlayerColor'
@@ -16,20 +17,16 @@ const BUYABLE_THEATER_TILES_LOCATION_TYPES = [
   LocationType.ThreeSeatTheaterTileRowSpot
 ]
 
-export class EndOfRoundPendingActionsNextPhaseTransitionRule extends SimultaneousRule<PlayerColor, MaterialType, LocationType, RuleId> {
-  public getActivePlayerLegalMoves(_player: PlayerColor): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
+export class EndOfRoundPendingActionsNextPhaseTransitionRule extends SimultaneousRule<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor> {
+  public getActivePlayerLegalMoves(_player: PlayerColor): PopcornMove[] {
     return []
   }
 
-  public getMovesAfterPlayersDone(): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
+  public getMovesAfterPlayersDone(): PopcornMove[] {
     return []
   }
 
-  public onRuleStart(
-    _move: RuleMove<PlayerColor, RuleId>,
-    _previousRule?: RuleStep,
-    _context?: PlayMoveContext
-  ): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
+  public onRuleStart(_move: RuleMove<PlayerColor, RuleId>, _previousRule?: RuleStep, _context?: PlayMoveContext): PopcornMove[] {
     const pendingActionsPerPlayer = this.buildPlayersPendingActions()
     pendingActionsPerPlayer.forEach(({ player, pendingActions }) => {
       this.memorize(Memory.PendingActions, pendingActions, player)
@@ -85,13 +82,13 @@ export class EndOfRoundPendingActionsNextPhaseTransitionRule extends Simultaneou
           movieCardCharacteristics[movieCard.id.front].getPrice(movieCard.location.type as LocationType.PremiersRowSpot | LocationType.FeaturesRowSpot) <=
           playerMoney
       )
-      if (movieCardsPlayerCanAfford.length > 0) {
+      if (movieCardsPlayerCanAfford.exists) {
         playerPendingActions.push({ type: ActionType.BuyMovieCard })
       }
-      if (theaterTilePlayerCanAfford.length > 0) {
+      if (theaterTilePlayerCanAfford.exists) {
         playerPendingActions.push({ type: ActionType.BuyTheaterTile })
       }
-      if (advertisingTokenOnAdvertisingBoardMaterial.id<PlayerColor>(player).length > 0) {
+      if (advertisingTokenOnAdvertisingBoardMaterial.id<PlayerColor>(player).exists) {
         playerPendingActions.push({ type: ActionType.UseAdvertisingToken })
       }
       return { player: player, pendingActions: playerPendingActions }

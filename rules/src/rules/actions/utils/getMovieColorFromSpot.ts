@@ -7,7 +7,7 @@ import { PlayerColor } from '../../../PlayerColor'
 import { RuleId } from '../../RuleId'
 
 export const getMovieColorFromSpot = (
-  rule: MaterialRulesPart<PlayerColor, MaterialType, LocationType, RuleId>,
+  rule: MaterialRulesPart<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>,
   player: PlayerColor,
   movieSpot: number
 ): MovieColor => {

@@ -21,7 +21,8 @@ export const buildPendingActionsForGuest = (
   if (movieColor === getMovieColorFromGuestPawn(guestPawnColor)) {
     actionsToPush.push({
       type: ActionType.ChooseMovieAction,
-      guestIndex: guestPawnIndex
+      guestIndex: guestPawnIndex,
+      isSeatAction: false
     })
   }
   return actionsToPush

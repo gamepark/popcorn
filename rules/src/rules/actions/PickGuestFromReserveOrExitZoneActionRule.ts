@@ -1,20 +1,17 @@
-import { isMoveItemType, ItemMove, MaterialMove, MoveItem, PlayMoveContext } from '@gamepark/rules-api'
+import { ItemMove, MoveItem, PlayMoveContext } from '@gamepark/rules-api'
 import { GamePhase } from '../../GamePhase'
-import { Actions } from '../../material/Actions/Actions'
 import { ActionType } from '../../material/Actions/ActionType'
 import { PickReserveOrExitZoneGuestAction } from '../../material/Actions/PickReserveOrExitZoneGuestAction'
 import { GuestPawn, guestPawns } from '../../material/GuestPawn'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 import { PlayableMovieCardId } from '../../material/MovieCard'
-import { Memory } from '../../Memory'
+import { isPopcornMoveItemType, PopcornMove } from '../../material/PopcornMoves'
 import { PlayerColor } from '../../PlayerColor'
-import { RuleId } from '../RuleId'
-import { ActionRule } from './ActionRule'
-import { getBuyingFilmCardConsequences } from './utils/movieOrSeatActionConsequences.util'
+import { AudienceMoveOrMovieOrSeatActionRule } from './AudienceMoveOrMovieOrSeatActionRule'
 
-export class PickGuestFromReserveOrExitZoneActionRule extends ActionRule<PickReserveOrExitZoneGuestAction> {
-  public getActivePlayerLegalMoves(currentPlayer: PlayerColor): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+export class PickGuestFromReserveOrExitZoneActionRule extends AudienceMoveOrMovieOrSeatActionRule<PickReserveOrExitZoneGuestAction> {
+  public getActivePlayerLegalMoves(currentPlayer: PlayerColor): PopcornMove[] {
     const guestColor = this.guestPawnColorFromMemory
     if (guestColor === GuestPawn.White) {
       return this.game.players.flatMap((player) =>
@@ -34,7 +31,7 @@ export class PickGuestFromReserveOrExitZoneActionRule extends ActionRule<PickRes
     }
     if (guestColor !== undefined) {
       const reserveGuestMaterial = this.material(MaterialType.GuestPawns).location(LocationType.GuestPawnReserveSpot).id<GuestPawn>(guestColor)
-      if (reserveGuestMaterial.length > 0) {
+      if (reserveGuestMaterial.exists) {
         return reserveGuestMaterial.moveItems({
           type: LocationType.PlayerGuestPawnsUnderClothBagSpot,
           player: currentPlayer
@@ -58,7 +55,7 @@ export class PickGuestFromReserveOrExitZoneActionRule extends ActionRule<PickRes
         .filter((color) => color !== GuestPawn.White)
         .flatMap((color) => {
           const guestInReserve = reservePawnMaterial.id(color)
-          if (guestInReserve.length > 0) {
+          if (guestInReserve.exists) {
             return guestInReserve.moveItems(playerBagLocation)
           }
           return exitZonePawnMaterial.id(color).moveItems(playerBagLocation)
@@ -66,37 +63,33 @@ export class PickGuestFromReserveOrExitZoneActionRule extends ActionRule<PickRes
     }
   }
 
-  public afterItemMove(
-    move: ItemMove<PlayerColor, MaterialType, LocationType>,
-    context?: PlayMoveContext
-  ): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
-    if (
-      isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.GuestPawns)(move) &&
-      move.location.type === LocationType.PlayerGuestPawnsUnderClothBagSpot
-    ) {
+  public afterItemMove(move: ItemMove<PlayerColor, MaterialType, LocationType>, context?: PlayMoveContext): PopcornMove[] {
+    if (isPopcornMoveItemType(MaterialType.GuestPawns)(move) && move.location.type === LocationType.PlayerGuestPawnsUnderClothBagSpot) {
       const playerDoingAction = this.getPlayerDoingAction(move)
       this.removeCurrentActionForPlayer(playerDoingAction)
+      const consequences: PopcornMove[] = [
+        this.material(MaterialType.GuestPawns).location(LocationType.PlayerGuestPawnsUnderClothBagSpot).player(playerDoingAction).shuffle()
+      ]
       if (this.currentPhase === GamePhase.BuyingPhase && this.action.boughtCardData !== undefined) {
         const boughtCard = this.material(MaterialType.MovieCards).index(this.action.boughtCardData.boughtCardIndex).getItem<Required<PlayableMovieCardId>>()
         if (boughtCard === undefined) {
           throw new Error('Invalid buying card move')
         }
-        this.memorize<Actions[]>(
-          Memory.PendingActions,
-          (pendingActions) => pendingActions.filter((action) => action.type !== ActionType.BuyMovieCard),
-          this.action.boughtCardData.player
+        this.updateActionsForPlayer(this.action.boughtCardData.player, (pendingActions) =>
+          pendingActions.filter((action) => action.type !== ActionType.BuyMovieCard)
         )
-        return getBuyingFilmCardConsequences(this, playerDoingAction, boughtCard, this.action.boughtCardData.destinationSpot)
+        return consequences.concat(this.getBuyingFilmCardConsequences(playerDoingAction, boughtCard, this.action.boughtCardData.destinationSpot))
       }
+      return consequences
     }
     return super.afterItemMove(move, context)
   }
 
-  public consequencesBeforeRuleForPlayer(): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
+  public consequencesBeforeRuleForPlayer(): PopcornMove[] {
     return []
   }
 
-  public getMovesAfterPlayersDone(): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+  public getMovesAfterPlayersDone(): PopcornMove[] {
     return []
   }
 

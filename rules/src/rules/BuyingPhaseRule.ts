@@ -1,21 +1,21 @@
-import { CustomMove, isMoveItemType, isStartSimultaneousRule, ItemMove, MaterialMove, PlayerTurnRule, PlayMoveContext, RuleMove } from '@gamepark/rules-api'
+import { CustomMove, ItemMove, PlayerTurnRule, PlayMoveContext, RuleMove } from '@gamepark/rules-api'
 import { Actions } from '../material/Actions/Actions'
 import { ActionType } from '../material/Actions/ActionType'
-import { BuyMovieCardAction } from '../material/Actions/BuyMovieCardAction'
 import { CustomMoveType } from '../material/CustomMoveType'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
+import { isPopcornMoveItemType, isPopcornStartSimultaneousRule, PopcornMove } from '../material/PopcornMoves'
 import { Memory } from '../Memory'
 import { PlayerColor } from '../PlayerColor'
 import { RuleId } from './RuleId'
 import { getActionRule } from './utils/getActionRule.util'
 
-export class BuyingPhaseRule extends PlayerTurnRule<PlayerColor, MaterialType, LocationType, RuleId> {
+export class BuyingPhaseRule extends PlayerTurnRule<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor> {
   private get pendingActions(): Actions[] {
     return this.remind<Actions[]>(Memory.PendingActions, this.player)
   }
 
-  public getPlayerMoves(): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+  public getPlayerMoves(): PopcornMove[] {
     const pendingActions = this.pendingActions
     if (pendingActions.length === 0) {
       return []
@@ -28,14 +28,12 @@ export class BuyingPhaseRule extends PlayerTurnRule<PlayerColor, MaterialType, L
       const subRule = getActionRule(pendingActions[0], this)
       return subRule.getActivePlayerLegalMoves(this.player)
     }
-    const availableMoves: MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] = [
+    const availableMoves: PopcornMove[] = [
       this.isLastPlayer
         ? this.startSimultaneousRule<PlayerColor, RuleId>(RuleId.ShowingsPhaseRule)
         : this.startPlayerTurn<PlayerColor, RuleId>(RuleId.BuyingPhaseRule, this.nextPlayer)
     ]
-    const buyMovieCardPendingAction = this.pendingActions.find((pendingAction) => pendingAction.type === ActionType.BuyMovieCard) as
-      | BuyMovieCardAction
-      | undefined
+    const buyMovieCardPendingAction = this.pendingActions.find((pendingAction) => pendingAction.type === ActionType.BuyMovieCard)
     if (buyMovieCardPendingAction !== undefined) {
       const subRule = getActionRule(buyMovieCardPendingAction, this)
       availableMoves.push(...subRule.getActivePlayerLegalMoves(this.player))
@@ -53,7 +51,7 @@ export class BuyingPhaseRule extends PlayerTurnRule<PlayerColor, MaterialType, L
     return availableMoves
   }
 
-  public onCustomMove(move: CustomMove<CustomMoveType>, context?: PlayMoveContext): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+  public onCustomMove(move: CustomMove<CustomMoveType>, context?: PlayMoveContext): PopcornMove[] {
     const subRules = this.pendingActions.map((pendingAction) => getActionRule(pendingAction, this))
     const consequences = subRules.flatMap((rule) => rule.onCustomMove(move, context))
     if (this.pendingActions.length === 0) {
@@ -66,15 +64,8 @@ export class BuyingPhaseRule extends PlayerTurnRule<PlayerColor, MaterialType, L
     return consequences
   }
 
-  public afterItemMove(
-    move: ItemMove<PlayerColor, MaterialType, LocationType>,
-    context?: PlayMoveContext
-  ): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
-    if (
-      isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.AwardCards)(move) &&
-      move.location.type === LocationType.AwardCardDeckSpot &&
-      this.pendingActions.length === 0
-    ) {
+  public afterItemMove(move: ItemMove<PlayerColor, MaterialType, LocationType>, context?: PlayMoveContext): PopcornMove[] {
+    if (isPopcornMoveItemType(MaterialType.AwardCards)(move) && move.location.type === LocationType.AwardCardDeckSpot && this.pendingActions.length === 0) {
       return [
         this.isLastPlayer
           ? this.startSimultaneousRule<PlayerColor, RuleId>(RuleId.ShowingsPhaseRule)
@@ -86,8 +77,8 @@ export class BuyingPhaseRule extends PlayerTurnRule<PlayerColor, MaterialType, L
     if (
       this.pendingActions.length === 0 &&
       (consequences.length > 0 ||
-        (isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.GuestPawns)(move) &&
-          move.location.type === LocationType.PlayerGuestPawnsUnderClothBagSpot))
+        (isPopcornMoveItemType(MaterialType.GuestPawns)(move) &&
+          (move.location.type === LocationType.PlayerGuestPawnsUnderClothBagSpot || move.location.type === LocationType.GuestPawnReserveSpot)))
     ) {
       consequences.push(
         this.isLastPlayer
@@ -98,10 +89,7 @@ export class BuyingPhaseRule extends PlayerTurnRule<PlayerColor, MaterialType, L
     return consequences
   }
 
-  public beforeItemMove(
-    move: ItemMove<PlayerColor, MaterialType, LocationType>,
-    context?: PlayMoveContext
-  ): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
+  public beforeItemMove(move: ItemMove<PlayerColor, MaterialType, LocationType>, context?: PlayMoveContext): PopcornMove[] {
     const subRules = this.pendingActions.map((pendingAction) => getActionRule(pendingAction, this))
     return subRules.flatMap((rule) => rule.beforeItemMove(move, context))
   }
@@ -120,8 +108,8 @@ export class BuyingPhaseRule extends PlayerTurnRule<PlayerColor, MaterialType, L
     return this.player === lastPlayer
   }
 
-  public onRuleEnd(move: RuleMove<PlayerColor, RuleId>, _context?: PlayMoveContext): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
-    if (isStartSimultaneousRule<PlayerColor, MaterialType, LocationType, RuleId>(move) && move.id === RuleId.ShowingsPhaseRule) {
+  public onRuleEnd(move: RuleMove<PlayerColor, RuleId>, _context?: PlayMoveContext): PopcornMove[] {
+    if (isPopcornStartSimultaneousRule(move) && move.id === RuleId.ShowingsPhaseRule) {
       this.game.players.forEach((player) => {
         this.memorize<Actions[]>(Memory.PendingActions, [{ type: ActionType.PlaceGuests }], player)
       })

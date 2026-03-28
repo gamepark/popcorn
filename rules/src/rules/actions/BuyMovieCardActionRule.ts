@@ -1,4 +1,4 @@
-import { CustomMove, Location, MaterialMove, MoveItem, PlayMoveContext } from '@gamepark/rules-api'
+import { CustomMove, Location, MoveItem, PlayMoveContext } from '@gamepark/rules-api'
 import { range } from 'es-toolkit'
 import { Actions } from '../../material/Actions/Actions'
 import { ActionType } from '../../material/Actions/ActionType'
@@ -9,19 +9,17 @@ import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 import { MoneyToken, moneyTokens } from '../../material/MoneyToken'
 import { MovieCard, movieCardCharacteristics, MovieColor, PlayableMovieCardId } from '../../material/MovieCard'
+import { PopcornMove } from '../../material/PopcornMoves'
 import { Memory } from '../../Memory'
 import { PlayerColor } from '../../PlayerColor'
-import { RuleId } from '../RuleId'
-import { ActionRule } from './ActionRule'
-import { addPendingActionForPlayer } from './utils/addPendingActionForPlayer.util'
-import { getBuyingFilmCardConsequences } from './utils/movieOrSeatActionConsequences.util'
+import { AudienceMoveOrMovieOrSeatActionRule } from './AudienceMoveOrMovieOrSeatActionRule'
 
-export class BuyMovieCardActionRule extends ActionRule<BuyMovieCardAction> {
-  public consequencesBeforeRuleForPlayer(): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
+export class BuyMovieCardActionRule extends AudienceMoveOrMovieOrSeatActionRule<BuyMovieCardAction> {
+  public consequencesBeforeRuleForPlayer(): PopcornMove[] {
     return []
   }
 
-  public getActivePlayerLegalMoves(player: PlayerColor): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
+  public getActivePlayerLegalMoves(player: PlayerColor): PopcornMove[] {
     const numberOfDestinations =
       this.material(MaterialType.TheaterTiles)
         .location(LocationType.TheaterTileSpotOnTopPlayerCinemaBoard)
@@ -42,11 +40,11 @@ export class BuyMovieCardActionRule extends ActionRule<BuyMovieCardAction> {
     )
   }
 
-  public getMovesAfterPlayersDone(): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
+  public getMovesAfterPlayersDone(): PopcornMove[] {
     return []
   }
 
-  public onCustomMove(move: CustomMove<CustomMoveType>, context?: PlayMoveContext): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
+  public onCustomMove(move: CustomMove<CustomMoveType>, context?: PlayMoveContext): PopcornMove[] {
     if (isBuyMovieCardCustomMove(move)) {
       const boughtCard = this.material(MaterialType.MovieCards).index(move.data.boughtCardIndex).getItem<Required<PlayableMovieCardId>>()
       if (
@@ -56,7 +54,7 @@ export class BuyMovieCardActionRule extends ActionRule<BuyMovieCardAction> {
         throw new Error('Invalid bought card')
       }
       this.removeCurrentActionForPlayer(move.data.player)
-      const consequences: MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] = this.material(MaterialType.MoneyTokens)
+      const consequences: PopcornMove[] = this.material(MaterialType.MoneyTokens)
         .money<MoneyToken>(moneyTokens)
         .removeMoney(movieCardCharacteristics[boughtCard.id.front].getPrice(boughtCard.location.type), {
           type: LocationType.PlayerMoneyPileSpot,
@@ -71,20 +69,16 @@ export class BuyMovieCardActionRule extends ActionRule<BuyMovieCardAction> {
               l.type === LocationType.GuestPawnReserveSpot
           )
           .id(guestColorToPick)
-        if (pickableGuestsMaterial.length > 0) {
-          addPendingActionForPlayer(
-            this,
-            {
-              type: ActionType.PickReserveOrExitZoneGuest,
-              guest: guestColorToPick,
-              boughtCardData: move.data
-            },
-            move.data.player
-          )
+        if (pickableGuestsMaterial.exists) {
+          this.addPendingActionForPlayer(move.data.player, {
+            type: ActionType.PickReserveOrExitZoneGuest,
+            guest: guestColorToPick,
+            boughtCardData: move.data
+          })
           return consequences
         }
       }
-      return consequences.concat(getBuyingFilmCardConsequences(this, move.data.player, boughtCard, move.data.destinationSpot))
+      return consequences.concat(this.getBuyingFilmCardConsequences(move.data.player, boughtCard, move.data.destinationSpot))
     }
     return super.onCustomMove(move, context)
   }
