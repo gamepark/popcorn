@@ -28,7 +28,7 @@ export const AwardCardPopcornGivenLogComponent: FC<PopcornMoveComponentProps> = 
   return (
     <div css={logContainerCss}>
       <Trans
-        i18nKey=""
+        i18nKey="log.finalEndOfRoundPhaseAwardCardPoints.awardCardPoints"
         defaults="{player} {amount, plural, =0{doesn't gain any} other{gains #}} Popcorn (<popcorn/>) thanks to <awardCard/>"
         values={{ player: playerName, amount: amount }}
         components={{
