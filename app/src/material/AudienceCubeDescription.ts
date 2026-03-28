@@ -1,10 +1,11 @@
 import { LocationType } from '@gamepark/popcorn/material/LocationType'
 import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
+import { RuleId } from '@gamepark/popcorn/rules/RuleId.ts'
 import { TokenDescription } from '@gamepark/react-game'
 import audienceCube from '../images/AudienceCube.png'
 
-class AudienceCubeDescription extends TokenDescription<PlayerColor, MaterialType, LocationType> {
+class AudienceCubeDescription extends TokenDescription<PlayerColor, MaterialType, LocationType, undefined, RuleId, PlayerColor> {
   width = 1
   height = 1
   transparency = true

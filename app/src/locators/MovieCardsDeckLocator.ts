@@ -2,10 +2,11 @@ import { LocationType } from '@gamepark/popcorn/material/LocationType'
 import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
 import { MovieCardId } from '@gamepark/popcorn/material/MovieCard.ts'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
+import { RuleId } from '@gamepark/popcorn/rules/RuleId.ts'
 import { DeckLocator, DropAreaDescription } from '@gamepark/react-game'
 import { MovieCardDeckHelp } from './help/MovieCardDeckHelp.tsx'
 
-class MovieCardsDeckLocator extends DeckLocator<PlayerColor, MaterialType, LocationType> {
+class MovieCardsDeckLocator extends DeckLocator<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor> {
   limit = 45
   gap = { x: -0.02, y: -0.02 }
   coordinates = { x: -2.5, y: -12.5 }

@@ -1,12 +1,13 @@
 import { LocationType } from '@gamepark/popcorn/material/LocationType'
 import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
+import { RuleId } from '@gamepark/popcorn/rules/RuleId.ts'
 import { ItemContext, ListLocator, MaterialContext } from '@gamepark/react-game'
 import { Location, MaterialItem } from '@gamepark/rules-api'
 import { topCinemaBoardDescription } from '../material/TopCinemaBoardDescription'
 import { hideItemIfOwningPlayerIsNotDisplayed } from './utils/hideItemIfOwningPlayerIsNotDisplayed.ts'
 
-class AudienceCubeSpotOnTopCinemaBoardLocator extends ListLocator<PlayerColor, MaterialType, LocationType> {
+class AudienceCubeSpotOnTopCinemaBoardLocator extends ListLocator<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor> {
   parentItemType = MaterialType.TopCinemaBoard
 
   coordinates = { x: -9.25, y: 6.125 }
@@ -14,12 +15,12 @@ class AudienceCubeSpotOnTopCinemaBoardLocator extends ListLocator<PlayerColor, M
 
   public getParentItem(
     location: Location<PlayerColor, LocationType>,
-    context: MaterialContext<PlayerColor, MaterialType, LocationType>
+    context: MaterialContext<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>
   ): MaterialItem<PlayerColor, LocationType> | undefined {
     return topCinemaBoardDescription.getStaticItems(context).find((boardItem) => boardItem.location.player === location.player)
   }
 
-  public hide(item: MaterialItem<PlayerColor, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType>): boolean {
+  public hide(item: MaterialItem<PlayerColor, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>): boolean {
     return hideItemIfOwningPlayerIsNotDisplayed(item, context)
   }
 }

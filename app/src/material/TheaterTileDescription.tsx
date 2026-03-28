@@ -1,3 +1,4 @@
+import { css, Interpolation, Theme } from '@emotion/react'
 import { faHandPointer } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Actions } from '@gamepark/popcorn/material/Actions/Actions'
@@ -5,12 +6,13 @@ import { ActionType } from '@gamepark/popcorn/material/Actions/ActionType'
 import { isBuyTheaterTileCustomMove } from '@gamepark/popcorn/material/CustomMoveType'
 import { LocationType } from '@gamepark/popcorn/material/LocationType'
 import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
+import { PopcornMove } from '@gamepark/popcorn/material/PopcornMoves.ts'
 import { SeatsNumber, TheaterTile, TheaterTileId } from '@gamepark/popcorn/material/TheaterTile'
 import { Memory } from '@gamepark/popcorn/Memory'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
 import { RuleId } from '@gamepark/popcorn/rules/RuleId'
-import { ItemContext, ItemMenuButton, MaterialContext, TokenDescription } from '@gamepark/react-game'
-import { isSelectItemType, Location, MaterialItem, MaterialMove, MaterialMoveBuilder } from '@gamepark/rules-api'
+import { ItemContext, ItemMenuButton, TokenDescription } from '@gamepark/react-game'
+import { isSelectItemType, Location, MaterialItem, MaterialMoveBuilder } from '@gamepark/rules-api'
 import React from 'react'
 import oneSeat1Front from '../images/Tiles/TheaterTiles/1Seat1Front.png'
 import oneSeat2Front from '../images/Tiles/TheaterTiles/1Seat2Front.png'
@@ -43,6 +45,8 @@ import threeSeat6Front from '../images/Tiles/TheaterTiles/3Seat6Front.png'
 import threeSeat7Front from '../images/Tiles/TheaterTiles/3Seat7Front.png'
 import threeSeat8Front from '../images/Tiles/TheaterTiles/3Seat8Front.png'
 import threeSeatBack from '../images/Tiles/TheaterTiles/3SeatBack.png'
+import defaultOneSeatFront from '../images/Tiles/TheaterTiles/Default1SeatFront.png'
+import defaultTwoSeatFront from '../images/Tiles/TheaterTiles/Default2SeatFront.png'
 import emptyTile from '../images/Tiles/TheaterTiles/EmptyTile.png'
 import { TheaterTileHelp } from './help/TheaterTileHelp.tsx'
 import displayLocationHelp = MaterialMoveBuilder.displayLocationHelp
@@ -53,7 +57,7 @@ const LOCATION_TYPES_WHERE_FLIPPED_ON_TABLE = [
   LocationType.ThreeSeatTheaterTileDeckSpot
 ]
 
-class TheaterTileDescription extends TokenDescription<PlayerColor, MaterialType, LocationType, TheaterTileId> {
+class TheaterTileDescription extends TokenDescription<PlayerColor, MaterialType, LocationType, TheaterTileId, RuleId, PlayerColor> {
   width = 4.3
   height = 4.3
   thickness = 0.2
@@ -101,13 +105,13 @@ class TheaterTileDescription extends TokenDescription<PlayerColor, MaterialType,
 
   help = TheaterTileHelp
 
-  public canDrag(move: MaterialMove<PlayerColor, MaterialType, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType>): boolean {
+  public canDrag(move: PopcornMove, context: ItemContext<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>): boolean {
     return super.canDrag(move, context) || (isBuyTheaterTileCustomMove(move) && move.data.boughtTileIndex === context.index)
   }
 
   public getMoveDropLocations(
-    context: ItemContext<PlayerColor, MaterialType, LocationType>,
-    move: MaterialMove<PlayerColor, MaterialType, LocationType>
+    context: ItemContext<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>,
+    move: PopcornMove
   ): Location<PlayerColor, LocationType>[] {
     if (context.rules.game.rule?.id === RuleId.BuyingPhaseRule && isBuyTheaterTileCustomMove(move)) {
       const destination = {
@@ -122,7 +126,7 @@ class TheaterTileDescription extends TokenDescription<PlayerColor, MaterialType,
 
   public isMenuAlwaysVisible(
     item: MaterialItem<PlayerColor, LocationType, TheaterTileId>,
-    context: ItemContext<PlayerColor, MaterialType, LocationType>
+    context: ItemContext<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>
   ): boolean {
     if (context.player !== undefined) {
       if (context.rules.game.rule?.id === RuleId.ShowingsPhaseRule && context.rules.game.players.includes(context.player)) {
@@ -137,8 +141,8 @@ class TheaterTileDescription extends TokenDescription<PlayerColor, MaterialType,
 
   public getItemMenu(
     item: MaterialItem<PlayerColor, LocationType, TheaterTileId>,
-    context: ItemContext<PlayerColor, MaterialType, LocationType>,
-    legalMoves: MaterialMove<PlayerColor, MaterialType, LocationType>[]
+    context: ItemContext<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>,
+    legalMoves: PopcornMove[]
   ): React.ReactNode {
     if (context.player !== undefined) {
       if (context.rules.game.rule?.id === RuleId.ShowingsPhaseRule && context.rules.game.players.includes(context.player)) {
@@ -181,17 +185,29 @@ class TheaterTileDescription extends TokenDescription<PlayerColor, MaterialType,
     return super.getItemMenu(item, context, legalMoves)
   }
 
-  public isFlippedOnTable(item: Partial<MaterialItem<PlayerColor, LocationType>>, context: MaterialContext<PlayerColor, MaterialType, LocationType>): boolean {
-    if (LOCATION_TYPES_WHERE_FLIPPED_ON_TABLE.includes(item.location?.type ?? LocationType.OneSeatTheaterTileRowSpot)) {
-      return true
+  public getHelpDisplayExtraCss(
+    item: Partial<MaterialItem<PlayerColor, LocationType>>,
+    context: ItemContext<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>
+  ): Interpolation<Theme> {
+    if (item.id.front === TheaterTile.DefaultOneSeatTile) {
+      return css`
+        background-image: url(${defaultOneSeatFront});
+        background-repeat: no-repeat;
+      `
     }
-    return super.isFlippedOnTable(item, context)
+    if (item.id.front === TheaterTile.DefaultTwoSeatTile) {
+      return css`
+        background-image: url(${defaultTwoSeatFront});
+        background-repeat: no-repeat;
+      `
+    }
+    return super.getHelpDisplayExtraCss(item, context)
   }
 
   public displayHelp(
     item: MaterialItem<PlayerColor, LocationType, TheaterTileId>,
-    context: ItemContext<PlayerColor, MaterialType, LocationType>
-  ): MaterialMove<PlayerColor, MaterialType, LocationType> | undefined {
+    context: ItemContext<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>
+  ): PopcornMove | undefined {
     if (!context.rules.isOver() && LOCATION_TYPES_WHERE_FLIPPED_ON_TABLE.includes(item.location.type)) {
       return displayLocationHelp({
         type: item.location.type

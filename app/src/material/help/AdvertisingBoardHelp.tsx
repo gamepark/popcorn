@@ -5,21 +5,7 @@ import { Picture } from '@gamepark/react-game'
 import { camelCase } from 'es-toolkit'
 import { FC } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
-import advertisingBoardAnyGuestSymbol from '../../images/Symbols/AdvertisingBoardAnyGuest.png'
-import advertisingBoardBlueGuestSymbol from '../../images/Symbols/AdvertisingBoardBlueGuest.png'
-import advertisingBoardGreenGuestSymbol from '../../images/Symbols/AdvertisingBoardGreenGuest.png'
-import advertisingBoardRedGuestSymbol from '../../images/Symbols/AdvertisingBoardRedGuest.png'
-import advertisingBoardWhiteToBagSymbol from '../../images/Symbols/AdvertisingBoardWhiteToBag.png'
-import advertisingBoardYellowGuestSymbol from '../../images/Symbols/AdvertisingBoardYellowGuest.png'
-
-const picturesMap = {
-  [AdvertisingTokenSpot.PlaceWhiteTokenIntoAnyBag]: advertisingBoardWhiteToBagSymbol,
-  [AdvertisingTokenSpot.YellowGuestPawn]: advertisingBoardYellowGuestSymbol,
-  [AdvertisingTokenSpot.GreenGuestPawn]: advertisingBoardGreenGuestSymbol,
-  [AdvertisingTokenSpot.RedGuestPawn]: advertisingBoardRedGuestSymbol,
-  [AdvertisingTokenSpot.BlueGuestPawn]: advertisingBoardBlueGuestSymbol,
-  [AdvertisingTokenSpot.AnyGuestPawn]: advertisingBoardAnyGuestSymbol
-}
+import { getAdvertisingSpotSymbol } from './utils/advertisingSpotSymbol.utils.ts'
 
 const getTransDefault = (spot: AdvertisingTokenSpot): string => {
   switch (spot) {
@@ -74,11 +60,19 @@ export const AdvertisingBoardHelp: FC = () => {
         <tbody>
           {advertisingTokenSpots.map((spot) => {
             const pawnColor = getColorFromSpot(spot)
-            const colorValue = pawnColor === undefined ? '' : t(`guest.color.${GuestPawn[pawnColor].toLowerCase()}`)
+            const colorValue =
+              pawnColor === undefined
+                ? ''
+                : t(
+                    `guest.color.${GuestPawn[pawnColor].toLowerCase()}`,
+                    { [GuestPawn.Blue]: 'blue', [GuestPawn.Green]: 'green', [GuestPawn.Red]: 'red', [GuestPawn.White]: 'white', [GuestPawn.Yellow]: 'yellow' }[
+                      pawnColor
+                    ]
+                  )
             return (
               <tr>
                 <td>
-                  <Picture src={picturesMap[spot]} css={pictureCss} />
+                  <Picture src={getAdvertisingSpotSymbol(spot)} css={pictureCss} />
                 </td>
                 <td css={transCss}>
                   <Trans

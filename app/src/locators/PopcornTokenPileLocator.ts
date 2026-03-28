@@ -1,10 +1,11 @@
 import { LocationType } from '@gamepark/popcorn/material/LocationType'
 import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
+import { RuleId } from '@gamepark/popcorn/rules/RuleId.ts'
 import { PileLocator } from '@gamepark/react-game'
 import { MaterialItem } from '@gamepark/rules-api'
 
-class PopcornTokenPileLocator extends PileLocator<PlayerColor, MaterialType, LocationType> {
+class PopcornTokenPileLocator extends PileLocator<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor> {
   limit = 30
   radius = { x: 4, y: 2 }
   coordinates = { x: -12.5, y: -3 }

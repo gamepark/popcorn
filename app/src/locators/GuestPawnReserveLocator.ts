@@ -2,6 +2,7 @@ import { GuestPawn } from '@gamepark/popcorn/material/GuestPawn'
 import { LocationType } from '@gamepark/popcorn/material/LocationType'
 import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
+import { RuleId } from '@gamepark/popcorn/rules/RuleId.ts'
 import { FlexLocator, MaterialContext } from '@gamepark/react-game'
 import { Coordinates, Location } from '@gamepark/rules-api'
 import { offsetAdvertisingBoardCoordinates } from './utils/offsetLocatorCoordinates.ts'
@@ -14,7 +15,7 @@ const yOffsetByGuestColor = {
   [GuestPawn.White]: 4.5
 }
 
-class GuestPawnReserveLocator extends FlexLocator<PlayerColor, MaterialType, LocationType> {
+class GuestPawnReserveLocator extends FlexLocator<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor> {
   gap = { x: 1.5 }
   lineSize = 3
   lineGap = { y: 1 }
@@ -22,7 +23,7 @@ class GuestPawnReserveLocator extends FlexLocator<PlayerColor, MaterialType, Loc
 
   public getCoordinates(
     location: Location<PlayerColor, LocationType, GuestPawn>,
-    context: MaterialContext<PlayerColor, MaterialType, LocationType>
+    context: MaterialContext<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>
   ): Partial<Coordinates> {
     if (location.id === undefined) {
       throw new Error('Cannot have ')

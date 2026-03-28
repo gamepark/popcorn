@@ -2,23 +2,24 @@ import { LocationType } from '@gamepark/popcorn/material/LocationType'
 import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
 import { MovieCardId } from '@gamepark/popcorn/material/MovieCard.ts'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
+import { RuleId } from '@gamepark/popcorn/rules/RuleId.ts'
 import { DeckLocator, DropAreaDescription, ItemContext, MaterialContext } from '@gamepark/react-game'
 import { Coordinates, Location, MaterialItem } from '@gamepark/rules-api'
 import { MovieCardDeckHelp } from './help/MovieCardDeckHelp.tsx'
 import { hideItemIfOwningPlayerIsNotDisplayed } from './utils/hideItemIfOwningPlayerIsNotDisplayed.ts'
 import { offsetPlayerCinemaBoardCoordinates } from './utils/offsetLocatorCoordinates.ts'
 
-class PlayerMovieArchiveDeckLocator extends DeckLocator<PlayerColor, MaterialType, LocationType> {
+class PlayerMovieArchiveDeckLocator extends DeckLocator<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor> {
   locationDescription = new PlayerMovieArchiveDeckLocationDescription()
 
   public getCoordinates(
     location: Location<PlayerColor, LocationType>,
-    context: MaterialContext<PlayerColor, MaterialType, LocationType>
+    context: MaterialContext<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>
   ): Partial<Coordinates> {
     return offsetPlayerCinemaBoardCoordinates(context, location.player, 25, 4)
   }
 
-  public hide(item: MaterialItem<PlayerColor, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType>): boolean {
+  public hide(item: MaterialItem<PlayerColor, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>): boolean {
     return hideItemIfOwningPlayerIsNotDisplayed(item, context)
   }
 }

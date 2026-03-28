@@ -2,6 +2,7 @@ import { AdvertisingTokenSpot } from '@gamepark/popcorn/material/AdvertisingToke
 import { LocationType } from '@gamepark/popcorn/material/LocationType'
 import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
+import { RuleId } from '@gamepark/popcorn/rules/RuleId.ts'
 import { DropAreaDescription, PileLocator } from '@gamepark/react-game'
 import { Coordinates, Location, XYCoordinates } from '@gamepark/rules-api'
 
@@ -14,7 +15,7 @@ const spotCoordinates: Record<AdvertisingTokenSpot, XYCoordinates> = {
   [AdvertisingTokenSpot.AnyGuestPawn]: { x: 1, y: 7.5 }
 }
 
-class AdvertisingTokenSpotOnAdvertisingBoardLocator extends PileLocator<PlayerColor, MaterialType, LocationType> {
+class AdvertisingTokenSpotOnAdvertisingBoardLocator extends PileLocator<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor> {
   parentItemType = MaterialType.AdvertisingBoard
   radius = { x: 2, y: 0.4 }
   limit = 24

@@ -1,14 +1,16 @@
 import { isBuyTheaterTileCustomMove } from '@gamepark/popcorn/material/CustomMoveType'
 import { LocationType } from '@gamepark/popcorn/material/LocationType'
 import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
+import { PopcornMove } from '@gamepark/popcorn/material/PopcornMoves.ts'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
+import { RuleId } from '@gamepark/popcorn/rules/RuleId.ts'
 import { DropAreaDescription, ItemContext, ListLocator, MaterialContext } from '@gamepark/react-game'
-import { Location, MaterialItem, MaterialMove } from '@gamepark/rules-api'
+import { Location, MaterialItem } from '@gamepark/rules-api'
 import { theaterTileDescription } from '../material/TheaterTileDescription'
 import { topCinemaBoardDescription } from '../material/TopCinemaBoardDescription'
 import { hideItemIfOwningPlayerIsNotDisplayed } from './utils/hideItemIfOwningPlayerIsNotDisplayed.ts'
 
-class TheaterTileOnTopCinemaBoardLocator extends ListLocator<PlayerColor, MaterialType, LocationType> {
+class TheaterTileOnTopCinemaBoardLocator extends ListLocator<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor> {
   parentItemType = MaterialType.TopCinemaBoard
   coordinates = { x: -6.9, y: -1.15 }
   gap = { x: 7.7, z: 0 }
@@ -16,12 +18,12 @@ class TheaterTileOnTopCinemaBoardLocator extends ListLocator<PlayerColor, Materi
 
   public getParentItem(
     location: Location<PlayerColor, LocationType>,
-    context: MaterialContext<PlayerColor, MaterialType, LocationType>
+    context: MaterialContext<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>
   ): MaterialItem<PlayerColor, LocationType> | undefined {
     return topCinemaBoardDescription.getStaticItems(context).find((topBoardItem) => topBoardItem.location.player === location.player)
   }
 
-  public hide(item: MaterialItem<PlayerColor, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType>): boolean {
+  public hide(item: MaterialItem<PlayerColor, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>): boolean {
     return hideItemIfOwningPlayerIsNotDisplayed(item, context)
   }
 }
@@ -32,9 +34,9 @@ class TheaterTileOnTopCinemaBoardLocatorDescription extends DropAreaDescription<
   }
 
   public isMoveToLocation(
-    move: MaterialMove<PlayerColor, MaterialType, LocationType>,
+    move: PopcornMove,
     location: Location<PlayerColor, LocationType>,
-    context: MaterialContext<PlayerColor, MaterialType, LocationType>
+    context: MaterialContext<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>
   ): boolean {
     if (isBuyTheaterTileCustomMove(move)) {
       return location.player === move.data.player && location.x === move.data.destinationSpot

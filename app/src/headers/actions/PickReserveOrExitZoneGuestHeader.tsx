@@ -23,9 +23,9 @@ export const PickReserveOrExitZoneGuestHeader: FC<PickReserveOrExitZoneGuestHead
     <HeaderText
       code="header.actionRules.pickReserveOrExitZoneGuest.coloredGuest"
       defaults={{
-        you: "You must take a {colorEnum, plural, =1{blue} =2{green} =3{red} =5{yellow} other{any coloured}} Guest from the reserve or another player's exit zone and put it in your bag",
+        you: "You must take a {colorEnum, select, 1{blue} 2{green} 3{red} 5{yellow} 4{any coloured} other{}} Guest from the reserve or another player's exit zone and put it in your bag",
         player:
-          "{player} must take a {colorEnum, plural, =1{blue} =2{green} =3{red} =5{yellow} other{any colored}} Guest from the reserve or another player's exit zone and put it in their bag"
+          "{player} must take a {colorEnum, select, 1{blue} 2{green} 3{red} 5{yellow} 4{any colored} other{}} Guest from the reserve or another player's exit zone and put it in their bag"
       }}
       values={{ colorEnum: action.guest }}
     />

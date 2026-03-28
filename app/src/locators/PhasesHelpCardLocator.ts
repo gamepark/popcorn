@@ -1,9 +1,10 @@
 import { LocationType } from '@gamepark/popcorn/material/LocationType.ts'
 import { MaterialType } from '@gamepark/popcorn/material/MaterialType.ts'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor.ts'
+import { RuleId } from '@gamepark/popcorn/rules/RuleId.ts'
 import { Locator } from '@gamepark/react-game'
 
-class PhasesHelpCardLocator extends Locator<PlayerColor, MaterialType, LocationType> {
+class PhasesHelpCardLocator extends Locator<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor> {
   coordinates = { x: -22.5, y: -12.5 }
 
   public getHoverTransform(): string[] {

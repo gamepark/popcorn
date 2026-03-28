@@ -1,6 +1,7 @@
 import { LocationType } from '@gamepark/popcorn/material/LocationType'
 import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
+import { RuleId } from '@gamepark/popcorn/rules/RuleId.ts'
 import { BoardDescription, MaterialContext } from '@gamepark/react-game'
 import { MaterialItem } from '@gamepark/rules-api'
 import cyanTopCinemaBoard from '../images/Boards/PlayerBoards/BlueTop.png'
@@ -8,7 +9,7 @@ import greenTopCinemaBoard from '../images/Boards/PlayerBoards/GreenTop.png'
 import orangeTopCinemaBoard from '../images/Boards/PlayerBoards/OrangeTop.png'
 import purpleTopCinemaBoard from '../images/Boards/PlayerBoards/PurpleTop.png'
 
-class TopCinemaBoardDescription extends BoardDescription<PlayerColor, MaterialType, LocationType, PlayerColor> {
+class TopCinemaBoardDescription extends BoardDescription<PlayerColor, MaterialType, LocationType, PlayerColor, RuleId, PlayerColor> {
   width = 24.2
   height = 16.7
   thickness = 0.2
@@ -21,7 +22,9 @@ class TopCinemaBoardDescription extends BoardDescription<PlayerColor, MaterialTy
     [PlayerColor.Purple]: purpleTopCinemaBoard
   }
 
-  public getStaticItems(context: MaterialContext<PlayerColor, MaterialType, LocationType>): MaterialItem<PlayerColor, LocationType>[] {
+  public getStaticItems(
+    context: MaterialContext<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>
+  ): MaterialItem<PlayerColor, LocationType, PlayerColor>[] {
     return context.rules.players.map((playerColor) => ({
       id: playerColor,
       location: {
@@ -31,7 +34,7 @@ class TopCinemaBoardDescription extends BoardDescription<PlayerColor, MaterialTy
     }))
   }
 
-  // public getItemExtraCss(_item: MaterialItem<PlayerColor, LocationType>, _context: ItemContext<PlayerColor, MaterialType, LocationType>): Interpolation<Theme> {
+  // public getItemExtraCss(_item: MaterialItem<PlayerColor, LocationType>, _context: ItemContext<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>): Interpolation<Theme> {
   //   const transform = this.getItemTransform(_item, _context)
   //   return css`
   //     clip-path: path(
