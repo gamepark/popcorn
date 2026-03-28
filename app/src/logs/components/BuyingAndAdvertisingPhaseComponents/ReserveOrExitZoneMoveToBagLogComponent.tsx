@@ -26,7 +26,7 @@ export const ReserveOrExitZoneMoveToBagLogComponent: FC<PopcornMoveComponentProp
     return (
       <div css={logContainerCss}>
         <Trans
-          i18nKey=""
+          i18nKey="log.buyingAndAdvertisingPhase.whiteGuestMoveToBag"
           defaults="{player} picks <guest/> from {origin, select, guestPawnReserveSpot{the reserve} other{their Exit zone}} and puts it in {isOwnBag, select, true{their} other{{destinationPlayer}'s}} bag"
           values={{
             player: actionPLayerName,

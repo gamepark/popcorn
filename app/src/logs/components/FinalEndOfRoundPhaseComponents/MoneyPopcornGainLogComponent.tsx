@@ -19,7 +19,7 @@ export const MoneyPopcornGainLogComponent: FC<PopcornMoveComponentProps> = ({ mo
   return (
     <div css={logContainerCss}>
       <Trans
-        i18nKey=""
+        i18nKey="log.FinalEndOfRoundPhaseMoneyPoints.moneyPopcornExchange"
         defaults="{player} exchanges ${moneyAmount} (<money/>) for {popcornAmount} Popcorn (<popcorn/>)"
         values={{ player: playerName, moneyAmount: moneyAmount, popcornAmount: popcornAmount }}
         components={{

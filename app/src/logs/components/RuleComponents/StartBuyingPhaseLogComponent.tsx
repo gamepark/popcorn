@@ -12,7 +12,7 @@ export const StartBuyingPhaseLogComponent: FC<PopcornMoveComponentProps> = ({ mo
   const name = usePlayerName(startMove.player)
   return (
     <div css={logContainerCss}>
-      <Trans i18nKey="logs.startPlayerBuyingPhase" defaults="{player} starts their buying & advertising phase" values={{ player: name }} />
+      <Trans i18nKey="log.startPlayerBuyingPhase" defaults="{player} starts their buying & advertising phase" values={{ player: name }} />
     </div>
   )
 }
