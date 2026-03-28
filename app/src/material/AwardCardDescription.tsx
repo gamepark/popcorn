@@ -1,12 +1,16 @@
 import { faHandPointer } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Actions } from '@gamepark/popcorn/material/Actions/Actions.ts'
+import { ActionType } from '@gamepark/popcorn/material/Actions/ActionType.ts'
 import { AwardCard } from '@gamepark/popcorn/material/AwardCard'
 import { LocationType } from '@gamepark/popcorn/material/LocationType'
 import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
+import { PopcornMove } from '@gamepark/popcorn/material/PopcornMoves.ts'
+import { Memory } from '@gamepark/popcorn/Memory.ts'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
 import { RuleId } from '@gamepark/popcorn/rules/RuleId'
 import { CardDescription, ItemContext, ItemMenuButton, MaterialContext } from '@gamepark/react-game'
-import { isMoveItemType, MaterialItem, MaterialMove, MaterialMoveBuilder, Location } from '@gamepark/rules-api'
+import { isMoveItemType, Location, MaterialItem, MaterialMoveBuilder } from '@gamepark/rules-api'
 import { Trans } from 'react-i18next'
 import audienceGreaterThanOrEqualToSix from '../images/Cards/Awards/AudienceGreaterThanOrEqualTo6.jpg'
 import awardBack from '../images/Cards/Awards/AwardBack.jpg'
@@ -38,7 +42,7 @@ import yellowTwoSeatsGuestsMoviesSet from '../images/Cards/Awards/YellowTwoSeats
 import { AwardCardHelp } from './help/AwardCardHelp.tsx'
 import displayLocationHelp = MaterialMoveBuilder.displayLocationHelp
 
-class AwardCardDescription extends CardDescription<PlayerColor, MaterialType, LocationType, AwardCard | undefined> {
+class AwardCardDescription extends CardDescription<PlayerColor, MaterialType, LocationType, AwardCard, RuleId, PlayerColor> {
   height = 4.5
   width = 6.3
 
@@ -76,24 +80,34 @@ class AwardCardDescription extends CardDescription<PlayerColor, MaterialType, Lo
 
   public getItemMenu(
     item: MaterialItem<PlayerColor, LocationType, AwardCard>,
-    context: ItemContext<PlayerColor, MaterialType, LocationType>,
-    legalMoves: MaterialMove<PlayerColor, MaterialType, LocationType>[]
+    context: ItemContext<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>,
+    legalMoves: PopcornMove[]
   ): React.ReactNode {
-    if (
-      context.rules.game.rule?.id === RuleId.DealAndDiscardAwardCards &&
-      item.location.type === LocationType.PlayerAwardCardHand &&
-      context.player === item.location.player
-    ) {
-      return this.getItemMenuForDealAndDiscardRule(item, context, legalMoves)
+    if (context.player !== undefined) {
+      const playerPendingActions = context.rules.remind<Actions[]>(Memory.PendingActions, context.player)
+      if (
+        (context.rules.game.rule?.id === RuleId.DealAndDiscardAwardCards ||
+          (playerPendingActions.length > 0 && playerPendingActions[0].type === ActionType.DiscardAwardCard)) &&
+        item.location.type === LocationType.PlayerAwardCardHand &&
+        context.player === item.location.player
+      ) {
+        return this.getItemMenuForDealAndDiscardRule(item, context, legalMoves)
+      }
     }
     return super.getItemMenu(item, context, legalMoves)
   }
 
-  public isFlippedInDialog(item: Partial<MaterialItem<PlayerColor, LocationType>>, context: MaterialContext<PlayerColor, MaterialType, LocationType>): boolean {
+  public isFlippedInDialog(
+    item: Partial<MaterialItem<PlayerColor, LocationType>>,
+    context: MaterialContext<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>
+  ): boolean {
     return super.isFlippedInDialog(item, context)
   }
 
-  public isFlippedOnTable(item: Partial<MaterialItem<PlayerColor, LocationType>>, context: MaterialContext<PlayerColor, MaterialType, LocationType>): boolean {
+  public isFlippedOnTable(
+    item: Partial<MaterialItem<PlayerColor, LocationType>>,
+    context: MaterialContext<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>
+  ): boolean {
     if (
       item.location?.type === LocationType.AwardCardDeckSpot ||
       (item.location?.type === LocationType.PlayerAwardCardHand && context.player !== item.location?.player)
@@ -104,9 +118,9 @@ class AwardCardDescription extends CardDescription<PlayerColor, MaterialType, Lo
   }
 
   public displayHelp(
-    item: MaterialItem<PlayerColor, LocationType, AwardCard | undefined>,
-    context: ItemContext<PlayerColor, MaterialType, LocationType>
-  ): MaterialMove<PlayerColor, MaterialType, LocationType> | undefined {
+    item: MaterialItem<PlayerColor, LocationType, AwardCard>,
+    context: ItemContext<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>
+  ): PopcornMove | undefined {
     if (
       item.location.type === LocationType.AwardCardDeckSpot ||
       (item.location.type === LocationType.PlayerAwardCardHand && context.player !== item.location.player)
@@ -123,7 +137,7 @@ class AwardCardDescription extends CardDescription<PlayerColor, MaterialType, Lo
   private getItemMenuForDealAndDiscardRule(
     item: MaterialItem<PlayerColor, LocationType, AwardCard>,
     context: ItemContext,
-    legalMoves: MaterialMove<PlayerColor, MaterialType, LocationType>[]
+    legalMoves: PopcornMove[]
   ): React.ReactNode {
     const cardIndex = context.rules.material(MaterialType.AwardCards).id<AwardCard>(item.id).getIndex()
     const movesForCard = legalMoves.filter(isMoveItemType<MaterialType>(MaterialType.AwardCards)).filter((move) => move.itemIndex === cardIndex)

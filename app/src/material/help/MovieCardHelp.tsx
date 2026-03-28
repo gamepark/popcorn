@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { LocationType } from '@gamepark/popcorn/material/LocationType.ts'
 import { MaterialType } from '@gamepark/popcorn/material/MaterialType.ts'
 import { MovieAction, MovieCard, movieCardCharacteristics, MovieCardId, MovieColor } from '@gamepark/popcorn/material/MovieCard.ts'
-import { getMaximumNumberOfGuests, SeatsNumber } from '@gamepark/popcorn/material/TheaterTile.ts'
+import { getMaximumNumberOfGuests } from '@gamepark/popcorn/material/TheaterTile.ts'
 import { AvailableMovieActionsMemory, Memory } from '@gamepark/popcorn/Memory.ts'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor.ts'
 import { PopcornRules } from '@gamepark/popcorn/PopcornRules.ts'
@@ -13,42 +13,11 @@ import { MaterialItem } from '@gamepark/rules-api'
 import { camelCase } from 'es-toolkit'
 import { FC } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
-import get1MoneySymbol from '../../images/Symbols/Action1Money.png'
-import get1PopcornSymbol from '../../images/Symbols/Action1Popcorn.png'
-import get2MoneySymbol from '../../images/Symbols/Action2Money.png'
-import get2PopcornSymbol from '../../images/Symbols/Action2Popcorn.png'
-import get3MoneySymbol from '../../images/Symbols/Action3Money.png'
-import drawGuestSymbol from '../../images/Symbols/ActionDrawGuest.png'
-import exitGuestToBagSymbol from '../../images/Symbols/ActionExitZoneGuestToBag.png'
-import guestInReserveSymbol from '../../images/Symbols/ActionPlaceGuestInReserve.png'
-import blueMovieSymbol from '../../images/Symbols/BlueMovie.png'
-import greenMovieSymbol from '../../images/Symbols/GreenMovie.png'
-import get3PopcornSymbol from '../../images/Symbols/MovieAction3Popcorn.png'
-import get4MoneySymbol from '../../images/Symbols/MovieAction4Money.png'
-import get4PopcornSymbol from '../../images/Symbols/MovieAction4Popcorn.png'
-import audienceTrackAdvanceSymbol from '../../images/Symbols/MovieActionAdvanceAudienceCube.png'
-import blueAdvertisingGuestSymbol from '../../images/Symbols/MovieActionAdvertisingTokenBlueGuest.png'
-import greenAdvertisingGuestSymbol from '../../images/Symbols/MovieActionAdvertisingTokenGreenGuest.png'
-import redAdvertisingGuestSymbol from '../../images/Symbols/MovieActionAdvertisingTokenRedGuest.png'
-import yellowAdvertisingGuestSymbol from '../../images/Symbols/MovieActionAdvertisingTokenYellowGuest.png'
-import blueAnyGuestSymbol from '../../images/Symbols/MovieActionBlueAdvertisingTokenAnyGuest.png'
-import blueWhiteGuestSymbol from '../../images/Symbols/MovieActionBlueAdvertisingTokenWhiteGuest.png'
-import drawAwardCardsSymbol from '../../images/Symbols/MovieActionDrawAwardCard.png'
-import greenAnyGuestSymbol from '../../images/Symbols/MovieActionGreenAdvertisingTokenAnyGuest.png'
-import greenWhiteGuestSymbol from '../../images/Symbols/MovieActionGreenAdvertisingTokenWhiteGuest.png'
-import yellowWhiteGuestSymbol from '../../images/Symbols/MovieActionGreenAdvertisingTokenWhiteGuest.png'
-import redAnyGuestSymbol from '../../images/Symbols/MovieActionRedAdvertisingTokenAnyGuest.png'
-import redWhiteGuestSymbol from '../../images/Symbols/MovieActionRedAdvertisingTokenWhiteGuest.png'
-import yellowAnyGuestSymbol from '../../images/Symbols/MovieActionYellowAdvertisingTokenAnyGuest.png'
-import redMovieSymbol from '../../images/Symbols/RedMovie.png'
 import blueMovieShowingBonusSymbol from '../../images/Symbols/ShowingBonusConditionBlue.png'
 import greenMovieShowingBonusSymbol from '../../images/Symbols/ShowingBonusConditionGreen.png'
-import oneSeatMovieShowingBonusSymbol from '../../images/Symbols/ShowingBonusConditionOneSeatTheater.png'
 import redMovieShowingBonusSymbol from '../../images/Symbols/ShowingBonusConditionRed.png'
-import threeSeatMovieShowingBonusSymbol from '../../images/Symbols/ShowingBonusConditionThreeSeatTheater.png'
-import twoSeatMovieShowingBonusSymbol from '../../images/Symbols/ShowingBonusConditionTwoSeatTheater.png'
 import yellowMovieShowingBonusSymbol from '../../images/Symbols/ShowingBonusConditionYellow.png'
-import yellowMovieSymbol from '../../images/Symbols/YellowMovie.png'
+import { colorSymbols, getMovieActionSymbol, movieTitleDefaults, seatsNumberSymbols } from '../utils/movieCard.utils.ts'
 
 export const MovieCardHelp: FC<MaterialHelpDisplayProps<PlayerColor, MaterialType, LocationType>> = ({
   item
@@ -100,7 +69,7 @@ export const MovieCardHelp: FC<MaterialHelpDisplayProps<PlayerColor, MaterialTyp
       <p>
         <Trans
           i18nKey="help.movieCard.price"
-          defaults="<s>Price:</s> ${price}{premiersMovie, plural, =1{ (incl. +$2 because this is a Premiers row movie)} other{}}"
+          defaults="<s>Price:</s> ${price}{premiersMovie, select, 1{ (incl. +$2 because this is a Premiers row movie)} other{}}"
           values={{ price: price, premiersMovie: isPremiersMovie }}
           components={{ s: <strong /> }}
         />
@@ -108,7 +77,7 @@ export const MovieCardHelp: FC<MaterialHelpDisplayProps<PlayerColor, MaterialTyp
       <p>
         <Trans
           i18nKey="help.movieCard.color"
-          defaults="<s>Color:</s> <colorSymbol/> <color/> {colorEnum, plural, =1{(Comedies let you grow your audience more frequently.)} =2{(Action movies let you gain Popcorn more easily.)} =3{(Fantasy and sci-fi movies attract demanding Guests (and help you manage your bag and Guests).)} =4{(Drama and arthouse movies help you gain more money and Award cards.)} other{}}"
+          defaults="<s>Color:</s> <colorSymbol/> <color/> {colorEnum, select, 1{(Comedies let you grow your audience more frequently.)} 2{(Action movies let you gain Popcorn more easily.)} 3{(Fantasy and sci-fi movies attract demanding Guests (and help you manage your bag and Guests).)} 4{(Drama and arthouse movies help you gain more money and Award cards.)} other{}}"
           values={{ colorEnum: movieCharacteristics.color }}
           components={{
             s: <strong />,
@@ -121,7 +90,7 @@ export const MovieCardHelp: FC<MaterialHelpDisplayProps<PlayerColor, MaterialTyp
         <p>
           <Trans
             i18nKey={`help.movieCard.bonusAction`}
-            defaults="<s>Showing bonus:</s> <p1/><p2/> = <p3/> If this movie is shown in a {numberOfSeats, plural, =1{one seat} =2{two seats} =3{three seats} other{}} theater: {bonusActionDescription}"
+            defaults="<s>Showing bonus:</s> <p1/><p2/> = <p3/> When bought, if this movie is shown in a {numberOfSeats, select, 1{one seat} 2{two seats} 3{three seats} other{}} theater: {bonusActionDescription}"
             values={{
               money: bonusActionAmount,
               popcorn: bonusActionAmount,
@@ -135,18 +104,7 @@ export const MovieCardHelp: FC<MaterialHelpDisplayProps<PlayerColor, MaterialTyp
               s: <strong></strong>,
               p1: <Picture src={showingSymbols[movieColor]} css={conditionPictureCss} />,
               p2: <Picture src={seatsNumberSymbols[movieCharacteristics.numberOfSeatsForBonus!]} css={conditionPictureCss} />,
-              p3: (
-                <Picture
-                  src={
-                    bonusAction === MovieAction.AdvertisingTokenOnAnyGuest
-                      ? anyGuestActionSymbols[movieColor]
-                      : bonusAction === MovieAction.AdvertisingTokenOnWhiteGuestToBag
-                        ? whiteGuestActionSymbols[movieColor]
-                        : movieActionSymbols[bonusAction]
-                  }
-                  css={conditionPictureCss}
-                />
-              )
+              p3: <Picture src={getMovieActionSymbol(bonusAction, movieColor)} css={conditionPictureCss} />
             }}
           />
         </p>
@@ -155,7 +113,7 @@ export const MovieCardHelp: FC<MaterialHelpDisplayProps<PlayerColor, MaterialTyp
         <p>
           <Trans
             i18nKey="help.movieCard.premiersShowingBonus"
-            defaults="<s>Premiers row showing bonus:</s> When you buy a Premier movie, immediately gain 1 {colorEnum, plural, =1{yellow} =2{red} =3{green} =4{blue} other{}} Guest from the reserve, and add it to your bag. If the reserve is empty, take it from any other player’s exit zone. If there are none available, nothing happens."
+            defaults="<s>Premiers row showing bonus:</s> When you buy a Premier movie, immediately gain 1 {colorEnum, select, 1{yellow} 2{red} 3{green} 4{blue} other{}} Guest from the reserve, and add it to your bag. If the reserve is empty, take it from any other player’s exit zone. If there are none available, nothing happens."
             values={{
               colorEnum: movieCharacteristics.color
             }}
@@ -202,16 +160,7 @@ export const MovieCardHelp: FC<MaterialHelpDisplayProps<PlayerColor, MaterialTyp
                   </td>
                 )}
                 <td css={borderRightNoneCss}>
-                  <Picture
-                    src={
-                      action === MovieAction.AdvertisingTokenOnAnyGuest
-                        ? anyGuestActionSymbols[movieColor]
-                        : action === MovieAction.AdvertisingTokenOnWhiteGuestToBag
-                          ? whiteGuestActionSymbols[movieColor]
-                          : movieActionSymbols[action]
-                    }
-                    css={movieActionPictureCss}
-                  />
+                  <Picture src={getMovieActionSymbol(action, movieColor)} css={movieActionPictureCss} />
                 </td>
                 <td css={borderLeftNoneCss}>
                   <Trans
@@ -227,62 +176,6 @@ export const MovieCardHelp: FC<MaterialHelpDisplayProps<PlayerColor, MaterialTyp
       </table>
     </>
   )
-}
-
-const movieTitleDefaults = {
-  // First movies
-  [MovieCard.FirstMovieBlueRosebud]: 'Rosebud',
-  [MovieCard.FirstMovieGreenEndOfTheWorld]: 'End of the World',
-  [MovieCard.FirstMovieRedItSMyWar]: "It's My War",
-  [MovieCard.FirstMovieYellowModernLove]: 'Modern Love',
-  // Blue movies
-  [MovieCard.BlueHenrietta]: 'Henrietta',
-  [MovieCard.BlueMe]: 'Me',
-  [MovieCard.Blue5678]: '5, 6, 7, 8...',
-  [MovieCard.BlueJoeJoe]: 'Joe Joe',
-  [MovieCard.BlueTheNeuroticDetective]: 'The Neurotic Detective',
-  [MovieCard.BlueObjection]: 'Objection',
-  [MovieCard.BlueBigSpenders]: 'Big Spenders',
-  [MovieCard.BlueControlZ]: 'Control Z',
-  [MovieCard.BlueRohanAndJaya]: 'Rohan and Jaya',
-  [MovieCard.BlueAdrian]: 'Adrian',
-  [MovieCard.BlueTheGodmother]: 'The Godmother',
-  // Green movies
-  [MovieCard.GreenFrankAndEinstein]: 'Frank & Einstein',
-  [MovieCard.GreenTheBarbarian]: 'The Barbarian',
-  [MovieCard.GreenRevengeOfTheDiplodocus]: 'Revenge of The Diplodocus',
-  [MovieCard.GreenMountainHotel]: 'Mountain Hotel',
-  [MovieCard.GreenBadman]: 'Badman',
-  [MovieCard.GreenKingOfTokyo]: 'King of Tokyo',
-  [MovieCard.GreenAMonsterInTheShip]: 'A Monster In The Ship',
-  [MovieCard.GreenWitchesVsCheerleaders]: 'Witches vs Cheerleaders',
-  [MovieCard.GreenAbracadab]: "Abracadab'",
-  [MovieCard.GreenEliminator4]: 'Eliminator 4',
-  [MovieCard.GreenIntergalactic]: 'Intergalactic',
-  // Red movies
-  [MovieCard.RedTheManWithTheMoney]: 'The Man With The Money',
-  [MovieCard.RedBarbacus]: 'Barbacus',
-  [MovieCard.RedTheFuryOfTheSerpent]: 'The Fury of The Serpent',
-  [MovieCard.RedTheCursedPegleg]: 'The Cursed Pegleg',
-  [MovieCard.RedTheWorldAfter]: 'The World After',
-  [MovieCard.RedTheVolcano]: 'The Volcano',
-  [MovieCard.RedUnknownDestination]: 'Unknown Destination',
-  [MovieCard.RedGentlemanDriver]: 'Gentleman Driver',
-  [MovieCard.RedFinalLasso]: 'Final Lasso',
-  [MovieCard.RedElitePilot]: 'Elite Pilot',
-  [MovieCard.RedVroom8]: 'Vroom 8',
-  // Yellow movies
-  [MovieCard.YellowMisterGiggles]: 'Mister Giggles',
-  [MovieCard.YellowMelancholyCharlie]: 'Melancholy Charlie',
-  [MovieCard.YellowKangarooMan]: 'Kangaroo Man',
-  [MovieCard.YellowTheKids]: 'The Kids',
-  [MovieCard.YellowWhatABunchOfIdiots3]: 'What a Bunch of Idiots 3',
-  [MovieCard.YellowSchoolOfZombies]: 'School of Zombies',
-  [MovieCard.YellowDoReMiFaSo]: 'Do Re Mi Fa So',
-  [MovieCard.YellowFrenchKiss]: 'French Kiss',
-  [MovieCard.Yellow28InTheFamily]: '28 in the Family',
-  [MovieCard.YellowTheAdventuresOfPewPew]: 'The Adventures of Pew Pew',
-  [MovieCard.YellowTheFirePrincess]: 'The Fire Princess'
 }
 
 const movieQuotesDefaults = {
@@ -401,59 +294,11 @@ const getAmountFromMovieAction = (action: MovieAction): number => {
   }
 }
 
-const colorSymbols = {
-  [MovieColor.Blue]: blueMovieSymbol,
-  [MovieColor.Green]: greenMovieSymbol,
-  [MovieColor.Red]: redMovieSymbol,
-  [MovieColor.Yellow]: yellowMovieSymbol
-}
-
-const movieActionSymbols = {
-  [MovieAction.AdvertisingTokenOnBlueGuest]: blueAdvertisingGuestSymbol,
-  [MovieAction.AdvertisingTokenOnGreenGuest]: greenAdvertisingGuestSymbol,
-  [MovieAction.AdvertisingTokenOnRedGuest]: redAdvertisingGuestSymbol,
-  [MovieAction.AdvertisingTokenOnYellowGuest]: yellowAdvertisingGuestSymbol,
-  [MovieAction.AudienceTrackAdvance]: audienceTrackAdvanceSymbol,
-  [MovieAction.DrawAwardCard]: drawAwardCardsSymbol,
-  [MovieAction.DrawGuestAndPlaceThem]: drawGuestSymbol,
-  [MovieAction.Get1Money]: get1MoneySymbol,
-  [MovieAction.Get2Money]: get2MoneySymbol,
-  [MovieAction.Get3Money]: get3MoneySymbol,
-  [MovieAction.Get4Money]: get4MoneySymbol,
-  [MovieAction.Get1Popcorn]: get1PopcornSymbol,
-  [MovieAction.Get2Popcorn]: get2PopcornSymbol,
-  [MovieAction.Get3Popcorn]: get3PopcornSymbol,
-  [MovieAction.Get4Popcorn]: get4PopcornSymbol,
-  [MovieAction.None]: '',
-  [MovieAction.PlaceExitZoneGuestInBag]: exitGuestToBagSymbol,
-  [MovieAction.PlaceGuestInReserve]: guestInReserveSymbol
-}
-
-const anyGuestActionSymbols = {
-  [MovieColor.Blue]: blueAnyGuestSymbol,
-  [MovieColor.Green]: greenAnyGuestSymbol,
-  [MovieColor.Red]: redAnyGuestSymbol,
-  [MovieColor.Yellow]: yellowAnyGuestSymbol
-}
-
-const whiteGuestActionSymbols = {
-  [MovieColor.Blue]: blueWhiteGuestSymbol,
-  [MovieColor.Green]: greenWhiteGuestSymbol,
-  [MovieColor.Red]: redWhiteGuestSymbol,
-  [MovieColor.Yellow]: yellowWhiteGuestSymbol
-}
-
 const showingSymbols = {
   [MovieColor.Blue]: blueMovieShowingBonusSymbol,
   [MovieColor.Green]: greenMovieShowingBonusSymbol,
   [MovieColor.Red]: redMovieShowingBonusSymbol,
   [MovieColor.Yellow]: yellowMovieShowingBonusSymbol
-}
-
-const seatsNumberSymbols = {
-  [SeatsNumber.One]: oneSeatMovieShowingBonusSymbol,
-  [SeatsNumber.Two]: twoSeatMovieShowingBonusSymbol,
-  [SeatsNumber.Three]: threeSeatMovieShowingBonusSymbol
 }
 
 const pictureCss = css`

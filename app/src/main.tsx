@@ -7,6 +7,7 @@ import { createRoot } from 'react-dom/client'
 import { popcornAnimations } from './animations/PopcornAnimations'
 import { App } from './App'
 import { Locators } from './locators/Locators'
+import { PopcornLogDescription } from './logs/PopcornLogDescription.ts'
 import { Material, popcornMaterialI18n } from './material/Material'
 import { PopcornTheme } from './PopcornTheme'
 
@@ -21,6 +22,7 @@ createRoot(document.getElementById('root')!).render(
       locators={Locators}
       animations={popcornAnimations}
       materialI18n={popcornMaterialI18n}
+      logs={new PopcornLogDescription()}
       theme={PopcornTheme}
     >
       <App />

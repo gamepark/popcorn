@@ -2,6 +2,7 @@ import { LocationType } from '@gamepark/popcorn/material/LocationType'
 import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
 import { PopcornToken, popcornTokens } from '@gamepark/popcorn/material/PopcornToken'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
+import { RuleId } from '@gamepark/popcorn/rules/RuleId.ts'
 import { ComponentSize, TokenDescription } from '@gamepark/react-game'
 import { MaterialItem } from '@gamepark/rules-api'
 import { randomInt } from 'es-toolkit'
@@ -25,12 +26,13 @@ const tokenSizes = {
   //  [PopcornToken.Token53]: { width: 2.62, height: 2.46 }
 }
 
-class PopcornTokenDescription extends TokenDescription<PlayerColor, MaterialType, LocationType, PopcornToken> {
+class PopcornTokenDescription extends TokenDescription<PlayerColor, MaterialType, LocationType, PopcornToken, RuleId, PlayerColor> {
   public getSize(id: PopcornToken): ComponentSize {
     return tokenSizes[id]
   }
 
   thickness = 0.2
+  transparency = true
 
   private popcornTokenNumber = popcornTokens.reduce(
     (previousValue, currentValue) => ({ ...previousValue, [currentValue]: randomInt(5, 11) }),
@@ -53,7 +55,7 @@ class PopcornTokenDescription extends TokenDescription<PlayerColor, MaterialType
     [PopcornToken.Token5]: popcorn5Back1
   }
 
-  public getStaticItems(): MaterialItem<PlayerColor, LocationType>[] {
+  public getStaticItems(): MaterialItem<PlayerColor, LocationType, PopcornToken>[] {
     return popcornTokens.map((id) => ({
       id: id,
       quantity: this.popcornTokenNumber[id],

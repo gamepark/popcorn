@@ -6,11 +6,12 @@ import { isBuyMovieCardCustomMove, isMovieActionCustomMove } from '@gamepark/pop
 import { LocationType } from '@gamepark/popcorn/material/LocationType'
 import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
 import { MovieCard, MovieCardId, MovieCardType } from '@gamepark/popcorn/material/MovieCard'
+import { PopcornMove } from '@gamepark/popcorn/material/PopcornMoves.ts'
 import { Memory } from '@gamepark/popcorn/Memory'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
 import { RuleId } from '@gamepark/popcorn/rules/RuleId'
 import { CardDescription, ItemContext, ItemMenuButton, MaterialContext } from '@gamepark/react-game'
-import { Location, MaterialItem, MaterialMove, MaterialMoveBuilder } from '@gamepark/rules-api'
+import { Location, MaterialItem, MaterialMoveBuilder } from '@gamepark/rules-api'
 import React from 'react'
 import { Trans } from 'react-i18next'
 import blue5678 from '../images/Cards/Movies/en/Blue5678.jpg'
@@ -67,13 +68,9 @@ import yellowWhatABunchOfIdiots3 from '../images/Cards/Movies/en/YellowWhatABunc
 import { MovieCardHelp } from './help/MovieCardHelp.tsx'
 import displayLocationHelp = MaterialMoveBuilder.displayLocationHelp
 
-export class MovieCardDescription extends CardDescription<PlayerColor, MaterialType, LocationType, MovieCardId> {
+export class MovieCardDescription extends CardDescription<PlayerColor, MaterialType, LocationType, MovieCardId, RuleId, PlayerColor> {
   width = 7
   height = 7
-
-  stockLocation = {
-    type: LocationType.MovieCardDeckSpot
-  }
 
   images = {
     [MovieCard.FirstMovieBlueRosebud]: firstMovieBlueRosebud,
@@ -134,31 +131,33 @@ export class MovieCardDescription extends CardDescription<PlayerColor, MaterialT
 
   help = MovieCardHelp
 
-  public getStaticItems(context: MaterialContext<PlayerColor, MaterialType, LocationType>): MaterialItem<PlayerColor, LocationType>[] {
-    const numberOfCardsBelowFinalShowing = context.rules.players.length === 2 ? 10 : 5
-    const numberOfCardsInDeck = context.rules.material(MaterialType.MovieCards).location(LocationType.MovieCardDeckSpot).length
-    return numberOfCardsInDeck <= numberOfCardsBelowFinalShowing
-      ? [
-          {
-            id: {
-              front: MovieCard.FinalShowing,
-              back: MovieCardType.Movie
-            },
-            location: {
-              type: LocationType.FinalShowingCardSpot
-            }
-          }
-        ]
-      : []
-  }
+  // public getStaticItems(
+  //   context: MaterialContext<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>
+  // ): MaterialItem<PlayerColor, LocationType, MovieCardId>[] {
+  //   const numberOfCardsBelowFinalShowing = context.rules.players.length === 2 ? 10 : 5
+  //   const numberOfCardsInDeck = context.rules.material(MaterialType.MovieCards).location(LocationType.MovieCardDeckSpot).length
+  //   return numberOfCardsInDeck <= numberOfCardsBelowFinalShowing
+  //     ? [
+  //         {
+  //           id: {
+  //             front: MovieCard.FinalShowing,
+  //             back: MovieCardType.Movie
+  //           },
+  //           location: {
+  //             type: LocationType.FinalShowingCardSpot
+  //           }
+  //         }
+  //       ]
+  //     : []
+  // }
 
-  public canDrag(move: MaterialMove<PlayerColor, MaterialType, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType>): boolean {
+  public canDrag(move: PopcornMove, context: ItemContext<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>): boolean {
     return super.canDrag(move, context) || (isBuyMovieCardCustomMove(move) && move.data.boughtCardIndex === context.index)
   }
 
   public getMoveDropLocations(
-    context: ItemContext<PlayerColor, MaterialType, LocationType>,
-    move: MaterialMove<PlayerColor, MaterialType, LocationType>
+    context: ItemContext<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>,
+    move: PopcornMove
   ): Location<PlayerColor, LocationType>[] {
     if (context.rules.game.rule?.id === RuleId.BuyingPhaseRule && isBuyMovieCardCustomMove(move)) {
       const destination = {
@@ -171,7 +170,10 @@ export class MovieCardDescription extends CardDescription<PlayerColor, MaterialT
     return super.getMoveDropLocations(context, move)
   }
 
-  public isMenuAlwaysVisible(_item: MaterialItem<PlayerColor, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType>): boolean {
+  public isMenuAlwaysVisible(
+    _item: MaterialItem<PlayerColor, LocationType, MovieCardId>,
+    context: ItemContext<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>
+  ): boolean {
     if (context.player !== undefined) {
       return context.rules.remind<Actions[]>(Memory.PendingActions, context.player)[0]?.type === ActionType.ChooseMovieAction
     }
@@ -180,8 +182,8 @@ export class MovieCardDescription extends CardDescription<PlayerColor, MaterialT
 
   public getItemMenu(
     item: MaterialItem<PlayerColor, LocationType, MovieCardId>,
-    context: ItemContext<PlayerColor, MaterialType, LocationType>,
-    legalMoves: MaterialMove<PlayerColor, MaterialType, LocationType>[]
+    context: ItemContext<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>,
+    legalMoves: PopcornMove[]
   ): React.ReactNode {
     if (
       context.rules.game.rule?.id === RuleId.BuyingPhaseRule &&
@@ -221,7 +223,10 @@ export class MovieCardDescription extends CardDescription<PlayerColor, MaterialT
     return
   }
 
-  public isFlippedOnTable(item: Partial<MaterialItem<PlayerColor, LocationType>>, context: MaterialContext<PlayerColor, MaterialType, LocationType>): boolean {
+  public isFlippedOnTable(
+    item: Partial<MaterialItem<PlayerColor, LocationType>>,
+    context: MaterialContext<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>
+  ): boolean {
     if (
       item.location?.type === LocationType.MovieCardDeckSpot ||
       (item.location?.type === LocationType.PlayerMovieCardArchiveSpot && context.player !== item.location.player)
@@ -232,9 +237,9 @@ export class MovieCardDescription extends CardDescription<PlayerColor, MaterialT
   }
 
   public displayHelp(
-    item: MaterialItem<PlayerColor, LocationType>,
-    context: ItemContext<PlayerColor, MaterialType, LocationType>
-  ): MaterialMove<PlayerColor, MaterialType, LocationType> | undefined {
+    item: MaterialItem<PlayerColor, LocationType, MovieCardId>,
+    context: ItemContext<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>
+  ): PopcornMove | undefined {
     if (
       !context.rules.isOver() &&
       (item.location.type === LocationType.MovieCardDeckSpot ||
@@ -251,8 +256,8 @@ export class MovieCardDescription extends CardDescription<PlayerColor, MaterialT
 
   private createItemMenuForBuyingPhase(
     item: MaterialItem<PlayerColor, LocationType, MovieCardId>,
-    context: ItemContext<PlayerColor, MaterialType, LocationType>,
-    legalMoves: MaterialMove<PlayerColor, MaterialType, LocationType>[]
+    context: ItemContext<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>,
+    legalMoves: PopcornMove[]
   ): React.ReactNode {
     const cardIndex = context.index
     const movesForCard = legalMoves.filter(isBuyMovieCardCustomMove).filter((move) => move.data.boughtCardIndex === cardIndex)

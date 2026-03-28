@@ -6,11 +6,12 @@ import { isPassCurrentActionCustomMove } from '@gamepark/popcorn/material/Custom
 import { GuestPawn } from '@gamepark/popcorn/material/GuestPawn'
 import { LocationType } from '@gamepark/popcorn/material/LocationType'
 import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
+import { PopcornMove } from '@gamepark/popcorn/material/PopcornMoves.ts'
 import { Memory } from '@gamepark/popcorn/Memory'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
 import { RuleId } from '@gamepark/popcorn/rules/RuleId'
 import { ItemContext, ItemMenuButton, TokenDescription } from '@gamepark/react-game'
-import { isMoveItemType, isSelectItemType, MaterialItem, MaterialMove } from '@gamepark/rules-api'
+import { isMoveItemType, isSelectItemType, MaterialItem } from '@gamepark/rules-api'
 import React from 'react'
 import { Trans } from 'react-i18next'
 import blueGuestPawn from '../images/GuestPawns/BlueGuestPawn.png'
@@ -19,7 +20,7 @@ import redGuestPawn from '../images/GuestPawns/RedGuestPawn.png'
 import whiteGuestPawn from '../images/GuestPawns/WhiteGuestPawn.png'
 import yellowGuestPawn from '../images/GuestPawns/YellowGuestPawn.png'
 
-class GuestPawnDescription extends TokenDescription<PlayerColor, MaterialType, LocationType, GuestPawn> {
+class GuestPawnDescription extends TokenDescription<PlayerColor, MaterialType, LocationType, GuestPawn, RuleId, PlayerColor> {
   width = 1.8
   height = 1.8
   transparency = true
@@ -32,7 +33,10 @@ class GuestPawnDescription extends TokenDescription<PlayerColor, MaterialType, L
     [GuestPawn.Yellow]: yellowGuestPawn
   }
 
-  public isMenuAlwaysVisible(item: MaterialItem<PlayerColor, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType>): boolean {
+  public isMenuAlwaysVisible(
+    item: MaterialItem<PlayerColor, LocationType, GuestPawn>,
+    context: ItemContext<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>
+  ): boolean {
     if (context.player !== undefined) {
       if (context.rules.game.rule?.id === RuleId.ShowingsPhaseRule && context.rules.game.players.includes(context.player)) {
         const pendingActions = context.rules.remind<Actions[]>(Memory.PendingActions, context.player)
@@ -43,9 +47,9 @@ class GuestPawnDescription extends TokenDescription<PlayerColor, MaterialType, L
   }
 
   public getItemMenu(
-    item: MaterialItem<PlayerColor, LocationType>,
-    context: ItemContext<PlayerColor, MaterialType, LocationType>,
-    legalMoves: MaterialMove<PlayerColor, MaterialType, LocationType>[]
+    item: MaterialItem<PlayerColor, LocationType, GuestPawn>,
+    context: ItemContext<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>,
+    legalMoves: PopcornMove[]
   ): React.ReactNode {
     if (context.player !== undefined) {
       const pendingActions = context.rules.remind<Actions[]>(Memory.PendingActions, context.player)

@@ -1,6 +1,7 @@
 import { LocationType } from '@gamepark/popcorn/material/LocationType'
 import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
+import { RuleId } from '@gamepark/popcorn/rules/RuleId.ts'
 import { FlatMaterialDescription, MaterialContext } from '@gamepark/react-game'
 import { MaterialItem } from '@gamepark/rules-api'
 import cyanPopcornCup from '../images/Cups/BlueCup.png'
@@ -8,7 +9,7 @@ import greenPopcornCup from '../images/Cups/GreenCup.png'
 import orangePopcornCup from '../images/Cups/OrangeCup.png'
 import purplePopcornCup from '../images/Cups/PurpleCup.png'
 
-class PopcornCupDescription extends FlatMaterialDescription<PlayerColor, MaterialType, LocationType, PlayerColor> {
+class PopcornCupDescription extends FlatMaterialDescription<PlayerColor, MaterialType, LocationType, PlayerColor, RuleId, PlayerColor> {
   width = 6.15
   height = 5.35
   transparency = true
@@ -20,7 +21,9 @@ class PopcornCupDescription extends FlatMaterialDescription<PlayerColor, Materia
     [PlayerColor.Purple]: purplePopcornCup
   }
 
-  public getStaticItems(_context: MaterialContext<PlayerColor, MaterialType, LocationType>): MaterialItem<PlayerColor, LocationType>[] {
+  public getStaticItems(
+    _context: MaterialContext<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>
+  ): MaterialItem<PlayerColor, LocationType, PlayerColor>[] {
     return _context.rules.players.map((player) => ({
       id: player,
       location: {

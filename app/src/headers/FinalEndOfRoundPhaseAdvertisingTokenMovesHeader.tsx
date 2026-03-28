@@ -1,13 +1,11 @@
-import { LocationType } from '@gamepark/popcorn/material/LocationType.ts'
-import { MaterialType } from '@gamepark/popcorn/material/MaterialType.ts'
-import { PlayerColor } from '@gamepark/popcorn/PlayerColor.ts'
+import { PopcornMove } from '@gamepark/popcorn/material/PopcornMoves.ts'
 import { HeaderText, PlayMoveButton, useLegalMoves } from '@gamepark/react-game'
-import { isEndPlayerTurn, MaterialMove } from '@gamepark/rules-api'
+import { isEndPlayerTurn } from '@gamepark/rules-api'
 import { FC } from 'react'
 import { Trans } from 'react-i18next'
 
 export const FinalEndOfRoundPhaseAdvertisingTokenMovesHeader: FC = () => {
-  const moves = useLegalMoves<MaterialMove<PlayerColor, MaterialType, LocationType>>()
+  const moves = useLegalMoves<PopcornMove>()
   const passMove = moves.find(isEndPlayerTurn)
   const isPassOnlyMove = moves.length === 1 && moves[0] === passMove
   return (

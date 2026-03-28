@@ -16,15 +16,7 @@ import { MaterialItem } from '@gamepark/rules-api'
 import { camelCase } from 'es-toolkit'
 import { FC } from 'react'
 import { Trans } from 'react-i18next'
-import get1MoneySymbol from '../../images/Symbols/Action1Money.png'
-import get1PopcornSymbol from '../../images/Symbols/Action1Popcorn.png'
-import get2MoneySymbol from '../../images/Symbols/Action2Money.png'
-import get2PopcornSymbol from '../../images/Symbols/Action2Popcorn.png'
-import get3MoneySymbol from '../../images/Symbols/Action3Money.png'
-import drawGuestAndPlaceThemSymbol from '../../images/Symbols/ActionDrawGuest.png'
-import moveExitZoneGuestToBagSymbol from '../../images/Symbols/ActionExitZoneGuestToBag.png'
-import placeGuestInReserveSymbol from '../../images/Symbols/ActionPlaceGuestInReserve.png'
-import movieActionSymbol from '../../images/Symbols/SeatActionMovieAction.png'
+import { actionSymbols } from '../utils/seatActionSymbols.util.ts'
 
 export const TheaterTileHelp: FC<MaterialHelpDisplayProps<PlayerColor, MaterialType, LocationType>> = ({
   item
@@ -37,7 +29,7 @@ export const TheaterTileHelp: FC<MaterialHelpDisplayProps<PlayerColor, MaterialT
     <h2>
       <Trans
         i18nKey="help.theaterTile.type"
-        defaults="{numberOfSeats, plural, =1{One seat} =2{Two seats} =3{Three seat} other{}} theater tile"
+        defaults="{numberOfSeats, select, 1{One seat} 2{Two seats} 3{Three seat} other{}} theater tile"
         values={{ numberOfSeats }}
       />
       {item.location?.type === LocationType.TheaterTileSpotOnTopPlayerCinemaBoard && (
@@ -45,7 +37,7 @@ export const TheaterTileHelp: FC<MaterialHelpDisplayProps<PlayerColor, MaterialT
           &nbsp;&mdash;&nbsp;
           <Trans
             i18nKey="help.theaterTile.playerTile"
-            defaults="{name}'s {theaterNumber, plural, =0{first} =1{second} =2{third} other{unused}} theater"
+            defaults="{name}'s {theaterNumber, select, 0{left} 1{center} 2{right} other{unused}} theater"
             values={{ name: playerName, theaterNumber: item.location.x ?? -1 }}
           />
         </>
@@ -108,7 +100,7 @@ export const TheaterTileHelp: FC<MaterialHelpDisplayProps<PlayerColor, MaterialT
           {seatActions.map((action, index) => {
             const seatColor = tileCharacteristics.getSeatColor(index)!
             return (
-              <tr>
+              <tr key={`theaterTileHelp-${item.id!.front}-${item.location!.player}-${index}`}>
                 <td css={textCenterCss}>{index + 1}</td>
                 <td css={textCenterCss}>
                   <Trans i18nKey={`help.theaterTile.table.requiredGuestColor.${SeatColor[seatColor]}`} defaults={requiredGuestColorDefaults[seatColor]} />
@@ -130,18 +122,6 @@ export const TheaterTileHelp: FC<MaterialHelpDisplayProps<PlayerColor, MaterialT
       </table>
     </>
   )
-}
-
-const actionSymbols = {
-  [SeatAction.DrawGuestAndPlaceThem]: drawGuestAndPlaceThemSymbol,
-  [SeatAction.Get1Money]: get1MoneySymbol,
-  [SeatAction.Get2Money]: get2MoneySymbol,
-  [SeatAction.Get3Money]: get3MoneySymbol,
-  [SeatAction.Get1Popcorn]: get1PopcornSymbol,
-  [SeatAction.Get2Popcorn]: get2PopcornSymbol,
-  [SeatAction.MoveGuestFromExitZoneToBag]: moveExitZoneGuestToBagSymbol,
-  [SeatAction.MovieAction]: movieActionSymbol,
-  [SeatAction.PlaceGuestInReserve]: placeGuestInReserveSymbol
 }
 
 const requiredGuestColorDefaults = {

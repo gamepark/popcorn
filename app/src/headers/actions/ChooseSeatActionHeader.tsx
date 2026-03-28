@@ -1,15 +1,11 @@
 import { isPassCurrentActionCustomMove } from '@gamepark/popcorn/material/CustomMoveType.ts'
-import { LocationType } from '@gamepark/popcorn/material/LocationType.ts'
-import { MaterialType } from '@gamepark/popcorn/material/MaterialType.ts'
-import { PlayerColor } from '@gamepark/popcorn/PlayerColor.ts'
-import { RuleId } from '@gamepark/popcorn/rules/RuleId.ts'
+import { PopcornMove } from '@gamepark/popcorn/material/PopcornMoves.ts'
 import { HeaderText, PlayMoveButton, useLegalMove } from '@gamepark/react-game'
-import { MaterialMove } from '@gamepark/rules-api'
 import { FC } from 'react'
 import { Trans } from 'react-i18next'
 
 export const ChooseSeatActionHeader: FC = () => {
-  const passMove = useLegalMove<MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>>(isPassCurrentActionCustomMove)
+  const passMove = useLegalMove<PopcornMove>(isPassCurrentActionCustomMove)
   return (
     <HeaderText
       code="header.actionRules.chooseSeatAction"

@@ -1,6 +1,7 @@
 import { LocationType } from '@gamepark/popcorn/material/LocationType'
 import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
+import { RuleId } from '@gamepark/popcorn/rules/RuleId.ts'
 import { Locator } from '@gamepark/react-game'
 import { actionsHelpCardLocator } from './ActionsHelpCardLocator.ts'
 import { advertisingBoardLocator } from './AdvertisingBoardLocator'
@@ -43,7 +44,7 @@ import { topCinemaBoardOnBottomCinemaBoardLocator } from './TopCinemaBoardOnBott
 import { twoSeatTheaterTilesDeckLocator } from './TwoSeatTheaterTilesDeckLocator'
 import { twoSeatTheaterTilesRowLocator } from './TwoSeatTheaterTilesRowLocator'
 
-export const Locators: Partial<Record<LocationType, Locator<PlayerColor, MaterialType, LocationType>>> = {
+export const Locators: Partial<Record<LocationType, Locator<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>>> = {
   [LocationType.MovieCardDeckSpot]: movieCardsDeckLocator,
   [LocationType.FeaturesTileSpot]: featuresTilesLocator,
   [LocationType.PremiersTileSpot]: premiersTileLocator,

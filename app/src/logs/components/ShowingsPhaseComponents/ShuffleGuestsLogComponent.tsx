@@ -1,0 +1,24 @@
+import { MaterialType } from '@gamepark/popcorn/material/MaterialType.ts'
+import { ShowingsPhaseRule } from '@gamepark/popcorn/rules/ShowingsPhaseRule.ts'
+import { usePlayerName } from '@gamepark/react-game'
+import { Shuffle } from '@gamepark/rules-api'
+import { FC } from 'react'
+import { Trans } from 'react-i18next'
+import { logContainerCss } from '../../utils/logCss.utils.ts'
+import { PopcornMoveComponentProps } from '../../utils/PopcornTypes.util.ts'
+
+export const ShuffleGuestsLogComponent: FC<PopcornMoveComponentProps> = ({ move, context }) => {
+  const shuffleMove = move as Shuffle<MaterialType>
+  const rule = new ShowingsPhaseRule(context.game)
+  const player = rule.material(MaterialType.GuestPawns).index(shuffleMove.indexes[0]).getItem()!.location.player
+  const playerName = usePlayerName(player)
+  return (
+    <div css={logContainerCss}>
+      <Trans
+        i18nKey="log.showingsPhase.exitZoneGuestsToBagForShuffle"
+        defaults="{player} puts all their Guests from their exit zone in their bag since it's empty"
+        values={{ player: playerName }}
+      />
+    </div>
+  )
+}
