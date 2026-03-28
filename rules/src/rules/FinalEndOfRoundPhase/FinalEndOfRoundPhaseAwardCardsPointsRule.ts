@@ -6,26 +6,23 @@ import { AwardCardPopcornCustomMoveData, CustomMoveType, isAwardCardPopcornCusto
 import { GuestPawn } from '../../material/GuestPawn'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
+import { PopcornMove } from '../../material/PopcornMoves'
 import { popcornTokens } from '../../material/PopcornToken'
 import { Memory } from '../../Memory'
 import { PlayerColor } from '../../PlayerColor'
 import { RuleId } from '../RuleId'
-import { getAudienceFromCubeLocation } from '../utils/getAudienceFromCubeLocation'
+import { getAudienceFromCubeLocation } from '../utils/getAudienceFromCubeLocation.util'
 
-export class FinalEndOfRoundPhaseAwardCardsPoints extends SimultaneousRule<PlayerColor, MaterialType, LocationType, RuleId> {
-  public getActivePlayerLegalMoves(_player: PlayerColor): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
+export class FinalEndOfRoundPhaseAwardCardsPointsRule extends SimultaneousRule<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor> {
+  public getActivePlayerLegalMoves(_player: PlayerColor): PopcornMove[] {
     return []
   }
 
-  public getMovesAfterPlayersDone(): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
+  public getMovesAfterPlayersDone(): PopcornMove[] {
     return []
   }
 
-  public onRuleStart(
-    _move: RuleMove<PlayerColor, RuleId>,
-    _previousRule?: RuleStep,
-    _context?: PlayMoveContext
-  ): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
+  public onRuleStart(_move: RuleMove<PlayerColor, RuleId>, _previousRule?: RuleStep, _context?: PlayMoveContext): PopcornMove[] {
     const awardCardsMaterial = this.material(MaterialType.AwardCards).location(LocationType.PlayerAwardCardHand)
     const movieCardsMaterial = this.material(MaterialType.MovieCards).location(LocationType.PlayerMovieCardArchiveSpot)
     const theaterTilesMaterial = this.material(MaterialType.TheaterTiles).location(LocationType.TheaterTileSpotOnTopPlayerCinemaBoard)
@@ -68,7 +65,7 @@ export class FinalEndOfRoundPhaseAwardCardsPoints extends SimultaneousRule<Playe
       .concat(this.endGame())
   }
 
-  public onCustomMove(move: CustomMove, context?: PlayMoveContext): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
+  public onCustomMove(move: CustomMove, context?: PlayMoveContext): PopcornMove[] {
     if (isAwardCardPopcornCustomMove(move)) {
       return this.material(MaterialType.PopcornTokens).money(popcornTokens).addMoney(move.data.popcorn, {
         type: LocationType.PlayerPopcornPileUnderPopcornCupSpot,

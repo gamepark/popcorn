@@ -1,9 +1,10 @@
-import { CustomMove, isCustomMoveType, MaterialMove } from '@gamepark/rules-api'
+import { CustomMove, MaterialMove } from '@gamepark/rules-api'
 import { PlayerColor } from '../PlayerColor'
 import { RuleId } from '../rules/RuleId'
 import { AwardCard } from './AwardCard'
 import { LocationType } from './LocationType'
 import { MaterialType } from './MaterialType'
+import { isPopcornCustomMoveType } from './PopcornMoves'
 
 export enum CustomMoveType {
   BuyMovieCard = 1,
@@ -61,16 +62,16 @@ export type AwardCardPopcornCustomMove = Omit<CustomMove, 'data'> & {
 }
 
 export const isBuyMovieCardCustomMove = (move: MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>): move is BuyMovieCardCustomMove =>
-  isCustomMoveType<CustomMoveType, PlayerColor, MaterialType, LocationType>(CustomMoveType.BuyMovieCard)(move)
+  isPopcornCustomMoveType<BuyMovieCardCustomMoveData>(CustomMoveType.BuyMovieCard)(move)
 
 export const isBuyTheaterTileCustomMove = (move: MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>): move is BuyTheaterTileCustomMove =>
-  isCustomMoveType<CustomMoveType, PlayerColor, MaterialType, LocationType>(CustomMoveType.BuyTheaterTile)(move)
+  isPopcornCustomMoveType<BuyTheaterTileCustomMoveData>(CustomMoveType.BuyTheaterTile)(move)
 
 export const isMovieActionCustomMove = (move: MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>): move is MovieActionCustomMove =>
-  isCustomMoveType<CustomMoveType, PlayerColor, MaterialType, LocationType>(CustomMoveType.MovieAction)(move)
+  isPopcornCustomMoveType<MovieActionCustomMoveData>(CustomMoveType.MovieAction)(move)
 
 export const isPassCurrentActionCustomMove = (move: MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>): move is PassCurrentActionCustomMove =>
-  isCustomMoveType<CustomMoveType, PlayerColor, MaterialType, LocationType>(CustomMoveType.PassCurrentAction)(move)
+  isPopcornCustomMoveType<PassCurrentActionCustomMoveData>(CustomMoveType.PassCurrentAction)(move)
 
 export const isAwardCardPopcornCustomMove = (move: MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>): move is AwardCardPopcornCustomMove =>
-  isCustomMoveType<CustomMoveType, PlayerColor, MaterialType, LocationType>(CustomMoveType.AwardCardPopcorn)(move)
+  isPopcornCustomMoveType<AwardCardPopcornCustomMoveData>(CustomMoveType.AwardCardPopcorn)(move)

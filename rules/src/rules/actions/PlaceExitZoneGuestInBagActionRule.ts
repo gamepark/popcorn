@@ -1,17 +1,17 @@
-import { isMoveItemType, ItemMove, MaterialMove, PlayMoveContext } from '@gamepark/rules-api'
+import { ItemMove, PlayMoveContext } from '@gamepark/rules-api'
 import { PlaceExitZoneGuestInBagAction } from '../../material/Actions/PlaceExitZoneGuestInBagAction'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
+import { isPopcornMoveItemType, PopcornMove } from '../../material/PopcornMoves'
 import { PlayerColor } from '../../PlayerColor'
-import { RuleId } from '../RuleId'
 import { ActionRule } from './ActionRule'
 
 export class PlaceExitZoneGuestInBagActionRule extends ActionRule<PlaceExitZoneGuestInBagAction> {
-  public consequencesBeforeRuleForPlayer(): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
+  public consequencesBeforeRuleForPlayer(): PopcornMove[] {
     return []
   }
 
-  public getActivePlayerLegalMoves(player: PlayerColor): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+  public getActivePlayerLegalMoves(player: PlayerColor): PopcornMove[] {
     const moves = this.material(MaterialType.GuestPawns).location(LocationType.GuestPawnExitZoneSpotOnTopPlayerCinemaBoard).player(player).moveItems({
       type: LocationType.PlayerGuestPawnsUnderClothBagSpot,
       player: player
@@ -19,20 +19,14 @@ export class PlaceExitZoneGuestInBagActionRule extends ActionRule<PlaceExitZoneG
     return moves
   }
 
-  public afterItemMove(
-    move: ItemMove<PlayerColor, MaterialType, LocationType>,
-    _context?: PlayMoveContext
-  ): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
-    if (
-      isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.GuestPawns)(move) &&
-      move.location.type === LocationType.PlayerGuestPawnsUnderClothBagSpot
-    ) {
+  public afterItemMove(move: ItemMove<PlayerColor, MaterialType, LocationType>, _context?: PlayMoveContext): PopcornMove[] {
+    if (isPopcornMoveItemType(MaterialType.GuestPawns)(move) && move.location.type === LocationType.PlayerGuestPawnsUnderClothBagSpot) {
       const player = move.location.player
       if (player === undefined) {
         throw new Error('Cannot find player from target location')
       }
       this.removeCurrentActionForPlayer(player)
-      const consequences: MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] = [
+      const consequences: PopcornMove[] = [
         this.material(MaterialType.GuestPawns).location(LocationType.PlayerGuestPawnsUnderClothBagSpot).player(player).shuffle()
       ]
       if (this.action.guestIndexToMoveToExitZone !== undefined && move.itemIndex !== this.action.guestIndexToMoveToExitZone) {
@@ -48,7 +42,7 @@ export class PlaceExitZoneGuestInBagActionRule extends ActionRule<PlaceExitZoneG
     return super.afterItemMove(move, _context)
   }
 
-  public getMovesAfterPlayersDone(): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+  public getMovesAfterPlayersDone(): PopcornMove[] {
     return []
   }
 }

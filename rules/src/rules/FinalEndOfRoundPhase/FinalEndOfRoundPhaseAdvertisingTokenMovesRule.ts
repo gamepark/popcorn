@@ -1,17 +1,14 @@
-import { isMoveItemType, ItemMove, Material, MaterialMove, PlayMoveContext, RuleMove, RuleStep, SimultaneousRule } from '@gamepark/rules-api'
+import { ItemMove, Material, MaterialMove, PlayMoveContext, RuleMove, RuleStep, SimultaneousRule } from '@gamepark/rules-api'
 import { AdvertisingTokenSpot } from '../../material/AdvertisingTokenSpot'
 import { GuestPawn } from '../../material/GuestPawn'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
+import { isPopcornMoveItemType, PopcornMove } from '../../material/PopcornMoves'
 import { PlayerColor } from '../../PlayerColor'
 import { RuleId } from '../RuleId'
 
-export class FinalEndOfRoundPhaseAdvertisingTokenMovesRule extends SimultaneousRule<PlayerColor, MaterialType, LocationType, RuleId> {
-  public onRuleStart(
-    _move: RuleMove<PlayerColor, RuleId>,
-    _previousRule?: RuleStep,
-    _context?: PlayMoveContext
-  ): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
+export class FinalEndOfRoundPhaseAdvertisingTokenMovesRule extends SimultaneousRule<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor> {
+  public onRuleStart(_move: RuleMove<PlayerColor, RuleId>, _previousRule?: RuleStep, _context?: PlayMoveContext): PopcornMove[] {
     const guestPawnMaterial = this.material(MaterialType.GuestPawns)
     return this.game.players.flatMap((player) =>
       guestPawnMaterial.player(player).moveItemsAtOnce({
@@ -21,7 +18,7 @@ export class FinalEndOfRoundPhaseAdvertisingTokenMovesRule extends SimultaneousR
     )
   }
 
-  public getActivePlayerLegalMoves(player: PlayerColor): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
+  public getActivePlayerLegalMoves(player: PlayerColor): PopcornMove[] {
     const playerAdvertisingTokens = this.material(MaterialType.AdvertisingTokens).id(player).location(LocationType.AdvertisingTokenSpotOnAdvertisingBoard)
     const anyGuestTokens = playerAdvertisingTokens.locationId<AdvertisingTokenSpot>(AdvertisingTokenSpot.AnyGuestPawn)
     const whiteGuestPawnTokens = playerAdvertisingTokens.locationId<AdvertisingTokenSpot>(AdvertisingTokenSpot.PlaceWhiteTokenIntoAnyBag)
@@ -38,8 +35,8 @@ export class FinalEndOfRoundPhaseAdvertisingTokenMovesRule extends SimultaneousR
   private buildWhiteGuestToReserveMovesIfAvailable(
     whiteGuestPawnTokens: Material<PlayerColor, MaterialType, LocationType>,
     whiteGuestPawns: Material<PlayerColor, MaterialType, LocationType>
-  ): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
-    return whiteGuestPawnTokens.length > 0 && whiteGuestPawns.length > 0
+  ): PopcornMove[] {
+    return whiteGuestPawnTokens.exists && whiteGuestPawns.exists
       ? whiteGuestPawns.moveItems({
           type: LocationType.GuestPawnReserveSpot,
           id: GuestPawn.White
@@ -47,19 +44,14 @@ export class FinalEndOfRoundPhaseAdvertisingTokenMovesRule extends SimultaneousR
       : []
   }
 
-  private buildReturnTokenToPlayerReserveMove(
-    playerAdvertisingTokens: Material<PlayerColor, MaterialType, LocationType>,
-    player: PlayerColor
-  ): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
+  private buildReturnTokenToPlayerReserveMove(playerAdvertisingTokens: Material<PlayerColor, MaterialType, LocationType>, player: PlayerColor): PopcornMove[] {
     return playerAdvertisingTokens.moveItems({
       type: LocationType.PlayerAdvertisingTokenSpot,
       player: player
     })
   }
 
-  private buildAnyGuestTokenMoves(
-    anyGuestTokens: Material<PlayerColor, MaterialType, LocationType>
-  ): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
+  private buildAnyGuestTokenMoves(anyGuestTokens: Material<PlayerColor, MaterialType, LocationType>): PopcornMove[] {
     return [
       AdvertisingTokenSpot.BlueGuestPawn,
       AdvertisingTokenSpot.GreenGuestPawn,
@@ -73,27 +65,23 @@ export class FinalEndOfRoundPhaseAdvertisingTokenMovesRule extends SimultaneousR
     )
   }
 
-  public getMovesAfterPlayersDone(): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
+  public getMovesAfterPlayersDone(): PopcornMove[] {
     return this.game.players
-      .flatMap(
-        (player) =>
-          this.material(MaterialType.GuestPawns)
-            .id(player)
-            .location(LocationType.AdvertisingTokenSpotOnAdvertisingBoard)
-            .locationId<AdvertisingTokenSpot>((lId) => lId === AdvertisingTokenSpot.AnyGuestPawn || lId === AdvertisingTokenSpot.PlaceWhiteTokenIntoAnyBag)
-            .moveItemsAtOnce({
-              type: LocationType.PlayerAdvertisingTokenSpot,
-              player: player
-            }) as MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>
-      )
-      .concat(this.startPlayerTurn<PlayerColor, RuleId>(RuleId.FinalEndOfRoundMoneyRule, this.game.players[0]))
+      .flatMap((player) => {
+        const tokenMaterial = this.material(MaterialType.AdvertisingTokens)
+          .id(player)
+          .location(LocationType.AdvertisingTokenSpotOnAdvertisingBoard)
+          .locationId<AdvertisingTokenSpot>((lId) => lId === AdvertisingTokenSpot.AnyGuestPawn || lId === AdvertisingTokenSpot.PlaceWhiteTokenIntoAnyBag)
+        return tokenMaterial.moveItemsAtOnce({
+          type: LocationType.PlayerAdvertisingTokenSpot,
+          player: player
+        }) as MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>
+      })
+      .concat(this.startSimultaneousRule<PlayerColor, RuleId>(RuleId.FinalEndOfRoundMoneyRule, []))
   }
 
-  public beforeItemMove(
-    move: ItemMove<PlayerColor, MaterialType, LocationType>,
-    _context?: PlayMoveContext
-  ): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
-    if (isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.GuestPawns)(move)) {
+  public beforeItemMove(move: ItemMove<PlayerColor, MaterialType, LocationType>, _context?: PlayMoveContext): PopcornMove[] {
+    if (isPopcornMoveItemType(MaterialType.GuestPawns)(move)) {
       const movedGuestPawn = this.material(MaterialType.GuestPawns).index(move.itemIndex).getItem<GuestPawn>()!
       const player = movedGuestPawn.location.player!
       const whiteGuestPawnTokens = this.material(MaterialType.AdvertisingTokens)

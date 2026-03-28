@@ -19,7 +19,7 @@ import { RuleId } from './rules/RuleId'
 /**
  * This class creates a new Game based on the game options
  */
-export class PopcornSetup extends MaterialGameSetup<PlayerColor, MaterialType, LocationType, PopcornOptions> {
+export class PopcornSetup extends MaterialGameSetup<PlayerColor, MaterialType, LocationType, PopcornOptions, RuleId, PlayerColor> {
   Rules = PopcornRules
 
   setupMaterial(_options: PopcornOptions) {

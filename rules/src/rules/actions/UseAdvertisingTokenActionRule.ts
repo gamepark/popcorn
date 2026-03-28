@@ -1,22 +1,20 @@
-import { isMoveItemType, ItemMove, MaterialMove, PlayMoveContext } from '@gamepark/rules-api'
-import { Actions } from '../../material/Actions/Actions'
+import { ItemMove, PlayMoveContext } from '@gamepark/rules-api'
 import { ActionType } from '../../material/Actions/ActionType'
 import { UseAdvertisingTokenAction } from '../../material/Actions/UseAdvertisingTokenAction'
 import { AdvertisingTokenSpot } from '../../material/AdvertisingTokenSpot'
 import { GuestPawn } from '../../material/GuestPawn'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
-import { Memory } from '../../Memory'
+import { isPopcornMoveItemType, PopcornMove } from '../../material/PopcornMoves'
 import { PlayerColor } from '../../PlayerColor'
-import { RuleId } from '../RuleId'
 import { ActionRule } from './ActionRule'
 
 export class UseAdvertisingTokenActionRule extends ActionRule<UseAdvertisingTokenAction> {
-  public consequencesBeforeRuleForPlayer(): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
+  public consequencesBeforeRuleForPlayer(): PopcornMove[] {
     return []
   }
 
-  public getActivePlayerLegalMoves(player: PlayerColor): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
+  public getActivePlayerLegalMoves(player: PlayerColor): PopcornMove[] {
     return this.material(MaterialType.AdvertisingTokens)
       .location(LocationType.AdvertisingTokenSpotOnAdvertisingBoard)
       .id<PlayerColor>(player)
@@ -30,36 +28,24 @@ export class UseAdvertisingTokenActionRule extends ActionRule<UseAdvertisingToke
       )
   }
 
-  public getMovesAfterPlayersDone(): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
+  public getMovesAfterPlayersDone(): PopcornMove[] {
     return []
   }
 
-  public beforeItemMove(
-    move: ItemMove<PlayerColor, MaterialType, LocationType>,
-    _context?: PlayMoveContext
-  ): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
-    if (
-      isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.AdvertisingTokens)(move) &&
-      move.location.type === LocationType.PlayerAdvertisingTokenSpot
-    ) {
+  public beforeItemMove(move: ItemMove<PlayerColor, MaterialType, LocationType>, _context?: PlayMoveContext): PopcornMove[] {
+    if (isPopcornMoveItemType(MaterialType.AdvertisingTokens)(move) && move.location.type === LocationType.PlayerAdvertisingTokenSpot) {
       const tokenSourceMaterial = this.material(MaterialType.AdvertisingTokens).index(move.itemIndex)
       const tokenSource = tokenSourceMaterial.getItem<PlayerColor>()?.location.id as AdvertisingTokenSpot
-      this.memorize<Actions[]>(
-        Memory.PendingActions,
-        (pendingActions) => {
-          pendingActions.unshift({
-            type: ActionType.PickReserveOrExitZoneGuest,
-            guest: tokenSource === AdvertisingTokenSpot.AnyGuestPawn ? undefined : this.getGuestColorForAdvertisingSpot(tokenSource)
-          })
-          if (
-            this.material(MaterialType.AdvertisingTokens).id(move.location.player).location(LocationType.AdvertisingTokenSpotOnAdvertisingBoard).length === 1
-          ) {
-            return pendingActions.filter((pendingAction) => pendingAction.type !== ActionType.UseAdvertisingToken)
-          }
-          return pendingActions
-        },
-        move.location.player
-      )
+      this.updateActionsForPlayer(move.location.player!, (pendingActions) => {
+        pendingActions.unshift({
+          type: ActionType.PickReserveOrExitZoneGuest,
+          guest: tokenSource === AdvertisingTokenSpot.AnyGuestPawn ? undefined : this.getGuestColorForAdvertisingSpot(tokenSource)
+        })
+        if (this.material(MaterialType.AdvertisingTokens).id(move.location.player).location(LocationType.AdvertisingTokenSpotOnAdvertisingBoard).length === 1) {
+          return pendingActions.filter((pendingAction) => pendingAction.type !== ActionType.UseAdvertisingToken)
+        }
+        return pendingActions
+      })
       return [tokenSourceMaterial.unselectItem()]
     }
     return []

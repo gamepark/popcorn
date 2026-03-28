@@ -17,30 +17,30 @@ import { PlaceGuestsActionRule } from '../actions/PlaceGuestsActionRule'
 import { UseAdvertisingTokenActionRule } from '../actions/UseAdvertisingTokenActionRule'
 import { RuleId } from '../RuleId'
 
-export const getActionRule = (action: Actions, rule: MaterialRulesPart<PlayerColor, MaterialType, LocationType, RuleId>) => {
+export const getActionRule = (action: Actions, rule: MaterialRulesPart<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>) => {
   switch (action.type) {
     case ActionType.BuyMovieCard:
-      return new BuyMovieCardActionRule(rule.game, action)
+      return new BuyMovieCardActionRule(rule.game, undefined, action)
     case ActionType.BuyTheaterTile:
-      return new BuyTheaterTileActionRule(rule.game, action)
+      return new BuyTheaterTileActionRule(rule.game, undefined, action)
     case ActionType.ChooseMovieAction:
-      return new ChooseMovieActionRule(rule.game, action)
+      return new ChooseMovieActionRule(rule.game, undefined, action)
     case ActionType.ChooseSeatAction:
-      return new ChooseSeatActionActionRule(rule.game, action)
+      return new ChooseSeatActionActionRule(rule.game, undefined, action)
     case ActionType.DiscardAwardCard:
-      return new DiscardAwardCardActionRule(rule.game, action)
+      return new DiscardAwardCardActionRule(rule.game, undefined, action)
     case ActionType.PickReserveOrExitZoneGuest:
-      return new PickGuestFromReserveOrExitZoneActionRule(rule.game, action)
+      return new PickGuestFromReserveOrExitZoneActionRule(rule.game, undefined, action)
     case ActionType.PickTheaterTileToActivate:
-      return new PickTheaterTileToActivateActionRule(rule.game, action)
+      return new PickTheaterTileToActivateActionRule(rule.game, undefined, action)
     case ActionType.PlaceCinemaGuestInReserve:
-      return new PlaceCinemaGuestInReserveActionRule(rule.game, action)
+      return new PlaceCinemaGuestInReserveActionRule(rule.game, undefined, action)
     case ActionType.PlaceExitZoneGuestInBag:
-      return new PlaceExitZoneGuestInBagActionRule(rule.game, action)
+      return new PlaceExitZoneGuestInBagActionRule(rule.game, undefined, action)
     case ActionType.PlaceGuests:
-      return new PlaceGuestsActionRule(rule.game, action)
+      return new PlaceGuestsActionRule(rule.game, undefined, action)
     case ActionType.UseAdvertisingToken:
-      return new UseAdvertisingTokenActionRule(rule.game, action)
+      return new UseAdvertisingTokenActionRule(rule.game, undefined, action)
     default:
       throw new Error('Not implemented')
   }

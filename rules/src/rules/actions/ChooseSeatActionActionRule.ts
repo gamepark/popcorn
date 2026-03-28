@@ -1,4 +1,4 @@
-import { CustomMove, isSelectItemType, ItemMove, Material, MaterialMove, PlayMoveContext } from '@gamepark/rules-api'
+import { CustomMove, ItemMove, Material, PlayMoveContext } from '@gamepark/rules-api'
 import { Actions } from '../../material/Actions/Actions'
 import { ActionType } from '../../material/Actions/ActionType'
 import { ChooseSeatActionAction } from '../../material/Actions/ChooseSeatActionAction'
@@ -8,25 +8,23 @@ import { GuestPawn } from '../../material/GuestPawn'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 import { PlayableMovieCardId } from '../../material/MovieCard'
+import { isPopcornSelectItemType, PopcornMove } from '../../material/PopcornMoves'
 import { SeatAction, SeatColor, TheaterTileId, theaterTilesCharacteristics } from '../../material/TheaterTile'
 import { AvailableMovieActionsMemory, Memory } from '../../Memory'
 import { PlayerColor } from '../../PlayerColor'
-import { RuleId } from '../RuleId'
-import { ActionRule } from './ActionRule'
-import { addPendingActionForPlayer } from './utils/addPendingActionForPlayer.util'
-import { getDrawGuestMovesAndAddPendingActionIfNecessary, getMoneyMove } from './utils/movieOrSeatActionConsequences.util'
+import { AudienceMoveOrMovieOrSeatActionRule } from './AudienceMoveOrMovieOrSeatActionRule'
 
-export class ChooseSeatActionActionRule extends ActionRule<ChooseSeatActionAction> {
-  public consequencesBeforeRuleForPlayer(): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
+export class ChooseSeatActionActionRule extends AudienceMoveOrMovieOrSeatActionRule<ChooseSeatActionAction> {
+  public consequencesBeforeRuleForPlayer(): PopcornMove[] {
     return []
   }
 
-  public getActivePlayerLegalMoves(player: PlayerColor): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+  public getActivePlayerLegalMoves(player: PlayerColor): PopcornMove[] {
     const guestPawnMaterial = this.material(MaterialType.GuestPawns).player(player).index(this.action.guestIndex)
     return [guestPawnMaterial.selectItem(), this.customMove(CustomMoveType.PassCurrentAction, { player: player })]
   }
 
-  public onCustomMove(move: CustomMove, _context?: PlayMoveContext): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
+  public onCustomMove(move: CustomMove, _context?: PlayMoveContext): PopcornMove[] {
     if (isPassCurrentActionCustomMove(move)) {
       const guestPawnMaterial = this.material(MaterialType.GuestPawns).index(this.action.guestIndex)
       const guestPawn = guestPawnMaterial.getItems<GuestPawn>()[0]
@@ -36,7 +34,7 @@ export class ChooseSeatActionActionRule extends ActionRule<ChooseSeatActionActio
         throw new Error('Cannot find owning player for guest pawn')
       }
       this.removeCurrentActionForPlayer(player)
-      const consequences: MaterialMove<PlayerColor, MaterialType, LocationType>[] = []
+      const consequences: PopcornMove[] = []
       const guestPendingMovieAction = this.remind<Actions[]>(Memory.PendingActions, player).find(
         (action) => action.type === ActionType.ChooseMovieAction && action.guestIndex === this.action.guestIndex
       )
@@ -53,11 +51,8 @@ export class ChooseSeatActionActionRule extends ActionRule<ChooseSeatActionActio
     return super.onCustomMove(move, _context)
   }
 
-  public afterItemMove(
-    move: ItemMove<PlayerColor, MaterialType, LocationType>,
-    _context?: PlayMoveContext
-  ): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
-    if (isSelectItemType<PlayerColor, MaterialType, LocationType>(MaterialType.GuestPawns)(move) && move.selected !== false) {
+  public afterItemMove(move: ItemMove<PlayerColor, MaterialType, LocationType>, _context?: PlayMoveContext): PopcornMove[] {
+    if (isPopcornSelectItemType(MaterialType.GuestPawns)(move) && move.selected !== false) {
       const guestPawnMaterial = this.material(MaterialType.GuestPawns).index(move.itemIndex)
       const guestPawn = guestPawnMaterial.getItems<GuestPawn>()[0]
       if (guestPawn.location.x === undefined) {
@@ -74,19 +69,30 @@ export class ChooseSeatActionActionRule extends ActionRule<ChooseSeatActionActio
         throw new Error('Error getting theater tile seat color')
       }
       this.removeCurrentActionForPlayer(player)
-      const consequences: MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] = [guestPawnMaterial.unselectItem()]
+      const consequences: PopcornMove[] = [guestPawnMaterial.unselectItem()]
       if (seatColor === SeatColor.Grey || guestPawn.id === this.getGuestColorCorrespondingToSeatColor(seatColor)) {
-        consequences.push(...this.getConsequencesForSeatAction(parentTileCharacteristics.getSeatAction(guestPawn.location.x), player, guestPawnMaterial))
+        consequences.push(
+          ...this.getConsequencesForSeatAction(
+            parentTileCharacteristics.getSeatAction(guestPawn.location.x),
+            player,
+            guestPawnMaterial,
+            this.canPlayerPlaceAGuestAfterSeatOrMovieAction(player, guestPawn.location.x!) ? move.itemIndex : undefined
+          )
+        )
       }
       const movieCard = this.material(MaterialType.MovieCards)
         .location(LocationType.MovieCardSpotOnBottomPlayerCinemaBoard)
+        .player(player)
         .location((l) => l.x === parentTheaterTile.location.x)
         .getItems<Required<PlayableMovieCardId>>()[0]
       const movieRemainingAvailableActions = this.remind<AvailableMovieActionsMemory>(Memory.AvailableMovieActions)[movieCard.id.front]!
       if (
         !this.remind<Actions[]>(Memory.PendingActions, player).some(
           (action) =>
-            (action.type === ActionType.ChooseMovieAction && action.guestIndex === this.action.guestIndex) || action.type === ActionType.PlaceExitZoneGuestInBag
+            (action.type === ActionType.ChooseMovieAction && action.guestIndex === this.action.guestIndex) ||
+            (action.type === ActionType.PlaceGuests && action.guestIndexToMoveToExitZone === this.action.guestIndex) ||
+            action.type === ActionType.PlaceExitZoneGuestInBag ||
+            action.type === ActionType.PlaceCinemaGuestInReserve
         )
       ) {
         consequences.push(
@@ -103,7 +109,7 @@ export class ChooseSeatActionActionRule extends ActionRule<ChooseSeatActionActio
     return super.afterItemMove(move, _context)
   }
 
-  public getMovesAfterPlayersDone(): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
+  public getMovesAfterPlayersDone(): PopcornMove[] {
     return []
   }
 
@@ -123,45 +129,39 @@ export class ChooseSeatActionActionRule extends ActionRule<ChooseSeatActionActio
   private getConsequencesForSeatAction(
     seatAction: SeatAction | undefined,
     player: PlayerColor,
-    guestPawnMaterial: Material<PlayerColor, MaterialType, LocationType>
-  ): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
+    guestPawnMaterial: Material<PlayerColor, MaterialType, LocationType>,
+    guestIndexToMoveAfter?: number
+  ): PopcornMove[] {
     switch (seatAction) {
       case SeatAction.Get1Money:
-        return getMoneyMove(this, player, MaterialType.MoneyTokens, 1)
+        return this.getMoneyMove(player, MaterialType.MoneyTokens, 1)
       case SeatAction.Get2Money:
-        return getMoneyMove(this, player, MaterialType.MoneyTokens, 2)
+        return this.getMoneyMove(player, MaterialType.MoneyTokens, 2)
       case SeatAction.Get3Money:
-        return getMoneyMove(this, player, MaterialType.MoneyTokens, 3)
+        return this.getMoneyMove(player, MaterialType.MoneyTokens, 3)
       case SeatAction.Get1Popcorn:
-        return getMoneyMove(this, player, MaterialType.PopcornTokens, 1)
+        return this.getMoneyMove(player, MaterialType.PopcornTokens, 1)
       case SeatAction.Get2Popcorn:
-        return getMoneyMove(this, player, MaterialType.PopcornTokens, 2)
+        return this.getMoneyMove(player, MaterialType.PopcornTokens, 2)
       case SeatAction.MovieAction:
-        addPendingActionForPlayer(
-          this,
-          {
-            type: ActionType.ChooseMovieAction,
-            guestIndex: guestPawnMaterial.getIndex()
-          },
-          player
-        )
+        this.addPendingActionForPlayer(player, {
+          type: ActionType.ChooseMovieAction,
+          guestIndex: guestPawnMaterial.getIndex(),
+          isSeatAction: true
+        })
         return []
       case SeatAction.PlaceGuestInReserve:
-        addPendingActionForPlayer(this, { type: ActionType.PlaceCinemaGuestInReserve }, player)
+        this.addPendingActionForPlayer(player, { type: ActionType.PlaceCinemaGuestInReserve })
         return []
       case SeatAction.DrawGuestAndPlaceThem:
-        return getDrawGuestMovesAndAddPendingActionIfNecessary(this, player)
+        return this.getDrawGuestMovesAndAddPendingActionIfNecessary(player, guestPawnMaterial.getItem()!.location.x!, guestIndexToMoveAfter)
       case SeatAction.MoveGuestFromExitZoneToBag: {
         const action: PlaceExitZoneGuestInBagAction = { type: ActionType.PlaceExitZoneGuestInBag }
         const guestIndex = guestPawnMaterial.getIndex()
-        if (
-          !this.remind<Actions[]>(Memory.PendingActions, player).some(
-            (action) => action.type === ActionType.ChooseMovieAction && action.guestIndex === guestIndex
-          )
-        ) {
+        if (!this.existsPendingActionForPlayer(player, (action) => action.type === ActionType.ChooseMovieAction && action.guestIndex === guestIndex)) {
           action.guestIndexToMoveToExitZone = guestIndex
         }
-        addPendingActionForPlayer(this, action, player)
+        this.addPendingActionForPlayer(player, action)
         return []
       }
       case undefined:

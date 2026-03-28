@@ -15,6 +15,7 @@ import {
 import { GamePhase } from './GamePhase'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
+import { PopcornMove } from './material/PopcornMoves'
 import { popcornTokens } from './material/PopcornToken'
 import { PlayerColor } from './PlayerColor'
 import { DiscardAwardCardActionRule } from './rules/actions/DiscardAwardCardActionRule'
@@ -23,7 +24,7 @@ import { EndOfRoundPendingActionsNextPhaseTransitionRule } from './rules/EndOfRo
 import { EndOfRoundPhaseNewLineUpRule } from './rules/EndOfRoundPhase/EndOfRoundPhaseNewLineUpRule'
 import { EndOfRoundPhaseTheatricalRunRule } from './rules/EndOfRoundPhase/EndOfRoundPhaseTheatricalRunRule'
 import { FinalEndOfRoundPhaseAdvertisingTokenMovesRule } from './rules/FinalEndOfRoundPhase/FinalEndOfRoundPhaseAdvertisingTokenMovesRule'
-import { FinalEndOfRoundPhaseAwardCardsPoints } from './rules/FinalEndOfRoundPhase/FinalEndOfRoundPhaseAwardCardsPoints'
+import { FinalEndOfRoundPhaseAwardCardsPointsRule } from './rules/FinalEndOfRoundPhase/FinalEndOfRoundPhaseAwardCardsPointsRule'
 import { FinalEndOfRoundPhaseMoneyRule } from './rules/FinalEndOfRoundPhase/FinalEndOfRoundPhaseMoneyRule'
 import { FinalEndOfRoundPhaseTheaterTrophyRule } from './rules/FinalEndOfRoundPhase/FinalEndOfRoundPhaseTheaterTrophyRule'
 import { RuleId } from './rules/RuleId'
@@ -34,13 +35,9 @@ import { ShowingsPhaseRule } from './rules/ShowingsPhaseRule'
  * It must follow Game Park "Rules" API so that the Game Park server can enforce the rules.
  */
 export class PopcornRules
-  extends SecretMaterialRules<PlayerColor, MaterialType, LocationType, RuleId>
+  extends SecretMaterialRules<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>
   implements
-    TimeLimit<
-      MaterialGame<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>,
-      MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>,
-      PlayerColor
-    >,
+    TimeLimit<MaterialGame<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>, PopcornMove, PlayerColor>,
     CompetitiveScore<MaterialGame<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>>
 {
   rules = {
@@ -53,7 +50,7 @@ export class PopcornRules
     [RuleId.FinalEndOfRoundPhaseAdvertisingTokenMovesRule]: FinalEndOfRoundPhaseAdvertisingTokenMovesRule,
     [RuleId.FinalEndOfRoundMoneyRule]: FinalEndOfRoundPhaseMoneyRule,
     [RuleId.FinalEndOfRoundPhaseTheaterTrophyRule]: FinalEndOfRoundPhaseTheaterTrophyRule,
-    [RuleId.FinalEndOfRoundPhaseAwardCardPointsRule]: FinalEndOfRoundPhaseAwardCardsPoints
+    [RuleId.FinalEndOfRoundPhaseAwardCardPointsRule]: FinalEndOfRoundPhaseAwardCardsPointsRule
   }
 
   hidingStrategies = {
