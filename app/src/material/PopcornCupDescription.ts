@@ -1,14 +1,14 @@
 import { LocationType } from '@gamepark/popcorn/material/LocationType'
 import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
-import { RuleId } from '@gamepark/popcorn/rules/RuleId.ts'
+import { RuleId } from '@gamepark/popcorn/rules/RuleId'
 import { FlatMaterialDescription, MaterialContext } from '@gamepark/react-game'
 import { MaterialItem } from '@gamepark/rules-api'
 import cyanPopcornCup from '../images/Cups/BlueCup.png'
 import greenPopcornCup from '../images/Cups/GreenCup.png'
 import orangePopcornCup from '../images/Cups/OrangeCup.png'
 import purplePopcornCup from '../images/Cups/PurpleCup.png'
-import { PopcornCupHelp } from './help/PopcornCupHelp.tsx'
+import { PopcornCupHelp } from './help/PopcornCupHelp'
 
 class PopcornCupDescription extends FlatMaterialDescription<PlayerColor, MaterialType, LocationType, PlayerColor, RuleId, PlayerColor> {
   width = 6.15

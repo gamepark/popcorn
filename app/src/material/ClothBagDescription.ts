@@ -1,7 +1,7 @@
 import { LocationType } from '@gamepark/popcorn/material/LocationType'
 import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
-import { RuleId } from '@gamepark/popcorn/rules/RuleId.ts'
+import { RuleId } from '@gamepark/popcorn/rules/RuleId'
 import { FlatMaterialDescription, MaterialContext } from '@gamepark/react-game'
 import { MaterialItem } from '@gamepark/rules-api'
 import clothBag from '../images/Bag.png'

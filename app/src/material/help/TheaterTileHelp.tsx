@@ -1,5 +1,5 @@
 import { css } from '@emotion/react'
-import { LocationType } from '@gamepark/popcorn/material/LocationType.ts'
+import { LocationType } from '@gamepark/popcorn/material/LocationType'
 import {
   getMaximumNumberOfGuests,
   SeatAction,
@@ -8,15 +8,15 @@ import {
   TheaterTile,
   TheaterTileId,
   theaterTilesCharacteristics
-} from '@gamepark/popcorn/material/TheaterTile.ts'
-import { PlayerColor } from '@gamepark/popcorn/PlayerColor.ts'
+} from '@gamepark/popcorn/material/TheaterTile'
+import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
 import { Picture, usePlayerName } from '@gamepark/react-game'
 import { MaterialItem } from '@gamepark/rules-api'
 import { camelCase } from 'es-toolkit'
 import { FC } from 'react'
 import { Trans } from 'react-i18next'
-import { actionSymbols } from '../utils/seatActionSymbols.util.ts'
-import { PopcornMaterialDisplayHelpProps } from './utils/popcornMaterialDisplayHelpProps.util.ts'
+import { actionSymbols } from '../utils/seatActionSymbols.util'
+import { PopcornMaterialDisplayHelpProps } from './utils/popcornMaterialDisplayHelpProps.util'
 
 export const TheaterTileHelp: FC<PopcornMaterialDisplayHelpProps> = ({ item }: { item: Partial<MaterialItem<PlayerColor, LocationType, TheaterTileId>> }) => {
   const playerName = usePlayerName(item.location?.player)

@@ -1,15 +1,15 @@
 import { css } from '@emotion/react'
-import { LocationType } from '@gamepark/popcorn/material/LocationType.ts'
-import { MaterialType } from '@gamepark/popcorn/material/MaterialType.ts'
-import { MovieCard, movieCardCharacteristics, PlayableMovieCardId } from '@gamepark/popcorn/material/MovieCard.ts'
-import { PopcornRules } from '@gamepark/popcorn/PopcornRules.ts'
+import { LocationType } from '@gamepark/popcorn/material/LocationType'
+import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
+import { MovieCard, movieCardCharacteristics, PlayableMovieCardId } from '@gamepark/popcorn/material/MovieCard'
+import { PopcornRules } from '@gamepark/popcorn/PopcornRules'
 import { linkButtonCss, Picture, PlayMoveButton, usePlayerName, useRules } from '@gamepark/react-game'
 import { MaterialMoveBuilder } from '@gamepark/rules-api'
 import { camelCase } from 'es-toolkit'
 import { FC } from 'react'
 import { Trans } from 'react-i18next'
-import { colorSymbols, movieTitleDefaults } from '../utils/movieCard.utils.ts'
-import { PopcornMaterialDisplayHelpProps } from './utils/popcornMaterialDisplayHelpProps.util.ts'
+import { colorSymbols, movieTitleDefaults } from '../utils/movieCard.utils'
+import { PopcornMaterialDisplayHelpProps } from './utils/popcornMaterialDisplayHelpProps.util'
 import displayMaterialHelp = MaterialMoveBuilder.displayMaterialHelp
 
 export const LobbySliderHelp: FC<PopcornMaterialDisplayHelpProps> = ({ item }) => {

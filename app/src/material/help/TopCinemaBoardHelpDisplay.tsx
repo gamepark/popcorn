@@ -1,13 +1,13 @@
 import { css } from '@emotion/react'
-import { LobbySlider } from '@gamepark/popcorn/material/LobbySlider.ts'
-import { LocationType } from '@gamepark/popcorn/material/LocationType.ts'
-import { MaterialType } from '@gamepark/popcorn/material/MaterialType.ts'
-import { TheaterTile, TheaterTileId } from '@gamepark/popcorn/material/TheaterTile.ts'
-import { PlayerColor } from '@gamepark/popcorn/PlayerColor.ts'
-import { PopcornRules } from '@gamepark/popcorn/PopcornRules.ts'
+import { LobbySlider } from '@gamepark/popcorn/material/LobbySlider'
+import { LocationType } from '@gamepark/popcorn/material/LocationType'
+import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
+import { TheaterTile, TheaterTileId } from '@gamepark/popcorn/material/TheaterTile'
+import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
+import { PopcornRules } from '@gamepark/popcorn/PopcornRules'
 import { MaterialComponent, MaterialHelpDisplayProps, useRules } from '@gamepark/react-game'
 import { FC } from 'react'
-import { topCinemaBoardDescription } from '../TopCinemaBoardDescription.ts'
+import { topCinemaBoardDescription } from '../TopCinemaBoardDescription'
 
 export const TopCinemaBoardHelpDisplay: FC<MaterialHelpDisplayProps<PlayerColor, MaterialType, LocationType>> = ({ item }) => {
   const rules = useRules<PopcornRules>()

@@ -2,7 +2,7 @@ import { LocationType } from '@gamepark/popcorn/material/LocationType'
 import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
 import { PopcornToken, popcornTokens } from '@gamepark/popcorn/material/PopcornToken'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
-import { RuleId } from '@gamepark/popcorn/rules/RuleId.ts'
+import { RuleId } from '@gamepark/popcorn/rules/RuleId'
 import { ComponentSize, TokenDescription } from '@gamepark/react-game'
 import { MaterialItem } from '@gamepark/rules-api'
 import { randomInt } from 'es-toolkit'
@@ -12,7 +12,7 @@ import popcorn3Back1 from '../images/Tokens/Popcorn/Popcorn3Back1.png'
 import popcorn3Front1 from '../images/Tokens/Popcorn/Popcorn3Front1.png'
 import popcorn5Back1 from '../images/Tokens/Popcorn/Popcorn5Back1.png'
 import popcorn5Front1 from '../images/Tokens/Popcorn/Popcorn5Front1.png'
-import { PopcornTokenHelp } from './help/PopcornTokenHelp.tsx'
+import { PopcornTokenHelp } from './help/PopcornTokenHelp'
 
 const tokenSizes = {
   [PopcornToken.Token1]: { width: 1.29, height: 1.66 },

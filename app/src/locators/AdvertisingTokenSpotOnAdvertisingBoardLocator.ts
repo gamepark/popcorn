@@ -2,7 +2,7 @@ import { AdvertisingTokenSpot } from '@gamepark/popcorn/material/AdvertisingToke
 import { LocationType } from '@gamepark/popcorn/material/LocationType'
 import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
-import { RuleId } from '@gamepark/popcorn/rules/RuleId.ts'
+import { RuleId } from '@gamepark/popcorn/rules/RuleId'
 import { DropAreaDescription, PileLocator } from '@gamepark/react-game'
 import { Coordinates, Location, XYCoordinates } from '@gamepark/rules-api'
 

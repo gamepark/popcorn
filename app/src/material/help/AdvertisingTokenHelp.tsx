@@ -1,13 +1,13 @@
-import { AdvertisingTokenSpot } from '@gamepark/popcorn/material/AdvertisingTokenSpot.ts'
-import { LocationType } from '@gamepark/popcorn/material/LocationType.ts'
-import { MaterialType } from '@gamepark/popcorn/material/MaterialType.ts'
-import { PlayerColor } from '@gamepark/popcorn/PlayerColor.ts'
+import { AdvertisingTokenSpot } from '@gamepark/popcorn/material/AdvertisingTokenSpot'
+import { LocationType } from '@gamepark/popcorn/material/LocationType'
+import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
+import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
 import { linkButtonCss, PlayMoveButton, usePlayerName } from '@gamepark/react-game'
 import { MaterialItem, MaterialMoveBuilder } from '@gamepark/rules-api'
 import { camelCase } from 'es-toolkit'
 import { FC } from 'react'
 import { Trans } from 'react-i18next'
-import { PopcornMaterialDisplayHelpProps } from './utils/popcornMaterialDisplayHelpProps.util.ts'
+import { PopcornMaterialDisplayHelpProps } from './utils/popcornMaterialDisplayHelpProps.util'
 import displayMaterialHelp = MaterialMoveBuilder.displayMaterialHelp
 
 export const AdvertisingTokenHelp: FC<PopcornMaterialDisplayHelpProps> = ({

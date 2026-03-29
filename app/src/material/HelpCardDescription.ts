@@ -1,12 +1,12 @@
-import { HelpCard } from '@gamepark/popcorn/material/HelpCard.ts'
-import { LocationType } from '@gamepark/popcorn/material/LocationType.ts'
-import { MaterialType } from '@gamepark/popcorn/material/MaterialType.ts'
-import { PlayerColor } from '@gamepark/popcorn/PlayerColor.ts'
-import { RuleId } from '@gamepark/popcorn/rules/RuleId.ts'
+import { HelpCard } from '@gamepark/popcorn/material/HelpCard'
+import { LocationType } from '@gamepark/popcorn/material/LocationType'
+import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
+import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
+import { RuleId } from '@gamepark/popcorn/rules/RuleId'
 import { CardDescription } from '@gamepark/react-game'
 import actionHelp from '../images/Cards/Movies/en/HelpActions.jpg'
 import phaseHelp from '../images/Cards/Movies/en/HelpPhases.jpg'
-import { HelpCardHelp } from './help/HelpCardHelp.tsx'
+import { HelpCardHelp } from './help/HelpCardHelp'
 
 export class HelpCardDescription extends CardDescription<PlayerColor, MaterialType, LocationType, HelpCard, RuleId, PlayerColor> {
   width = 7

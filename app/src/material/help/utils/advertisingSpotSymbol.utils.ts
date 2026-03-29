@@ -1,4 +1,4 @@
-import { AdvertisingTokenSpot } from '@gamepark/popcorn/material/AdvertisingTokenSpot.ts'
+import { AdvertisingTokenSpot } from '@gamepark/popcorn/material/AdvertisingTokenSpot'
 import advertisingBoardAnyGuestSymbol from '../../../images/Symbols/AdvertisingBoardAnyGuest.png'
 import advertisingBoardBlueGuestSymbol from '../../../images/Symbols/AdvertisingBoardBlueGuest.png'
 import advertisingBoardGreenGuestSymbol from '../../../images/Symbols/AdvertisingBoardGreenGuest.png'

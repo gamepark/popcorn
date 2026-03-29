@@ -2,7 +2,7 @@ import { LobbySlider } from '@gamepark/popcorn/material/LobbySlider'
 import { LocationType } from '@gamepark/popcorn/material/LocationType'
 import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
-import { RuleId } from '@gamepark/popcorn/rules/RuleId.ts'
+import { RuleId } from '@gamepark/popcorn/rules/RuleId'
 import { BoardDescription } from '@gamepark/react-game'
 import cyan1LobbySlider from '../images/Sliders/SliderBlue1.png'
 import cyan2LobbySlider from '../images/Sliders/SliderBlue2.png'
@@ -16,7 +16,7 @@ import orange3LobbySlider from '../images/Sliders/SliderOrange3.png'
 import purple1LobbySlider from '../images/Sliders/SliderPurple1.png'
 import purple2LobbySlider from '../images/Sliders/SliderPurple2.png'
 import purple3LobbySlider from '../images/Sliders/SliderPurple3.png'
-import { LobbySliderHelp } from './help/LobbySliderHelp.tsx'
+import { LobbySliderHelp } from './help/LobbySliderHelp'
 
 class LobbySliderDescription extends BoardDescription<PlayerColor, MaterialType, LocationType, LobbySlider, RuleId, PlayerColor> {
   width = 2.0

@@ -6,7 +6,7 @@ import { isPassCurrentActionCustomMove } from '@gamepark/popcorn/material/Custom
 import { GuestPawn } from '@gamepark/popcorn/material/GuestPawn'
 import { LocationType } from '@gamepark/popcorn/material/LocationType'
 import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
-import { PopcornMove } from '@gamepark/popcorn/material/PopcornMoves.ts'
+import { PopcornMove } from '@gamepark/popcorn/material/PopcornMoves'
 import { Memory } from '@gamepark/popcorn/Memory'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
 import { RuleId } from '@gamepark/popcorn/rules/RuleId'

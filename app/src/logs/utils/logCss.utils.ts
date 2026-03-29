@@ -1,5 +1,5 @@
 import { css } from '@emotion/react'
-import { PlayerColor } from '@gamepark/popcorn/PlayerColor.ts'
+import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
 import { linkButtonCss } from '@gamepark/react-game'
 import cyanBackground from '../../images/logs/cyanBackground.jpg'
 import greenBackground from '../../images/logs/greenBackground.jpg'

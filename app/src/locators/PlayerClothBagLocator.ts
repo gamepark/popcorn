@@ -1,12 +1,12 @@
 import { LocationType } from '@gamepark/popcorn/material/LocationType'
 import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
-import { RuleId } from '@gamepark/popcorn/rules/RuleId.ts'
+import { RuleId } from '@gamepark/popcorn/rules/RuleId'
 import { ItemContext, LocationDescription, Locator, MaterialContext } from '@gamepark/react-game'
 import { Coordinates, Location, MaterialItem } from '@gamepark/rules-api'
-import { GuestsInBagReminder } from './GuestsInBagReminder.tsx'
-import { hideItemIfOwningPlayerIsNotDisplayed } from './utils/hideItemIfOwningPlayerIsNotDisplayed.ts'
-import { offsetPlayerCinemaBoardCoordinates } from './utils/offsetLocatorCoordinates.ts'
+import { GuestsInBagReminder } from './GuestsInBagReminder'
+import { hideItemIfOwningPlayerIsNotDisplayed } from './utils/hideItemIfOwningPlayerIsNotDisplayed'
+import { offsetPlayerCinemaBoardCoordinates } from './utils/offsetLocatorCoordinates'
 
 class PlayerClothBagLocator extends Locator<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor> {
   locationDescription = new PlayerClothBagLocationDescription()

@@ -1,10 +1,10 @@
-import { LocationType } from '@gamepark/popcorn/material/LocationType.ts'
-import { PopcornToken } from '@gamepark/popcorn/material/PopcornToken.ts'
-import { PlayerColor } from '@gamepark/popcorn/PlayerColor.ts'
+import { LocationType } from '@gamepark/popcorn/material/LocationType'
+import { PopcornToken } from '@gamepark/popcorn/material/PopcornToken'
+import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
 import { MaterialItem } from '@gamepark/rules-api'
 import { FC } from 'react'
 import { Trans } from 'react-i18next'
-import { PopcornMaterialDisplayHelpProps } from './utils/popcornMaterialDisplayHelpProps.util.ts'
+import { PopcornMaterialDisplayHelpProps } from './utils/popcornMaterialDisplayHelpProps.util'
 
 export const PopcornTokenHelp: FC<PopcornMaterialDisplayHelpProps> = ({ item }: { item: Partial<MaterialItem<PlayerColor, LocationType, PopcornToken>> }) => {
   return (

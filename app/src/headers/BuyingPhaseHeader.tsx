@@ -1,14 +1,14 @@
-import { Actions } from '@gamepark/popcorn/material/Actions/Actions.ts'
-import { ActionType } from '@gamepark/popcorn/material/Actions/ActionType.ts'
-import { PopcornMove } from '@gamepark/popcorn/material/PopcornMoves.ts'
-import { Memory } from '@gamepark/popcorn/Memory.ts'
-import { PopcornRules } from '@gamepark/popcorn/PopcornRules.ts'
-import { isFirstTurn } from '@gamepark/popcorn/rules/utils/isFirstTurn.util.ts'
+import { Actions } from '@gamepark/popcorn/material/Actions/Actions'
+import { ActionType } from '@gamepark/popcorn/material/Actions/ActionType'
+import { PopcornMove } from '@gamepark/popcorn/material/PopcornMoves'
+import { Memory } from '@gamepark/popcorn/Memory'
+import { PopcornRules } from '@gamepark/popcorn/PopcornRules'
+import { isFirstTurn } from '@gamepark/popcorn/rules/utils/isFirstTurn.util'
 import { HeaderText, PlayMoveButton, useLegalMoves, useRules } from '@gamepark/react-game'
 import { isStartPlayerTurn, isStartSimultaneousRule } from '@gamepark/rules-api'
 import { FC } from 'react'
 import { Trans } from 'react-i18next'
-import { getPendingActionHeader } from './utils/getPendingActionHeader.tsx'
+import { getPendingActionHeader } from './utils/getPendingActionHeader'
 
 export const BuyingPhaseHeader: FC = () => {
   const rules = useRules<PopcornRules>()

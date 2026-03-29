@@ -1,13 +1,13 @@
-import { MaterialType } from '@gamepark/popcorn/material/MaterialType.ts'
-import { MoneyToken } from '@gamepark/popcorn/material/MoneyToken.ts'
-import { PopcornToken } from '@gamepark/popcorn/material/PopcornToken.ts'
-import { FinalEndOfRoundPhaseMoneyRule } from '@gamepark/popcorn/rules/FinalEndOfRoundPhase/FinalEndOfRoundPhaseMoneyRule.ts'
+import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
+import { MoneyToken } from '@gamepark/popcorn/material/MoneyToken'
+import { PopcornToken } from '@gamepark/popcorn/material/PopcornToken'
+import { FinalEndOfRoundPhaseMoneyRule } from '@gamepark/popcorn/rules/FinalEndOfRoundPhase/FinalEndOfRoundPhaseMoneyRule'
 import { MaterialComponent, usePlayerName } from '@gamepark/react-game'
 import { DeleteItem } from '@gamepark/rules-api'
 import { FC } from 'react'
 import { Trans } from 'react-i18next'
-import { logContainerCss, materialComponentCss } from '../../utils/logCss.utils.ts'
-import { PopcornMoveComponentProps } from '../../utils/PopcornTypes.util.ts'
+import { logContainerCss, materialComponentCss } from '../../utils/logCss.utils'
+import { PopcornMoveComponentProps } from '../../utils/PopcornTypes.util'
 
 export const MoneyPopcornGainLogComponent: FC<PopcornMoveComponentProps> = ({ move, context }) => {
   const deleteMoneyMove = move as DeleteItem<MaterialType>

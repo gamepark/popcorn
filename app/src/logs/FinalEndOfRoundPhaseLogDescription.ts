@@ -1,17 +1,17 @@
-import { isAwardCardPopcornCustomMove } from '@gamepark/popcorn/material/CustomMoveType.ts'
-import { MaterialType } from '@gamepark/popcorn/material/MaterialType.ts'
-import { PopcornMove } from '@gamepark/popcorn/material/PopcornMoves.ts'
-import { PlayerColor } from '@gamepark/popcorn/PlayerColor.ts'
-import { FinalEndOfRoundPhaseMoneyRule } from '@gamepark/popcorn/rules/FinalEndOfRoundPhase/FinalEndOfRoundPhaseMoneyRule.ts'
-import { RuleId } from '@gamepark/popcorn/rules/RuleId.ts'
+import { isAwardCardPopcornCustomMove } from '@gamepark/popcorn/material/CustomMoveType'
+import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
+import { PopcornMove } from '@gamepark/popcorn/material/PopcornMoves'
+import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
+import { FinalEndOfRoundPhaseMoneyRule } from '@gamepark/popcorn/rules/FinalEndOfRoundPhase/FinalEndOfRoundPhaseMoneyRule'
+import { RuleId } from '@gamepark/popcorn/rules/RuleId'
 import { LogDescription, MoveComponentContext, MovePlayedLogDescription } from '@gamepark/react-game'
 import { isCreateItemType, isDeleteItemType } from '@gamepark/rules-api'
-import { AwardCardPopcornGivenLogComponent } from './components/FinalEndOfRoundPhaseComponents/AwardCardPopcornGivenLogComponent.tsx'
-import { MoneyPopcornGainLogComponent } from './components/FinalEndOfRoundPhaseComponents/MoneyPopcornGainLogComponent.tsx'
-import { TheaterTrophyAwardedLogComponent } from './components/FinalEndOfRoundPhaseComponents/TheaterTrophyAwardedLogComponent.tsx'
-import { playerLogBackground } from './utils/logCss.utils.ts'
+import { AwardCardPopcornGivenLogComponent } from './components/FinalEndOfRoundPhaseComponents/AwardCardPopcornGivenLogComponent'
+import { MoneyPopcornGainLogComponent } from './components/FinalEndOfRoundPhaseComponents/MoneyPopcornGainLogComponent'
+import { TheaterTrophyAwardedLogComponent } from './components/FinalEndOfRoundPhaseComponents/TheaterTrophyAwardedLogComponent'
+import { playerLogBackground } from './utils/logCss.utils'
 
-import { PopcornGame } from './utils/PopcornTypes.util.ts'
+import { PopcornGame } from './utils/PopcornTypes.util'
 
 export class FinalEndOfRoundPhaseLogDescription implements LogDescription<PopcornMove, PlayerColor, PopcornGame> {
   public getMovePlayedLogDescription(

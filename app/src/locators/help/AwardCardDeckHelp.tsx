@@ -1,13 +1,13 @@
 import { css } from '@emotion/react'
-import { LocationType } from '@gamepark/popcorn/material/LocationType.ts'
-import { MaterialType } from '@gamepark/popcorn/material/MaterialType.ts'
-import { PlayerColor } from '@gamepark/popcorn/PlayerColor.ts'
-import { PopcornRules } from '@gamepark/popcorn/PopcornRules.ts'
+import { LocationType } from '@gamepark/popcorn/material/LocationType'
+import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
+import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
+import { PopcornRules } from '@gamepark/popcorn/PopcornRules'
 import { fontSizeCss, LocationHelpProps, MaterialComponent, Picture, usePlayerName, useRules } from '@gamepark/react-game'
 import { FC } from 'react'
 import { Trans } from 'react-i18next'
 import drawAwardCardSymbol from '../../images/Symbols/MovieActionDrawAwardCard.png'
-import { awardCardDescription } from '../../material/AwardCardDescription.tsx'
+import { awardCardDescription } from '../../material/AwardCardDescription'
 
 export const AwardCardDeckHelp: FC<LocationHelpProps<PlayerColor, LocationType>> = ({ location }) => {
   const rules = useRules<PopcornRules>()

@@ -2,10 +2,10 @@ import { GuestPawn } from '@gamepark/popcorn/material/GuestPawn'
 import { LocationType } from '@gamepark/popcorn/material/LocationType'
 import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
-import { RuleId } from '@gamepark/popcorn/rules/RuleId.ts'
+import { RuleId } from '@gamepark/popcorn/rules/RuleId'
 import { FlexLocator, MaterialContext } from '@gamepark/react-game'
 import { Coordinates, Location } from '@gamepark/rules-api'
-import { offsetAdvertisingBoardCoordinates } from './utils/offsetLocatorCoordinates.ts'
+import { offsetAdvertisingBoardCoordinates } from './utils/offsetLocatorCoordinates'
 
 const yOffsetByGuestColor = {
   [GuestPawn.Blue]: -7.5,

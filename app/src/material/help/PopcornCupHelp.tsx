@@ -1,14 +1,14 @@
 import { css } from '@emotion/react'
-import { LocationType } from '@gamepark/popcorn/material/LocationType.ts'
-import { MaterialType } from '@gamepark/popcorn/material/MaterialType.ts'
-import { PopcornToken, popcornTokens } from '@gamepark/popcorn/material/PopcornToken.ts'
-import { PlayerColor } from '@gamepark/popcorn/PlayerColor.ts'
-import { PopcornRules } from '@gamepark/popcorn/PopcornRules.ts'
+import { LocationType } from '@gamepark/popcorn/material/LocationType'
+import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
+import { PopcornToken, popcornTokens } from '@gamepark/popcorn/material/PopcornToken'
+import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
+import { PopcornRules } from '@gamepark/popcorn/PopcornRules'
 import { MaterialComponent, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
 import { MaterialItem } from '@gamepark/rules-api'
 import { FC } from 'react'
 import { Trans } from 'react-i18next'
-import { PopcornMaterialDisplayHelpProps } from './utils/popcornMaterialDisplayHelpProps.util.ts'
+import { PopcornMaterialDisplayHelpProps } from './utils/popcornMaterialDisplayHelpProps.util'
 
 export const PopcornCupHelp: FC<PopcornMaterialDisplayHelpProps> = ({ item }: { item: Partial<MaterialItem<PlayerColor, LocationType, PlayerColor>> }) => {
   const me = usePlayerId<PlayerColor>()

@@ -1,11 +1,11 @@
-import { LocationType } from '@gamepark/popcorn/material/LocationType.ts'
-import { MaterialType } from '@gamepark/popcorn/material/MaterialType.ts'
-import { TheaterTile } from '@gamepark/popcorn/material/TheaterTile.ts'
-import { PlayerColor } from '@gamepark/popcorn/PlayerColor.ts'
-import { RuleId } from '@gamepark/popcorn/rules/RuleId.ts'
+import { LocationType } from '@gamepark/popcorn/material/LocationType'
+import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
+import { TheaterTile } from '@gamepark/popcorn/material/TheaterTile'
+import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
+import { RuleId } from '@gamepark/popcorn/rules/RuleId'
 import { DropAreaDescription } from '@gamepark/react-game'
-import { theaterTileDescription } from '../material/TheaterTileDescription.tsx'
-import { TheaterTileDeckHelp } from './help/TheaterTileDeckHelp.tsx'
+import { theaterTileDescription } from '../material/TheaterTileDescription'
+import { TheaterTileDeckHelp } from './help/TheaterTileDeckHelp'
 
 export class TheaterTileDeckLocationDescription extends DropAreaDescription<PlayerColor, MaterialType, LocationType, TheaterTile, RuleId, PlayerColor> {
   width = theaterTileDescription.width

@@ -1,11 +1,11 @@
 import { css } from '@emotion/react'
-import { AdvertisingTokenSpot, advertisingTokenSpots } from '@gamepark/popcorn/material/AdvertisingTokenSpot.ts'
-import { GuestPawn } from '@gamepark/popcorn/material/GuestPawn.ts'
+import { AdvertisingTokenSpot, advertisingTokenSpots } from '@gamepark/popcorn/material/AdvertisingTokenSpot'
+import { GuestPawn } from '@gamepark/popcorn/material/GuestPawn'
 import { Picture } from '@gamepark/react-game'
 import { camelCase } from 'es-toolkit'
 import { FC } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
-import { getAdvertisingSpotSymbol } from './utils/advertisingSpotSymbol.utils.ts'
+import { getAdvertisingSpotSymbol } from './utils/advertisingSpotSymbol.utils'
 
 const getTransDefault = (spot: AdvertisingTokenSpot): string => {
   switch (spot) {

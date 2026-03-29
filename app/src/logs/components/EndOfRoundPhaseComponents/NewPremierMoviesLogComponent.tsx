@@ -1,14 +1,14 @@
-import { LocationType } from '@gamepark/popcorn/material/LocationType.ts'
-import { MaterialType } from '@gamepark/popcorn/material/MaterialType.ts'
-import { PlayableMovieCardId } from '@gamepark/popcorn/material/MovieCard.ts'
-import { PlayerColor } from '@gamepark/popcorn/PlayerColor.ts'
-import { EndOfRoundPhaseNewLineUpRule } from '@gamepark/popcorn/rules/EndOfRoundPhase/EndOfRoundPhaseNewLineUpRule.ts'
+import { LocationType } from '@gamepark/popcorn/material/LocationType'
+import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
+import { PlayableMovieCardId } from '@gamepark/popcorn/material/MovieCard'
+import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
+import { EndOfRoundPhaseNewLineUpRule } from '@gamepark/popcorn/rules/EndOfRoundPhase/EndOfRoundPhaseNewLineUpRule'
 import { Location, MaterialItem, MoveItemsAtOnce } from '@gamepark/rules-api'
 import { FC, Fragment } from 'react'
 import { Trans } from 'react-i18next'
-import { ruleLogContainerCss } from '../../utils/logCss.utils.ts'
-import { PopcornMoveComponentProps } from '../../utils/PopcornTypes.util.ts'
-import { LogMovieMaterialHelpLink } from '../utils/LogMovieMaterialHelpLink.tsx'
+import { ruleLogContainerCss } from '../../utils/logCss.utils'
+import { PopcornMoveComponentProps } from '../../utils/PopcornTypes.util'
+import { LogMovieMaterialHelpLink } from '../utils/LogMovieMaterialHelpLink'
 
 export const NewPremierMoviesLogComponent: FC<PopcornMoveComponentProps> = ({ move, context }) => {
   const premiersMove = move as MoveItemsAtOnce<PlayerColor, MaterialType, LocationType>

@@ -1,10 +1,10 @@
 import { LocationType } from '@gamepark/popcorn/material/LocationType'
 import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
-import { RuleId } from '@gamepark/popcorn/rules/RuleId.ts'
+import { RuleId } from '@gamepark/popcorn/rules/RuleId'
 import { ListLocator, MaterialContext } from '@gamepark/react-game'
 import { Coordinates, Location } from '@gamepark/rules-api'
-import { offsetAdvertisingBoardCoordinates } from './utils/offsetLocatorCoordinates.ts'
+import { offsetAdvertisingBoardCoordinates } from './utils/offsetLocatorCoordinates'
 
 class ThreeSeatTheaterTilesRowLocator extends ListLocator<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor> {
   gap = { y: 4.5 }

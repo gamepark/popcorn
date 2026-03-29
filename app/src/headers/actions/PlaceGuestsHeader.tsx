@@ -1,7 +1,7 @@
-import { LocationType } from '@gamepark/popcorn/material/LocationType.ts'
-import { MaterialType } from '@gamepark/popcorn/material/MaterialType.ts'
-import { PlayerColor } from '@gamepark/popcorn/PlayerColor.ts'
-import { PopcornRules } from '@gamepark/popcorn/PopcornRules.ts'
+import { LocationType } from '@gamepark/popcorn/material/LocationType'
+import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
+import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
+import { PopcornRules } from '@gamepark/popcorn/PopcornRules'
 import { HeaderText, usePlayerId, useRules } from '@gamepark/react-game'
 import { FC } from 'react'
 

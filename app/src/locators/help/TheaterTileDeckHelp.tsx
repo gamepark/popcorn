@@ -1,12 +1,12 @@
 import { css } from '@emotion/react'
-import { LocationType } from '@gamepark/popcorn/material/LocationType.ts'
-import { MaterialType } from '@gamepark/popcorn/material/MaterialType.ts'
-import { SeatsNumber } from '@gamepark/popcorn/material/TheaterTile.ts'
-import { PopcornRules } from '@gamepark/popcorn/PopcornRules.ts'
+import { LocationType } from '@gamepark/popcorn/material/LocationType'
+import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
+import { SeatsNumber } from '@gamepark/popcorn/material/TheaterTile'
+import { PopcornRules } from '@gamepark/popcorn/PopcornRules'
 import { fontSizeCss, LocationHelpProps, MaterialComponent, useRules } from '@gamepark/react-game'
 import { FC } from 'react'
 import { Trans } from 'react-i18next'
-import { theaterTileDescription } from '../../material/TheaterTileDescription.tsx'
+import { theaterTileDescription } from '../../material/TheaterTileDescription'
 
 export const TheaterTileDeckHelp: FC<LocationHelpProps> = ({ location }) => {
   const rules = useRules<PopcornRules>()

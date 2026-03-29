@@ -1,4 +1,4 @@
-import { PopcornMove } from '@gamepark/popcorn/material/PopcornMoves.ts'
+import { PopcornMove } from '@gamepark/popcorn/material/PopcornMoves'
 import { HeaderText, PlayMoveButton, useLegalMoves } from '@gamepark/react-game'
 import { isEndPlayerTurn } from '@gamepark/rules-api'
 import { FC } from 'react'

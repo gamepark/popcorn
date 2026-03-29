@@ -1,13 +1,13 @@
 import { LocationType } from '@gamepark/popcorn/material/LocationType'
 import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
-import { MovieCardId } from '@gamepark/popcorn/material/MovieCard.ts'
+import { MovieCardId } from '@gamepark/popcorn/material/MovieCard'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
-import { RuleId } from '@gamepark/popcorn/rules/RuleId.ts'
+import { RuleId } from '@gamepark/popcorn/rules/RuleId'
 import { DeckLocator, DropAreaDescription, ItemContext, MaterialContext } from '@gamepark/react-game'
 import { Coordinates, Location, MaterialItem } from '@gamepark/rules-api'
-import { PlayerMovieArchiveHelp } from './help/PlayerMovieArchiveHelp.tsx'
-import { hideItemIfOwningPlayerIsNotDisplayed } from './utils/hideItemIfOwningPlayerIsNotDisplayed.ts'
-import { offsetPlayerCinemaBoardCoordinates } from './utils/offsetLocatorCoordinates.ts'
+import { PlayerMovieArchiveHelp } from './help/PlayerMovieArchiveHelp'
+import { hideItemIfOwningPlayerIsNotDisplayed } from './utils/hideItemIfOwningPlayerIsNotDisplayed'
+import { offsetPlayerCinemaBoardCoordinates } from './utils/offsetLocatorCoordinates'
 
 class PlayerMovieArchiveDeckLocator extends DeckLocator<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor> {
   locationDescription = new PlayerMovieArchiveDeckLocationDescription()

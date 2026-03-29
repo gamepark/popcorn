@@ -1,13 +1,13 @@
-import { Actions } from '@gamepark/popcorn/material/Actions/Actions.ts'
-import { ActionType } from '@gamepark/popcorn/material/Actions/ActionType.ts'
-import { ChooseMovieActionHeader } from '../actions/ChooseMovieActionHeader.tsx'
-import { ChooseSeatActionHeader } from '../actions/ChooseSeatActionHeader.tsx'
-import { DiscardAwardCardHeader } from '../actions/DiscardAwardCardHeader.tsx'
-import { PickReserveOrExitZoneGuestHeader } from '../actions/PickReserveOrExitZoneGuestHeader.tsx'
-import { PickTheaterTileToActivateHeader } from '../actions/PickTheaterTileToActivateHeader.tsx'
-import { PlaceCinemaGuestInReserveHeader } from '../actions/PlaceCinemaGuestInReserveHeader.tsx'
-import { PlaceExitZoneGuestInBagHeader } from '../actions/PlaceExitZoneGuestInBagHeader.tsx'
-import { PlaceGuestsHeader } from '../actions/PlaceGuestsHeader.tsx'
+import { Actions } from '@gamepark/popcorn/material/Actions/Actions'
+import { ActionType } from '@gamepark/popcorn/material/Actions/ActionType'
+import { ChooseMovieActionHeader } from '../actions/ChooseMovieActionHeader'
+import { ChooseSeatActionHeader } from '../actions/ChooseSeatActionHeader'
+import { DiscardAwardCardHeader } from '../actions/DiscardAwardCardHeader'
+import { PickReserveOrExitZoneGuestHeader } from '../actions/PickReserveOrExitZoneGuestHeader'
+import { PickTheaterTileToActivateHeader } from '../actions/PickTheaterTileToActivateHeader'
+import { PlaceCinemaGuestInReserveHeader } from '../actions/PlaceCinemaGuestInReserveHeader'
+import { PlaceExitZoneGuestInBagHeader } from '../actions/PlaceExitZoneGuestInBagHeader'
+import { PlaceGuestsHeader } from '../actions/PlaceGuestsHeader'
 
 export const getPendingActionHeader = (action: Actions) => {
   switch (action.type) {

@@ -1,14 +1,14 @@
 import { isBuyTheaterTileCustomMove } from '@gamepark/popcorn/material/CustomMoveType'
 import { LocationType } from '@gamepark/popcorn/material/LocationType'
 import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
-import { PopcornMove } from '@gamepark/popcorn/material/PopcornMoves.ts'
+import { PopcornMove } from '@gamepark/popcorn/material/PopcornMoves'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
-import { RuleId } from '@gamepark/popcorn/rules/RuleId.ts'
+import { RuleId } from '@gamepark/popcorn/rules/RuleId'
 import { DropAreaDescription, ItemContext, ListLocator, MaterialContext } from '@gamepark/react-game'
 import { Location, MaterialItem } from '@gamepark/rules-api'
 import { theaterTileDescription } from '../material/TheaterTileDescription'
 import { topCinemaBoardDescription } from '../material/TopCinemaBoardDescription'
-import { hideItemIfOwningPlayerIsNotDisplayed } from './utils/hideItemIfOwningPlayerIsNotDisplayed.ts'
+import { hideItemIfOwningPlayerIsNotDisplayed } from './utils/hideItemIfOwningPlayerIsNotDisplayed'
 
 class TheaterTileOnTopCinemaBoardLocator extends ListLocator<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor> {
   parentItemType = MaterialType.TopCinemaBoard

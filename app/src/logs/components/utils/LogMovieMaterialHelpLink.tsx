@@ -1,14 +1,14 @@
-import { LocationType } from '@gamepark/popcorn/material/LocationType.ts'
-import { MaterialType } from '@gamepark/popcorn/material/MaterialType.ts'
-import { MovieCard, movieCardCharacteristics, PlayableMovieCardId } from '@gamepark/popcorn/material/MovieCard.ts'
-import { PlayerColor } from '@gamepark/popcorn/PlayerColor.ts'
+import { LocationType } from '@gamepark/popcorn/material/LocationType'
+import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
+import { MovieCard, movieCardCharacteristics, PlayableMovieCardId } from '@gamepark/popcorn/material/MovieCard'
+import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
 import { Picture } from '@gamepark/react-game'
 import { MaterialItem } from '@gamepark/rules-api'
 import { camelCase } from 'es-toolkit'
 import { Trans } from 'react-i18next'
-import { colorSymbols, movieTitleDefaults } from '../../../material/utils/movieCard.utils.ts'
-import { symbolCss } from '../../utils/logCss.utils.ts'
-import { LogMaterialHelpLink } from './LogMaterialHelpLink.tsx'
+import { colorSymbols, movieTitleDefaults } from '../../../material/utils/movieCard.utils'
+import { symbolCss } from '../../utils/logCss.utils'
+import { LogMaterialHelpLink } from './LogMaterialHelpLink'
 
 type LogMovieMaterialHelpLinkProps = {
   movieCard: MaterialItem<PlayerColor, LocationType, PlayableMovieCardId>

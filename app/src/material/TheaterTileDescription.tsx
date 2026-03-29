@@ -6,7 +6,7 @@ import { ActionType } from '@gamepark/popcorn/material/Actions/ActionType'
 import { isBuyTheaterTileCustomMove } from '@gamepark/popcorn/material/CustomMoveType'
 import { LocationType } from '@gamepark/popcorn/material/LocationType'
 import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
-import { PopcornMove } from '@gamepark/popcorn/material/PopcornMoves.ts'
+import { PopcornMove } from '@gamepark/popcorn/material/PopcornMoves'
 import { SeatsNumber, TheaterTile, TheaterTileId } from '@gamepark/popcorn/material/TheaterTile'
 import { Memory } from '@gamepark/popcorn/Memory'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
@@ -48,7 +48,7 @@ import threeSeatBack from '../images/Tiles/TheaterTiles/3SeatBack.png'
 import defaultOneSeatFront from '../images/Tiles/TheaterTiles/Default1SeatFront.png'
 import defaultTwoSeatFront from '../images/Tiles/TheaterTiles/Default2SeatFront.png'
 import emptyTile from '../images/Tiles/TheaterTiles/EmptyTile.png'
-import { TheaterTileHelp } from './help/TheaterTileHelp.tsx'
+import { TheaterTileHelp } from './help/TheaterTileHelp'
 import displayLocationHelp = MaterialMoveBuilder.displayLocationHelp
 
 const LOCATION_TYPES_WHERE_FLIPPED_ON_TABLE = [

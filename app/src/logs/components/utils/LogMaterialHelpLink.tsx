@@ -1,10 +1,10 @@
-import { LocationType } from '@gamepark/popcorn/material/LocationType.ts'
-import { MaterialType } from '@gamepark/popcorn/material/MaterialType.ts'
-import { PlayerColor } from '@gamepark/popcorn/PlayerColor.ts'
+import { LocationType } from '@gamepark/popcorn/material/LocationType'
+import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
+import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
 import { PlayMoveButton } from '@gamepark/react-game'
 import { MaterialItem, MaterialMoveBuilder } from '@gamepark/rules-api'
 import { PropsWithChildren } from 'react'
-import { popcornLinkCss, popcornRuleLinkCss } from '../../utils/logCss.utils.ts'
+import { popcornLinkCss, popcornRuleLinkCss } from '../../utils/logCss.utils'
 import displayMaterialHelp = MaterialMoveBuilder.displayMaterialHelp
 
 type LogMaterialHelpLinkProps<Id> = {

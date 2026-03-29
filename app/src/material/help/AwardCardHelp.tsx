@@ -1,12 +1,12 @@
-import { AwardCard } from '@gamepark/popcorn/material/AwardCard.ts'
-import { LocationType } from '@gamepark/popcorn/material/LocationType.ts'
-import { PlayerColor } from '@gamepark/popcorn/PlayerColor.ts'
+import { AwardCard } from '@gamepark/popcorn/material/AwardCard'
+import { LocationType } from '@gamepark/popcorn/material/LocationType'
+import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
 import { usePlayerId, usePlayerName } from '@gamepark/react-game'
 import { MaterialItem } from '@gamepark/rules-api'
 import { camelCase } from 'es-toolkit'
 import { FC } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
-import { PopcornMaterialDisplayHelpProps } from './utils/popcornMaterialDisplayHelpProps.util.ts'
+import { PopcornMaterialDisplayHelpProps } from './utils/popcornMaterialDisplayHelpProps.util'
 
 export const AwardCardHelp: FC<PopcornMaterialDisplayHelpProps> = ({ item }: { item: Partial<MaterialItem<PlayerColor, LocationType, AwardCard>> }) => {
   const playerName = usePlayerName(item.location?.player)

@@ -2,10 +2,10 @@ import { LocationType } from '@gamepark/popcorn/material/LocationType'
 import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
 import { SeatsNumber, TheaterTileId, theaterTilesCharacteristics } from '@gamepark/popcorn/material/TheaterTile'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
-import { RuleId } from '@gamepark/popcorn/rules/RuleId.ts'
+import { RuleId } from '@gamepark/popcorn/rules/RuleId'
 import { ItemContext, Locator, MaterialContext } from '@gamepark/react-game'
 import { Coordinates, Location, MaterialItem, XYCoordinates } from '@gamepark/rules-api'
-import { hideItemIfOwningPlayerIsNotDisplayed } from './utils/hideItemIfOwningPlayerIsNotDisplayed.ts'
+import { hideItemIfOwningPlayerIsNotDisplayed } from './utils/hideItemIfOwningPlayerIsNotDisplayed'
 
 const coordinatesOnTile: Record<Exclude<SeatsNumber, SeatsNumber.Default>, Record<number, XYCoordinates>> = {
   [SeatsNumber.One]: {
