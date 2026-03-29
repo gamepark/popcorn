@@ -135,26 +135,6 @@ export class MovieCardDescription extends CardDescription<PlayerColor, MaterialT
 
   help = MovieCardHelp
 
-  // public getStaticItems(
-  //   context: MaterialContext<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>
-  // ): MaterialItem<PlayerColor, LocationType, MovieCardId>[] {
-  //   const numberOfCardsBelowFinalShowing = context.rules.players.length === 2 ? 10 : 5
-  //   const numberOfCardsInDeck = context.rules.material(MaterialType.MovieCards).location(LocationType.MovieCardDeckSpot).length
-  //   return numberOfCardsInDeck <= numberOfCardsBelowFinalShowing
-  //     ? [
-  //         {
-  //           id: {
-  //             front: MovieCard.FinalShowing,
-  //             back: MovieCardType.Movie
-  //           },
-  //           location: {
-  //             type: LocationType.FinalShowingCardSpot
-  //           }
-  //         }
-  //       ]
-  //     : []
-  // }
-
   public canDrag(move: PopcornMove, context: ItemContext<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>): boolean {
     return super.canDrag(move, context) || (isBuyMovieCardCustomMove(move) && move.data.boughtCardIndex === context.index)
   }
