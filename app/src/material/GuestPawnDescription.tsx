@@ -11,7 +11,7 @@ import { Memory } from '@gamepark/popcorn/Memory'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
 import { RuleId } from '@gamepark/popcorn/rules/RuleId'
 import { ItemContext, ItemMenuButton, TokenDescription } from '@gamepark/react-game'
-import { isMoveItemType, isSelectItemType, Location, MaterialItem } from '@gamepark/rules-api'
+import { isMoveItemType, isSelectItemType, Location, MaterialItem, MaterialMove, MaterialMoveBuilder } from '@gamepark/rules-api'
 import { Trans } from 'react-i18next'
 import blueGuestPawn from '../images/GuestPawns/BlueGuestPawn.png'
 import greenGuestPawn from '../images/GuestPawns/GreenGuestPawn.png'
@@ -21,6 +21,7 @@ import yellowGuestPawn from '../images/GuestPawns/YellowGuestPawn.png'
 import { bottomCinemaBoardLocator } from '../locators/BottomCinemaBoardLocator'
 import { guestPawnOnTheaterTileLocator } from '../locators/GuestPawnOnTheaterTileLocator'
 import { theaterTileOnCinemaBoardLocator } from '../locators/TheaterTileOnTopCinemaBoardLocator'
+import displayLocationHelp = MaterialMoveBuilder.displayLocationHelp
 
 class GuestPawnDescription extends TokenDescription<PlayerColor, MaterialType, LocationType, GuestPawn, RuleId, PlayerColor> {
   width = 1.8
@@ -76,6 +77,16 @@ class GuestPawnDescription extends TokenDescription<PlayerColor, MaterialType, L
       }
     }
     return super.getItemMenu(item, context, legalMoves)
+  }
+
+  public displayHelp(
+    item: MaterialItem<PlayerColor, LocationType, GuestPawn>,
+    context: ItemContext<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>
+  ): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor> | undefined {
+    if (item.location.type === LocationType.GuestPawnExitZoneSpotOnTopPlayerCinemaBoard || item.location.type === LocationType.GuestPawnReserveSpot) {
+      return displayLocationHelp(item.location)
+    }
+    return super.displayHelp(item, context)
   }
 
   private getWhiteGuestToBagItemMenu(
