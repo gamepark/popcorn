@@ -1,6 +1,5 @@
 import { css } from '@emotion/react'
 import { LocationType } from '@gamepark/popcorn/material/LocationType.ts'
-import { MaterialType } from '@gamepark/popcorn/material/MaterialType.ts'
 import {
   getMaximumNumberOfGuests,
   SeatAction,
@@ -11,18 +10,15 @@ import {
   theaterTilesCharacteristics
 } from '@gamepark/popcorn/material/TheaterTile.ts'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor.ts'
-import { MaterialHelpDisplayProps, Picture, usePlayerName } from '@gamepark/react-game'
+import { Picture, usePlayerName } from '@gamepark/react-game'
 import { MaterialItem } from '@gamepark/rules-api'
 import { camelCase } from 'es-toolkit'
 import { FC } from 'react'
 import { Trans } from 'react-i18next'
 import { actionSymbols } from '../utils/seatActionSymbols.util.ts'
+import { PopcornMaterialDisplayHelpProps } from './utils/popcornMaterialDisplayHelpProps.util.ts'
 
-export const TheaterTileHelp: FC<MaterialHelpDisplayProps<PlayerColor, MaterialType, LocationType>> = ({
-  item
-}: {
-  item: Partial<MaterialItem<PlayerColor, LocationType, TheaterTileId>>
-}) => {
+export const TheaterTileHelp: FC<PopcornMaterialDisplayHelpProps> = ({ item }: { item: Partial<MaterialItem<PlayerColor, LocationType, TheaterTileId>> }) => {
   const playerName = usePlayerName(item.location?.player)
   const numberOfSeats = item.id!.back === SeatsNumber.Default ? getDefaultNumberOfGuests(item.id!.front!) : getMaximumNumberOfGuests(item.id!.back)
   const title = (

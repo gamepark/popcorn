@@ -8,6 +8,7 @@ import cyanPopcornCup from '../images/Cups/BlueCup.png'
 import greenPopcornCup from '../images/Cups/GreenCup.png'
 import orangePopcornCup from '../images/Cups/OrangeCup.png'
 import purplePopcornCup from '../images/Cups/PurpleCup.png'
+import { PopcornCupHelp } from './help/PopcornCupHelp.tsx'
 
 class PopcornCupDescription extends FlatMaterialDescription<PlayerColor, MaterialType, LocationType, PlayerColor, RuleId, PlayerColor> {
   width = 6.15
@@ -20,6 +21,8 @@ class PopcornCupDescription extends FlatMaterialDescription<PlayerColor, Materia
     [PlayerColor.Orange]: orangePopcornCup,
     [PlayerColor.Purple]: purplePopcornCup
   }
+
+  help = PopcornCupHelp
 
   public getStaticItems(
     _context: MaterialContext<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>

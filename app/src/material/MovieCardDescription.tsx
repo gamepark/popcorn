@@ -251,6 +251,9 @@ export class MovieCardDescription extends CardDescription<PlayerColor, MaterialT
       }
       return displayLocationHelp(location)
     }
+    if (item.location.type === LocationType.PlayerMovieCardArchiveSpot) {
+      return displayLocationHelp(item.location)
+    }
     return super.displayHelp(item, context)
   }
 

@@ -12,6 +12,7 @@ import popcorn3Back1 from '../images/Tokens/Popcorn/Popcorn3Back1.png'
 import popcorn3Front1 from '../images/Tokens/Popcorn/Popcorn3Front1.png'
 import popcorn5Back1 from '../images/Tokens/Popcorn/Popcorn5Back1.png'
 import popcorn5Front1 from '../images/Tokens/Popcorn/Popcorn5Front1.png'
+import { PopcornTokenHelp } from './help/PopcornTokenHelp.tsx'
 
 const tokenSizes = {
   [PopcornToken.Token1]: { width: 1.29, height: 1.66 },
@@ -33,6 +34,8 @@ class PopcornTokenDescription extends TokenDescription<PlayerColor, MaterialType
 
   thickness = 0.2
   transparency = true
+
+  help = PopcornTokenHelp
 
   private popcornTokenNumber = popcornTokens.reduce(
     (previousValue, currentValue) => ({ ...previousValue, [currentValue]: randomInt(5, 11) }),

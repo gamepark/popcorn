@@ -1,0 +1,47 @@
+import { css } from '@emotion/react'
+import { LocationType } from '@gamepark/popcorn/material/LocationType.ts'
+import { MaterialType } from '@gamepark/popcorn/material/MaterialType.ts'
+import { moneyTokens } from '@gamepark/popcorn/material/MoneyToken.ts'
+import { PopcornToken } from '@gamepark/popcorn/material/PopcornToken.ts'
+import { PlayerColor } from '@gamepark/popcorn/PlayerColor.ts'
+import { PopcornRules } from '@gamepark/popcorn/PopcornRules.ts'
+import { LocationHelpProps, MaterialComponent, usePlayerName, useRules } from '@gamepark/react-game'
+import { isSameLocationArea } from '@gamepark/rules-api'
+import { FC } from 'react'
+import { Trans } from 'react-i18next'
+
+export const PlayerMoneyPileHelp: FC<LocationHelpProps<PlayerColor, LocationType>> = ({ location }) => {
+  const rule = useRules<PopcornRules>()
+  const amount = rule
+    ?.material(MaterialType.MoneyTokens)
+    .location((l) => isSameLocationArea(l, location))
+    .money(moneyTokens).count
+  const playerName = usePlayerName(location.player)
+  const popcornAmount = Math.floor((amount ?? 0) / 5)
+  return (
+    <>
+      <h2>
+        <Trans i18nKey="" defaults="{player}'s Money pile" values={{ player: playerName }} />
+      </h2>
+      <p>
+        <Trans
+          i18nKey=""
+          defaults="{player} currently owns ${amount}. If {player} owned that amount at the end of the game, they would earn {popcornAmount} Popcorn (<popcorn/>)"
+          values={{ player: playerName, amount: amount, popcornAmount: popcornAmount }}
+          components={{
+            popcorn: (
+              <MaterialComponent
+                type={MaterialType.PopcornTokens}
+                itemId={PopcornToken.Token1}
+                css={css`
+                  display: inline-block;
+                  vertical-align: middle;
+                `}
+              />
+            )
+          }}
+        />
+      </p>
+    </>
+  )
+}

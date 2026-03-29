@@ -5,7 +5,7 @@ import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
 import { RuleId } from '@gamepark/popcorn/rules/RuleId.ts'
 import { DeckLocator, DropAreaDescription, ItemContext, MaterialContext } from '@gamepark/react-game'
 import { Coordinates, Location, MaterialItem } from '@gamepark/rules-api'
-import { MovieCardDeckHelp } from './help/MovieCardDeckHelp.tsx'
+import { PlayerMovieArchiveHelp } from './help/PlayerMovieArchiveHelp.tsx'
 import { hideItemIfOwningPlayerIsNotDisplayed } from './utils/hideItemIfOwningPlayerIsNotDisplayed.ts'
 import { offsetPlayerCinemaBoardCoordinates } from './utils/offsetLocatorCoordinates.ts'
 
@@ -28,7 +28,7 @@ class PlayerMovieArchiveDeckLocationDescription extends DropAreaDescription<Play
   width = 7
   height = 7
 
-  help = MovieCardDeckHelp
+  help = PlayerMovieArchiveHelp
 }
 
 export const playerMovieArchiveDeckLocator = new PlayerMovieArchiveDeckLocator()

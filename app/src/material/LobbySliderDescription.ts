@@ -16,12 +16,15 @@ import orange3LobbySlider from '../images/Sliders/SliderOrange3.png'
 import purple1LobbySlider from '../images/Sliders/SliderPurple1.png'
 import purple2LobbySlider from '../images/Sliders/SliderPurple2.png'
 import purple3LobbySlider from '../images/Sliders/SliderPurple3.png'
+import { LobbySliderHelp } from './help/LobbySliderHelp.tsx'
 
 class LobbySliderDescription extends BoardDescription<PlayerColor, MaterialType, LocationType, LobbySlider, RuleId, PlayerColor> {
   width = 2.0
   height = 6.6
   thickness = 0.2
   transparency = true
+
+  help = LobbySliderHelp
 
   images = {
     [LobbySlider.Cyan1]: cyan1LobbySlider,

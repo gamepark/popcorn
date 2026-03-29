@@ -8,12 +8,17 @@ import cyanTopCinemaBoard from '../images/Boards/PlayerBoards/BlueTop.png'
 import greenTopCinemaBoard from '../images/Boards/PlayerBoards/GreenTop.png'
 import orangeTopCinemaBoard from '../images/Boards/PlayerBoards/OrangeTop.png'
 import purpleTopCinemaBoard from '../images/Boards/PlayerBoards/PurpleTop.png'
+import { TopCinemaBoardHelp } from './help/TopCinemaBoardHelp.tsx'
+import { TopCinemaBoardHelpDisplay } from './help/TopCinemaBoardHelpDisplay.tsx'
 
 class TopCinemaBoardDescription extends BoardDescription<PlayerColor, MaterialType, LocationType, PlayerColor, RuleId, PlayerColor> {
   width = 24.2
   height = 16.7
   thickness = 0.2
   transparency = true
+
+  helpDisplay = TopCinemaBoardHelpDisplay
+  help = TopCinemaBoardHelp
 
   images = {
     [PlayerColor.Cyan]: cyanTopCinemaBoard,
