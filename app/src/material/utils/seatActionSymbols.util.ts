@@ -1,4 +1,4 @@
-import { SeatAction } from '@gamepark/popcorn/material/TheaterTile.ts'
+import { SeatAction } from '@gamepark/popcorn/material/TheaterTile'
 import get1MoneySymbol from '../../images/Symbols/Action1Money.png'
 import get1PopcornSymbol from '../../images/Symbols/Action1Popcorn.png'
 import get2MoneySymbol from '../../images/Symbols/Action2Money.png'

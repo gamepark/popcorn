@@ -1,5 +1,5 @@
-import { isPassCurrentActionCustomMove } from '@gamepark/popcorn/material/CustomMoveType.ts'
-import { PopcornMove } from '@gamepark/popcorn/material/PopcornMoves.ts'
+import { isPassCurrentActionCustomMove } from '@gamepark/popcorn/material/CustomMoveType'
+import { PopcornMove } from '@gamepark/popcorn/material/PopcornMoves'
 import { HeaderText, PlayMoveButton, useLegalMove } from '@gamepark/react-game'
 import { FC } from 'react'
 import { Trans } from 'react-i18next'

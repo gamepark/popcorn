@@ -1,12 +1,12 @@
 import { css, Interpolation, Theme } from '@emotion/react'
-import { faHandPointer } from '@fortawesome/free-solid-svg-icons'
+import { faHandPointer, faHandPointLeft, faHandPointRight, faHandPointUp } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Actions } from '@gamepark/popcorn/material/Actions/Actions'
 import { ActionType } from '@gamepark/popcorn/material/Actions/ActionType'
 import { isBuyTheaterTileCustomMove } from '@gamepark/popcorn/material/CustomMoveType'
 import { LocationType } from '@gamepark/popcorn/material/LocationType'
 import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
-import { PopcornMove } from '@gamepark/popcorn/material/PopcornMoves.ts'
+import { PopcornMove } from '@gamepark/popcorn/material/PopcornMoves'
 import { SeatsNumber, TheaterTile, TheaterTileId } from '@gamepark/popcorn/material/TheaterTile'
 import { Memory } from '@gamepark/popcorn/Memory'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
@@ -14,6 +14,7 @@ import { RuleId } from '@gamepark/popcorn/rules/RuleId'
 import { ItemContext, ItemMenuButton, TokenDescription } from '@gamepark/react-game'
 import { isSelectItemType, Location, MaterialItem, MaterialMoveBuilder } from '@gamepark/rules-api'
 import React from 'react'
+import { Trans } from 'react-i18next'
 import oneSeat1Front from '../images/Tiles/TheaterTiles/1Seat1Front.png'
 import oneSeat2Front from '../images/Tiles/TheaterTiles/1Seat2Front.png'
 import oneSeat3Front from '../images/Tiles/TheaterTiles/1Seat3Front.png'
@@ -48,7 +49,8 @@ import threeSeatBack from '../images/Tiles/TheaterTiles/3SeatBack.png'
 import defaultOneSeatFront from '../images/Tiles/TheaterTiles/Default1SeatFront.png'
 import defaultTwoSeatFront from '../images/Tiles/TheaterTiles/Default2SeatFront.png'
 import emptyTile from '../images/Tiles/TheaterTiles/EmptyTile.png'
-import { TheaterTileHelp } from './help/TheaterTileHelp.tsx'
+import { bottomCinemaBoardLocator } from '../locators/BottomCinemaBoardLocator'
+import { TheaterTileHelp } from './help/TheaterTileHelp'
 import displayLocationHelp = MaterialMoveBuilder.displayLocationHelp
 
 const LOCATION_TYPES_WHERE_FLIPPED_ON_TABLE = [
@@ -145,41 +147,11 @@ class TheaterTileDescription extends TokenDescription<PlayerColor, MaterialType,
     legalMoves: PopcornMove[]
   ): React.ReactNode {
     if (context.player !== undefined) {
-      if (context.rules.game.rule?.id === RuleId.ShowingsPhaseRule && context.rules.game.players.includes(context.player)) {
-        const pendingActions = context.rules.remind<Actions[]>(Memory.PendingActions, context.player)
-        if (pendingActions.length > 0 && pendingActions[0].type === ActionType.PickTheaterTileToActivate) {
-          const currentItemIndex = context.rules
-            .material(MaterialType.TheaterTiles)
-            .location(item.location.type)
-            .player(item.location.player)
-            .id(item.id)
-            .getIndex()
-          const selectCurrentTileLegalMove = legalMoves
-            .filter(isSelectItemType(MaterialType.TheaterTiles))
-            .filter((move) => move.itemIndex === currentItemIndex)
-          return selectCurrentTileLegalMove.length > 0 ? (
-            <>
-              {selectCurrentTileLegalMove.map((move) => (
-                <ItemMenuButton
-                  key={`theaterTile-${move.itemIndex}-selectMove`}
-                  move={move}
-                  x={-1.25}
-                  y={this.height / 2}
-                  //label={<Trans i18nKey="button.theaterTile.showingsPhase.activateTheater" />}
-                  labelPosition="left"
-                >
-                  <FontAwesomeIcon icon={faHandPointer} size="lg" />
-                </ItemMenuButton>
-              ))}
-              {this.getHelpButton(item, context, {
-                x: 1.25,
-                y: this.height / 2,
-                labelPosition: 'right',
-                label: ''
-              })}
-            </>
-          ) : undefined
-        }
+      if (context.rules.game.rule?.id === RuleId.ShowingsPhaseRule && context.rules.game.rule.players?.includes(context.player)) {
+        return this.getShowingsPhaseRuleItemMenu(item, context, legalMoves)
+      }
+      if (context.rules.game.rule?.id === RuleId.BuyingPhaseRule && context.rules.game.rule.player === context.player) {
+        return this.getBuyingPhaseRuleItemMenu(item, context, legalMoves)
       }
     }
     return super.getItemMenu(item, context, legalMoves)
@@ -215,6 +187,99 @@ class TheaterTileDescription extends TokenDescription<PlayerColor, MaterialType,
     }
     return super.displayHelp(item, context)
   }
+
+  private getShowingsPhaseRuleItemMenu(
+    item: MaterialItem<PlayerColor, LocationType, TheaterTileId>,
+    context: ItemContext<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>,
+    legalMoves: PopcornMove[]
+  ) {
+    const pendingActions = context.rules.remind<Actions[]>(Memory.PendingActions, context.player)
+    if (pendingActions.length > 0 && pendingActions[0].type === ActionType.PickTheaterTileToActivate) {
+      const currentItemIndex = context.rules
+        .material(MaterialType.TheaterTiles)
+        .location(item.location.type)
+        .player(item.location.player)
+        .id(item.id)
+        .getIndex()
+      const selectCurrentTileLegalMove = legalMoves.filter(isSelectItemType(MaterialType.TheaterTiles)).filter((move) => move.itemIndex === currentItemIndex)
+      return selectCurrentTileLegalMove.length > 0 ? (
+        <>
+          {selectCurrentTileLegalMove.map((move) => (
+            <ItemMenuButton key={`theaterTile-${move.itemIndex}-selectMove`} move={move} x={-1.25} y={this.height / 2} labelPosition="left">
+              <FontAwesomeIcon icon={faHandPointer} size="lg" />
+            </ItemMenuButton>
+          ))}
+          {this.getHelpButton(item, context, {
+            x: 1.25,
+            y: this.height / 2,
+            labelPosition: 'right',
+            label: ''
+          })}
+        </>
+      ) : undefined
+    }
+    return undefined
+  }
+
+  private getBuyingPhaseRuleItemMenu(
+    item: MaterialItem<PlayerColor, LocationType, TheaterTileId>,
+    context: ItemContext<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>,
+    legalMoves: PopcornMove[]
+  ): React.ReactNode {
+    const tileIndex = context.index
+    const tileMaterial = context.rules
+      .material(MaterialType.TheaterTiles)
+      .location((l) => THEATER_TILE_LOCATION_TYPES.includes(l.type))
+      .index(tileIndex)
+    if (tileMaterial.exists) {
+      const tile = tileMaterial.getItem<Required<TheaterTileId>>()!
+      const tileLocator = context.locators[tile.location.type]
+      const tileCoordinates = tileLocator?.getItemCoordinates(tile, context) ?? { x: 0, y: 0 }
+      const boardCoordinates = bottomCinemaBoardLocator.coordinates
+      const tileOnBoardLocator = context.locators[LocationType.TheaterTileSpotOnTopPlayerCinemaBoard]
+      const buyMoves = legalMoves.filter(isBuyTheaterTileCustomMove).filter((move) => move.data.boughtTileIndex === tileIndex)
+      if (buyMoves.length > 0) {
+        return (
+          <>
+            {buyMoves.map((move, index) => {
+              const destinationCoordinates = tileOnBoardLocator?.getLocationCoordinates(
+                { type: LocationType.TheaterTileSpotOnTopPlayerCinemaBoard, x: move.data.destinationSpot },
+                context
+              ) ?? { x: 0, y: 0 }
+              const xOffset = move.data.destinationSpot === 0 ? -2.5 : move.data.destinationSpot === 1 ? 0 : 2.5
+              const yOffset = move.data.destinationSpot === 1 ? 2.5 : 0
+              const pointer = move.data.destinationSpot === 0 ? faHandPointRight : move.data.destinationSpot === 1 ? faHandPointUp : faHandPointLeft
+              return (
+                <ItemMenuButton
+                  key={`buyTheater-b-${index}`}
+                  move={move}
+                  x={-(tileCoordinates.x ?? 0) + boardCoordinates.x + (destinationCoordinates.x ?? 0) + xOffset}
+                  y={-(tileCoordinates.y ?? 0) + boardCoordinates.y + (destinationCoordinates.y ?? 0) + yOffset}
+                  label={
+                    <Trans
+                      i18nKey=""
+                      defaults="Buy for the {destination, select, 0{left} 1{center} 2{right} other{}} theater"
+                      values={{ destination: move.data.destinationSpot }}
+                    />
+                  }
+                  labelPosition={move.data.destinationSpot === 0 ? 'left' : 'right'}
+                >
+                  <FontAwesomeIcon icon={pointer} size="lg" />
+                </ItemMenuButton>
+              )
+            })}
+            {this.getHelpButton(item, context, {
+              x: 0,
+              y: 2.5
+            })}
+          </>
+        )
+      }
+    }
+    return undefined
+  }
 }
+
+const THEATER_TILE_LOCATION_TYPES = [LocationType.OneSeatTheaterTileRowSpot, LocationType.TwoSeatTheaterTileRowSpot, LocationType.ThreeSeatTheaterTileRowSpot]
 
 export const theaterTileDescription = new TheaterTileDescription()

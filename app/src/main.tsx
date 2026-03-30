@@ -7,7 +7,7 @@ import { createRoot } from 'react-dom/client'
 import { popcornAnimations } from './animations/PopcornAnimations'
 import { App } from './App'
 import { Locators } from './locators/Locators'
-import { PopcornLogDescription } from './logs/PopcornLogDescription.ts'
+import { PopcornLogDescription } from './logs/PopcornLogDescription'
 import { Material, popcornMaterialI18n } from './material/Material'
 import { PopcornTheme } from './PopcornTheme'
 

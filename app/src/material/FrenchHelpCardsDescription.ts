@@ -1,5 +1,5 @@
-import { HelpCard } from '@gamepark/popcorn/material/HelpCard.ts'
-import { HelpCardDescription } from './HelpCardDescription.ts'
+import { HelpCard } from '@gamepark/popcorn/material/HelpCard'
+import { HelpCardDescription } from './HelpCardDescription'
 import phasesHelpCard from '../images/Cards/Movies/fr/HelpPhases.jpg'
 import actionHelpCard from '../images/Cards/Movies/fr/HelpActions.jpg'
 

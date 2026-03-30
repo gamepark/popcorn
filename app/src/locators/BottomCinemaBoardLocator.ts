@@ -1,10 +1,10 @@
 import { LocationType } from '@gamepark/popcorn/material/LocationType'
 import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
-import { RuleId } from '@gamepark/popcorn/rules/RuleId.ts'
+import { RuleId } from '@gamepark/popcorn/rules/RuleId'
 import { ItemContext, Locator } from '@gamepark/react-game'
 import { MaterialItem } from '@gamepark/rules-api'
-import { hideItemIfOwningPlayerIsNotDisplayed } from './utils/hideItemIfOwningPlayerIsNotDisplayed.ts'
+import { hideItemIfOwningPlayerIsNotDisplayed } from './utils/hideItemIfOwningPlayerIsNotDisplayed'
 
 class BottomCinemaBoardLocator extends Locator<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor> {
   coordinates = { x: 14, y: 15 }

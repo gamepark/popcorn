@@ -1,11 +1,11 @@
-import { MaterialType } from '@gamepark/popcorn/material/MaterialType.ts'
-import { ShowingsPhaseRule } from '@gamepark/popcorn/rules/ShowingsPhaseRule.ts'
+import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
+import { ShowingsPhaseRule } from '@gamepark/popcorn/rules/ShowingsPhaseRule'
 import { usePlayerName } from '@gamepark/react-game'
 import { Shuffle } from '@gamepark/rules-api'
 import { FC } from 'react'
 import { Trans } from 'react-i18next'
-import { logContainerCss } from '../../utils/logCss.utils.ts'
-import { PopcornMoveComponentProps } from '../../utils/PopcornTypes.util.ts'
+import { logContainerCss } from '../../utils/logCss.utils'
+import { PopcornMoveComponentProps } from '../../utils/PopcornTypes.util'
 
 export const ShuffleGuestsLogComponent: FC<PopcornMoveComponentProps> = ({ move, context }) => {
   const shuffleMove = move as Shuffle<MaterialType>

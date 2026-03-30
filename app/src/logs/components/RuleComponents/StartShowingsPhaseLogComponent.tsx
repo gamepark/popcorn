@@ -1,10 +1,10 @@
-import { MaterialType } from '@gamepark/popcorn/material/MaterialType.ts'
-import { MovieCard, MovieCardId } from '@gamepark/popcorn/material/MovieCard.ts'
-import { ShowingsPhaseRule } from '@gamepark/popcorn/rules/ShowingsPhaseRule.ts'
+import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
+import { MovieCard, MovieCardId } from '@gamepark/popcorn/material/MovieCard'
+import { ShowingsPhaseRule } from '@gamepark/popcorn/rules/ShowingsPhaseRule'
 import { FC } from 'react'
 import { Trans } from 'react-i18next'
-import { ruleLogContainerCss } from '../../utils/logCss.utils.ts'
-import { PopcornMoveComponentProps } from '../../utils/PopcornTypes.util.ts'
+import { ruleLogContainerCss } from '../../utils/logCss.utils'
+import { PopcornMoveComponentProps } from '../../utils/PopcornTypes.util'
 
 export const StartShowingsPhaseLogComponent: FC<PopcornMoveComponentProps> = ({ context }) => {
   const rule = new ShowingsPhaseRule(context.game)

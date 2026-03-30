@@ -1,14 +1,13 @@
 import { css } from '@emotion/react'
 import { faCheck, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { LocationType } from '@gamepark/popcorn/material/LocationType.ts'
-import { MaterialType } from '@gamepark/popcorn/material/MaterialType.ts'
-import { MovieAction, MovieCard, movieCardCharacteristics, MovieCardId, MovieColor } from '@gamepark/popcorn/material/MovieCard.ts'
-import { getMaximumNumberOfGuests } from '@gamepark/popcorn/material/TheaterTile.ts'
-import { AvailableMovieActionsMemory, Memory } from '@gamepark/popcorn/Memory.ts'
-import { PlayerColor } from '@gamepark/popcorn/PlayerColor.ts'
-import { PopcornRules } from '@gamepark/popcorn/PopcornRules.ts'
-import { MaterialHelpDisplayProps, Picture, useRules } from '@gamepark/react-game'
+import { LocationType } from '@gamepark/popcorn/material/LocationType'
+import { MovieAction, MovieCard, movieCardCharacteristics, MovieCardId, MovieColor } from '@gamepark/popcorn/material/MovieCard'
+import { getMaximumNumberOfGuests } from '@gamepark/popcorn/material/TheaterTile'
+import { AvailableMovieActionsMemory, Memory } from '@gamepark/popcorn/Memory'
+import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
+import { PopcornRules } from '@gamepark/popcorn/PopcornRules'
+import { Picture, useRules } from '@gamepark/react-game'
 import { MaterialItem } from '@gamepark/rules-api'
 import { camelCase } from 'es-toolkit'
 import { FC } from 'react'
@@ -17,13 +16,10 @@ import blueMovieShowingBonusSymbol from '../../images/Symbols/ShowingBonusCondit
 import greenMovieShowingBonusSymbol from '../../images/Symbols/ShowingBonusConditionGreen.png'
 import redMovieShowingBonusSymbol from '../../images/Symbols/ShowingBonusConditionRed.png'
 import yellowMovieShowingBonusSymbol from '../../images/Symbols/ShowingBonusConditionYellow.png'
-import { colorSymbols, getMovieActionSymbol, movieTitleDefaults, seatsNumberSymbols } from '../utils/movieCard.utils.ts'
+import { colorSymbols, getMovieActionSymbol, movieTitleDefaults, seatsNumberSymbols } from '../utils/movieCard.utils'
+import { PopcornMaterialDisplayHelpProps } from './utils/popcornMaterialDisplayHelpProps.util'
 
-export const MovieCardHelp: FC<MaterialHelpDisplayProps<PlayerColor, MaterialType, LocationType>> = ({
-  item
-}: {
-  item: Partial<MaterialItem<PlayerColor, LocationType, MovieCardId>>
-}) => {
+export const MovieCardHelp: FC<PopcornMaterialDisplayHelpProps> = ({ item }: { item: Partial<MaterialItem<PlayerColor, LocationType, MovieCardId>> }) => {
   const rules = useRules<PopcornRules>()
   const { t } = useTranslation()
   const isMovieOnPlayerBoard = item.location?.type === LocationType.MovieCardSpotOnBottomPlayerCinemaBoard
@@ -58,10 +54,10 @@ export const MovieCardHelp: FC<MaterialHelpDisplayProps<PlayerColor, MaterialTyp
   return (
     <>
       <h2>
-        <Trans i18nKey={`help.movieCard.title.${camelCase(MovieCard[item.id.front])}`} defaults={movieTitleDefaults[item.id.front]} />
+        <Trans i18nKey={`movieCard.title.${camelCase(MovieCard[item.id.front])}`} defaults={movieTitleDefaults[item.id.front]} />
       </h2>
       <q>
-        <Trans i18nKey={`help.movieCard.quote.${camelCase(MovieCard[item.id.front])}`} defaults={movieQuotesDefaults[item.id.front]} />
+        <Trans i18nKey={`movieCard.quote.${camelCase(MovieCard[item.id.front])}`} defaults={movieQuotesDefaults[item.id.front]} />
       </q>
       <h4>
         <Trans i18nKey={'help.movieCard.headers.Characteristics'} defaults="Movie characteristics" />

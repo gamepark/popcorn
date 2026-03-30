@@ -1,12 +1,12 @@
-import { faHandPointer, faHandPointRight } from '@fortawesome/free-solid-svg-icons'
+import { faHandPointLeft, faHandPointRight, faHandPointUp } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Actions } from '@gamepark/popcorn/material/Actions/Actions'
 import { ActionType } from '@gamepark/popcorn/material/Actions/ActionType'
 import { isBuyMovieCardCustomMove, isMovieActionCustomMove } from '@gamepark/popcorn/material/CustomMoveType'
 import { LocationType } from '@gamepark/popcorn/material/LocationType'
 import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
-import { MovieCard, MovieCardId, MovieCardType } from '@gamepark/popcorn/material/MovieCard'
-import { PopcornMove } from '@gamepark/popcorn/material/PopcornMoves.ts'
+import { MovieCard, MovieCardId, MovieCardType, PlayableMovieCardId } from '@gamepark/popcorn/material/MovieCard'
+import { PopcornMove } from '@gamepark/popcorn/material/PopcornMoves'
 import { Memory } from '@gamepark/popcorn/Memory'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
 import { RuleId } from '@gamepark/popcorn/rules/RuleId'
@@ -65,7 +65,11 @@ import yellowTheAdventuresOfPewPew from '../images/Cards/Movies/en/YellowTheAdve
 import yellowTheFirePrincess from '../images/Cards/Movies/en/YellowTheFirePrincess.jpg'
 import yellowTheKids from '../images/Cards/Movies/en/YellowTheKids.jpg'
 import yellowWhatABunchOfIdiots3 from '../images/Cards/Movies/en/YellowWhatABunchOfIdiots3.jpg'
-import { MovieCardHelp } from './help/MovieCardHelp.tsx'
+import { bottomCinemaBoardLocator } from '../locators/BottomCinemaBoardLocator'
+import { featureMovieCardsRowLocator } from '../locators/FeatureMovieCardsRowLocator'
+import { movieCardOnBottomPlayerCinemaBoardLocator } from '../locators/MovieCardOnBottomPlayerCinemaBoardLocator'
+import { premierMovieCardsRowLocator } from '../locators/PremierMovieCardsRowLocator'
+import { MovieCardHelp } from './help/MovieCardHelp'
 import displayLocationHelp = MaterialMoveBuilder.displayLocationHelp
 
 export class MovieCardDescription extends CardDescription<PlayerColor, MaterialType, LocationType, MovieCardId, RuleId, PlayerColor> {
@@ -131,26 +135,6 @@ export class MovieCardDescription extends CardDescription<PlayerColor, MaterialT
 
   help = MovieCardHelp
 
-  // public getStaticItems(
-  //   context: MaterialContext<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>
-  // ): MaterialItem<PlayerColor, LocationType, MovieCardId>[] {
-  //   const numberOfCardsBelowFinalShowing = context.rules.players.length === 2 ? 10 : 5
-  //   const numberOfCardsInDeck = context.rules.material(MaterialType.MovieCards).location(LocationType.MovieCardDeckSpot).length
-  //   return numberOfCardsInDeck <= numberOfCardsBelowFinalShowing
-  //     ? [
-  //         {
-  //           id: {
-  //             front: MovieCard.FinalShowing,
-  //             back: MovieCardType.Movie
-  //           },
-  //           location: {
-  //             type: LocationType.FinalShowingCardSpot
-  //           }
-  //         }
-  //       ]
-  //     : []
-  // }
-
   public canDrag(move: PopcornMove, context: ItemContext<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>): boolean {
     return super.canDrag(move, context) || (isBuyMovieCardCustomMove(move) && move.data.boughtCardIndex === context.index)
   }
@@ -192,33 +176,7 @@ export class MovieCardDescription extends CardDescription<PlayerColor, MaterialT
       return this.createItemMenuForBuyingPhase(item, context, legalMoves)
     }
     if (context.rules.game.rule?.id === RuleId.ShowingsPhaseRule && item.location.type === LocationType.MovieCardSpotOnBottomPlayerCinemaBoard) {
-      const movieCardIndex = context.index
-      const moves = legalMoves.filter(isMovieActionCustomMove).filter((move) => move.data.movieCardIndex === movieCardIndex)
-      if (moves.length > 0) {
-        return (
-          <>
-            {moves.map((move, index) => (
-              <ItemMenuButton
-                key={`movieAction-${movieCardIndex}-${index}`}
-                move={move}
-                label={<Trans i18nKey={'buttons.movieCard.chooseAction'} defaults="Choose this movie action" />}
-                labelPosition="left"
-                x={-3.35}
-                y={-2.75 + 1.35 * move.data.movieActionNumber}
-                style={{ width: '1.25em', height: '1.25em' }}
-              >
-                <FontAwesomeIcon icon={faHandPointRight} size="sm" />
-              </ItemMenuButton>
-            ))}
-            {this.getHelpButton(item, context, {
-              angle: 0,
-              radius: -2.5,
-              label: ''
-            })}
-          </>
-        )
-      }
-      return
+      return this.getItemMenuForChooseMovieAction(item, context, legalMoves)
     }
     return
   }
@@ -251,6 +209,9 @@ export class MovieCardDescription extends CardDescription<PlayerColor, MaterialT
       }
       return displayLocationHelp(location)
     }
+    if (item.location.type === LocationType.PlayerMovieCardArchiveSpot) {
+      return displayLocationHelp(item.location)
+    }
     return super.displayHelp(item, context)
   }
 
@@ -260,39 +221,87 @@ export class MovieCardDescription extends CardDescription<PlayerColor, MaterialT
     legalMoves: PopcornMove[]
   ): React.ReactNode {
     const cardIndex = context.index
-    const movesForCard = legalMoves.filter(isBuyMovieCardCustomMove).filter((move) => move.data.boughtCardIndex === cardIndex)
-    return movesForCard.length > 0 ? (
-      <>
-        {movesForCard.map((move, index) => (
-          <ItemMenuButton
-            key={`buy-move-${item.id.front}-${index}`}
-            move={move}
-            label={this.getMenuLabelForDestination(move.data.destinationSpot)}
-            angle={0}
-            radius={2.5 - index * 2.25}
-          >
-            <FontAwesomeIcon icon={faHandPointer} size="lg" />
-          </ItemMenuButton>
-        ))}
-        {this.getHelpButton(item, context, {
-          angle: 0,
-          radius: 2.5 - movesForCard.length * 2.25
-        })}
-      </>
-    ) : undefined
+    const movieCardMaterial = context.rules
+      .material(MaterialType.MovieCards)
+      .location((l) => l.type === LocationType.PremiersRowSpot || l.type === LocationType.FeaturesRowSpot)
+      .index(cardIndex)
+    if (movieCardMaterial.exists) {
+      const movieCard = movieCardMaterial.getItem<Required<PlayableMovieCardId>>()!
+      const cardLocator = movieCard.location.type === LocationType.PremiersRowSpot ? premierMovieCardsRowLocator : featureMovieCardsRowLocator
+      const cardCoordinates = cardLocator.getItemCoordinates(movieCard, context)
+      const bottomCinemaBoardCoordinates = bottomCinemaBoardLocator.coordinates
+      const movieOnBoardLocator = movieCardOnBottomPlayerCinemaBoardLocator
+      const movesForCard = legalMoves.filter(isBuyMovieCardCustomMove).filter((move) => move.data.boughtCardIndex === cardIndex)
+      return movesForCard.length > 0 ? (
+        <>
+          {movesForCard.map((move, index) => {
+            const destinationCoordinates = movieOnBoardLocator.getLocationCoordinates(
+              { type: LocationType.MovieCardSpotOnBottomPlayerCinemaBoard, x: move.data.destinationSpot },
+              context
+            )
+            const xOffset = move.data.destinationSpot === 0 ? -4 : move.data.destinationSpot === 1 ? 0 : 4
+            const yOffest = move.data.destinationSpot === 1 ? 3 : 0
+            const pointer = move.data.destinationSpot === 0 ? faHandPointRight : move.data.destinationSpot === 1 ? faHandPointUp : faHandPointLeft
+            return (
+              <ItemMenuButton
+                key={`buy-move-${item.id.front}-${index}`}
+                move={move}
+                label={
+                  <Trans
+                    i18nKey="movieCard.itemMenu.buyingPhase.destination"
+                    defaults="Buy for the {destination, select, 0{left} 1{center} 2{right} other{}} theater"
+                    values={{ destination: move.data.destinationSpot }}
+                  />
+                }
+                x={-(cardCoordinates.x ?? 0) + (destinationCoordinates.x ?? 0) + bottomCinemaBoardCoordinates.x + xOffset}
+                y={-(cardCoordinates.y ?? 0) + (destinationCoordinates.y ?? 0) + bottomCinemaBoardCoordinates.y + yOffest}
+                labelPosition={move.data.destinationSpot === 0 ? 'left' : 'right'}
+              >
+                <FontAwesomeIcon icon={pointer} size="lg" />
+              </ItemMenuButton>
+            )
+          })}
+          {this.getHelpButton(item, context, {
+            angle: 0,
+            radius: 2.5 - movesForCard.length * 2.25
+          })}
+        </>
+      ) : undefined
+    }
+    return undefined
   }
 
-  private getMenuLabelForDestination(x: number | undefined): React.ReactNode {
-    switch (x) {
-      case 0:
-        return <Trans i18nKey="movieCard.itemMenu.buyingPhase.destination.leftTheater" defaults="Buy this movie and place it in the left theater" />
-      case 1:
-        return <Trans i18nKey="movieCard.itemMenu.buyingPhase.destination.centerTheater" defaults="Buy this movie and place it in the center theater" />
-      case 2:
-        return <Trans i18nKey="movieCard.itemMenu.buyingPhase.destination.leftTheater" defaults="Buy this movie and place it in the right theater" />
-      default:
-        throw new Error('Unknown destination slot')
+  private getItemMenuForChooseMovieAction(
+    item: MaterialItem<PlayerColor, LocationType, MovieCardId>,
+    context: ItemContext<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>,
+    legalMoves: PopcornMove[]
+  ) {
+    const movieCardIndex = context.index
+    const moves = legalMoves.filter(isMovieActionCustomMove).filter((move) => move.data.movieCardIndex === movieCardIndex)
+    if (moves.length > 0) {
+      return (
+        <>
+          {moves.map((move, index) => (
+            <ItemMenuButton
+              key={`movieAction-${movieCardIndex}-${index}`}
+              move={move}
+              label={<Trans i18nKey="buttons.movieCard.chooseAction" defaults="Choose this movie action" />}
+              labelPosition="left"
+              x={-3.5}
+              y={-2.75 + 1.35 * move.data.movieActionNumber}
+              style={{ width: '1.25em', height: '1.25em' }}
+            >
+              <FontAwesomeIcon icon={faHandPointRight} size="sm" />
+            </ItemMenuButton>
+          ))}
+          {this.getHelpButton(item, context, {
+            angle: 0,
+            radius: -2.5
+          })}
+        </>
+      )
     }
+    return
   }
 }
 

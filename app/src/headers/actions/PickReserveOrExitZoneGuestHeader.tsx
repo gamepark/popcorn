@@ -1,5 +1,5 @@
-import { PickReserveOrExitZoneGuestAction } from '@gamepark/popcorn/material/Actions/PickReserveOrExitZoneGuestAction.ts'
-import { GuestPawn } from '@gamepark/popcorn/material/GuestPawn.ts'
+import { PickReserveOrExitZoneGuestAction } from '@gamepark/popcorn/material/Actions/PickReserveOrExitZoneGuestAction'
+import { GuestPawn } from '@gamepark/popcorn/material/GuestPawn'
 import { HeaderText } from '@gamepark/react-game'
 import { FC } from 'react'
 

@@ -1,13 +1,13 @@
-import { MaterialType } from '@gamepark/popcorn/material/MaterialType.ts'
-import { TheaterTileId } from '@gamepark/popcorn/material/TheaterTile.ts'
-import { ShowingsPhaseRule } from '@gamepark/popcorn/rules/ShowingsPhaseRule.ts'
+import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
+import { TheaterTileId } from '@gamepark/popcorn/material/TheaterTile'
+import { ShowingsPhaseRule } from '@gamepark/popcorn/rules/ShowingsPhaseRule'
 import { usePlayerName } from '@gamepark/react-game'
 import { SelectItem } from '@gamepark/rules-api'
 import { FC } from 'react'
 import { Trans } from 'react-i18next'
-import { logContainerCss } from '../../utils/logCss.utils.ts'
-import { PopcornMoveComponentProps } from '../../utils/PopcornTypes.util.ts'
-import { LogTheaterMaterialHelpLink } from '../utils/LogTheaterMaterialHelpLink.tsx'
+import { logContainerCss } from '../../utils/logCss.utils'
+import { PopcornMoveComponentProps } from '../../utils/PopcornTypes.util'
+import { LogTheaterMaterialHelpLink } from '../utils/LogTheaterMaterialHelpLink'
 
 export const TheaterTileActivatedLogComponent: FC<PopcornMoveComponentProps> = ({ move, context }) => {
   const tileSelectMove = move as SelectItem<MaterialType>

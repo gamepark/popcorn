@@ -1,13 +1,12 @@
 import { css } from '@emotion/react'
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { GamePhase } from '@gamepark/popcorn/GamePhase.ts'
-import { HelpCard } from '@gamepark/popcorn/material/HelpCard.ts'
-import { LocationType } from '@gamepark/popcorn/material/LocationType.ts'
-import { MaterialType } from '@gamepark/popcorn/material/MaterialType.ts'
-import { PlayerColor } from '@gamepark/popcorn/PlayerColor.ts'
-import { PopcornRules } from '@gamepark/popcorn/PopcornRules.ts'
-import { MaterialHelpDisplayProps, Picture, useRules } from '@gamepark/react-game'
+import { GamePhase } from '@gamepark/popcorn/GamePhase'
+import { HelpCard } from '@gamepark/popcorn/material/HelpCard'
+import { LocationType } from '@gamepark/popcorn/material/LocationType'
+import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
+import { PopcornRules } from '@gamepark/popcorn/PopcornRules'
+import { Picture, useRules } from '@gamepark/react-game'
 import { MaterialItem } from '@gamepark/rules-api'
 import { FC } from 'react'
 import { Trans } from 'react-i18next'
@@ -27,12 +26,9 @@ import audienceSymbol from '../../images/Symbols/Audience.png'
 import audienceAdvanceSymbol from '../../images/Symbols/MovieActionAdvanceAudienceCube.png'
 import drawAwardCardSymbol from '../../images/Symbols/MovieActionDrawAwardCard.png'
 import movieActionSymbol from '../../images/Symbols/SeatActionMovieAction.png'
+import { PopcornMaterialDisplayHelpProps } from './utils/popcornMaterialDisplayHelpProps.util'
 
-export const HelpCardHelp: FC<MaterialHelpDisplayProps<PlayerColor, MaterialType, LocationType>> = ({
-  item
-}: {
-  item: Partial<MaterialItem<PlayerColor, LocationType, HelpCard>>
-}) => {
+export const HelpCardHelp: FC<PopcornMaterialDisplayHelpProps> = ({ item }: { item: Partial<MaterialItem<PlayerColor, LocationType, HelpCard>> }) => {
   if (item.id === HelpCard.ActionsHelp) {
     return <ActionHelpCardHelp />
   }

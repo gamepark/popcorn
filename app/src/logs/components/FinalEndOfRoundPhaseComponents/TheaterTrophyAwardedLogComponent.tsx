@@ -1,13 +1,13 @@
-import { MaterialType } from '@gamepark/popcorn/material/MaterialType.ts'
-import { PopcornToken } from '@gamepark/popcorn/material/PopcornToken.ts'
-import { PlayerColor } from '@gamepark/popcorn/PlayerColor.ts'
+import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
+import { PopcornToken } from '@gamepark/popcorn/material/PopcornToken'
+import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
 import { MaterialComponent, usePlayerName } from '@gamepark/react-game'
 import { CreateItem, MaterialItem } from '@gamepark/rules-api'
 import { FC } from 'react'
 import { Trans } from 'react-i18next'
-import { logContainerCss, materialComponentCss } from '../../utils/logCss.utils.ts'
-import { PopcornMoveComponentProps } from '../../utils/PopcornTypes.util.ts'
-import { MaterialComponentWithHelp } from '../utils/MaterialComponentWithHelp.tsx'
+import { logContainerCss, materialComponentCss } from '../../utils/logCss.utils'
+import { PopcornMoveComponentProps } from '../../utils/PopcornTypes.util'
+import { MaterialComponentWithHelp } from '../utils/MaterialComponentWithHelp'
 
 export const TheaterTrophyAwardedLogComponent: FC<PopcornMoveComponentProps> = ({ move }) => {
   const trophyMove = move as CreateItem<MaterialType>

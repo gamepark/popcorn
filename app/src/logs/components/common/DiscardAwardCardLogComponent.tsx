@@ -1,15 +1,15 @@
-import { AwardCard } from '@gamepark/popcorn/material/AwardCard.ts'
-import { LocationType } from '@gamepark/popcorn/material/LocationType.ts'
-import { MaterialType } from '@gamepark/popcorn/material/MaterialType.ts'
-import { PlayerColor } from '@gamepark/popcorn/PlayerColor.ts'
-import { PopcornRules } from '@gamepark/popcorn/PopcornRules.ts'
+import { AwardCard } from '@gamepark/popcorn/material/AwardCard'
+import { LocationType } from '@gamepark/popcorn/material/LocationType'
+import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
+import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
+import { PopcornRules } from '@gamepark/popcorn/PopcornRules'
 import { usePlayerName } from '@gamepark/react-game'
 import { MoveItem } from '@gamepark/rules-api'
 import { FC } from 'react'
 import { Trans } from 'react-i18next'
-import { logContainerCss } from '../../utils/logCss.utils.ts'
-import { PopcornMoveComponentProps } from '../../utils/PopcornTypes.util.ts'
-import { MaterialComponentWithHelp } from '../utils/MaterialComponentWithHelp.tsx'
+import { logContainerCss } from '../../utils/logCss.utils'
+import { PopcornMoveComponentProps } from '../../utils/PopcornTypes.util'
+import { MaterialComponentWithHelp } from '../utils/MaterialComponentWithHelp'
 
 export const DiscardAwardCardLogComponent: FC<PopcornMoveComponentProps> = ({ move, context }) => {
   const discardMove = move as MoveItem<PlayerColor, MaterialType, LocationType>

@@ -1,11 +1,11 @@
-import { PlayerColor } from '@gamepark/popcorn/PlayerColor.ts'
-import { RuleId } from '@gamepark/popcorn/rules/RuleId.ts'
+import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
+import { RuleId } from '@gamepark/popcorn/rules/RuleId'
 import { usePlayerName } from '@gamepark/react-game'
 import { StartPlayerTurn } from '@gamepark/rules-api'
 import { FC } from 'react'
 import { Trans } from 'react-i18next'
-import { logContainerCss } from '../../utils/logCss.utils.ts'
-import { PopcornMoveComponentProps } from '../../utils/PopcornTypes.util.ts'
+import { logContainerCss } from '../../utils/logCss.utils'
+import { PopcornMoveComponentProps } from '../../utils/PopcornTypes.util'
 
 export const StartBuyingPhaseLogComponent: FC<PopcornMoveComponentProps> = ({ move }) => {
   const startMove = move as StartPlayerTurn<PlayerColor, RuleId>

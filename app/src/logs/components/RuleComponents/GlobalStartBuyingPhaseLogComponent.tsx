@@ -1,9 +1,9 @@
-import { MaterialType } from '@gamepark/popcorn/material/MaterialType.ts'
-import { isPopcornCreateItemType } from '@gamepark/popcorn/material/PopcornMoves.ts'
+import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
+import { isPopcornCreateItemType } from '@gamepark/popcorn/material/PopcornMoves'
 import { FC } from 'react'
 import { Trans } from 'react-i18next'
-import { ruleLogContainerCss } from '../../utils/logCss.utils.ts'
-import { PopcornMoveComponentProps } from '../../utils/PopcornTypes.util.ts'
+import { ruleLogContainerCss } from '../../utils/logCss.utils'
+import { PopcornMoveComponentProps } from '../../utils/PopcornTypes.util'
 
 export const GlobalStartBuyingPhaseLogComponent: FC<PopcornMoveComponentProps> = ({ context }) => {
   const isFinalRound = context.action.consequences.some(isPopcornCreateItemType(MaterialType.MovieCards))

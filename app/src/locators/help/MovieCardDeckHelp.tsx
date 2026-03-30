@@ -1,14 +1,14 @@
 import { css } from '@emotion/react'
-import { LocationType } from '@gamepark/popcorn/material/LocationType.ts'
-import { MaterialType } from '@gamepark/popcorn/material/MaterialType.ts'
-import { MovieCard, MovieCardType } from '@gamepark/popcorn/material/MovieCard.ts'
-import { PlayerColor } from '@gamepark/popcorn/PlayerColor.ts'
-import { PopcornRules } from '@gamepark/popcorn/PopcornRules.ts'
+import { LocationType } from '@gamepark/popcorn/material/LocationType'
+import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
+import { MovieCard, MovieCardType } from '@gamepark/popcorn/material/MovieCard'
+import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
+import { PopcornRules } from '@gamepark/popcorn/PopcornRules'
 import { fontSizeCss, linkButtonCss, LocationHelpProps, MaterialComponent, PlayMoveButton, usePlayerName, useRules } from '@gamepark/react-game'
 import { MaterialMoveBuilder } from '@gamepark/rules-api'
 import { FC } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
-import { movieCardDescription } from '../../material/MovieCardDescription.tsx'
+import { movieCardDescription } from '../../material/MovieCardDescription'
 import displayMaterialHelp = MaterialMoveBuilder.displayMaterialHelp
 
 export const MovieCardDeckHelp: FC<LocationHelpProps<PlayerColor, LocationType>> = ({ location }) => {

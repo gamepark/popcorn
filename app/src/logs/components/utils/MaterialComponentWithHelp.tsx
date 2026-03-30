@@ -1,11 +1,11 @@
 import { css, Interpolation, Theme } from '@emotion/react'
-import { LocationType } from '@gamepark/popcorn/material/LocationType.ts'
-import { MaterialType } from '@gamepark/popcorn/material/MaterialType.ts'
-import { PlayerColor } from '@gamepark/popcorn/PlayerColor.ts'
-import { RuleId } from '@gamepark/popcorn/rules/RuleId.ts'
+import { LocationType } from '@gamepark/popcorn/material/LocationType'
+import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
+import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
+import { RuleId } from '@gamepark/popcorn/rules/RuleId'
 import { MaterialComponent, usePlay } from '@gamepark/react-game'
 import { MaterialItem, MaterialMove, MaterialMoveBuilder } from '@gamepark/rules-api'
-import { guestPawnCss, materialComponentCss } from '../../utils/logCss.utils.ts'
+import { guestPawnCss, materialComponentCss } from '../../utils/logCss.utils'
 import displayMaterialHelp = MaterialMoveBuilder.displayMaterialHelp
 
 type MaterialComponentWithHelpProps<Id> = {

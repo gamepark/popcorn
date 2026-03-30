@@ -1,6 +1,5 @@
 import { css } from '@emotion/react'
-import { LocationType } from '@gamepark/popcorn/material/LocationType.ts'
-import { MaterialType } from '@gamepark/popcorn/material/MaterialType.ts'
+import { LocationType } from '@gamepark/popcorn/material/LocationType'
 import {
   getMaximumNumberOfGuests,
   SeatAction,
@@ -9,20 +8,17 @@ import {
   TheaterTile,
   TheaterTileId,
   theaterTilesCharacteristics
-} from '@gamepark/popcorn/material/TheaterTile.ts'
-import { PlayerColor } from '@gamepark/popcorn/PlayerColor.ts'
-import { MaterialHelpDisplayProps, Picture, usePlayerName } from '@gamepark/react-game'
+} from '@gamepark/popcorn/material/TheaterTile'
+import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
+import { Picture, usePlayerName } from '@gamepark/react-game'
 import { MaterialItem } from '@gamepark/rules-api'
 import { camelCase } from 'es-toolkit'
 import { FC } from 'react'
 import { Trans } from 'react-i18next'
-import { actionSymbols } from '../utils/seatActionSymbols.util.ts'
+import { actionSymbols } from '../utils/seatActionSymbols.util'
+import { PopcornMaterialDisplayHelpProps } from './utils/popcornMaterialDisplayHelpProps.util'
 
-export const TheaterTileHelp: FC<MaterialHelpDisplayProps<PlayerColor, MaterialType, LocationType>> = ({
-  item
-}: {
-  item: Partial<MaterialItem<PlayerColor, LocationType, TheaterTileId>>
-}) => {
+export const TheaterTileHelp: FC<PopcornMaterialDisplayHelpProps> = ({ item }: { item: Partial<MaterialItem<PlayerColor, LocationType, TheaterTileId>> }) => {
   const playerName = usePlayerName(item.location?.player)
   const numberOfSeats = item.id!.back === SeatsNumber.Default ? getDefaultNumberOfGuests(item.id!.front!) : getMaximumNumberOfGuests(item.id!.back)
   const title = (
@@ -72,7 +68,7 @@ export const TheaterTileHelp: FC<MaterialHelpDisplayProps<PlayerColor, MaterialT
           i18nKey="help.theaterTile.description.cost"
           defaults="<s>Price:</s> ${price}"
           values={{ price: tileCharacteristics.getPrice() }}
-          components={{ s: <strong>#</strong> }}
+          components={{ s: <strong></strong> }}
         />
       </p>
       <p>{numberOfAccommodatedGuestsComponent}</p>

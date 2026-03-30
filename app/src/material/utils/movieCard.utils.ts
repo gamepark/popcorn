@@ -1,5 +1,5 @@
-import { MovieAction, MovieCard, MovieColor } from '@gamepark/popcorn/material/MovieCard.ts'
-import { SeatsNumber } from '@gamepark/popcorn/material/TheaterTile.ts'
+import { MovieAction, MovieCard, MovieColor } from '@gamepark/popcorn/material/MovieCard'
+import { SeatsNumber } from '@gamepark/popcorn/material/TheaterTile'
 import get1MoneySymbol from '../../images/Symbols/Action1Money.png'
 import get1PopcornSymbol from '../../images/Symbols/Action1Popcorn.png'
 import get2MoneySymbol from '../../images/Symbols/Action2Money.png'
@@ -33,7 +33,10 @@ import threeSeatMovieShowingBonusSymbol from '../../images/Symbols/ShowingBonusC
 import twoSeatMovieShowingBonusSymbol from '../../images/Symbols/ShowingBonusConditionTwoSeatTheater.png'
 import yellowMovieSymbol from '../../images/Symbols/YellowMovie.png'
 
-const movieActionSymbols: Record<Exclude<MovieAction, MovieAction.AdvertisingTokenOnWhiteGuestToBag | MovieAction.AdvertisingTokenOnAnyGuest>, string> = {
+const movieActionSymbols: Record<
+  Exclude<MovieAction, MovieAction.AdvertisingTokenOnWhiteGuestToBag | MovieAction.AdvertisingTokenOnAnyGuest>,
+  string | undefined
+> = {
   [MovieAction.AdvertisingTokenOnBlueGuest]: blueAdvertisingGuestSymbol,
   [MovieAction.AdvertisingTokenOnGreenGuest]: greenAdvertisingGuestSymbol,
   [MovieAction.AdvertisingTokenOnRedGuest]: redAdvertisingGuestSymbol,
@@ -49,7 +52,7 @@ const movieActionSymbols: Record<Exclude<MovieAction, MovieAction.AdvertisingTok
   [MovieAction.Get2Popcorn]: get2PopcornSymbol,
   [MovieAction.Get3Popcorn]: get3PopcornSymbol,
   [MovieAction.Get4Popcorn]: get4PopcornSymbol,
-  [MovieAction.None]: '',
+  [MovieAction.None]: undefined,
   [MovieAction.PlaceExitZoneGuestInBag]: exitGuestToBagSymbol,
   [MovieAction.PlaceGuestInReserve]: guestInReserveSymbol
 }
@@ -124,7 +127,7 @@ export const movieTitleDefaults = {
   [MovieCard.YellowTheFirePrincess]: 'The Fire Princess'
 }
 
-export const getMovieActionSymbol = (action: MovieAction, movieColor: MovieColor): string => {
+export const getMovieActionSymbol = (action: MovieAction, movieColor: MovieColor): string | undefined => {
   switch (action) {
     case MovieAction.AdvertisingTokenOnAnyGuest:
       return anyGuestActionSymbols[movieColor]

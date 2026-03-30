@@ -1,9 +1,9 @@
-import { Actions } from '@gamepark/popcorn/material/Actions/Actions.ts'
-import { Memory } from '@gamepark/popcorn/Memory.ts'
-import { PlayerColor } from '@gamepark/popcorn/PlayerColor.ts'
-import { PopcornRules } from '@gamepark/popcorn/PopcornRules.ts'
+import { Actions } from '@gamepark/popcorn/material/Actions/Actions'
+import { Memory } from '@gamepark/popcorn/Memory'
+import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
+import { PopcornRules } from '@gamepark/popcorn/PopcornRules'
 import { HeaderText, usePlayerId, useRules } from '@gamepark/react-game'
-import { getPendingActionHeader } from './utils/getPendingActionHeader.tsx'
+import { getPendingActionHeader } from './utils/getPendingActionHeader'
 
 export const ShowingsPhaseHeader = () => {
   const rules = useRules<PopcornRules>()

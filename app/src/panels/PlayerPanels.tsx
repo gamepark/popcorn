@@ -1,17 +1,21 @@
 import { css } from '@emotion/react'
-import { LocationType } from '@gamepark/popcorn/material/LocationType.ts'
-import { MaterialType } from '@gamepark/popcorn/material/MaterialType.ts'
-import { MoneyToken, moneyTokens } from '@gamepark/popcorn/material/MoneyToken.ts'
-import { PopcornToken, popcornTokens } from '@gamepark/popcorn/material/PopcornToken.ts'
+import { LocationType } from '@gamepark/popcorn/material/LocationType'
+import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
+import { MoneyToken, moneyTokens } from '@gamepark/popcorn/material/MoneyToken'
+import { PopcornToken, popcornTokens } from '@gamepark/popcorn/material/PopcornToken'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
-import { PopcornRules } from '@gamepark/popcorn/PopcornRules.ts'
+import { PopcornRules } from '@gamepark/popcorn/PopcornRules'
 import { CounterProps, StyledPlayerPanel, usePlay, usePlayer, usePlayers, useRules } from '@gamepark/react-game'
 import { LocalMoveType, MoveKind } from '@gamepark/rules-api'
 import { createPortal } from 'react-dom'
-import { moneyTokenDescription } from '../material/MoneyTokenDescription.ts'
-import { popcornTokenDescription } from '../material/PopcornTokenDescription.ts'
 import unknownGuestPawn from '../images/GuestPawns/UnknownGuestPawn.png'
 import unknownGuestPawnExit from '../images/GuestPawns/UnknownGuestPawnExit.png'
+import cyanBackground from '../images/logs/cyanBackground.jpg'
+import greenBackground from '../images/logs/greenBackground.jpg'
+import orangeBackground from '../images/logs/orangeBackground.jpg'
+import purpleBackground from '../images/logs/purpleBackground.jpg'
+import { moneyTokenDescription } from '../material/MoneyTokenDescription'
+import { popcornTokenDescription } from '../material/PopcornTokenDescription'
 
 export const PlayerPanels = () => {
   const players = usePlayers<PlayerColor>({ sortFromMe: true })
@@ -82,6 +86,7 @@ export const PlayerPanels = () => {
                 { transient: true }
               )
             }}
+            backgroundImage={getBackground(player.id)}
           />
         )
       })}
@@ -93,6 +98,7 @@ export const PlayerPanels = () => {
 const panelPosition = (index: number) => {
   const margin = index > 0 ? index * 10 + 4 : 0
   return css`
+    background-size: auto;
     position: absolute;
     right: 1em;
     top: ${8.5 + margin}em;
@@ -110,3 +116,15 @@ const clickablePanel = css`
     box-shadow: 0 0 0.25em gold;
   }
 `
+const getBackground = (player: PlayerColor) => {
+  switch (player) {
+    case PlayerColor.Cyan:
+      return cyanBackground
+    case PlayerColor.Green:
+      return greenBackground
+    case PlayerColor.Orange:
+      return orangeBackground
+    case PlayerColor.Purple:
+      return purpleBackground
+  }
+}

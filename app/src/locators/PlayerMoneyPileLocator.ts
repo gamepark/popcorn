@@ -1,14 +1,16 @@
 import { LocationType } from '@gamepark/popcorn/material/LocationType'
 import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
-import { RuleId } from '@gamepark/popcorn/rules/RuleId.ts'
-import { ItemContext, MaterialContext, PileLocator } from '@gamepark/react-game'
+import { RuleId } from '@gamepark/popcorn/rules/RuleId'
+import { DropAreaDescription, ItemContext, MaterialContext, PileLocator } from '@gamepark/react-game'
 import { Coordinates, Location, MaterialItem } from '@gamepark/rules-api'
-import { hideItemIfOwningPlayerIsNotDisplayed } from './utils/hideItemIfOwningPlayerIsNotDisplayed.ts'
-import { offsetPlayerCinemaBoardCoordinates } from './utils/offsetLocatorCoordinates.ts'
+import { PlayerMoneyPileHelp } from './help/PlayerMoneyPileHelp'
+import { hideItemIfOwningPlayerIsNotDisplayed } from './utils/hideItemIfOwningPlayerIsNotDisplayed'
+import { offsetPlayerCinemaBoardCoordinates } from './utils/offsetLocatorCoordinates'
 
 class PlayerMoneyPileLocator extends PileLocator<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor> {
   radius = 2
+  locationDescription = new PlayerMoneyPileLocationDescription()
 
   public getCoordinates(
     location: Location<PlayerColor, LocationType>,
@@ -24,6 +26,13 @@ class PlayerMoneyPileLocator extends PileLocator<PlayerColor, MaterialType, Loca
   public hide(item: MaterialItem<PlayerColor, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>): boolean {
     return hideItemIfOwningPlayerIsNotDisplayed(item, context)
   }
+}
+
+class PlayerMoneyPileLocationDescription extends DropAreaDescription<PlayerColor, MaterialType, LocationType, PlayerColor, RuleId, PlayerColor> {
+  help = PlayerMoneyPileHelp
+  width = 4
+  ratio = 1
+  borderRadius = 2
 }
 
 export const playerMoneyPileLocator = new PlayerMoneyPileLocator()
