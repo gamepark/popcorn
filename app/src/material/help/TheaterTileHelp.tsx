@@ -68,7 +68,7 @@ export const TheaterTileHelp: FC<PopcornMaterialDisplayHelpProps> = ({ item }: {
           i18nKey="help.theaterTile.description.cost"
           defaults="<s>Price:</s> ${price}"
           values={{ price: tileCharacteristics.getPrice() }}
-          components={{ s: <strong>#</strong> }}
+          components={{ s: <strong></strong> }}
         />
       </p>
       <p>{numberOfAccommodatedGuestsComponent}</p>

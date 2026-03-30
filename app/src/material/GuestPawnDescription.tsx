@@ -21,6 +21,7 @@ import yellowGuestPawn from '../images/GuestPawns/YellowGuestPawn.png'
 import { bottomCinemaBoardLocator } from '../locators/BottomCinemaBoardLocator'
 import { guestPawnOnTheaterTileLocator } from '../locators/GuestPawnOnTheaterTileLocator'
 import { theaterTileOnCinemaBoardLocator } from '../locators/TheaterTileOnTopCinemaBoardLocator'
+import { GuestPawnHelp } from './help/GuestPawnHelp'
 import displayLocationHelp = MaterialMoveBuilder.displayLocationHelp
 
 class GuestPawnDescription extends TokenDescription<PlayerColor, MaterialType, LocationType, GuestPawn, RuleId, PlayerColor> {
@@ -35,6 +36,8 @@ class GuestPawnDescription extends TokenDescription<PlayerColor, MaterialType, L
     [GuestPawn.White]: whiteGuestPawn,
     [GuestPawn.Yellow]: yellowGuestPawn
   }
+
+  help = GuestPawnHelp
 
   public isMenuAlwaysVisible(
     item: MaterialItem<PlayerColor, LocationType, GuestPawn>,
@@ -83,7 +86,11 @@ class GuestPawnDescription extends TokenDescription<PlayerColor, MaterialType, L
     item: MaterialItem<PlayerColor, LocationType, GuestPawn>,
     context: ItemContext<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>
   ): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor> | undefined {
-    if (item.location.type === LocationType.GuestPawnExitZoneSpotOnTopPlayerCinemaBoard || item.location.type === LocationType.GuestPawnReserveSpot) {
+    if (
+      item.location.type === LocationType.GuestPawnExitZoneSpotOnTopPlayerCinemaBoard ||
+      item.location.type === LocationType.GuestPawnReserveSpot ||
+      item.location.type === LocationType.PlayerShowingsDrawnGuestSpot
+    ) {
       return displayLocationHelp(item.location)
     }
     return super.displayHelp(item, context)
