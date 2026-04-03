@@ -3,7 +3,12 @@ import { range } from 'es-toolkit'
 import { Actions } from '../../material/Actions/Actions'
 import { ActionType } from '../../material/Actions/ActionType'
 import { BuyTheaterTileAction } from '../../material/Actions/BuyTheaterTileAction'
-import { BuyTheaterTileCustomMove, BuyTheaterTileCustomMoveData, CustomMoveType, isBuyTheaterTileCustomMove } from '../../material/CustomMoveType'
+import {
+  BuyTheaterTileCustomMove,
+  BuyTheaterTileCustomMoveData,
+  CustomMoveType,
+  isBuyTheaterTileCustomMove
+} from '../../material/CustomMoveType'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 import { MoneyToken, moneyTokens } from '../../material/MoneyToken'
@@ -74,12 +79,15 @@ export class BuyTheaterTileActionRule extends AudienceMoveOrMovieOrSeatActionRul
           x: moveData.destinationSpot
         })
       )
-      .concat(this.addNewTheaterTileConsequence(boughtTile))
+      .concat(this.addNewTheaterTileConsequence(boughtTile, moveData))
     this.removeCurrentActionForPlayer(player)
     return consequences
   }
 
-  private addNewTheaterTileConsequence(boughtTile: MaterialItem<PlayerColor, LocationType, BuyableTheaterTileId>): PopcornMove[] {
+  private addNewTheaterTileConsequence(
+    boughtTile: MaterialItem<PlayerColor, LocationType, BuyableTheaterTileId>,
+    moveData: BuyTheaterTileCustomMoveData
+  ): PopcornMove[] {
     const originatingDeckLocationType = this.getOriginatingDeckFromTheaterTile(boughtTile)
     const originatingDeckMaterial = this.material(MaterialType.TheaterTiles).location(originatingDeckLocationType).deck()
     if (originatingDeckMaterial.exists) {
@@ -89,7 +97,15 @@ export class BuyTheaterTileActionRule extends AudienceMoveOrMovieOrSeatActionRul
         })
       ]
     }
-    return []
+    const previousTileMaterial = this.material(MaterialType.TheaterTiles)
+      .player(moveData.player)
+      .location(LocationType.TheaterTileSpotOnTopPlayerCinemaBoard)
+      .location((l) => l.x === moveData.destinationSpot)
+    const previousTile = previousTileMaterial.getItem<Required<TheaterTileId>>()!
+    if (previousTile.id.back === SeatsNumber.Default) {
+      return []
+    }
+    return [previousTileMaterial.moveItem({ type: boughtTile.location.type })]
   }
 
   private getPreviousTileConsequences(moveData: BuyTheaterTileCustomMoveData): PopcornMove[] {
@@ -101,13 +117,26 @@ export class BuyTheaterTileActionRule extends AudienceMoveOrMovieOrSeatActionRul
       if (previousTile === undefined) {
         throw new Error('Invalid material given')
       }
+      if (previousTile.id.back === SeatsNumber.Default) {
+        return [previousTileMaterial.deleteItem()]
+      }
+      const destination = this.getDestinationLocationTypeFromTheaterTileId(previousTile.id as Required<BuyableTheaterTileId>)
+      const rowDestination = this.mapDockToRowLocationType(destination)
+      if (
+        !this.material(MaterialType.TheaterTiles).location(destination).exists &&
+        this.material(MaterialType.TheaterTiles).location(rowDestination).length !== 3
+      ) {
+        return [
+          previousTileMaterial.moveItem({
+            type: rowDestination
+          })
+        ]
+      }
       return [
-        previousTile.id.back !== SeatsNumber.Default
-          ? previousTileMaterial.moveItem<Required<BuyableTheaterTileId>, never, never>((item) => ({
-              type: this.getDestinationLocationTypeFromTheaterTileId(item.id),
-              x: 0
-            }))
-          : previousTileMaterial.deleteItem()
+        previousTileMaterial.moveItem({
+          type: destination,
+          x: 0
+        })
       ]
     } else if (moveData.destinationSpot === 2 && previousTileMaterial.length === 0) {
       return this.getAudienceTrackMove(moveData.player)
@@ -115,7 +144,9 @@ export class BuyTheaterTileActionRule extends AudienceMoveOrMovieOrSeatActionRul
     return []
   }
 
-  private getDestinationLocationTypeFromTheaterTileId(id: Required<BuyableTheaterTileId>): LocationType {
+  private getDestinationLocationTypeFromTheaterTileId(
+    id: Required<BuyableTheaterTileId>
+  ): LocationType.OneSeatTheaterTileDeckSpot | LocationType.TwoSeatTheaterTileDeckSpot | LocationType.ThreeSeatTheaterTileDeckSpot {
     const characteristics = theaterTilesCharacteristics[id.front]
     switch (characteristics.getSeatsNumber()) {
       case SeatsNumber.Two:
@@ -145,6 +176,19 @@ export class BuyTheaterTileActionRule extends AudienceMoveOrMovieOrSeatActionRul
         return LocationType.ThreeSeatTheaterTileDeckSpot
       default:
         throw new Error('Invalid boughtTile.location.type')
+    }
+  }
+
+  private mapDockToRowLocationType(
+    destination: LocationType.OneSeatTheaterTileDeckSpot | LocationType.TwoSeatTheaterTileDeckSpot | LocationType.ThreeSeatTheaterTileDeckSpot
+  ) {
+    switch (destination) {
+      case LocationType.OneSeatTheaterTileDeckSpot:
+        return LocationType.OneSeatTheaterTileRowSpot
+      case LocationType.TwoSeatTheaterTileDeckSpot:
+        return LocationType.TwoSeatTheaterTileRowSpot
+      case LocationType.ThreeSeatTheaterTileDeckSpot:
+        return LocationType.ThreeSeatTheaterTileRowSpot
     }
   }
 }
