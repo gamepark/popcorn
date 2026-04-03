@@ -3,12 +3,7 @@ import { range } from 'es-toolkit'
 import { Actions } from '../../material/Actions/Actions'
 import { ActionType } from '../../material/Actions/ActionType'
 import { BuyTheaterTileAction } from '../../material/Actions/BuyTheaterTileAction'
-import {
-  BuyTheaterTileCustomMove,
-  BuyTheaterTileCustomMoveData,
-  CustomMoveType,
-  isBuyTheaterTileCustomMove
-} from '../../material/CustomMoveType'
+import { BuyTheaterTileCustomMove, BuyTheaterTileCustomMoveData, CustomMoveType, isBuyTheaterTileCustomMove } from '../../material/CustomMoveType'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 import { MoneyToken, moneyTokens } from '../../material/MoneyToken'

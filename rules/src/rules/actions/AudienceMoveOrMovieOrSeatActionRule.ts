@@ -85,11 +85,7 @@ export abstract class AudienceMoveOrMovieOrSeatActionRule<
     return consequences
   }
 
-  protected processMovieActionAndBuildConsequences(
-    movieAction: MovieAction | undefined,
-    player: PlayerColor,
-    guestPawnIndex?: number
-  ): PopcornMove[] {
+  protected processMovieActionAndBuildConsequences(movieAction: MovieAction | undefined, player: PlayerColor, guestPawnIndex?: number): PopcornMove[] {
     switch (movieAction) {
       case MovieAction.AdvertisingTokenOnAnyGuest:
       case MovieAction.AdvertisingTokenOnBlueGuest:

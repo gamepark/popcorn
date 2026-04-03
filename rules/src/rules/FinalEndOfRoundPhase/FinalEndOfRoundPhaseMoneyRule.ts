@@ -18,36 +18,29 @@ export class FinalEndOfRoundPhaseMoneyRule extends SimultaneousRule<PlayerColor,
   }
   public onRuleStart(_move: RuleMove<PlayerColor, RuleId>, _previousRule?: RuleStep, _context?: PlayMoveContext): PopcornMove[] {
     const playerMovieCardMaterial = this.material(MaterialType.MovieCards).location(LocationType.MovieCardSpotOnBottomPlayerCinemaBoard)
-    const playerMovieSliderMaterial = this.material(MaterialType.LobbySliders).location(LocationType.LobbySliderSpotOnTopPlayerCinemaBoard)
     const moneyTokenMaterial = this.material(MaterialType.MoneyTokens).location(LocationType.PlayerMoneyPileSpot).money(moneyTokens)
     const popcornTokenMaterial = this.material(MaterialType.PopcornTokens).location(LocationType.PlayerPopcornPileUnderPopcornCupSpot).money(popcornTokens)
-    return this.game.players
-      .flatMap((player) => {
-        const playerMoney = moneyTokenMaterial.player(player).count
-        const equivalentPopcornToAdd = Math.floor(playerMoney / 5)
-        this.memorize(Memory.MoneyPopcorn, equivalentPopcornToAdd, player)
-        return [
-          playerMovieSliderMaterial
-            .player(player)
-            .location((l) => (l.x ?? 0) > 0)
-            .moveItemsAtOnce({
-              y: 0
-            }) as PopcornMove
-        ]
-          .concat(playerMovieCardMaterial.player(player).moveItemsAtOnce({ type: LocationType.PlayerMovieCardArchiveSpot, player: player }))
-          .concat(
-            moneyTokenMaterial.removeMoney(equivalentPopcornToAdd * 5, {
-              type: LocationType.PlayerMoneyPileSpot,
-              player: player
-            })
-          )
-          .concat(
-            popcornTokenMaterial.addMoney(equivalentPopcornToAdd, {
-              type: LocationType.PlayerPopcornPileUnderPopcornCupSpot,
-              player: player
-            })
-          )
-      })
-      .concat(this.startSimultaneousRule<PlayerColor, RuleId>(RuleId.FinalEndOfRoundPhaseTheaterTrophyRule, []))
+    return [this.material(MaterialType.LobbySliders).moveItemsAtOnce({ y: 0 }) as PopcornMove].concat(
+      this.game.players
+        .flatMap((player) => {
+          const playerMoney = moneyTokenMaterial.player(player).count
+          const equivalentPopcornToAdd = Math.floor(playerMoney / 5)
+          this.memorize(Memory.MoneyPopcorn, equivalentPopcornToAdd, player)
+          return [playerMovieCardMaterial.player(player).moveItemsAtOnce({ type: LocationType.PlayerMovieCardArchiveSpot, player: player }) as PopcornMove]
+            .concat(
+              moneyTokenMaterial.removeMoney(equivalentPopcornToAdd * 5, {
+                type: LocationType.PlayerMoneyPileSpot,
+                player: player
+              })
+            )
+            .concat(
+              popcornTokenMaterial.addMoney(equivalentPopcornToAdd, {
+                type: LocationType.PlayerPopcornPileUnderPopcornCupSpot,
+                player: player
+              })
+            )
+        })
+        .concat(this.startSimultaneousRule<PlayerColor, RuleId>(RuleId.FinalEndOfRoundPhaseTheaterTrophyRule, []))
+    )
   }
 }

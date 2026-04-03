@@ -40,9 +40,12 @@ export class EndOfRoundPendingActionsNextPhaseTransitionRule extends Simultaneou
         (newAvailableMovieActions, movieCardId) => {
           return {
             ...newAvailableMovieActions,
-            [movieCardId]: previousAvailableMovieActionsMemory[movieCardId]!.length === 0 ? [] : movieCardCharacteristics[movieCardId].actions
-              .map((movieAction) => movieAction !== MovieAction.None)
-              .slice(0, previousAvailableMovieActionsMemory[movieCardId]!.length - 1)
+            [movieCardId]:
+              previousAvailableMovieActionsMemory[movieCardId]!.length === 0
+                ? []
+                : movieCardCharacteristics[movieCardId].actions
+                    .map((movieAction) => movieAction !== MovieAction.None)
+                    .slice(0, previousAvailableMovieActionsMemory[movieCardId]!.length - 1)
           }
         },
         {} as Partial<Record<MovieCard, boolean[]>>
@@ -58,7 +61,6 @@ export class EndOfRoundPendingActionsNextPhaseTransitionRule extends Simultaneou
       this.game.players.forEach((p) => this.memorize<Actions[]>(Memory.PendingActions, [{ type: ActionType.PlaceGuests, placeOneGuest: false }], p))
       return [this.startSimultaneousRule(RuleId.ShowingsPhaseRule)]
     } else {
-
       return [this.startPlayerTurn(RuleId.BuyingPhaseRule, nextPlayerToPlay)]
     }
   }
