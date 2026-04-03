@@ -7,7 +7,6 @@ import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
 import { PopcornRules } from '@gamepark/popcorn/PopcornRules'
 import { CounterProps, StyledPlayerPanel, usePlay, usePlayer, usePlayers, useRules } from '@gamepark/react-game'
 import { LocalMoveType, MoveKind } from '@gamepark/rules-api'
-import { createPortal } from 'react-dom'
 import unknownGuestPawn from '../images/GuestPawns/UnknownGuestPawn.png'
 import unknownGuestPawnExit from '../images/GuestPawns/UnknownGuestPawnExit.png'
 import cyanBackground from '../images/logs/cyanBackground.jpg'
@@ -21,15 +20,15 @@ export const PlayerPanels = () => {
   const players = usePlayers<PlayerColor>({ sortFromMe: true })
   const activePlayer = usePlayer<PlayerColor>()
   const rules = useRules<PopcornRules>()
-  const root = document.getElementById('root')
+  //const root = document.getElementById('root')
   const play = usePlay()
   const defaultView = players[0]?.id
   const currentView = (rules?.game.view as PlayerColor) ?? defaultView
-  if (!root) {
-    return null
-  }
+  // if (!root) {
+  //   return null
+  // }
 
-  return createPortal(
+  return (
     <>
       {players.map((player, index) => {
         const isClickable = player.id != currentView
@@ -69,7 +68,7 @@ export const PlayerPanels = () => {
           <StyledPlayerPanel
             key={player.id}
             player={player}
-            css={[panelPosition(index), isClickable && clickablePanel]}
+            css={[panelPosition(index, isGameOver, activePlayer === undefined), isClickable && clickablePanel]}
             activeRing
             mainCounter={mainCounter}
             counters={counters}
@@ -90,19 +89,19 @@ export const PlayerPanels = () => {
           />
         )
       })}
-    </>,
-    root
+    </>
   )
 }
 
-const panelPosition = (index: number) => {
-  const margin = index > 0 ? index * 10 + 4 : 0
+const panelPosition = (index: number, isGameOver: boolean, isSpectator: boolean) => {
+  const margin = index > 0 ? index * (isGameOver ? 14 : 10) + (isGameOver || isSpectator ? 0 : 4) : 0
   return css`
-    background-size: auto;
+    background-size: auto 15em;
     position: absolute;
     right: 1em;
-    top: ${8.5 + margin}em;
-    width: 28em;
+    top: ${1 + margin}em;
+    width: 30em;
+    font-size: 0.35em;
   `
 }
 
