@@ -12,16 +12,16 @@ import { PlaceCinemaGuestInReserveAction } from '../../material/Actions/PlaceCin
 import { PlaceExitZoneGuestInBagAction } from '../../material/Actions/PlaceExitZoneGuestInBagAction'
 import { PlaceGuestAction } from '../../material/Actions/PlaceGuestAction'
 import { AdvertisingTokenSpot } from '../../material/AdvertisingTokenSpot'
-import { GuestPawn } from '../../material/GuestPawn'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 import { moneyTokens } from '../../material/MoneyToken'
 import { MovieAction, MovieCard, movieCardCharacteristics, MovieCardId, PlayableMovieCardId } from '../../material/MovieCard'
 import { PopcornMove } from '../../material/PopcornMoves'
 import { popcornTokens } from '../../material/PopcornToken'
-import { getMaximumNumberOfGuests, TheaterTileId, theaterTilesCharacteristics } from '../../material/TheaterTile'
+import { TheaterTileId } from '../../material/TheaterTile'
 import { AvailableMovieActionsMemory, Memory } from '../../Memory'
 import { PlayerColor } from '../../PlayerColor'
+import { canPlayerPlaceAGuestAfterSeatOrMovieAction } from '../utils/movieOrSeatActionConsequences.util'
 import { ActionRule } from './ActionRule'
 
 export abstract class AudienceMoveOrMovieOrSeatActionRule<
@@ -88,8 +88,7 @@ export abstract class AudienceMoveOrMovieOrSeatActionRule<
   protected processMovieActionAndBuildConsequences(
     movieAction: MovieAction | undefined,
     player: PlayerColor,
-    guestPawnIndex?: number,
-    seatSpot?: number
+    guestPawnIndex?: number
   ): PopcornMove[] {
     switch (movieAction) {
       case MovieAction.AdvertisingTokenOnAnyGuest:
@@ -114,7 +113,7 @@ export abstract class AudienceMoveOrMovieOrSeatActionRule<
         ]
       }
       case MovieAction.DrawGuestAndPlaceThem: {
-        return this.getDrawGuestMovesAndAddPendingActionIfNecessary(player, seatSpot!, guestPawnIndex)
+        return this.getDrawGuestMovesAndAddPendingActionIfNecessary(player, guestPawnIndex!)
       }
       case MovieAction.Get1Popcorn:
         return this.getMoneyMove(player, MaterialType.PopcornTokens, 1)
@@ -313,8 +312,8 @@ export abstract class AudienceMoveOrMovieOrSeatActionRule<
     }
   }
 
-  protected getDrawGuestMovesAndAddPendingActionIfNecessary(player: PlayerColor, currentGuestSeat: number, guestIndex?: number): PopcornMove[] {
-    const canPlaceANewGuest = this.canPlayerPlaceAGuestAfterSeatOrMovieAction(player, currentGuestSeat)
+  protected getDrawGuestMovesAndAddPendingActionIfNecessary(player: PlayerColor, guestIndex: number): PopcornMove[] {
+    const canPlaceANewGuest = this.canPlayerPlaceAGuestAfterSeatOrMovieAction(player, guestIndex)
     const consequences: PopcornMove[] = []
     const guestPawnInBagMaterial = this.material(MaterialType.GuestPawns).player(player).location(LocationType.PlayerGuestPawnsUnderClothBagSpot)
     if (guestPawnInBagMaterial.exists) {
@@ -348,8 +347,12 @@ export abstract class AudienceMoveOrMovieOrSeatActionRule<
       }
     }
     if (canPlaceANewGuest) {
-      const action: PlaceGuestAction = { type: ActionType.PlaceGuests, placeOneGuest: true }
-      if (guestIndex !== undefined && guestIndex !== null) {
+      const action: PlaceGuestAction = { type: ActionType.PlaceGuests, placeOneGuest: true, guestIndexPerformingAction: guestIndex! }
+      if (
+        guestIndex !== undefined &&
+        guestIndex !== null &&
+        !this.existsPendingActionForPlayer(player, (a) => a.type === ActionType.ChooseMovieAction && a.guestIndex === guestIndex)
+      ) {
         action.guestIndexToMoveToExitZone = guestIndex
       }
       this.addPendingActionForPlayer(player, action)
@@ -357,30 +360,7 @@ export abstract class AudienceMoveOrMovieOrSeatActionRule<
     return consequences
   }
 
-  protected canPlayerPlaceAGuestAfterSeatOrMovieAction(player: PlayerColor, currentGuestSeat?: number): boolean {
-    return this.material(MaterialType.TheaterTiles)
-      .player(player)
-      .location(LocationType.TheaterTileSpotOnTopPlayerCinemaBoard)
-      .filter<Required<TheaterTileId>>((theaterTile, tileIndex) => {
-        const guestOnTileMaterial = this.material(MaterialType.GuestPawns).parent(tileIndex)
-        if (theaterTile.selected !== true) {
-          // Tile hasn't been activated, guests can be replaced
-          return true
-        }
-        if (guestOnTileMaterial.length === 0) {
-          // Tile has already been activated and all guests have been used, cannot use this tile
-          return false
-        } else {
-          if (currentGuestSeat !== undefined) {
-            return getMaximumNumberOfGuests(theaterTilesCharacteristics[theaterTile.id.front].getSeatsNumber()) > currentGuestSeat + 1
-          }
-          const maxLocationXForTile = getMaximumNumberOfGuests(theaterTilesCharacteristics[theaterTile.id.front].getSeatsNumber()) - 1
-          const lastGuestOnTile = guestOnTileMaterial
-            .parent(tileIndex)
-            .maxBy((guestMaterial) => guestMaterial.location.x ?? 0)
-            .getItem<GuestPawn>()
-          return lastGuestOnTile === undefined || lastGuestOnTile.location.x! < maxLocationXForTile
-        }
-      }).exists
+  protected canPlayerPlaceAGuestAfterSeatOrMovieAction(player: PlayerColor, guestPerformingActionIndex: number): boolean {
+    return canPlayerPlaceAGuestAfterSeatOrMovieAction(this, player, guestPerformingActionIndex)
   }
 }

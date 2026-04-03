@@ -179,7 +179,7 @@ export class PlaceGuestsActionRule extends ActionRule<PlaceGuestAction> {
       if (guestAlreadyInSpot.length === 1) {
         this.removeCurrentActionForPlayer(player)
       }
-      if (this.action.guestIndexToMoveToExitZone !== undefined) {
+      if (this.action.placeOneGuest && this.action.guestIndexToMoveToExitZone !== undefined) {
         consequences.push(
           this.material(MaterialType.GuestPawns).index(this.action.guestIndexToMoveToExitZone).moveItem({
             type: LocationType.GuestPawnExitZoneSpotOnTopPlayerCinemaBoard,

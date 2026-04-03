@@ -1,4 +1,4 @@
-import { CustomMove, ItemMove, PlayerTurnRule, PlayMoveContext, RuleMove } from '@gamepark/rules-api'
+import { CustomMove, ItemMove, MaterialMove, PlayerTurnRule, PlayMoveContext, RuleMove, RuleStep } from '@gamepark/rules-api'
 import { Actions } from '../material/Actions/Actions'
 import { ActionType } from '../material/Actions/ActionType'
 import { CustomMoveType } from '../material/CustomMoveType'
@@ -11,6 +11,21 @@ import { RuleId } from './RuleId'
 import { getActionRule } from './utils/getActionRule.util'
 
 export class BuyingPhaseRule extends PlayerTurnRule<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor> {
+  public onRuleStart(
+    move: RuleMove<PlayerColor, RuleId>,
+    previousRule?: RuleStep,
+    context?: PlayMoveContext
+  ): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>[] {
+    if (this.remind<Actions[]>(Memory.PendingActions, this.player)?.length === 0) {
+      return [
+        this.isLastPlayer
+          ? this.startSimultaneousRule<PlayerColor, RuleId>(RuleId.ShowingsPhaseRule)
+          : this.startPlayerTurn<PlayerColor, RuleId>(RuleId.BuyingPhaseRule, this.nextPlayer)
+      ]
+    }
+    return super.onRuleStart(move, previousRule, context)
+  }
+
   private get pendingActions(): Actions[] {
     return this.remind<Actions[]>(Memory.PendingActions, this.player)
   }
@@ -111,7 +126,7 @@ export class BuyingPhaseRule extends PlayerTurnRule<PlayerColor, MaterialType, L
   public onRuleEnd(move: RuleMove<PlayerColor, RuleId>, _context?: PlayMoveContext): PopcornMove[] {
     if (isPopcornStartSimultaneousRule(move) && move.id === RuleId.ShowingsPhaseRule) {
       this.game.players.forEach((player) => {
-        this.memorize<Actions[]>(Memory.PendingActions, [{ type: ActionType.PlaceGuests }], player)
+        this.memorize<Actions[]>(Memory.PendingActions, [{ type: ActionType.PlaceGuests, placeOneGuest: false }], player)
       })
     }
     return super.onRuleEnd(move)
