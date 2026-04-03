@@ -12,7 +12,9 @@ class PlayerPopcornPileLocator extends Locator<PlayerColor, MaterialType, Locati
     location: Location<PlayerColor, LocationType>,
     context: MaterialContext<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>
   ): Partial<Coordinates> {
-    return offsetPlayerCinemaBoardCoordinates(context, location.player, -16, -12.5)
+    const coordinates = offsetPlayerCinemaBoardCoordinates(context, location.player, -16, -12.5)
+    coordinates.y += location.y ?? 0
+    return coordinates
   }
 
   public hide(item: MaterialItem<PlayerColor, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>): boolean {

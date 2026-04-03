@@ -3,6 +3,10 @@ import {
   isCreateItemType,
   isCustomMove,
   isCustomMoveType,
+  isDeleteItem,
+  isDeleteItemsAtOnce,
+  isDeleteItemType,
+  isDeleteItemTypeAtOnce,
   isMoveItem,
   isMoveItemsAtOnce,
   isMoveItemType,
@@ -47,3 +51,11 @@ export const isPopcornShuffleItemType = isShuffleItemType<MaterialType>
 export const isPopcornCreateItem = isCreateItem<PlayerColor, MaterialType, LocationType>
 
 export const isPopcornCreateItemType = isCreateItemType<MaterialType>
+
+export const isPopcornDeleteItem = isDeleteItem<PlayerColor, MaterialType, LocationType>
+
+export const isPopcornDeleteItemType = isDeleteItemType<MaterialType>
+
+export const isPopcornDeleteItemsAtOnce = isDeleteItemsAtOnce<PlayerColor, MaterialType, LocationType>
+
+export const isPopcornDeleteItemTypeAtOnce = isDeleteItemTypeAtOnce<MaterialType>
