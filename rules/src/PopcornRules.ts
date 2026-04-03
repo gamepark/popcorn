@@ -56,7 +56,6 @@ export class PopcornRules
   hidingStrategies = {
     [MaterialType.MovieCards]: {
       [LocationType.MovieCardDeckSpot]: hideFront,
-      [LocationType.MovieCardDiscardSpot]: hideFront,
       [LocationType.PlayerMovieCardArchiveSpot]: hideFrontToOthers
     },
     [MaterialType.AwardCards]: {
@@ -76,7 +75,6 @@ export class PopcornRules
   locationsStrategies = {
     [MaterialType.MovieCards]: {
       [LocationType.MovieCardDeckSpot]: new PositiveSequenceStrategy(),
-      [LocationType.MovieCardDiscardSpot]: new PositiveSequenceStrategy(),
       [LocationType.PlayerMovieCardArchiveSpot]: new PositiveSequenceStrategy(),
       [LocationType.FeaturesRowSpot]: new FillGapStrategy(),
       [LocationType.PremiersRowSpot]: new FillGapStrategy()
@@ -98,9 +96,6 @@ export class PopcornRules
       [LocationType.PlayerGuestPawnsUnderClothBagSpot]: new PositiveSequenceStrategy(),
       [LocationType.GuestPawnExitZoneSpotOnTopPlayerCinemaBoard]: new PositiveSequenceStrategy(),
       [LocationType.PlayerShowingsDrawnGuestSpot]: new PositiveSequenceStrategy()
-    },
-    [MaterialType.TheaterTrophies]: {
-      [LocationType.TheaterTrophyReserveSpot]: new PositiveSequenceStrategy()
     }
   }
 
