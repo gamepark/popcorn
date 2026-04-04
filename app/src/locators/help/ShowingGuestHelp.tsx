@@ -26,10 +26,10 @@ export const ShowingGuestHelp: FC<LocationHelpProps<PlayerColor, LocationType>> 
       `}
     >
       <h2>
-        <Trans i18nKey="" defaults="{player}'s Guests to place" values={{ player: playerName }} />
+        <Trans i18nKey="help.location.guestPawn.showingsGuest.title" values={{ player: playerName }} />
       </h2>
       <p>
-        <Trans i18nKey="" defaults="{player} must place Guests in their theaters" values={{ player: playerName }} />
+        <Trans i18nKey="help.location.guestPawn.showingsGuest.description" values={{ player: playerName }} />
       </p>
       <div
         css={css`
@@ -65,8 +65,7 @@ export const ShowingGuestHelp: FC<LocationHelpProps<PlayerColor, LocationType>> 
                   return (
                     <PlayMoveButton key={`showings-guest-${index}-m-${moveIndex}`} move={move}>
                       <Trans
-                        i18nKey=""
-                        defaults="Place Guest on {destinationSeat, select, 0{first} 1{second} 2{third} other{}} seat of {destinationTile, select, 0{left} 1{center} 2{right} other{}} theater"
+                        i18nKey="help.location.guestPawn.showingsGuest.moveButton"
                         values={{ destinationSeat: move.location.x, destinationTile: parentTile?.location.x }}
                       />
                     </PlayMoveButton>

@@ -22,7 +22,6 @@ export const UseAdvertisingTokenLogComponent: FC<PopcornMoveComponentProps> = ({
     <div css={logContainerCss}>
       <Trans
         i18nKey="log.buyingAndAdvertisingPhase.useAdvertisingToken"
-        defaults="{player} uses their <token/> on <tokenSpot/>"
         values={{ player: playerName }}
         components={{
           token: <MaterialComponentWithHelp itemType={MaterialType.AdvertisingTokens} item={token} />,

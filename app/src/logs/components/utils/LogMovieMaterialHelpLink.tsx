@@ -6,7 +6,7 @@ import { Picture } from '@gamepark/react-game'
 import { MaterialItem } from '@gamepark/rules-api'
 import { camelCase } from 'es-toolkit'
 import { Trans } from 'react-i18next'
-import { colorSymbols, movieTitleDefaults } from '../../../material/utils/movieCard.utils'
+import { colorSymbols } from '../../../material/utils/movieCard.utils'
 import { symbolCss } from '../../utils/logCss.utils'
 import { LogMaterialHelpLink } from './LogMaterialHelpLink'
 
@@ -23,7 +23,7 @@ export const LogMovieMaterialHelpLink = ({ movieCard, isRuleLog = false }: LogMo
       <Picture src={colorSymbols[movieColor]} css={symbolCss} />
       &nbsp;
       <LogMaterialHelpLink<PlayableMovieCardId> itemType={MaterialType.MovieCards} item={movieCard} isRuleLog={isRuleLog}>
-        <Trans i18nKey={`movieCard.title.${camelCase(MovieCard[movieId])}`} defaults={movieTitleDefaults[movieId]} />
+        <Trans i18nKey={`material.movieCard.title.${camelCase(MovieCard[movieId])}`} />
       </LogMaterialHelpLink>
     </>
   )

@@ -4,19 +4,8 @@ import { GuestPawn } from '@gamepark/popcorn/material/GuestPawn'
 import { Picture } from '@gamepark/react-game'
 import { camelCase } from 'es-toolkit'
 import { FC } from 'react'
-import { Trans, useTranslation } from 'react-i18next'
+import { Trans } from 'react-i18next'
 import { getAdvertisingSpotSymbol } from './utils/advertisingSpotSymbol.utils'
-
-const getTransDefault = (spot: AdvertisingTokenSpot): string => {
-  switch (spot) {
-    case AdvertisingTokenSpot.PlaceWhiteTokenIntoAnyBag:
-      return 'Take 1 white Guest from the reserve or your cinema (in a theater or in the exit zone), then add it to any player’s bag (including your own). If there are none available, nothing happens.'
-    case AdvertisingTokenSpot.AnyGuestPawn:
-      return 'Take 1 Guest of any color from the reserve (or, if there aren’t any, from any other player’s exit zone) and add it to your bag. If there are none available, nothing happens.'
-    default:
-      return 'Take 1 {guestColor} Guest from the reserve (or, if there aren’t any, from any other player’s exit zone) and add it to your bag. If there are none available, nothing happens.'
-  }
-}
 
 const getColorFromSpot = (spot: AdvertisingTokenSpot): GuestPawn | undefined => {
   switch (spot) {
@@ -34,41 +23,29 @@ const getColorFromSpot = (spot: AdvertisingTokenSpot): GuestPawn | undefined => 
 }
 
 export const AdvertisingBoardHelp: FC = () => {
-  const { t } = useTranslation()
   return (
     <>
       <h2>
-        <Trans i18nKey="help.advertisingBoard.title" defaults="Advertising board" />
+        <Trans i18nKey="help.material.advertisingBoard.title" />
       </h2>
       <p>
-        <Trans
-          i18nKey="help.advertisingBoard.description"
-          defaults="Players place their advertising tokens on the board as the result of a movie action or a showing bonus."
-        />
+        <Trans i18nKey="help.material.advertisingBoard.description" />
       </p>
       <table css={tableCss}>
         <thead>
           <tr>
             <th>
-              <Trans i18nKey="help.advertisingBoard.table.header.symbol" defaults="Symbol" />
+              <Trans i18nKey="help.advertisingBoard.table.header.symbol" />
             </th>
             <th>
-              <Trans i18nKey="help.advertisingBoard.table.header.meaning" defaults="Meaning" />
+              <Trans i18nKey="help.advertisingBoard.table.header.meaning" />
             </th>
           </tr>
         </thead>
         <tbody>
           {advertisingTokenSpots.map((spot) => {
             const pawnColor = getColorFromSpot(spot)
-            const colorValue =
-              pawnColor === undefined
-                ? ''
-                : t(
-                    `guest.color.${GuestPawn[pawnColor].toLowerCase()}`,
-                    { [GuestPawn.Blue]: 'blue', [GuestPawn.Green]: 'green', [GuestPawn.Red]: 'red', [GuestPawn.White]: 'white', [GuestPawn.Yellow]: 'yellow' }[
-                      pawnColor
-                    ]
-                  )
+            const colorValue = pawnColor === undefined ? '' : <Trans i18nKey={`material.guestPawn.color.${camelCase(GuestPawn[pawnColor])}`} />
             return (
               <tr>
                 <td>
@@ -76,8 +53,14 @@ export const AdvertisingBoardHelp: FC = () => {
                 </td>
                 <td css={transCss}>
                   <Trans
-                    i18nKey={`help.advertisingBoard.${camelCase(AdvertisingTokenSpot[spot])}`}
-                    defaults={getTransDefault(spot)}
+                    i18nKey={
+                      'help.material.advertisingBoard.spot.' +
+                      (spot === AdvertisingTokenSpot.AnyGuestPawn
+                        ? 'anyGuestPawn'
+                        : spot === AdvertisingTokenSpot.PlaceWhiteTokenIntoAnyBag
+                          ? 'placeWhiteTokenIntoAnyBag'
+                          : 'coloredGuestPawn')
+                    }
                     values={{ guestColor: colorValue }}
                   />
                 </td>

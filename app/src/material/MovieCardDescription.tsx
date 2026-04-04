@@ -246,13 +246,7 @@ export class MovieCardDescription extends CardDescription<PlayerColor, MaterialT
               <ItemMenuButton
                 key={`buy-move-${item.id.front}-${index}`}
                 move={move}
-                label={
-                  <Trans
-                    i18nKey="movieCard.itemMenu.buyingPhase.destination"
-                    defaults="Buy for the {destination, select, 0{left} 1{center} 2{right} other{}} theater"
-                    values={{ destination: move.data.destinationSpot }}
-                  />
-                }
+                label={<Trans i18nKey="button.itemMenu.movieCard.buyCardDestination" values={{ destination: move.data.destinationSpot }} />}
                 x={-(cardCoordinates.x ?? 0) + (destinationCoordinates.x ?? 0) + bottomCinemaBoardCoordinates.x + xOffset}
                 y={-(cardCoordinates.y ?? 0) + (destinationCoordinates.y ?? 0) + bottomCinemaBoardCoordinates.y + yOffest}
                 labelPosition={move.data.destinationSpot === 0 ? 'left' : 'right'}
@@ -285,7 +279,7 @@ export class MovieCardDescription extends CardDescription<PlayerColor, MaterialT
             <ItemMenuButton
               key={`movieAction-${movieCardIndex}-${index}`}
               move={move}
-              label={<Trans i18nKey="buttons.movieCard.chooseAction" defaults="Choose this movie action" />}
+              label={<Trans i18nKey="button.itemMenu.movieCard.movieAction" />}
               labelPosition="left"
               x={-3.5}
               y={-2.75 + 1.35 * move.data.movieActionNumber}

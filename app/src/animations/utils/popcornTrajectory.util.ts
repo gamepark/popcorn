@@ -80,7 +80,10 @@ export const viewableToMovieArchiveTrajectory = (context: ItemContext<PlayerColo
   if (!isPopcornMoveItem(move) && !isPopcornMoveItemsAtOnce(move)) {
     throw new Error('animation filtering logic error')
   }
-  const currentLocation = context.rules.material(MaterialType.MovieCards).index('indexes' in move ? move.indexes : move.itemIndex).getItem()!.location
+  const currentLocation = context.rules
+    .material(MaterialType.MovieCards)
+    .index('indexes' in move ? move.indexes : move.itemIndex)
+    .getItem()!.location
   return {
     waypoints: [
       { at: 0, elevation: 0 },

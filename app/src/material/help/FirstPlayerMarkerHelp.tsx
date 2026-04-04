@@ -7,13 +7,7 @@ export const FirstPlayerMarkerHelp: FC = () => (
       <Trans i18nKey="help.firstPlayerToken.title" defaults="First player token" />
     </h2>
     <p>
-      <Trans
-        i18nKey="help.firstPlayerToken.description"
-        defaults="The player having this token is the first to begin this round's <s>Buying Phase</s>"
-        components={{
-          s: <strong></strong>
-        }}
-      />
+      <Trans i18nKey="help.firstPlayerToken.description" components={{ s: <strong></strong> }} />
     </p>
   </>
 )

@@ -28,8 +28,7 @@ export const MovieCardsDeletedLogComponent: FC<PopcornMoveComponentProps> = ({ m
   return (
     <div css={ruleLogContainerCss}>
       <Trans
-        i18nKey="log.EndOfRoundPhase.removeFeatureMovies"
-        defaults="<removedMovies/> {movieRemovedNumber, plural, =1{is} other{are}} removed from the Features row"
+        i18nKey="log.endOfRoundPhase.removeFeatureMovies"
         values={{ movieRemovedNumber: deleteMove.indexes.length }}
         components={{ removedMovies: movieComponents! }}
       />

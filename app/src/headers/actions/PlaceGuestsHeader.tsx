@@ -12,15 +12,5 @@ export const PlaceGuestsHeader: FC = () => {
     me !== undefined
       ? rules?.material(MaterialType.GuestPawns).location(LocationType.PlayerShowingsDrawnGuestSpot).player(me).length
       : rules?.activePlayers.length === 1
-  return (
-    <HeaderText
-      code="header.actionRules.placeGuests"
-      defaults={{
-        you: 'You must place your {guestsNumber, plural, =1{Guest} other{Guests}} inside your theaters',
-        player: '{player} must place their {guestsNumber, plural, =1{Guest} other{Guests}} inside their theaters',
-        players: 'Players must place their Guests inside their theaters'
-      }}
-      values={{ guestsNumber: guestsNumber }}
-    />
-  )
+  return <HeaderText code="actionRules.placeGuests" values={{ guestsNumber: guestsNumber }} />
 }

@@ -38,7 +38,6 @@ export const AudienceCubeMoveLogComponent: FC<PopcornMoveComponentProps> = ({ mo
     <div css={logContainerCss}>
       <Trans
         i18nKey="log.common.audienceCubeAdvance"
-        defaults="{player} advances their <cube/> to the next spot on the track{isNewAudience, select, true{. {player}'s new audience is <audience/>} other{}}"
         values={{ player: playerName, isNewAudience: audienceBeforeMove !== audienceAfterMove }}
         components={{ cube: cubeComponent, audience: audienceSymbol }}
       />

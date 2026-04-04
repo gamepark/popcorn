@@ -25,22 +25,17 @@ export const AwardCardDeckHelp: FC<LocationHelpProps<PlayerColor, LocationType>>
       <div css={helpTextCss}>
         <h2>
           {location.player !== undefined ? (
-            <Trans i18nKey="help.awardCard.otherHand.title" defaults="{name}'s award cards hand" values={{ name: playerName }} />
+            <Trans i18nKey="help.location.awardCard.otherHand.title" values={{ name: playerName }} />
           ) : (
-            <Trans i18nKey="help.awardCard.deck.title" defaults="Award cards deck" />
+            <Trans i18nKey="help.location.awardCard.deck.title" />
           )}
         </h2>
         <p>
           {location.player !== undefined ? (
-            <Trans
-              i18nKey="help.awardCard.deck.description"
-              defaults="{name}'s award card hand. Currently, {name} has {count, plural, =1{1 award card} other{# award cards}} in their hand"
-              values={{ name: playerName, count: handCount }}
-            />
+            <Trans i18nKey="help.location.awardCard.otherHand.description" values={{ name: playerName, count: handCount }} />
           ) : (
             <Trans
-              i18nKey="help.awardCard.deck.description"
-              defaults="Deck of award cards. The <action /> movie action allows a player to draw two cards, and keep one of them in their hand, and put the other back below the deck. Currently, there are {count} cards in the deck."
+              i18nKey="help.location.awardCard.deck.description"
               values={{ count: count }}
               components={{
                 action: <Picture src={drawAwardCardSymbol} css={actionPictureCss} />

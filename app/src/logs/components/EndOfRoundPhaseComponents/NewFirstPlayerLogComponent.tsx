@@ -13,7 +13,7 @@ export const NewFirstPlayerLogComponent: FC<PopcornMoveComponentProps> = ({ move
   const playerName = usePlayerName(markerMove.location.player)
   return (
     <div css={ruleLogContainerCss}>
-      <Trans i18nKey="log.EndOfRoundPhase.newFirstPlayer" defaults="{player} becomes the first player for this round" values={{ player: playerName }} />
+      <Trans i18nKey="log.endOfRoundPhase.newFirstPlayer" values={{ player: playerName }} />
     </div>
   )
 }

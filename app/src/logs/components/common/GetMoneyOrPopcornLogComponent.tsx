@@ -27,8 +27,7 @@ export const GetMoneyOrPopcornLogComponent: FC<PopcornMoveComponentProps> = ({ m
   return (
     <div css={logContainerCss}>
       <Trans
-        i18nKey="log.showingsPhase"
-        defaults="{player} gets {type, select, moneyTokens{${amount}} popcornTokens{{amount} Popcorn} other{}} ( <symbol/> ){isAudienceBonus, select, true{ as their audience track bonus} other{}}"
+        i18nKey="log.common.earnMoneyOrPopcorn"
         values={{ amount: amount, player: playerName, type: camelCase(MaterialType[tokenMove.itemType]), isAudienceBonus: isAudienceBonus }}
         components={{ symbol: moneySymbolComponent }}
       />

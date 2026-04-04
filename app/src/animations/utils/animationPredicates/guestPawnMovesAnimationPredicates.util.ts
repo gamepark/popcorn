@@ -69,5 +69,5 @@ export const isViewableGuestPawnFromBagToExitZoneMove = and(
   isFromPopcornLocation(LocationType.PlayerGuestPawnsUnderClothBagSpot),
   isToPopcornLocation(LocationType.GuestPawnExitZoneSpotOnTopPlayerCinemaBoard),
   isOriginViewableViewableByDisplayedPlayer,
-  isDestinationViewableByDisplayedPlayer,
+  isDestinationViewableByDisplayedPlayer
 )

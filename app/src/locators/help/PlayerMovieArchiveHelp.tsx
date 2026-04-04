@@ -31,14 +31,10 @@ export const PlayerMovieArchiveHelp: FC<LocationHelpProps<PlayerColor, LocationT
         `}
       >
         <h2>
-          <Trans i18nKey="" defaults="Your movie archive" />
+          <Trans i18nKey="help.location.movieCard.yourArchive.title" />
         </h2>
         <p>
-          <Trans
-            i18nKey=""
-            defaults="When you buy a new movie, the replaced movie is sent here, in this archive. There {numberOfMovies, plural, =0{are currently no Movies} =1{is currently # Movie} other{are currently # Movies}} in your archive."
-            values={{ numberOfMovies: movieCards?.length }}
-          />
+          <Trans i18nKey="help.location.movieCard.yourArchive.description" values={{ numberOfMovies: movieCards?.length }} />
         </p>
         <table>
           <tbody>

@@ -34,7 +34,6 @@ export const GuestSentToExitZoneLogComponent: FC<PopcornMoveComponentProps> = ({
       <div css={logContainerCss}>
         <Trans
           i18nKey="log.showingsPhase.guestToExitZone.cannotDoMovieActionAfterSeatAction"
-          defaults="<guest/> cannot be used to carry out a Movie Action for <movie/>, so {player} sends it to their exit zone"
           values={{ player: playerName }}
           components={{ guest: guestComponent, movie: movieLinkComponent }}
         />
@@ -43,7 +42,7 @@ export const GuestSentToExitZoneLogComponent: FC<PopcornMoveComponentProps> = ({
   }
   return (
     <div css={logContainerCss}>
-      <Trans defaults="Then {player} sends <guest/> to their exit zone" values={{ player: playerName }} components={{ guest: guestComponent }} />
+      <Trans i18nKey="log.showingsPhase.guestToExitZone.regularMove" values={{ player: playerName }} components={{ guest: guestComponent }} />
     </div>
   )
 }

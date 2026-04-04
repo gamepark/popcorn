@@ -14,11 +14,7 @@ export const ShuffleGuestsLogComponent: FC<PopcornMoveComponentProps> = ({ move,
   const playerName = usePlayerName(player)
   return (
     <div css={logContainerCss}>
-      <Trans
-        i18nKey="log.showingsPhase.exitZoneGuestsToBagForShuffle"
-        defaults="{player} puts all their Guests from their exit zone in their bag since it's empty"
-        values={{ player: playerName }}
-      />
+      <Trans i18nKey="log.showingsPhase.exitZoneGuestsToBagForShuffle" values={{ player: playerName }} />
     </div>
   )
 }

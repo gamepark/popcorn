@@ -30,10 +30,6 @@ export const BuyingPhaseHeader: FC = () => {
     return (
       <HeaderText
         code="buyingPhase.firstTurn"
-        defaults={{
-          you: 'You can buy a movie or <pass/>',
-          player: '{player} can buy a movie or pass'
-        }}
         components={{
           pass: (
             <PlayMoveButton move={passMove} {...(isPassOnlyMove ? { auto: 10 } : {})}>
@@ -47,10 +43,6 @@ export const BuyingPhaseHeader: FC = () => {
   return (
     <HeaderText
       code="buyingPhase"
-      defaults={{
-        you: 'You can buy a movie, a theater, activate an advertising token or <pass/>',
-        player: '{player} can buy a movie, a theater, activate an advertising token or pass'
-      }}
       components={{
         pass: (
           <PlayMoveButton move={passMove} {...(isPassOnlyMove ? { auto: 10 } : {})}>

@@ -18,7 +18,6 @@ export const TheaterTileActivatedLogComponent: FC<PopcornMoveComponentProps> = (
     <div css={logContainerCss}>
       <Trans
         i18nKey="log.showingsPhase.thaterTileActivated"
-        defaults="{player} activates their <theater/>"
         values={{ player: playerName, destinationTileSpot: selectedTile.location.x }}
         components={{
           theater: <LogTheaterMaterialHelpLink theaterTile={selectedTile} />

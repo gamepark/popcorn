@@ -4,7 +4,6 @@ import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
 import { linkButtonCss, PlayMoveButton, usePlayerName } from '@gamepark/react-game'
 import { MaterialItem, MaterialMoveBuilder } from '@gamepark/rules-api'
-import { camelCase } from 'es-toolkit'
 import { FC } from 'react'
 import { Trans } from 'react-i18next'
 import { PopcornMaterialDisplayHelpProps } from './utils/popcornMaterialDisplayHelpProps.util'
@@ -20,12 +19,11 @@ export const AdvertisingTokenHelp: FC<PopcornMaterialDisplayHelpProps> = ({
     return (
       <>
         <h2>
-          <Trans i18nKey="help.advertisingToken.title" defaults="{player}'s Advertising token" values={{ player: playerName }} />
+          <Trans i18nKey="help.material.advertisingToken.title" values={{ player: playerName }} />
         </h2>
         <p>
           <Trans
-            i18nKey="help.advertisingToken.inPlayerReserver"
-            defaults="{player} can use Movie actions to put this token on the <boardLink>Advertising board</boardLink>"
+            i18nKey="help.material.advertisingToken.description.inPlayerReserve"
             values={{ player: playerName }}
             components={{
               boardLink: <PlayMoveButton move={displayMaterialHelp(MaterialType.AdvertisingBoard)} local transient css={linkButtonCss}></PlayMoveButton>
@@ -38,7 +36,7 @@ export const AdvertisingTokenHelp: FC<PopcornMaterialDisplayHelpProps> = ({
   return (
     <>
       <h2>
-        <Trans i18nKey="help.advertisingToken.title" defaults="{player}'s Advertising token" values={{ player: playerName }} />
+        <Trans i18nKey="help.material.advertisingToken.title" values={{ player: playerName }} />
       </h2>
       <p>
         <Trans
@@ -49,8 +47,14 @@ export const AdvertisingTokenHelp: FC<PopcornMaterialDisplayHelpProps> = ({
             boardLink: <PlayMoveButton move={displayMaterialHelp(MaterialType.AdvertisingBoard)} local transient css={linkButtonCss}></PlayMoveButton>,
             action: (
               <Trans
-                i18nKey={`help.advertisingToken.onAdvertisingSpot${camelCase(AdvertisingTokenSpot[item.location!.id])}`}
-                defaults={getTransDefault(item.location?.id)}
+                i18nKey={
+                  'help.material.advertisingBoard.spot.' +
+                  (item.location!.id === AdvertisingTokenSpot.AnyGuestPawn
+                    ? 'anyGuestPawn'
+                    : item.location!.id === AdvertisingTokenSpot.PlaceWhiteTokenIntoAnyBag
+                      ? 'placeWhiteTokenIntoAnyBag'
+                      : 'coloredGuestPawn')
+                }
               />
             )
           }}
@@ -58,15 +62,4 @@ export const AdvertisingTokenHelp: FC<PopcornMaterialDisplayHelpProps> = ({
       </p>
     </>
   )
-}
-
-const getTransDefault = (spot: AdvertisingTokenSpot): string => {
-  switch (spot) {
-    case AdvertisingTokenSpot.PlaceWhiteTokenIntoAnyBag:
-      return 'take 1 white Guest from the reserve or your cinema (in a theater or in the exit zone), then add it to any player’s bag (including your own). If there are none available, nothing happens.'
-    case AdvertisingTokenSpot.AnyGuestPawn:
-      return 'take 1 Guest of any color from the reserve (or, if there aren’t any, from any other player’s exit zone) and add it to your bag. If there are none available, nothing happens.'
-    default:
-      return 'take 1 {guestColor} Guest from the reserve (or, if there aren’t any, from any other player’s exit zone) and add it to your bag. If there are none available, nothing happens.'
-  }
 }

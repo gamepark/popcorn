@@ -33,7 +33,6 @@ export const GuestPlacedOnTheaterTileLogComponent: FC<PopcornMoveComponentProps>
     <div css={logContainerCss}>
       <Trans
         i18nKey="log.showingsPhase.placeGuestOnTheaterTile"
-        defaults="{player} places <guest/> on the {destinationSeatSpot, select, 0{first} 1{second} 2{third} other{}} seat of their <theater/>{replaceGuest, select, true{ and replaces <previousGuest/>} other{}}"
         values={{
           player: playerName,
           destinationSeatSpot: guestMove.location.x,

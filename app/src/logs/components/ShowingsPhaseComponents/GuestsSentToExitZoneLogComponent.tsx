@@ -32,12 +32,7 @@ export const GuestsSentToExitZoneLogComponent: FC<PopcornMoveComponentProps> = (
   )
   return (
     <div css={logContainerCss}>
-      <Trans
-        i18nKey="log.common.guestsSentToExitZone"
-        defaults="<guests/> cannot be used to perform their Seat Action nor Movie Action so {player} sends them to their Exit zone"
-        values={{ player: playerName }}
-        components={{ guests: guestComponents }}
-      />
+      <Trans i18nKey="log.common.guestsSentToExitZone" values={{ player: playerName }} components={{ guests: guestComponents }} />
     </div>
   )
 }

@@ -12,7 +12,7 @@ class BesidePlayerPanelLocator extends Locator<PlayerColor, MaterialType, Locati
   ): Partial<Coordinates> {
     if (!context.rules.isOver()) {
       const panelIndex = getRelativePlayerIndex(context, location.player)
-      return { x: 31.75, y: panelIndex === 0  ? -16 : (context.player === undefined ? -15.25 : -14.25) + panelIndex * 3.5 }
+      return { x: 31.75, y: panelIndex === 0 ? -16 : (context.player === undefined ? -15.25 : -14.25) + panelIndex * 3.5 }
     }
     return super.getCoordinates(location, context)
   }

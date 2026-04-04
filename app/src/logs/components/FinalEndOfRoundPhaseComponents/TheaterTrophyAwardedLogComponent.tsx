@@ -16,8 +16,7 @@ export const TheaterTrophyAwardedLogComponent: FC<PopcornMoveComponentProps> = (
   return (
     <div css={logContainerCss}>
       <Trans
-        i18nKey="log.finalEndOfRoundPhaseTheaterTrophy.trophyAwarded"
-        defaults="{player} gains the <trophy/> trophy and is awarded {amount} Popcorn (<popcorn/>)"
+        i18nKey="log.finalEndOfRoundPhase.trophyAwarded"
         values={{ player: playerName, amount: amount }}
         components={{
           popcorn: <MaterialComponent type={MaterialType.PopcornTokens} itemId={PopcornToken.Token1} css={materialComponentCss} />,

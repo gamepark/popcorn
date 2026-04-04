@@ -26,12 +26,11 @@ export const GuestReserveHelp: FC<LocationHelpProps<PlayerColor, LocationType>> 
   return (
     <>
       <h2>
-        <Trans i18nKey="" defaults="Guest Pawn reserve" />
+        <Trans i18nKey="help.location.guestPawn.reserve.title" />
       </h2>
       <p>
         <Trans
-          i18nKey=""
-          defaults="Using the <movieAction/> Movie Action, players can send Guests pawns back to the reserve. They can pick a Guest from the reserve using Advertising Tokens on the <boardHelpLink>Advertising Board</boardHelpLink>. There {numberOfGuests, plural, =0{are currently no Guests} =1{is currently # Guest} other{are currently # Guests}} in the reserve."
+          i18nKey="help.location.guestPawn.reserve.description"
           values={{ numberOfGuests: numberOfGuests }}
           components={{
             movieAction: (

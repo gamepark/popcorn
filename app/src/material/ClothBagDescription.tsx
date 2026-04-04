@@ -109,7 +109,7 @@ class ClothBagDescription extends FlatMaterialDescription<PlayerColor, MaterialT
                   height: 1.5em;
                 `}
                 labelPosition="right"
-                label={index === 0 ? <Trans i18nKey="" defaults="Pick from {player}'s exit zone" values={{ player: playerName }} /> : undefined}
+                label={index === 0 ? <Trans i18nKey="button.itemMenu.clothBag.pickFromOtherExitZone" values={{ player: playerName }} /> : undefined}
               >
                 <MaterialComponent
                   type={MaterialType.GuestPawns}

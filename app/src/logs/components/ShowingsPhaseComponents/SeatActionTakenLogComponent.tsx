@@ -29,8 +29,7 @@ export const SeatActionTakenLogComponent: FC<PopcornMoveComponentProps> = ({ mov
   return (
     <div css={logContainerCss}>
       <Trans
-        i18nKey="log.showigsPhase.seatAction"
-        defaults="Using <guest/>, {player} takes the {seatNumber, select, 0{first} 1{second} 2{third} other{}} Seat Action ( <action/> ) of their <theater/>"
+        i18nKey="log.showingsPhase.seatAction"
         values={{ player: playerName, seatNumber: guest.location.x }}
         components={{ guest: guestComponent, action: seatActionComponent, theater: theaterTileLinkComponent }}
       />

@@ -1,4 +1,3 @@
-import { css } from '@emotion/react'
 import { faBan, faHandPointDown, faHandPointer } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Actions } from '@gamepark/popcorn/material/Actions/Actions'
@@ -11,10 +10,8 @@ import { isPopcornMoveItemType, PopcornMove } from '@gamepark/popcorn/material/P
 import { Memory } from '@gamepark/popcorn/Memory'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
 import { RuleId } from '@gamepark/popcorn/rules/RuleId'
-import { getRelativePlayerIndex, ItemContext, ItemMenuButton, TokenDescription, usePlayerName } from '@gamepark/react-game'
-import { isMoveItemType, isSelectItemType, Location, MaterialItem, MaterialMove, MaterialMoveBuilder, MoveItem } from '@gamepark/rules-api'
-import { FC } from 'react'
-import { Trans } from 'react-i18next'
+import { ItemContext, ItemMenuButton, TokenDescription } from '@gamepark/react-game'
+import { isMoveItemType, isSelectItemType, Location, MaterialItem, MaterialMove, MaterialMoveBuilder } from '@gamepark/rules-api'
 import blueGuestPawn from '../images/GuestPawns/BlueGuestPawn.png'
 import greenGuestPawn from '../images/GuestPawns/GreenGuestPawn.png'
 import redGuestPawn from '../images/GuestPawns/RedGuestPawn.png'
@@ -24,39 +21,8 @@ import { bottomCinemaBoardLocator } from '../locators/BottomCinemaBoardLocator'
 import { guestPawnOnTheaterTileLocator } from '../locators/GuestPawnOnTheaterTileLocator'
 import { theaterTileOnCinemaBoardLocator } from '../locators/TheaterTileOnTopCinemaBoardLocator'
 import { GuestPawnHelp } from './help/GuestPawnHelp'
+import { WhiteGuestPawnItemButton } from './utils/WhiteGuestPawnItemButton'
 import displayLocationHelp = MaterialMoveBuilder.displayLocationHelp
-
-type WhiteGuestPawnItemButtonProps = {
-  move: MoveItem<PlayerColor, MaterialType, LocationType>
-  context: ItemContext<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>
-}
-
-const WhiteGuestPawnItemButton: FC<WhiteGuestPawnItemButtonProps> = ({ move, context }) => {
-  const playerName = usePlayerName(move.location.player)
-  const playerNumbers = context.rules.game.players.length
-  return (
-    <ItemMenuButton
-      move={move}
-      x={1.25}
-      y={(2 * getRelativePlayerIndex(context, move.location.player) - playerNumbers + 1) * 0.725}
-      css={css`
-        width: 1.5em;
-        height: 1.5em;
-      `}
-      label={
-        <Trans
-          key={`player.${move.location.player}`}
-          i18nKey=""
-          defaults="Send to {isMe, select, true{your} other{{player}'s}} bag"
-          values={{ isMe: move.location.player === context.player, player: playerName }}
-        />
-      }
-      labelPosition="right"
-    >
-      <FontAwesomeIcon icon={faHandPointer} size="xs" />
-    </ItemMenuButton>
-  )
-}
 
 class GuestPawnDescription extends TokenDescription<PlayerColor, MaterialType, LocationType, GuestPawn, RuleId, PlayerColor> {
   width = 1.8

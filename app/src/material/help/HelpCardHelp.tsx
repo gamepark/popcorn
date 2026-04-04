@@ -38,75 +38,75 @@ export const HelpCardHelp: FC<PopcornMaterialDisplayHelpProps> = ({ item }: { it
 const ActionHelpCardHelp: FC = () => (
   <>
     <h2>
-      <Trans i18nKey="help.helpCard.action.title" defaults="Actions reminder" />
+      <Trans i18nKey="help.material.helpCard.action.title" defaults="Actions reminder" />
     </h2>
     <div css={actionGridWithLastCss}>
       <div>
         <Picture src={getXMoneySymbol} css={actionPictureCss} />
       </div>
       <div>
-        <Trans i18nKey="help.helpCard.action.money" defaults="Gain X $." />
+        <Trans i18nKey="help.material.helpCard.action.money" />
       </div>
       <div>
         <Picture src={movieActionSymbol} css={actionPictureCss} />
       </div>
       <div>
-        <Trans i18nKey="help.helpCard.action.movieAction" defaults="Use 1 Movie action." />
+        <Trans i18nKey="help.material.helpCard.action.movieAction" />
       </div>
       <div>
         <Picture src={getXPopcornSymbol} css={actionPictureCss} />
       </div>
       <div>
-        <Trans i18nKey="help.helpCard.action.popcorn" defaults="Gain X Popcorn." />
+        <Trans i18nKey="help.material.helpCard.action.popcorn" />
       </div>
       <div>
         <Picture src={placeGuestInReserveSymbol} css={actionPictureCss} />
       </div>
       <div>
-        <Trans i18nKey="help.helpCard.action.reserve" defaults="Place 1 of your Guests in the reserve." />
+        <Trans i18nKey="help.material.helpCard.action.reserve" />
       </div>
       <div>
         <Picture src={exitGuestToBasSymbol} css={actionPictureCss} />
       </div>
       <div>
-        <Trans i18nKey="help.helpCard.action.exitGuestToBag" defaults="Add 1 Guest from your exit zone to your bag." />
+        <Trans i18nKey="help.material.helpCard.action.exitGuestToBag" />
       </div>
       <div>
         <Picture src={audienceAdvanceSymbol} css={actionPictureCss} />
       </div>
       <div>
-        <Trans i18nKey="help.helpCard.action.audience" defaults="Increase your audience." />
+        <Trans i18nKey="help.material.helpCard.action.audience" />
       </div>
       <div>
         <Picture src={drawAwardCardSymbol} css={actionPictureCss} />
       </div>
       <div>
-        <Trans i18nKey="help.helpCard.action.awardCard" defaults="Draw 2 awards, keep 1." />
+        <Trans i18nKey="help.material.helpCard.action.awardCard" />
       </div>
       <div>
         <Picture src={drawGuestSymbol} css={actionPictureCss} />
       </div>
       <div>
-        <Trans i18nKey="help.helpCard.action.drawGuest" defaults="Place 1 of your Guests in the reserve." />
+        <Trans i18nKey="help.material.helpCard.action.drawGuest" />
       </div>
       <div css={lastLineCss}>
         <div>
           <Picture src={advertisingSymbol} css={actionPictureCss} />
         </div>
         <div>
-          <Trans i18nKey="help.helpCard.action.advertising" defaults="Place 1 Advertising token on the corresponding space of the board." />
+          <Trans i18nKey="help.material.helpCard.action.advertising" />
         </div>
       </div>
     </div>
     <h3 css={textCenterCss}>
-      <Trans i18nKey="help.helpCard.header.buyingPhase" defaults="Phase: Buying and Advertising" />
+      <Trans i18nKey="help.material.helpCard.action.header.buyingPhase" />
     </h3>
     <div css={actionGridCss}>
       <div>
         <Picture src={whiteGuestToBagSymbol} css={actionPictureCss} />
       </div>
       <div>
-        <Trans i18nKey="help.helpCard.action.whiteGuestToBag" defaults="Add 1 white Guest to any player's bag." />
+        <Trans i18nKey="help.material.helpCard.action.whiteGuestToBag" />
       </div>
       <div css={iconsRowSpanCss}>
         <Picture src={yellowGuestSymbol} css={actionPictureCss} />
@@ -115,13 +115,13 @@ const ActionHelpCardHelp: FC = () => (
         <Picture src={blueGuestSymbol} css={actionPictureCss} />
       </div>
       <div css={rowSpanCss}>
-        <Trans i18nKey="help.helpCard.action.advertisingGuest" defaults="Gain 1 Guest of this color and add it to your bag." />
+        <Trans i18nKey="help.material.helpCard.action.advertisingGuest" />
       </div>
       <div>
         <Picture src={anyGuestSymbol} css={actionPictureCss} />
       </div>
       <div>
-        <Trans i18nKey="help.helpCard.action.advertisingAnyGuest" defaults="Gain 1 Guest of any color and add it to your bag." />
+        <Trans i18nKey="help.material.helpCard.action.advertisingAnyGuest" />
       </div>
     </div>
   </>
@@ -133,20 +133,15 @@ const PhasesHelpCardHelp: FC = () => {
   return (
     <>
       <h2>
-        <Trans i18nKey="help.helpCard.phases.title" defaults="Turn Overview" />
+        <Trans i18nKey="help.material.helpCard.phases.title" defaults="Turn Overview" />
       </h2>
       <ol css={headingListCss}>
         <li {...(currentPhase === GamePhase.BuyingPhase ? {} : { css: fadedPhaseCss })}>
           <h3>
-            <Trans
-              i18nKey="help.helpCard.phases.buyingAdvertising.title"
-              defaults="Buying and Advertising (in turn order){currentPhase, plural, =1{ (current phase)} other{}}"
-              values={{ currentPhase: currentPhase === GamePhase.BuyingPhase ? 1 : 0 }}
-            />
+            <Trans i18nKey="help.material.helpCard.phases.buyingAdvertising.title" values={{ currentPhase: currentPhase === GamePhase.BuyingPhase ? 1 : 0 }} />
           </h3>
           <Trans
-            i18nKey="help.helpCard.phases.buyingAdvertising.description"
-            defaults="All actions are optional and can be taken in any order:<nl/><ls><lit>Buy 1 movie + Showing bonus</lit><lit>Buy 1 theater</lit><lit>Activate Advertising tokens</lit></ls>"
+            i18nKey="help.material.helpCard.phases.buyingAdvertising.description"
             components={{
               ls: <ul></ul>,
               lit: <li></li>,
@@ -156,15 +151,10 @@ const PhasesHelpCardHelp: FC = () => {
         </li>
         <li {...(currentPhase === GamePhase.ShowingsPhase ? {} : { css: fadedPhaseCss })}>
           <h3>
-            <Trans
-              i18nKey="help.helpCard.phases.showing.title"
-              defaults="Showings (simultaneous){currentPhase, plural, =1{ (current phase)} other{}}"
-              values={{ currentPhase: currentPhase === GamePhase.ShowingsPhase ? 1 : 0 }}
-            />
+            <Trans i18nKey="help.material.helpCard.phases.showing.title" values={{ currentPhase: currentPhase === GamePhase.ShowingsPhase ? 1 : 0 }} />
           </h3>
           <Trans
-            i18nKey="help.helpCard.phases.showing.description"
-            defaults="<ols><lit>Open Cinema: Draw Guests according to your audience <audiencePicture /></lit><lit>Place Guests <e>(pay attention to seat order)</e></lit><lit>Seat and Movie actions <e>(choose the order of theater)</e><nl/><uls><lit>Activate a Guest <e>(in seat order)</e><nl/>One at a time: Seat action <arr/> Movie action <arr/> Exit"
+            i18nKey="help.material.helpCard.phases.showing.description"
             components={{
               ols: <ol type="A"></ol>,
               uls: <ul></ul>,
@@ -179,14 +169,13 @@ const PhasesHelpCardHelp: FC = () => {
         <li {...(currentPhase === GamePhase.EndOfRoundPhase ? {} : { css: fadedPhaseCss })}>
           <h3>
             <Trans
-              i18nKey="help.helpCard.pahses.endOfRound.title"
+              i18nKey="help.material.helpCard.phases.endOfRound.title"
               defaults="End of Round{currentPhase, plural, =1{ (current phase)} other{}}"
               values={{ currentPhase: currentPhase === GamePhase.EndOfRoundPhase ? 1 : 0 }}
             />
           </h3>
           <Trans
-            i18nKey="help.helpCard.phases.endOfRound.description"
-            defaults="<ls><lit>Theatrical Run</lit><lit>New Lineup</lit></ls>"
+            i18nKey="help.material.helpCard.phases.endOfRound.description"
             components={{
               ls: <ul></ul>,
               lit: <li></li>

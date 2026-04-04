@@ -31,12 +31,7 @@ export const BuyTheaterTileLogComponent: FC<PopcornMoveComponentProps> = ({ move
   return (
     <div css={logContainerCss}>
       <Trans
-        i18nKey="log.buyingPhase.buyTheaterTile"
-        defaults={
-          '{player} buys <tile/> for ${price}{isFirstRightTheaterTile, select, true{,} other { and}} places it in their {destinationSpot, select, 0{left} 1{center} 2{right} other{}}' +
-          ' theater{replacePreviousTile, select, true{, replacing their <oldTileLink>previous tile</oldTileLink>} other{}}' +
-          '{isFirstRightTheaterTile, select, true{, and gains <audienceAdvanceSymbol/> as it is their first tile in the right theater} other{}}'
-        }
+        i18nKey="log.buyingAndAdvertisingPhase.buyTheaterTile"
         values={{
           player: playerName,
           destinationSpot: buyMove.data.destinationSpot,

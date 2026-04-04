@@ -58,23 +58,13 @@ export const DrawGuestsLogComponent: FC<PopcornMoveComponentProps> = ({ move, co
       if (numberOfGuestsToDraw === numberOfGuestsDrawn || exitZoneGuestsNumber > 0) {
         return (
           <div css={logContainerCss}>
-            <Trans
-              i18nKey="log.showingsPhase.placeGuest.firstGuestDraw"
-              defaults="{player}'s audience is {audience, plural, =1{# Guest} other{# Guests}}. {player} draws {numberOfGuestsDrawn, plural, =1{# Guest} other{# Guests}} from their bag: <guests/>"
-              values={transValues}
-              components={transComponents}
-            />
+            <Trans i18nKey="log.showingsPhase.placeGuest.firstGuestDraw" values={transValues} components={transComponents} />
           </div>
         )
       } else {
         return (
           <div css={logContainerCss}>
-            <Trans
-              i18nKey="log.showingsPhase.placeGuest.firstGuestDrawNotEnough"
-              defaults="{player}'s audience is {audience, plural, =1{# Guest} other{# Guests}}. {player} draws {numberOfGuestsDrawn, plural, =1{# Guest} other{# Guests}} from their bag: <guests/>. {player} cannot draw anymore Guests as their exit zone is empty"
-              values={transValues}
-              components={transComponents}
-            />
+            <Trans i18nKey="log.showingsPhase.placeGuest.firstGuestDrawNotEnough" values={transValues} components={transComponents} />
           </div>
         )
       }
@@ -83,23 +73,13 @@ export const DrawGuestsLogComponent: FC<PopcornMoveComponentProps> = ({ move, co
       if (numberOfGuestsAlreadyDrawn + numberOfGuestsDrawn === numberOfGuestsToDraw) {
         return (
           <div css={logContainerCss}>
-            <Trans
-              i18nKey="log.showingsPhase.placeGuest.secondGuestDraw"
-              defaults="{player} draws{existsPreviousShuffleConsequence, plural, =1{ another} other{}} {numberOfGuestsDrawn, plural, =1{# Guest} other{# Guests}} from their bag: <guests/>"
-              values={transValues}
-              components={transComponents}
-            />
+            <Trans i18nKey="log.showingsPhase.placeGuest.secondGuestDraw" values={transValues} components={transComponents} />
           </div>
         )
       } else {
         return (
           <div css={logContainerCss}>
-            <Trans
-              i18nKey="log.showingsPhase.placeGuest.secondGuestDrawNotEnough"
-              defaults="{player} draws{existsPreviousShuffleConsequence, plural, =1{ another} other{}} {numberOfGuestsDrawn, plural, =1{# Guest} other{# Guests}} from their bag: <guests/>. {player} cannot draw anymore Guests as their exit zone is empty"
-              values={transValues}
-              components={transComponents}
-            />
+            <Trans i18nKey="log.showingsPhase.placeGuest.secondGuestDrawNotEnough" values={transValues} components={transComponents} />
           </div>
         )
       }
@@ -117,7 +97,6 @@ export const DrawGuestsLogComponent: FC<PopcornMoveComponentProps> = ({ move, co
       <div css={logContainerCss}>
         <Trans
           i18nKey="log.showingsPhase.placeGuest.drawOneGuest"
-          defaults="{player} draws <guest/> from their bag{destination, select, guestPawnExitZoneSpotOnTopPlayerCinemaBoard{, but cannot place it. {player} sends it to their exit zone} other{}}"
           values={{ player: playerName, destination: camelCase(LocationType[move.location.type!]) }}
           components={{ guest: guestComponent }}
         />

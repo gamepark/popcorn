@@ -38,8 +38,7 @@ export const PremierToFeatureMoviesLogComponent: FC<PopcornMoveComponentProps> =
   return (
     <div css={ruleLogContainerCss}>
       <Trans
-        i18nKey="log.EndOfRoundPhase.premiersToFeatureMovies"
-        defaults="<newFeatureMovies/> {movieRemovedNumber, plural, =1{moves} other{move}} from the Premiers row to the Features row"
+        i18nKey="log.endOfRoundPhase.premiersToFeatureMovies"
         values={{ movieRemovedNumber: movieCardIndexes.length }}
         components={{ newFeatureMovies: movieComponents }}
       />

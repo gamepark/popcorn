@@ -8,15 +8,11 @@ export const ChooseSeatActionHeader: FC = () => {
   const passMove = useLegalMove<PopcornMove>(isPassCurrentActionCustomMove)
   return (
     <HeaderText
-      code="header.actionRules.chooseSeatAction"
-      defaults={{
-        you: 'You must choose whether to perform the seat action or <pass/>',
-        player: '{player} must choose whether to perform the seat action or pass'
-      }}
+      code="actionRules.chooseSeatAction"
       components={{
         pass: (
           <PlayMoveButton move={passMove}>
-            <Trans i18nKey="header.button.passMove" defaults="pass" />
+            <Trans i18nKey="header.button.passMove" />
           </PlayMoveButton>
         )
       }}

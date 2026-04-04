@@ -20,7 +20,6 @@ export const DiscardAwardCardLogComponent: FC<PopcornMoveComponentProps> = ({ mo
     <div css={logContainerCss}>
       <Trans
         i18nKey="log.common.discardAwardCard"
-        defaults="{player} discards <card/>"
         values={{ player: playerName }}
         components={{
           card: <MaterialComponentWithHelp<AwardCard | undefined> itemType={MaterialType.AwardCards} item={card} displayHelp={card.id !== undefined} />
