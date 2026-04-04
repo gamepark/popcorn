@@ -10,12 +10,19 @@ import { RuleId } from '../RuleId'
 export class FinalEndOfRoundPhaseAdvertisingTokenMovesRule extends SimultaneousRule<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor> {
   public onRuleStart(_move: RuleMove<PlayerColor, RuleId>, _previousRule?: RuleStep, _context?: PlayMoveContext): PopcornMove[] {
     const guestPawnMaterial = this.material(MaterialType.GuestPawns)
-    return this.game.players.flatMap((player) =>
-      guestPawnMaterial.player(player).moveItemsAtOnce({
-        type: LocationType.GuestPawnExitZoneSpotOnTopPlayerCinemaBoard,
-        player: player
-      })
-    )
+    return this.game.players
+      .flatMap(
+        (player) =>
+          guestPawnMaterial.player(player).moveItemsAtOnce({
+            type: LocationType.GuestPawnExitZoneSpotOnTopPlayerCinemaBoard,
+            player: player
+          }) as PopcornMove
+      )
+      .concat(
+        this.material(MaterialType.AdvertisingTokens).location(LocationType.AdvertisingTokenSpotOnAdvertisingBoard).exists
+          ? []
+          : this.getMovesAfterPlayersDone()
+      )
   }
 
   public getActivePlayerLegalMoves(player: PlayerColor): PopcornMove[] {

@@ -94,7 +94,7 @@ export class ShowingsPhaseRule extends SimultaneousRule<PlayerColor, MaterialTyp
           ? 1
           : this.getNumberOfGuestsToDraw(player) -
             this.material(MaterialType.GuestPawns).location(LocationType.PlayerShowingsDrawnGuestSpot).player(player).length
-        const canPlaceGuest = canPlayerPlaceAGuestAfterSeatOrMovieAction(this, player)
+        const canPlaceGuest = !pendingAction.placeOneGuest || canPlayerPlaceAGuestAfterSeatOrMovieAction(this, player, pendingAction.guestIndexPerformingAction)
         return [
           this.material(MaterialType.GuestPawns)
             .location(LocationType.PlayerGuestPawnsUnderClothBagSpot)

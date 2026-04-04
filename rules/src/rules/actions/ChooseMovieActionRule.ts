@@ -68,7 +68,9 @@ export class ChooseMovieActionRule extends AudienceMoveOrMovieOrSeatActionRule<C
     })
     if (isPassCurrentActionCustomMove(move)) {
       this.removeCurrentActionForPlayer(move.data.player)
-      return [pawnToExitZoneMove]
+      return this.existsPendingActionForPlayer(move.data.player, (a) => a.type === ActionType.ChooseMovieAction && a.guestIndex === this.action.guestIndex)
+        ? []
+        : [pawnToExitZoneMove]
     }
     if (isMovieActionCustomMove(move)) {
       const movieCard = this.material(MaterialType.MovieCards).index(move.data.movieCardIndex).getItems<Required<PlayableMovieCardId>>()[0]
@@ -85,7 +87,7 @@ export class ChooseMovieActionRule extends AudienceMoveOrMovieOrSeatActionRule<C
         (a) => a.type === ActionType.ChooseMovieAction && a.guestIndex === this.action.guestIndex
       )
       const guestIndex = existsAnotherPendingActionForGuest ? undefined : this.action.guestIndex
-      consequences.push(...this.processMovieActionAndBuildConsequences(movieAction, player, guestIndex, pawnMaterial.getItem()!.location.x))
+      consequences.push(...this.processMovieActionAndBuildConsequences(movieAction, player, guestIndex))
       const pendingActions = this.getActionsForPlayer(player)
       const existsAvailableMovieAction = this.remind<AvailableMovieActionsMemory>(Memory.AvailableMovieActions)[movieCard.id.front]!.some(
         (available) => available
@@ -133,7 +135,7 @@ export class ChooseMovieActionRule extends AudienceMoveOrMovieOrSeatActionRule<C
   ): PopcornMove[] {
     if (
       movieAction === undefined ||
-      (movieAction === MovieAction.DrawGuestAndPlaceThem && !this.canPlayerPlaceAGuestAfterSeatOrMovieAction(player)) ||
+      (movieAction === MovieAction.DrawGuestAndPlaceThem && !this.canPlayerPlaceAGuestAfterSeatOrMovieAction(player, this.action.guestIndex)) ||
       !MOVIE_ACTIONS_NOT_NEEDING_GUEST_MOVE.includes(movieAction)
     ) {
       const currentTileIndex = pawnMaterial.getItem()!.location.parent

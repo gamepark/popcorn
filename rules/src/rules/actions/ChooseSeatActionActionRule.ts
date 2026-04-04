@@ -2,6 +2,7 @@ import { CustomMove, ItemMove, Material, PlayMoveContext } from '@gamepark/rules
 import { Actions } from '../../material/Actions/Actions'
 import { ActionType } from '../../material/Actions/ActionType'
 import { ChooseSeatActionAction } from '../../material/Actions/ChooseSeatActionAction'
+import { PlaceCinemaGuestInReserveAction } from '../../material/Actions/PlaceCinemaGuestInReserveAction'
 import { PlaceExitZoneGuestInBagAction } from '../../material/Actions/PlaceExitZoneGuestInBagAction'
 import { CustomMoveType, isPassCurrentActionCustomMove } from '../../material/CustomMoveType'
 import { GuestPawn } from '../../material/GuestPawn'
@@ -76,7 +77,7 @@ export class ChooseSeatActionActionRule extends AudienceMoveOrMovieOrSeatActionR
             parentTileCharacteristics.getSeatAction(guestPawn.location.x),
             player,
             guestPawnMaterial,
-            this.canPlayerPlaceAGuestAfterSeatOrMovieAction(player, guestPawn.location.x!) ? move.itemIndex : undefined
+            this.canPlayerPlaceAGuestAfterSeatOrMovieAction(player, move.itemIndex) ? move.itemIndex : undefined
           )
         )
       }
@@ -90,7 +91,7 @@ export class ChooseSeatActionActionRule extends AudienceMoveOrMovieOrSeatActionR
         !this.remind<Actions[]>(Memory.PendingActions, player).some(
           (action) =>
             (action.type === ActionType.ChooseMovieAction && action.guestIndex === this.action.guestIndex) ||
-            (action.type === ActionType.PlaceGuests && action.guestIndexToMoveToExitZone === this.action.guestIndex) ||
+            (action.type === ActionType.PlaceGuests && action.placeOneGuest && action.guestIndexToMoveToExitZone === this.action.guestIndex) ||
             action.type === ActionType.PlaceExitZoneGuestInBag ||
             action.type === ActionType.PlaceCinemaGuestInReserve
         )
@@ -150,11 +151,16 @@ export class ChooseSeatActionActionRule extends AudienceMoveOrMovieOrSeatActionR
           isSeatAction: true
         })
         return []
-      case SeatAction.PlaceGuestInReserve:
-        this.addPendingActionForPlayer(player, { type: ActionType.PlaceCinemaGuestInReserve })
+      case SeatAction.PlaceGuestInReserve: {
+        const action: PlaceCinemaGuestInReserveAction = { type: ActionType.PlaceCinemaGuestInReserve }
+        if (!this.existsPendingActionForPlayer(player, (a) => a.type === ActionType.ChooseMovieAction && a.guestIndex === this.action.guestIndex)) {
+          action.guestIndexToMoveToExitZone = this.action.guestIndex
+        }
+        this.addPendingActionForPlayer(player, action)
         return []
+      }
       case SeatAction.DrawGuestAndPlaceThem:
-        return this.getDrawGuestMovesAndAddPendingActionIfNecessary(player, guestPawnMaterial.getItem()!.location.x!, guestIndexToMoveAfter)
+        return this.getDrawGuestMovesAndAddPendingActionIfNecessary(player, guestIndexToMoveAfter!)
       case SeatAction.MoveGuestFromExitZoneToBag: {
         const action: PlaceExitZoneGuestInBagAction = { type: ActionType.PlaceExitZoneGuestInBag }
         const guestIndex = guestPawnMaterial.getIndex()

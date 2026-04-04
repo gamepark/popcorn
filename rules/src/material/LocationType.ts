@@ -1,6 +1,5 @@
 export enum LocationType {
   MovieCardDeckSpot = 1,
-  MovieCardDiscardSpot,
   FeaturesTileSpot,
   PremiersTileSpot,
   FeaturesRowSpot,
@@ -10,7 +9,6 @@ export enum LocationType {
   AdvertisingTokenSpotOnAdvertisingBoard,
   MoneyPileSpot,
   PopcornPileSpot,
-  TheaterTrophyReserveSpot,
   OneSeatTheaterTileDeckSpot,
   OneSeatTheaterTileRowSpot,
   TwoSeatTheaterTileDeckSpot,
@@ -37,7 +35,6 @@ export enum LocationType {
   PlayerPopcornPileUnderPopcornCupSpot,
   PlayerTheaterTrophySpot,
   PlayerShowingsDrawnGuestSpot,
-  MovieActionSpotOnMovieCard,
   FinalShowingCardSpot,
   PhasesHelpCardSpot,
   ActionsHelpCardSpot
