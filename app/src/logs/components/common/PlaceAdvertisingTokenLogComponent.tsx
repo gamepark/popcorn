@@ -20,7 +20,6 @@ export const PlaceAdvertisingTokenLogComponent: FC<PopcornMoveComponentProps> = 
     <div css={logContainerCss}>
       <Trans
         i18nKey="log.common.placeAdvertisingToken"
-        defaults="{player} places <token/> on the <tokenSpot/> spot of the advertising board"
         values={{ player: playerName }}
         components={{
           token: <MaterialComponentWithHelp itemType={MaterialType.AdvertisingTokens} item={token} />,

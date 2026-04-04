@@ -38,12 +38,7 @@ export const DrawAwardCardLogComponent: FC<PopcornMoveComponentProps> = ({ move,
   )
   return (
     <div css={logContainerCss}>
-      <Trans
-        i18nKey="log.common.drawAwardCards"
-        defaults="{player} draws <cards/> from the Award cards deck{isAudienceBonus, select, true{ as their audience track bonus} other{}}"
-        values={{ player: playerName, isAudienceBonus: isAudienceBonus }}
-        components={{ cards: cardComponents }}
-      />
+      <Trans i18nKey="log.common.drawAwardCards" values={{ player: playerName, isAudienceBonus: isAudienceBonus }} components={{ cards: cardComponents }} />
     </div>
   )
 }

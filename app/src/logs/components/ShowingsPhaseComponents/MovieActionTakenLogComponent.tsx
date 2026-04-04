@@ -27,7 +27,6 @@ export const MovieActionTakenLogComponent: FC<PopcornMoveComponentProps> = ({ mo
     <div css={logContainerCss}>
       <Trans
         i18nKey="log.showingsPhase.movieAction"
-        defaults="{isSeatAction, select, true{} false{Using <guest/>, } other{}}{player} takes the {movieActionNumber, select, 0{first} 1{second} 2{third} 3{fourth} other{}} Movie Action ( <action/> ) of <movie/>"
         values={{
           player: playerName,
           isSeatAction: currentAction.isSeatAction,

@@ -18,12 +18,7 @@ export const GuestSentToReserveLogComponent: FC<PopcornMoveComponentProps> = ({ 
   const playerName = usePlayerName(guest.location.player)
   return (
     <div css={logContainerCss}>
-      <Trans
-        i18nKey="log.common.guestSentToReserve"
-        defaults="{player} sends <guest/> to the Guest pawn Reserve"
-        values={{ player: playerName }}
-        components={{ guest: guestComponent }}
-      />
+      <Trans i18nKey="log.common.guestSentToReserve" values={{ player: playerName }} components={{ guest: guestComponent }} />
     </div>
   )
 }

@@ -9,9 +9,9 @@ import { MaterialComponent, Picture, usePlayerName, useRules } from '@gamepark/r
 import { MaterialItem } from '@gamepark/rules-api'
 import { FC } from 'react'
 import { Trans } from 'react-i18next'
-import { PopcornMaterialDisplayHelpProps } from './utils/popcornMaterialDisplayHelpProps.util'
 import unknownGuestSymbol from '../../images/GuestPawns/UnknownGuestPawn.png'
 import audienceSymbol from '../../images/Symbols/Audience.png'
+import { PopcornMaterialDisplayHelpProps } from './utils/popcornMaterialDisplayHelpProps.util'
 
 export const TopCinemaBoardHelp: FC<PopcornMaterialDisplayHelpProps> = ({ item }: { item: Partial<MaterialItem<PlayerColor, LocationType, PlayerColor>> }) => {
   const playerName = usePlayerName(item.id)
@@ -29,20 +29,15 @@ export const TopCinemaBoardHelp: FC<PopcornMaterialDisplayHelpProps> = ({ item }
   return (
     <>
       <h2>
-        <Trans i18nKey="" defaults="{player}'s Cinema board" values={{ player: playerName }} />
+        <Trans i18nKey="help.material.topCinemaBoard.title" values={{ player: playerName }} />
       </h2>
       <p>
-        <Trans
-          i18nKey=""
-          defaults="This is {player}'s cinema board. This is where {player} will slide their Movie cards and place their Theater tiles."
-          values={{ player: playerName }}
-        />
+        <Trans i18nKey="help.material.topCinemaBoard.description" values={{ player: playerName }} />
       </p>
       {!theaterTiles?.some((tile) => tile.location.x === 2) && (
         <p>
           <Trans
-            i18nKey=""
-            defaults="The right theater is empty. When {player} places their first Theater tile in the right theater, they will move their Audience cube (<cube/>) 1 spot on the audience track."
+            i18nKey="help.material.topCinemaBoard.description.noTileInRightTheaterBonus"
             values={{ player: playerName }}
             components={{
               cube: (
@@ -61,16 +56,14 @@ export const TopCinemaBoardHelp: FC<PopcornMaterialDisplayHelpProps> = ({ item }
       )}
       <p>
         <Trans
-          i18nKey=""
-          defaults="<s>Total price of theater tiles:</s> ${totalPrice}"
+          i18nKey="help.material.topCinemaBoard.description.totalTheaterTilePrice"
           values={{ totalPrice: theaterTilesTotalPrice }}
           components={{ s: <strong></strong> }}
         />
       </p>
       <p>
         <Trans
-          i18nKey=""
-          defaults="<s><audience/>Audience:</s> {audience}. {player} will draw {audience} Guests (<guest/>) from their bag at the beginning of the next Showings Phase."
+          i18nKey="help.material.topCinemaBoard.description.audience"
           values={{ player: playerName, audience: audience }}
           components={{
             audience: (

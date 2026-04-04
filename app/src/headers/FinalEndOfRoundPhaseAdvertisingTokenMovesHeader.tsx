@@ -11,11 +11,6 @@ export const FinalEndOfRoundPhaseAdvertisingTokenMovesHeader: FC = () => {
   return (
     <HeaderText
       code="finalEndOfRoundPhaseAdvertisingTokenMoves"
-      defaults={{
-        you: 'You can move advertising tokens to coloured Guest spots or get them back or <pass/>',
-        player: '{player} can move advertising tokens to coloured Guest spots or get them back or pass',
-        players: 'Players can move advertising tokens to coloured Guest spots or get them back or pass'
-      }}
       components={{
         pass: (
           <PlayMoveButton move={passMove} {...(isPassOnlyMove ? { auto: 10 } : {})}>

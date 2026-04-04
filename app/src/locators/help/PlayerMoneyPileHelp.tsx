@@ -21,12 +21,11 @@ export const PlayerMoneyPileHelp: FC<LocationHelpProps<PlayerColor, LocationType
   return (
     <>
       <h2>
-        <Trans i18nKey="" defaults="{player}'s Money pile" values={{ player: playerName }} />
+        <Trans i18nKey="help.location.moneyToken.playerPile.title" values={{ player: playerName }} />
       </h2>
       <p>
         <Trans
-          i18nKey=""
-          defaults="{player} currently owns ${amount}. If {player} owned that amount at the end of the game, they would earn {popcornAmount} Popcorn (<popcorn/>)"
+          i18nKey="help.location.moneyToken.playerPile.description"
           values={{ player: playerName, amount: amount, popcornAmount: popcornAmount }}
           components={{
             popcorn: (

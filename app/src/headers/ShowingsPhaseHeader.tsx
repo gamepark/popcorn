@@ -15,5 +15,5 @@ export const ShowingsPhaseHeader = () => {
       return getPendingActionHeader(pendingActions[0])
     }
   }
-  return <HeaderText code="showingsPhase" defaults={{ you: ' ', players: 'Players must finish their showings phase' }} />
+  return <HeaderText code="showingsPhase" />
 }

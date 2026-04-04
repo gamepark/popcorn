@@ -255,13 +255,7 @@ class TheaterTileDescription extends TokenDescription<PlayerColor, MaterialType,
                   move={move}
                   x={-(tileCoordinates.x ?? 0) + boardCoordinates.x + (destinationCoordinates.x ?? 0) + xOffset}
                   y={-(tileCoordinates.y ?? 0) + boardCoordinates.y + (destinationCoordinates.y ?? 0) + yOffset}
-                  label={
-                    <Trans
-                      i18nKey=""
-                      defaults="Buy for the {destination, select, 0{left} 1{center} 2{right} other{}} theater"
-                      values={{ destination: move.data.destinationSpot }}
-                    />
-                  }
+                  label={<Trans i18nKey="button.itemMenu.theaterTile.buyTileDestination" values={{ destination: move.data.destinationSpot }} />}
                   labelPosition={move.data.destinationSpot === 0 ? 'left' : 'right'}
                 >
                   <FontAwesomeIcon icon={pointer} size="lg" />

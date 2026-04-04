@@ -10,14 +10,10 @@ export const PopcornTokenHelp: FC<PopcornMaterialDisplayHelpProps> = ({ item }: 
   return (
     <>
       <h2>
-        <Trans i18nKey="" defaults="Popcorn token" />
+        <Trans i18nKey="help.material.popcornToken.title" />
       </h2>
       <p>
-        <Trans
-          i18nKey=""
-          defaults="This token represents {amount} Popcorn. At the end of the game, the player with the most Popcorn wins the game."
-          values={{ amount: item.id }}
-        />
+        <Trans i18nKey="help.material.popcornToken.description" values={{ amount: item.id }} />
       </p>
     </>
   )

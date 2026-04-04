@@ -16,12 +16,11 @@ export const ClothBagHelp: FC<PopcornMaterialDisplayHelpProps> = ({ item }) => {
   return (
     <>
       <h2>
-        <Trans i18nKey="" defaults="{player}'s Guest cloth bag" values={{ player: playerName }} />
+        <Trans i18nKey="help.material.clothBag.title" values={{ player: playerName }} />
       </h2>
       <p>
         <Trans
-          i18nKey=""
-          defaults="{player} draws their Guests from the bag. When {player} needs to draw guests and the bag is empty, {player} places all their exit zone Guests in the bag before drawing the remaining Guests.{isMine, select, true{ There {numberOfGuests, plural, =0{are currently no Guests} =1{is currently # Guest} other{are currently # Guests}} in the bag.} other{}}"
+          i18nKey="help.material.clothBag.description"
           values={{ isMine: context.player !== undefined && context.player === item.location?.player, numberOfGuests: numberOfGuests, player: playerName }}
         />
       </p>

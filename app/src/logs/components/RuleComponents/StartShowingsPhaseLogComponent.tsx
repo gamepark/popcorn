@@ -11,12 +11,7 @@ export const StartShowingsPhaseLogComponent: FC<PopcornMoveComponentProps> = ({ 
   const isFinalRound = rule.material(MaterialType.MovieCards).id<MovieCardId>((id) => id.front === MovieCard.FinalShowing).exists
   return (
     <div css={ruleLogContainerCss}>
-      <Trans
-        i18nKey="log.startShowingsPhase"
-        defaults="Beginning of {isFinalRound, select, true{<s>last } other{}}Showings phase{isFinalRound, select, true{</s>} other{}}"
-        values={{ isFinalRound: isFinalRound }}
-        components={{ s: <strong></strong> }}
-      />
+      <Trans i18nKey="log.startShowingsPhase" values={{ isFinalRound: isFinalRound }} components={{ s: <strong></strong> }} />
     </div>
   )
 }

@@ -34,7 +34,7 @@ export const LobbySliderMovesLogComponent: FC<PopcornMoveComponentProps> = ({ co
   )
   return (
     <div css={ruleLogContainerCss}>
-      <Trans defaults="Theatrical run: lobby sliders are moved up one space for <movies/>" components={{ movies: moviesComponents }} />
+      <Trans i18nKey="log.endOfRoundPhase.theatricalRun.lobbySliders" components={{ movies: moviesComponents }} />
     </div>
   )
 }

@@ -43,16 +43,14 @@ export const GuestPawnHelp: FC<PopcornMaterialDisplayHelpProps> = ({ item }: { i
     <>
       <h2>
         <Trans
-          i18nKey=""
-          defaults="{player}'s {guestColor} Guest <nl/>{theater, select, 0{left} 1{center} 2{right} other{}} theater — {seatNumber, select, 0{first} 1{second} 2{third} other{}} seat"
+          i18nKey="help.material.guestPawn.title"
           values={{ player: playerName, theater: parentTile.location.x, seatNumber: seatNumber, guestColor: GuestPawn[item.id!] }}
           components={{ nl: <br /> }}
         />
       </h2>
       <p>
         <Trans
-          i18nKey=""
-          defaults="<guest/> can{canDoSeatAction, select, true{} other{not}} activate seat{canDoSeatAction, select, false{ (as the guest color is not the same as the seat color ({seatColor})} other{}} and perform <seatAction/>."
+          i18nKey="help.material.guestPawn.description.seatAction"
           values={{ canDoSeatAction: canDoSeatAction, seatColor: seatColor }}
           components={{
             guest: (
@@ -81,8 +79,7 @@ export const GuestPawnHelp: FC<PopcornMaterialDisplayHelpProps> = ({ item }: { i
       </p>
       <p>
         <Trans
-          i18nKey=""
-          defaults="<guest/> can{canDoMovieAction, select, true{} other{not}} perform an available movie action for <movie/> {canDoMovieAction, select, false{(as the Guest color is not the same as the movie color({movieColor}))} other{}}."
+          i18nKey="help.material.guestPawn.description.movieAction"
           values={{ canDoMovieAction: canDoMovieAction, movieColor: movieColor }}
           components={{
             guest: (
@@ -105,7 +102,7 @@ export const GuestPawnHelp: FC<PopcornMaterialDisplayHelpProps> = ({ item }: { i
                     min-height: 1.25em;
                   `}
                 />
-                <Trans i18nKey={`movieCard.title.${camelCase(MovieCard[movieCard.id.front])}`} defaults={movieTitleDefaults[movieCard.id.front]} />
+                <Trans i18nKey={`material.movieCard.title.${camelCase(MovieCard[movieCard.id.front])}`} defaults={movieTitleDefaults[movieCard.id.front]} />
               </PlayMoveButton>
             )
           }}

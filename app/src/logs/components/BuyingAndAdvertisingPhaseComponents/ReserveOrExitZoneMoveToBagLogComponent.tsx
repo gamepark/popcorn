@@ -27,7 +27,6 @@ export const ReserveOrExitZoneMoveToBagLogComponent: FC<PopcornMoveComponentProp
       <div css={logContainerCss}>
         <Trans
           i18nKey="log.buyingAndAdvertisingPhase.whiteGuestMoveToBag"
-          defaults="{player} picks <guest/> from {origin, select, guestPawnReserveSpot{the reserve} other{their Exit zone}} and puts it in {isOwnBag, select, true{their} other{{destinationPlayer}'s}} bag"
           values={{
             player: actionPLayerName,
             origin: camelCase(LocationType[guestPawn.location.type]),
@@ -47,7 +46,6 @@ export const ReserveOrExitZoneMoveToBagLogComponent: FC<PopcornMoveComponentProp
     <div css={logContainerCss}>
       <Trans
         i18nKey="log.buyingAndAdvertisingPhase.guestMoveToBag"
-        defaults="{player} picks <guest/> from {origin, select, guestPawnReserveSpot{the reserve} other{{isOwnExitZone, select, true{their} other{{otherPlayer}'s}} Exit zone}} and places it in their bag{isPremiersRowGuest, select, true{ since {player} bought <movie/> from the Premiers row} other{}}"
         values={{
           player: playerName,
           otherPlayer: otherPLayerName,

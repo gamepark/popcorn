@@ -40,11 +40,7 @@ export const NewPremierMoviesLogComponent: FC<PopcornMoveComponentProps> = ({ mo
   )
   return (
     <div css={ruleLogContainerCss}>
-      <Trans
-        i18nKey="log.endOfRoundPhase.newPremiersMovies"
-        defaults="<premierMovies/> are the new Premiers Movies"
-        components={{ premierMovies: movieComponents }}
-      />
+      <Trans i18nKey="log.endOfRoundPhase.newPremiersMovies" components={{ premierMovies: movieComponents }} />
     </div>
   )
 }

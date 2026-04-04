@@ -14,12 +14,11 @@ export const MoneyTokenHelp: FC<PopcornMaterialDisplayHelpProps> = ({ item }: { 
   return (
     <>
       <h2>
-        <Trans i18nKey="" defaults="Money token" />
+        <Trans i18nKey="help.material.moneyToken.title" />
       </h2>
       <p>
         <Trans
-          i18nKey=""
-          defaults="This token represents ${amount}. Money is used to buy movie cards and theater tiles. At the end of the game, players earn 1 Popcorn (<popcorn/>) for each $5 they have."
+          i18nKey="help.material.moneyToken.description"
           values={{ amount: item.id }}
           components={{
             popcorn: (

@@ -8,7 +8,7 @@ export const PickTheaterTileToActivateHeader: FC = () => {
   const passMove = useLegalMove<PopcornMove>(isPassCurrentActionCustomMove)
   return (
     <HeaderText
-      code="header.actionRules.pickTheaterTileToActivate"
+      code="actionRules.pickTheaterTileToActivate"
       defaults={{ you: 'You must pick a theater tile to activate or <pass/>', player: '{player} must pick a theater tile to activate or pass' }}
       components={{
         pass: (

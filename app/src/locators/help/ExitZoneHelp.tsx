@@ -23,14 +23,10 @@ export const ExitZoneHelp: FC<LocationHelpProps<PlayerColor, LocationType>> = ({
   return (
     <>
       <h2>
-        <Trans i18nKey="" defaults="{player}'s exit zone" values={{ player: playerName }} />
+        <Trans i18nKey="help.location.guestPawn.exitZone.title" values={{ player: playerName }} />
       </h2>
       <p>
-        <Trans
-          i18nKey=""
-          defaults="Once a Guest has finished their actions, {player} places it here. There {numberOfGuests, plural, =0{are currently no Guests} =1{is currently # Guest} other{are currently # Guests}} in {player}'s exit zone."
-          values={{ player: playerName, numberOfGuests: numberOfGuests }}
-        />
+        <Trans i18nKey="help.location.guestPawn.exitZone.description" values={{ player: playerName, numberOfGuests: numberOfGuests }} />
       </p>
       <GuestNumberTable numberOfGuestsPerColor={numberOfGuestsPerColor} />
     </>

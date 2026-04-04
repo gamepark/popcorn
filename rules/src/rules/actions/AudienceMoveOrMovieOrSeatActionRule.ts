@@ -49,24 +49,12 @@ export abstract class AudienceMoveOrMovieOrSeatActionRule<
     if (previousMovieCardMaterial.length === 1) {
       consequences.push(
         previousMovieCardMaterial.moveItem({
-          type: LocationType.MovieCardSpotOnBottomPlayerCinemaBoard,
-          player: player,
-          x: destinationSpot,
-          y: 1
-        }),
-        previousMovieCardMaterial.moveItem({
           type: LocationType.PlayerMovieCardArchiveSpot,
           player: player
         })
       )
     }
     consequences.push(
-      boughtCardMaterial.moveItem({
-        type: LocationType.MovieCardSpotOnBottomPlayerCinemaBoard,
-        player: player,
-        x: destinationSpot,
-        y: 1
-      }),
       boughtCardMaterial.moveItem({
         type: LocationType.MovieCardSpotOnBottomPlayerCinemaBoard,
         player: player,

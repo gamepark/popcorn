@@ -42,7 +42,6 @@ export const NewFeatureMoviesLogComponent: FC<PopcornMoveComponentProps> = ({ mo
     <div css={ruleLogContainerCss}>
       <Trans
         i18nKey="log.endOfRoundPhase.newFeatureMovies"
-        defaults="<featureMovies/> {newMovieCount, plural, =1{is} other{are}} the new Feature {newMovieCount, plural, =1{Movie} other{Movies}}"
         values={{ newMovieCount: featureMove.indexes.length }}
         components={{ featureMovies: movieComponents }}
       />

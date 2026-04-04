@@ -12,7 +12,6 @@ import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
 import { RuleId } from '@gamepark/popcorn/rules/RuleId'
 import { ItemContext, ItemMenuButton, TokenDescription } from '@gamepark/react-game'
 import { isMoveItemType, isSelectItemType, Location, MaterialItem, MaterialMove, MaterialMoveBuilder } from '@gamepark/rules-api'
-import { Trans } from 'react-i18next'
 import blueGuestPawn from '../images/GuestPawns/BlueGuestPawn.png'
 import greenGuestPawn from '../images/GuestPawns/GreenGuestPawn.png'
 import redGuestPawn from '../images/GuestPawns/RedGuestPawn.png'
@@ -22,6 +21,7 @@ import { bottomCinemaBoardLocator } from '../locators/BottomCinemaBoardLocator'
 import { guestPawnOnTheaterTileLocator } from '../locators/GuestPawnOnTheaterTileLocator'
 import { theaterTileOnCinemaBoardLocator } from '../locators/TheaterTileOnTopCinemaBoardLocator'
 import { GuestPawnHelp } from './help/GuestPawnHelp'
+import { WhiteGuestPawnItemButton } from './utils/WhiteGuestPawnItemButton'
 import displayLocationHelp = MaterialMoveBuilder.displayLocationHelp
 
 class GuestPawnDescription extends TokenDescription<PlayerColor, MaterialType, LocationType, GuestPawn, RuleId, PlayerColor> {
@@ -44,9 +44,18 @@ class GuestPawnDescription extends TokenDescription<PlayerColor, MaterialType, L
     context: ItemContext<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>
   ): boolean {
     if (context.player !== undefined) {
-      if (context.rules.game.rule?.id === RuleId.ShowingsPhaseRule && context.rules.game.players.includes(context.player)) {
-        const pendingActions = context.rules.remind<Actions[]>(Memory.PendingActions, context.player)
+      const pendingActions = context.rules.remind<Actions[]>(Memory.PendingActions, context.player)
+      if (context.rules.game.rule?.id === RuleId.ShowingsPhaseRule && context.rules.game.rule.players?.includes(context.player)) {
         return pendingActions.length > 0 && pendingActions[0].type === ActionType.ChooseSeatAction
+      }
+      if (context.rules.game.rule?.id === RuleId.BuyingPhaseRule && context.rules.game.rule.player === context.player) {
+        return (
+          pendingActions.length > 0 &&
+          pendingActions[0].type === ActionType.PickReserveOrExitZoneGuest &&
+          pendingActions[0].guest === GuestPawn.White &&
+          item.location.player !== undefined &&
+          item.location.player === context.player
+        )
       }
     }
     return super.isMenuAlwaysVisible(item, context)
@@ -103,21 +112,11 @@ class GuestPawnDescription extends TokenDescription<PlayerColor, MaterialType, L
     const itemIndex = context.index
     const moveForItem = legalMoves.filter(isMoveItemType(MaterialType.GuestPawns)).filter((move) => move.itemIndex === itemIndex)
     if (moveForItem.length > 0) {
-      const playerNumbers = moveForItem.length
       return (
         <>
-          {moveForItem.map((move, moveIndex) => (
-            <ItemMenuButton
-              key={`guestPawn-${moveIndex}-bagMove`}
-              move={move}
-              x={1.25}
-              y={(playerNumbers - 1 - 2 * moveIndex) * 0.75 * this.height}
-              label={<Trans key={`player.${move.location.player}`} defaults={`Send to Player ${move.location.player}'s bag`} />}
-              labelPosition="right"
-            >
-              <FontAwesomeIcon icon={faHandPointer} size="xs" />
-            </ItemMenuButton>
-          ))}
+          {moveForItem.map((move, moveIndex) => {
+            return <WhiteGuestPawnItemButton key={`white-guest-m-${moveIndex}`} move={move} context={context} />
+          })}
         </>
       )
     }

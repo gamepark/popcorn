@@ -21,12 +21,11 @@ export const PopcornCupHelp: FC<PopcornMaterialDisplayHelpProps> = ({ item }: { 
   return (
     <>
       <h2>
-        <Trans i18nKey="" defaults="{player}'s Popcorn cup" values={{ player: playerName }} />
+        <Trans i18nKey="help.material.popcornCup.title" values={{ player: playerName }} />
       </h2>
       <p>
         <Trans
-          i18nKey=""
-          defaults="This cup holds the Popcorn tokens <popcorn/> {isMe, select, true{you} other{{player}}} obtained during the game."
+          i18nKey="help.material.popcornCup.description"
           values={{ isMe: item.id === me, player: playerName }}
           components={{
             popcorn: (
@@ -44,7 +43,7 @@ export const PopcornCupHelp: FC<PopcornMaterialDisplayHelpProps> = ({ item }: { 
       </p>
       {isMe && (
         <p>
-          <Trans i18nKey="" defaults="The cup currently holds {amount} Popcorn." values={{ amount: amount }} />
+          <Trans i18nKey="help.material.popcornCup.description.myAmount" values={{ amount: amount }} />
         </p>
       )}
     </>

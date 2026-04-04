@@ -24,16 +24,11 @@ export const LobbySliderHelp: FC<PopcornMaterialDisplayHelpProps> = ({ item }) =
   return (
     <>
       <h2>
-        <Trans
-          i18nKey=""
-          defaults="{player}'s {theater, select, 0{left} 1{center} 2{right} other{}} theater lobby slider"
-          values={{ player: playerName, theater: item.location?.x }}
-        />
+        <Trans i18nKey="help.material.lobbySlider.title" values={{ player: playerName, theater: item.location?.x }} />
       </h2>
       <p>
         <Trans
-          i18nKey=""
-          defaults="During the theatrical run (part of the End of Round), this Lobby Sider will move 1 space up {isMovieAvailable, select, true{on <movieLink/>} other{on the Movie Card in the {theater, select, 0{center} 1{left} 2{right} other{}} theater when there will be one}}, covering 1 more action. Covered actions are no longer available in future rounds."
+          i18nKey="help.material.lobbySlider.description"
           values={{ isMovieAvailable: movieCard !== undefined, theater: item.location?.x }}
           components={{
             movieLink: movieCard ? (
@@ -46,7 +41,7 @@ export const LobbySliderHelp: FC<PopcornMaterialDisplayHelpProps> = ({ item }) =
                     vertical-align: middle;
                   `}
                 />{' '}
-                <Trans i18nKey={`movieCard.title.${camelCase(MovieCard[movieCard.id.front])}`} defaults={movieTitleDefaults[movieCard.id.front]} />
+                <Trans i18nKey={`material.movieCard.title.${camelCase(MovieCard[movieCard.id.front])}`} defaults={movieTitleDefaults[movieCard.id.front]} />
               </PlayMoveButton>
             ) : (
               <></>

@@ -7,7 +7,7 @@ import { PopcornRules } from '@gamepark/popcorn/PopcornRules'
 import { fontSizeCss, linkButtonCss, LocationHelpProps, MaterialComponent, PlayMoveButton, usePlayerName, useRules } from '@gamepark/react-game'
 import { MaterialMoveBuilder } from '@gamepark/rules-api'
 import { FC } from 'react'
-import { Trans, useTranslation } from 'react-i18next'
+import { Trans } from 'react-i18next'
 import { movieCardDescription } from '../../material/MovieCardDescription'
 import displayMaterialHelp = MaterialMoveBuilder.displayMaterialHelp
 
@@ -16,7 +16,6 @@ export const MovieCardDeckHelp: FC<LocationHelpProps<PlayerColor, LocationType>>
   const playerName = usePlayerName(location.player)
   const numberOfCards = rules?.material(MaterialType.MovieCards).location(location.type ?? LocationType.MovieCardDeckSpot).length ?? -1
   const finalShowingLocation = location.type === LocationType.PlayerMovieCardArchiveSpot ? 0 : rules?.game.players.length === 2 ? 10 : 5
-  const { t } = useTranslation()
   return (
     <div css={containerCss}>
       <MaterialComponent
@@ -27,27 +26,13 @@ export const MovieCardDeckHelp: FC<LocationHelpProps<PlayerColor, LocationType>>
       <div css={helpTextCss}>
         <h2>
           <Trans
-            i18nKey={`help.movieCard.${location.type === LocationType.MovieCardDeckSpot ? 'deck' : location.type === LocationType.PlayerMovieCardArchiveSpot ? 'archive' : 'other'}.title`}
-            defaults={
-              location.type === LocationType.MovieCardDeckSpot
-                ? 'Movie card deck'
-                : location.type === LocationType.PlayerMovieCardArchiveSpot
-                  ? "{name}'s archived movies"
-                  : ''
-            }
+            i18nKey={`help.location.movieCard.${location.type === LocationType.MovieCardDeckSpot ? 'deck' : location.type === LocationType.PlayerMovieCardArchiveSpot ? 'otherArchive' : 'other'}.title`}
             values={{ name: playerName }}
           />
         </h2>
         <p>
           <Trans
-            i18nKey="help.movieCard.deck.description"
-            defaults={
-              location.type === LocationType.MovieCardDeckSpot
-                ? 'Deck of movie cards.{finalShowingsLocation, plural, =0{} other{ <link>The final showing card</link> is located # cards before the end.}}'
-                : location.type === LocationType.PlayerMovieCardArchiveSpot
-                  ? "{name}'s stack of archived movies."
-                  : ''
-            }
+            i18nKey={`help.location.movieCard.${location.type === LocationType.MovieCardDeckSpot ? 'deck' : location.type === LocationType.PlayerMovieCardArchiveSpot ? 'otherArchive' : 'other'}.description`}
             values={{ finalShowingsLocation: numberOfCards <= finalShowingLocation ? 0 : finalShowingLocation, name: playerName }}
             components={{
               link: (
@@ -58,7 +43,6 @@ export const MovieCardDeckHelp: FC<LocationHelpProps<PlayerColor, LocationType>>
                   })}
                   css={linkButtonCss}
                   transient
-                  content={t('help.movieCard.deck.finalShowing', 'The final showing card')}
                 ></PlayMoveButton>
               )
             }}

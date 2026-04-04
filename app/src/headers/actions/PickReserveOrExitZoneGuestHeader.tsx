@@ -11,7 +11,7 @@ export const PickReserveOrExitZoneGuestHeader: FC<PickReserveOrExitZoneGuestHead
   if (action.guest === GuestPawn.White) {
     return (
       <HeaderText
-        code="header.actionRules.pickReserveOrExitZoneGuest.white"
+        code="actionRules.pickReserveOrExitZoneGuest.white"
         defaults={{
           you: 'You must send a white Guest from your exit zone or the reserve to the bag of any player',
           player: '{player} must send a white Guest from their exit zone or the reserve to the bag of any player'
@@ -21,7 +21,7 @@ export const PickReserveOrExitZoneGuestHeader: FC<PickReserveOrExitZoneGuestHead
   }
   return (
     <HeaderText
-      code="header.actionRules.pickReserveOrExitZoneGuest.coloredGuest"
+      code="actionRules.pickReserveOrExitZoneGuest.coloredGuest"
       defaults={{
         you: "You must take a {colorEnum, select, 1{blue} 2{green} 3{red} 5{yellow} 4{any coloured} other{}} Guest from the reserve or another player's exit zone and put it in your bag",
         player:

@@ -22,11 +22,7 @@ export const LogTheaterMaterialHelpLink: FC<LogTheaterMaterialHelpLinkProps> = (
     <>
       {showTileType && <Picture src={seatsNumberSymbols[tileSeatNumbers]} css={symbolCss} />}
       <LogMaterialHelpLink itemType={MaterialType.TheaterTiles} item={theaterTile}>
-        <Trans
-          i18nKey="log.common.theaterTileSpot"
-          defaults="{spot, select, 0{left} 1{center} 2{right} other{}} theater"
-          values={{ spot: theaterTile.location.x }}
-        />
+        <Trans i18nKey="log.common.theaterTileSpot" values={{ spot: theaterTile.location.x }} />
       </LogMaterialHelpLink>
     </>
   )

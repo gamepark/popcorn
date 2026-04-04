@@ -8,12 +8,11 @@ export const ChooseMovieActionHeader: FC = () => {
   const passMove = useLegalMove<PopcornMove>(isPassCurrentActionCustomMove)
   return (
     <HeaderText
-      code="actionRules.ChooseMovieAction"
-      defaults={{ you: 'You must choose an available movie action or <pass/>', player: '{player} must choose an available movie action or pass' }}
+      code="actionRules.chooseMovieAction"
       components={{
         pass: (
           <PlayMoveButton move={passMove}>
-            <Trans i18nKey="header.button.passMove" defaults="pass" />
+            <Trans i18nKey="header.button.passMove" />
           </PlayMoveButton>
         )
       }}

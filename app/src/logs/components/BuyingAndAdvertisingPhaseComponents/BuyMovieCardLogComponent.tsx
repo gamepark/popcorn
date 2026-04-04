@@ -37,11 +37,6 @@ export const BuyMovieCardLogComponent: FC<PopcornMoveComponentProps> = ({ move, 
     <div css={logContainerCss}>
       <Trans
         i18nKey="log.buyingAndAdvertisingPhase.buyMovieCard"
-        defaults={
-          '{player} buys <newMovieLink/> from the {row, select, featuresRowSpot{Features} premiersRowSpot{Premiers} other{}}' +
-          ' row for ${price}{isShowingsBonus, select, true{,} other{ and}} places it in their <theater/>{isReplacingOtherMovie, select, true{ replacing <oldMovie/>} other{}}' +
-          '{isShowingsBonus, select, true{, earning the showing bonus <actionSymbol/>} other{}}'
-        }
         values={{
           player: playerName,
           row: camelCase(LocationType[movieCard.location.type]),
