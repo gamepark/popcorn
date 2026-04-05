@@ -358,5 +358,14 @@
   "material.movieCard.quote.yellowFrenchKiss": "You'll never forget your first time",
   "material.movieCard.quote.yellow28InTheFamily": "They're not even all on the poster",
   "material.movieCard.quote.yellowTheAdventuresOfPewPew": "90 minutes of fun for kids (and torture for parents)",
-  "material.movieCard.quote.yellowTheFirePrincess": "Hot stuff coming through"
+  "material.movieCard.quote.yellowTheFirePrincess": "Hot stuff coming through",
+  "player.1": "Cyan",
+  "player.2": "Green",
+  "player.3": "Orange",
+  "player.4": "Purple",
+  "scoring.key.popcornEarnedDuringGame": "Popcorn <popcorn/> earned during game ",
+  "scoring.key.popcornEarnedWithMoney": "Popcorn <popcorn/> earned with remaining money",
+  "scoring.key.theaterTrophyPopcorn": "Popcorn <popcorn/> earned with theater trophies",
+  "scoring.key.awardCardsPopcorn": "Popcorn <popcorn/> earned with award cards",
+  "scoring.key.total": "Total"
 }
