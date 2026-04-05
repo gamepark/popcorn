@@ -117,15 +117,15 @@ export const MovieCardHelp: FC<PopcornMaterialDisplayHelpProps> = ({ item }: { i
         <thead>
           <tr>
             <th>
-              <Trans i18nKey="help.material.movieCard.actions.table.heading.actionNumber" />
+              <Trans i18nKey="help.material.movieCard.actions.table.header.actionNumber" />
             </th>
             {isMovieOnPlayerBoard && (
               <th>
-                <Trans i18nKey="help.material.movieCard.actions.table.heading.actionAvailable" />
+                <Trans i18nKey="help.material.movieCard.actions.table.header.actionAvailable" />
               </th>
             )}
             <th colSpan={2}>
-              <Trans i18nKey="help.material.movieCard.actions.table.heading.actionDescription" />
+              <Trans i18nKey="help.material.movieCard.actions.table.header.actionDescription" />
             </th>
           </tr>
         </thead>
@@ -133,7 +133,7 @@ export const MovieCardHelp: FC<PopcornMaterialDisplayHelpProps> = ({ item }: { i
           {movieCharacteristics.actions.map((action, index) => {
             const isActionAvailable = availableMovieActions !== undefined ? availableMovieActions[index] : action !== MovieAction.None
             return (
-              <tr>
+              <tr key={`movie-${item.id!.front}-a-${index}`}>
                 <td css={textCenterCss}>{index + 1}</td>
                 {isMovieOnPlayerBoard && (
                   <td css={textCenterCss}>

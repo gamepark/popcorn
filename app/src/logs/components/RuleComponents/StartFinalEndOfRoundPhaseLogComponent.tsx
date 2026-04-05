@@ -4,6 +4,6 @@ import { ruleLogContainerCss } from '../../utils/logCss.utils'
 
 export const StartFinalEndOfRoundPhaseLogComponent: FC = () => (
   <div css={ruleLogContainerCss}>
-    <Trans i18nKey="log.startFinalEndOfRoundPhase" />
+    <Trans i18nKey="log.finalEndOfRoundPhase.startPhase" />
   </div>
 )

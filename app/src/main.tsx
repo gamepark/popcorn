@@ -10,6 +10,7 @@ import { Locators } from './locators/Locators'
 import { PopcornLogDescription } from './logs/PopcornLogDescription'
 import { Material, popcornMaterialI18n } from './material/Material'
 import { PopcornTheme } from './PopcornTheme'
+import { PopcornScoringDescription } from './scoring/PopcornScoringDescription'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -23,6 +24,7 @@ createRoot(document.getElementById('root')!).render(
       animations={popcornAnimations}
       materialI18n={popcornMaterialI18n}
       logs={new PopcornLogDescription()}
+      scoring={new PopcornScoringDescription()}
       theme={PopcornTheme}
     >
       <App />

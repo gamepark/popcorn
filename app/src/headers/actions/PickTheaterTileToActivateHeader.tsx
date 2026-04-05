@@ -13,7 +13,7 @@ export const PickTheaterTileToActivateHeader: FC = () => {
       components={{
         pass: (
           <PlayMoveButton move={passMove}>
-            <Trans i18nKey="header.button.passMove" defaults="pass" />
+            <Trans i18nKey="button.header.passMove" defaults="pass" />
           </PlayMoveButton>
         )
       }}

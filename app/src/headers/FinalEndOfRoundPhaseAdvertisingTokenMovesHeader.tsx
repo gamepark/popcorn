@@ -14,7 +14,7 @@ export const FinalEndOfRoundPhaseAdvertisingTokenMovesHeader: FC = () => {
       components={{
         pass: (
           <PlayMoveButton move={passMove} {...(isPassOnlyMove ? { auto: 10 } : {})}>
-            <Trans i18nKey="header.button.passMove" defaults="pass" />
+            <Trans i18nKey="button.header.passMove" defaults="pass" />
           </PlayMoveButton>
         )
       }}
