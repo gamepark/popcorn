@@ -12,7 +12,7 @@ export const ChooseSeatActionHeader: FC = () => {
       components={{
         pass: (
           <PlayMoveButton move={passMove}>
-            <Trans i18nKey="header.button.passMove" />
+            <Trans i18nKey="button.header.passMove" />
           </PlayMoveButton>
         )
       }}
