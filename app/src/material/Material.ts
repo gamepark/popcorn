@@ -18,6 +18,7 @@ import { movieCardDescription } from './MovieCardDescription'
 import { popcornCupDescription } from './PopcornCupDescription'
 import { popcornTokenDescription } from './PopcornTokenDescription'
 import { premiersTileDescription } from './PremiersTileDescription'
+import { scoreSheetDescription } from './ScoreSheetDescription'
 import { theaterTileDescription } from './TheaterTileDescription'
 import { theaterTrophyDescription } from './TheaterTrophyDescription'
 import { topCinemaBoardDescription } from './TopCinemaBoardDescription'
@@ -41,7 +42,8 @@ export const Material: Partial<Record<MaterialType, MaterialDescription>> = {
   [MaterialType.FirstPlayerMarker]: firstPlayerMarkerDescription,
   [MaterialType.ClothBag]: clothBagDescription,
   [MaterialType.PopcornCup]: popcornCupDescription,
-  [MaterialType.HelpCards]: helpCardDescription
+  [MaterialType.HelpCards]: helpCardDescription,
+  [MaterialType.ScoreSheet]: scoreSheetDescription
 }
 
 export const popcornMaterialI18n: Record<string, Partial<Record<MaterialType, MaterialDescription>>> = {
