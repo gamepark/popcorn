@@ -36,6 +36,8 @@ import { popcornCupLocator } from './PopcornCupLocator'
 import { popcornTokenPileLocator } from './PopcornTokenPileLocator'
 import { premierMovieCardsRowLocator } from './PremierMovieCardsRowLocator'
 import { premiersTileLocator } from './PremiersTileLocator'
+import { scoreDataSpotOnScoreSheetLocator } from './ScoreDataSpotOnScoreSheetLocator'
+import { scoreSheetSpotLocator } from './ScoreSheetSpotLocator'
 import { theaterTileOnCinemaBoardLocator } from './TheaterTileOnTopCinemaBoardLocator'
 import { threeSeatTheaterTilesDeckLocator } from './ThreeSeatTheaterTilesDeckLocator'
 import { threeSeatTheaterTilesRowLocator } from './ThreeSeatTheaterTilesRowLocator'
@@ -82,5 +84,7 @@ export const Locators: Partial<Record<LocationType, Locator<PlayerColor, Materia
   [LocationType.PlayerShowingsDrawnGuestSpot]: playerShowingsDrawnGuestsLocator,
   [LocationType.FinalShowingCardSpot]: finalShowingCardLocator,
   [LocationType.PhasesHelpCardSpot]: phasesHelpCardLocator,
-  [LocationType.ActionsHelpCardSpot]: actionsHelpCardLocator
+  [LocationType.ActionsHelpCardSpot]: actionsHelpCardLocator,
+  [LocationType.ScoreSheetSpot]: scoreSheetSpotLocator,
+  [LocationType.ScoreDataSpotOnScoreSheet]: scoreDataSpotOnScoreSheetLocator
 }

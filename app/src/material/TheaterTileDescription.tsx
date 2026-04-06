@@ -11,7 +11,7 @@ import { SeatsNumber, TheaterTile, TheaterTileId } from '@gamepark/popcorn/mater
 import { Memory } from '@gamepark/popcorn/Memory'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
 import { RuleId } from '@gamepark/popcorn/rules/RuleId'
-import { ItemContext, ItemMenuButton, TokenDescription } from '@gamepark/react-game'
+import { ItemContext, ItemMenuButton, MaterialContext, TokenDescription } from '@gamepark/react-game'
 import { isSelectItemType, Location, MaterialItem, MaterialMoveBuilder } from '@gamepark/rules-api'
 import React from 'react'
 import { Trans } from 'react-i18next'
@@ -109,6 +109,16 @@ class TheaterTileDescription extends TokenDescription<PlayerColor, MaterialType,
 
   public canDrag(move: PopcornMove, context: ItemContext<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>): boolean {
     return super.canDrag(move, context) || (isBuyTheaterTileCustomMove(move) && move.data.boughtTileIndex === context.index)
+  }
+
+  public isFlippedOnTable(
+    item: Partial<MaterialItem<PlayerColor, LocationType, TheaterTileId>>,
+    context: MaterialContext<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>
+  ): boolean {
+    if (LOCATION_TYPES_WHERE_FLIPPED_ON_TABLE.includes(item.location?.type ?? LocationType.GuestPawnReserveSpot)) {
+      return true
+    }
+    return super.isFlippedOnTable(item, context)
   }
 
   public getMoveDropLocations(

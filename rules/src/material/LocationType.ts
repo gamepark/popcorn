@@ -37,5 +37,7 @@ export enum LocationType {
   PlayerShowingsDrawnGuestSpot,
   FinalShowingCardSpot,
   PhasesHelpCardSpot,
-  ActionsHelpCardSpot
+  ActionsHelpCardSpot,
+  ScoreSheetSpot,
+  ScoreDataSpotOnScoreSheet
 }

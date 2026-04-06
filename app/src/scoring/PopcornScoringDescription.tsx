@@ -15,7 +15,7 @@ import theaterTrophiesSymbol from '../images/Symbols/TheaterTrophies.png'
 import totalSymbol from '../images/Symbols/ScoringTotal.png'
 import { symbolCss } from '../logs/utils/logCss.utils'
 
-enum PopcornScoringKeys {
+export enum PopcornScoringKeys {
   PopcornEarnedDuringGame,
   PopcornEarnedWithMoney,
   TheaterTrophyPopcorn,
