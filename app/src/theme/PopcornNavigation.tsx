@@ -10,18 +10,20 @@ export const PopcornNavigation: FC<DialogNavigationProps> = ({ onPrevious, onNex
   return (
     <div css={navBarCss}>
       <button css={navBtnCss} onClick={onPrevious} disabled={!onPrevious}>
-        <FontAwesomeIcon icon={faChevronLeft}/>
+        <FontAwesomeIcon icon={faChevronLeft} />
       </button>
       <div css={navCenterCss}>
         <div css={dotsCss}>
           {Array.from({ length: Math.min(total, 10) }, (_, i) => (
-            <div key={i} css={[dotCss, i === Math.min(currentIndex, 9) && dotActiveCss]}/>
+            <div key={i} css={[dotCss, i === Math.min(currentIndex, 9) && dotActiveCss]} />
           ))}
         </div>
-        <span css={counterCss}>{currentIndex + 1} / {total}</span>
+        <span css={counterCss}>
+          {currentIndex + 1} / {total}
+        </span>
       </div>
       <button css={navBtnCss} onClick={onNext} disabled={!onNext}>
-        <FontAwesomeIcon icon={faChevronRight}/>
+        <FontAwesomeIcon icon={faChevronRight} />
       </button>
     </div>
   )

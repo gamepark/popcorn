@@ -183,7 +183,9 @@ export class MovieCardDescription extends CardDescription<PlayerColor, MaterialT
   }
 
   public getHelpDisplayExtraCss() {
-    return css`font-size: 6em !important;`
+    return css`
+      font-size: 6em !important;
+    `
   }
 
   public isFlippedOnTable(

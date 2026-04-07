@@ -24,7 +24,9 @@ export const AwardCardHelp: FC<PopcornMaterialDisplayHelpProps> = ({ item }: { i
             location: (
               <Trans
                 i18nKey={
-                  item.location?.type === LocationType.AwardCardDeckSpot ? 'help.material.awardCard.title.location.deck' : 'help.material.awardCard.title.location.hand'
+                  item.location?.type === LocationType.AwardCardDeckSpot
+                    ? 'help.material.awardCard.title.location.deck'
+                    : 'help.material.awardCard.title.location.hand'
                 }
                 values={{ name: playerName }}
               />

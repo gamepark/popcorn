@@ -1,11 +1,14 @@
 import { AdvertisingTokenSpot } from '@gamepark/popcorn/material/AdvertisingTokenSpot'
+import { GuestPawn } from '@gamepark/popcorn/material/GuestPawn'
 import { LocationType } from '@gamepark/popcorn/material/LocationType'
 import { MaterialType } from '@gamepark/popcorn/material/MaterialType'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
 import { linkButtonCss, PlayMoveButton, usePlayerName } from '@gamepark/react-game'
 import { MaterialItem, MaterialMoveBuilder } from '@gamepark/rules-api'
+import { camelCase } from 'es-toolkit'
 import { FC } from 'react'
 import { Trans } from 'react-i18next'
+import { getColorFromSpot } from './utils/getColorFromSpot.util'
 import { PopcornMaterialDisplayHelpProps } from './utils/popcornMaterialDisplayHelpProps.util'
 import displayMaterialHelp = MaterialMoveBuilder.displayMaterialHelp
 
@@ -33,6 +36,8 @@ export const AdvertisingTokenHelp: FC<PopcornMaterialDisplayHelpProps> = ({
       </>
     )
   }
+  const guestColor = getColorFromSpot(item.location!.id)
+  const colorValue = guestColor === undefined ? undefined : <Trans i18nKey={`material.guestPawn.color.${camelCase(GuestPawn[guestColor])}`} />
   return (
     <>
       <h2>
@@ -55,6 +60,7 @@ export const AdvertisingTokenHelp: FC<PopcornMaterialDisplayHelpProps> = ({
                       ? 'placeWhiteTokenIntoAnyBag'
                       : 'coloredGuestPawn')
                 }
+                values={{ guestColor: colorValue }}
               />
             )
           }}

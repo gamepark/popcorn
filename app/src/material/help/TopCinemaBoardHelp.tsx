@@ -12,7 +12,17 @@ import { Trans } from 'react-i18next'
 import unknownGuestSymbol from '../../images/GuestPawns/UnknownGuestPawn.png'
 import audienceSymbol from '../../images/Symbols/Audience.png'
 import { FilmStrip } from '../../theme/filmStrip'
-import { headerDarkCss, headerTitleCss, helpBodyCss, sectionHeaderCss, pillsCss, pillCss, pillLabelCss, pillValueCss, pillValuePriceCss } from '../../theme/helpStyles'
+import {
+  headerDarkCss,
+  headerTitleCss,
+  helpBodyCss,
+  pillCss,
+  pillLabelCss,
+  pillsCss,
+  pillValueCss,
+  pillValuePriceCss,
+  sectionHeaderCss
+} from '../../theme/helpStyles'
 import { PopcornMaterialDisplayHelpProps } from './utils/popcornMaterialDisplayHelpProps.util'
 
 export const TopCinemaBoardHelp: FC<PopcornMaterialDisplayHelpProps> = ({ item }: { item: Partial<MaterialItem<PlayerColor, LocationType, PlayerColor>> }) => {
@@ -32,13 +42,13 @@ export const TopCinemaBoardHelp: FC<PopcornMaterialDisplayHelpProps> = ({ item }
     <>
       <div css={headerDarkCss}>
         <h2 css={headerTitleCss}>
-          <Trans i18nKey="help.material.topCinemaBoard.title" values={{ player: playerName }}/>
+          <Trans i18nKey="help.material.topCinemaBoard.title" values={{ player: playerName }} />
         </h2>
       </div>
-      <FilmStrip/>
+      <FilmStrip />
       <div css={helpBodyCss}>
         <p>
-          <Trans i18nKey="help.material.topCinemaBoard.description" values={{ player: playerName }}/>
+          <Trans i18nKey="help.material.topCinemaBoard.description" values={{ player: playerName }} />
         </p>
         {!theaterTiles?.some((tile) => tile.location.x === 2) && (
           <p>
@@ -46,29 +56,35 @@ export const TopCinemaBoardHelp: FC<PopcornMaterialDisplayHelpProps> = ({ item }
               i18nKey="help.material.topCinemaBoard.description.noTileInRightTheaterBonus"
               values={{ player: playerName }}
               components={{
-                cube: <MaterialComponent type={MaterialType.AudienceCubes} css={inlineComponentCss}/>
+                cube: <MaterialComponent type={MaterialType.AudienceCubes} css={inlineComponentCss} />
               }}
             />
           </p>
         )}
 
         <h4 css={sectionHeaderCss}>
-          <Trans i18nKey="help.material.topCinemaBoard.header.stats" defaults="Stats"/>
+          <Trans i18nKey="help.material.topCinemaBoard.header.stats" defaults="Stats" />
         </h4>
         <div css={pillsCss}>
           <div css={pillCss}>
-            <span css={pillLabelCss}><Trans i18nKey="help.material.topCinemaBoard.pill.tilePrice" defaults="Theater Tiles"/></span>
+            <span css={pillLabelCss}>
+              <Trans i18nKey="help.material.topCinemaBoard.pill.tilePrice" defaults="Theater Tiles" />
+            </span>
             <span css={pillValuePriceCss}>${theaterTilesTotalPrice}</span>
           </div>
           <div css={pillCss}>
-            <span css={pillLabelCss}><Trans i18nKey="help.material.topCinemaBoard.pill.audience" defaults="Audience"/></span>
+            <span css={pillLabelCss}>
+              <Trans i18nKey="help.material.topCinemaBoard.pill.audience" defaults="Audience" />
+            </span>
             <span css={pillValueCss}>{audience}</span>
-            <Picture src={audienceSymbol} css={inlineIconCss}/>
+            <Picture src={audienceSymbol} css={inlineIconCss} />
           </div>
           <div css={pillCss}>
-            <span css={pillLabelCss}><Trans i18nKey="help.material.topCinemaBoard.pill.guestsDraw" defaults="Guests drawn"/></span>
+            <span css={pillLabelCss}>
+              <Trans i18nKey="help.material.topCinemaBoard.pill.guestsDraw" defaults="Guests drawn" />
+            </span>
             <span css={pillValueCss}>{audience}</span>
-            <Picture src={unknownGuestSymbol} css={inlineIconCss}/>
+            <Picture src={unknownGuestSymbol} css={inlineIconCss} />
           </div>
         </div>
       </div>

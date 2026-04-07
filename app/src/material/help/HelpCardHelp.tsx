@@ -149,7 +149,7 @@ const PhasesHelpCardHelp: FC = () => {
         <ol css={headingListCss}>
           <li {...(currentPhase === GamePhase.BuyingPhase ? {} : { css: fadedPhaseCss })}>
             <h3>
-              <Trans i18nKey="help.material.helpCard.phases.buyingAdvertising.title" values={{ currentPhase: currentPhase === GamePhase.BuyingPhase ? 1 : 0 }} />
+              <Trans i18nKey="help.material.helpCard.phases.buyingAdvertising.title" values={{ currentPhase: currentPhase === GamePhase.BuyingPhase }} />
             </h3>
             <Trans
               i18nKey="help.material.helpCard.phases.buyingAdvertising.description"
@@ -162,10 +162,10 @@ const PhasesHelpCardHelp: FC = () => {
           </li>
           <li {...(currentPhase === GamePhase.ShowingsPhase ? {} : { css: fadedPhaseCss })}>
             <h3>
-              <Trans i18nKey="help.material.helpCard.phases.showing.title" values={{ currentPhase: currentPhase === GamePhase.ShowingsPhase ? 1 : 0 }} />
+              <Trans i18nKey="help.material.helpCard.phases.showings.title" values={{ currentPhase: currentPhase === GamePhase.ShowingsPhase }} />
             </h3>
             <Trans
-              i18nKey="help.material.helpCard.phases.showing.description"
+              i18nKey="help.material.helpCard.phases.showings.description"
               components={{
                 ols: <ol type="A"></ol>,
                 uls: <ul></ul>,
@@ -182,7 +182,7 @@ const PhasesHelpCardHelp: FC = () => {
               <Trans
                 i18nKey="help.material.helpCard.phases.endOfRound.title"
                 defaults="End of Round{currentPhase, plural, =1{ (current phase)} other{}}"
-                values={{ currentPhase: currentPhase === GamePhase.EndOfRoundPhase ? 1 : 0 }}
+                values={{ currentPhase: currentPhase === GamePhase.EndOfRoundPhase }}
               />
             </h3>
             <Trans
