@@ -12,13 +12,27 @@ import {
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
 import { Picture, usePlayerName } from '@gamepark/react-game'
 import { MaterialItem } from '@gamepark/rules-api'
+import { camelCase } from 'es-toolkit'
 import { FC } from 'react'
 import { Trans } from 'react-i18next'
+import seatNumber1 from '../../images/Symbols/SeatNumber1.jpg'
+import seatNumber2 from '../../images/Symbols/SeatNumber2.jpg'
+import seatNumber3 from '../../images/Symbols/SeatNumber3.jpg'
 import { FilmStrip } from '../../theme/filmStrip'
 import {
-  headerNavyCss, headerRowCss, headerSubCss, headerTitleCss,
-  helpBodyCss, priceTagCss, seatIconCss, seatNumCss,
-  sectionHeaderCss, tableCellCss, tableCss, tableHeadCenterCss, tableHeadCss, tableRowHoverCss
+  headerNavyCss,
+  headerRowCss,
+  headerSubCss,
+  headerTitleCss,
+  helpBodyCss,
+  priceTagCss,
+  seatIconCss,
+  sectionHeaderCss,
+  tableCellCss,
+  tableCss,
+  tableHeadCenterCss,
+  tableHeadCss,
+  tableRowHoverCss
 } from '../../theme/helpStyles'
 import { actionSymbols } from '../utils/seatActionSymbols.util'
 import { PopcornMaterialDisplayHelpProps } from './utils/popcornMaterialDisplayHelpProps.util'
@@ -32,17 +46,13 @@ export const TheaterTileHelp: FC<PopcornMaterialDisplayHelpProps> = ({ item }: {
       <>
         <div css={headerNavyCss}>
           <div css={headerTitleCss} style={{ fontSize: '1.25em' }}>
-            <Trans i18nKey="help.material.theaterTile.type" values={{ numberOfSeats }}/>
+            <Trans i18nKey="help.material.theaterTile.type" values={{ numberOfSeats }} />
           </div>
         </div>
-        <FilmStrip/>
+        <FilmStrip />
         <div css={helpBodyCss}>
           <p>
-            <Trans
-              i18nKey="help.theaterTile.description.accomodatedGuestsNumber"
-              values={{ numberOfGuests: numberOfSeats }}
-              components={{ s: <strong/> }}
-            />
+            <Trans i18nKey="help.theaterTile.description.accomodatedGuestsNumber" values={{ numberOfGuests: numberOfSeats }} components={{ s: <strong /> }} />
           </p>
         </div>
       </>
@@ -64,11 +74,11 @@ export const TheaterTileHelp: FC<PopcornMaterialDisplayHelpProps> = ({ item }: {
             </div>
             <div>
               <div css={headerTitleCss} style={{ fontSize: '1.25em' }}>
-                <Trans i18nKey="help.material.theaterTile.type" values={{ numberOfSeats }}/>
+                <Trans i18nKey="help.material.theaterTile.type" values={{ numberOfSeats }} />
               </div>
               {isOnPlayerBoard && (
                 <div css={headerSubCss}>
-                  <Trans i18nKey="help.material.theaterTile.playerTile" values={{ name: playerName, theaterNumber: item.location!.x ?? -1 }}/>
+                  <Trans i18nKey="help.material.theaterTile.playerTile" values={{ name: playerName, theaterNumber: item.location!.x ?? -1 }} />
                 </div>
               )}
             </div>
@@ -76,38 +86,34 @@ export const TheaterTileHelp: FC<PopcornMaterialDisplayHelpProps> = ({ item }: {
           <div css={priceTagCss}>${tileCharacteristics.getPrice()}</div>
         </div>
       </div>
-      <FilmStrip/>
+      <FilmStrip />
 
       {/* Body */}
       <div css={helpBodyCss}>
         <p>
-          <Trans
-            i18nKey="help.theaterTile.description.accomodatedGuestsNumber"
-            values={{ numberOfGuests: numberOfSeats }}
-            components={{ s: <strong/> }}
-          />
+          <Trans i18nKey="help.theaterTile.description.accomodatedGuestsNumber" values={{ numberOfGuests: numberOfSeats }} components={{ s: <strong /> }} />
         </p>
 
         <h4 css={sectionHeaderCss}>
-          <Trans i18nKey="help.material.theaterTile.header.seatActions" defaults="Seat Actions"/>
+          <Trans i18nKey="help.material.theaterTile.header.seatActions" defaults="Seat Actions" />
         </h4>
         <table css={tableCss}>
           <colgroup>
-            <col style={{ width: '2.2em' }}/>
-            <col style={{ width: '5em' }}/>
-            <col style={{ width: '2em' }}/>
-            <col/>
+            <col style={{ width: '2.2em' }} />
+            <col style={{ width: '5em' }} />
+            <col style={{ width: '2em' }} />
+            <col />
           </colgroup>
           <thead>
             <tr>
               <th css={tableHeadCenterCss}>
-                <Trans i18nKey="help.material.theaterTile.actions.table.header.seatNumber" defaults="Seat"/>
+                <Trans i18nKey="help.material.theaterTile.actions.table.header.seatNumber" defaults="Seat" />
               </th>
               <th css={tableHeadCss}>
-                <Trans i18nKey="help.material.theaterTile.actions.table.header.requiredGuestColor" defaults="Required"/>
+                <Trans i18nKey="help.material.theaterTile.actions.table.header.requiredGuestColor" defaults="Required" />
               </th>
               <th css={tableHeadCss} colSpan={2}>
-                <Trans i18nKey="help.material.theaterTile.actions.table.header.actionDescription" defaults="Action"/>
+                <Trans i18nKey="help.material.theaterTile.actions.table.header.actionDescription" defaults="Action" />
               </th>
             </tr>
           </thead>
@@ -117,16 +123,21 @@ export const TheaterTileHelp: FC<PopcornMaterialDisplayHelpProps> = ({ item }: {
               return (
                 <tr key={`theaterTileHelp-${item.id!.front}-${item.location!.player}-${index}`} css={tableRowHoverCss}>
                   <td css={tableCellCss}>
-                    <div css={seatNumCss}>{index + 1}</div>
+                    <Picture
+                      src={getSeatNumberFromIndex(index)}
+                      css={css`
+                        max-height: 1.5em;
+                      `}
+                    />
                   </td>
                   <td css={tableCellCss}>
-                    <Trans i18nKey={`help.material.theaterTile.actions.table.requiredGuestColorForSeatColor.${SeatColor[seatColor]}`}/>
+                    <Trans i18nKey={`help.material.theaterTile.actions.table.requiredGuestColorForSeatColor.${camelCase(SeatColor[seatColor])}`} />
                   </td>
                   <td css={[tableCellCss, noBorderRightCss]}>
-                    <Picture src={actionSymbols[action]} css={pictureCss}/>
+                    <Picture src={actionSymbols[action]} css={pictureCss} />
                   </td>
                   <td css={[tableCellCss, noBorderLeftCss]}>
-                    <Trans i18nKey={getActionKey(action)} values={{ money: getAmountFromAction(action), popcorn: getAmountFromAction(action) }}/>
+                    <Trans i18nKey={getActionKey(action)} values={{ money: getAmountFromAction(action), popcorn: getAmountFromAction(action) }} />
                   </td>
                 </tr>
               )
@@ -181,6 +192,19 @@ const getDefaultNumberOfGuests = (theaterTile: TheaterTile): number => {
       return 2
     default:
       return -1
+  }
+}
+
+const getSeatNumberFromIndex = (index: number): string | undefined => {
+  switch (index) {
+    case 0:
+      return seatNumber1
+    case 1:
+      return seatNumber2
+    case 2:
+      return seatNumber3
+    default:
+      return undefined
   }
 }
 
