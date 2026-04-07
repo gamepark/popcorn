@@ -29,6 +29,7 @@ export class FinalEndOfRoundPhaseAwardCardsPointsRule extends SimultaneousRule<P
     const guestMaterial = this.material(MaterialType.GuestPawns).location(LocationType.GuestPawnExitZoneSpotOnTopPlayerCinemaBoard)
     const audienceCubesMaterial = this.material(MaterialType.AudienceCubes).location(LocationType.AudienceCubeSpotOnTopPlayerCinemaBoard)
     const advertisingTokensMaterial = this.material(MaterialType.AdvertisingTokens).location(LocationType.AdvertisingTokenSpotOnAdvertisingBoard)
+    this.game.players.forEach((player) => this.memorize<number>(Memory.AwardCardPopcorn, 0, player))
     if (awardCardsMaterial.getItems<AwardCard>().some((card) => card.id === undefined)) {
       return []
     }
@@ -48,13 +49,11 @@ export class FinalEndOfRoundPhaseAwardCardsPointsRule extends SimultaneousRule<P
           (guestColor) => guestColor
         )
         const audience = getAudienceFromCubeLocation(audienceCubesMaterial.player(player).getItem()?.location)
-        this.memorize<number>(Memory.AwardCardPopcorn, 0, player)
         return awardCardsMaterial
           .player(player)
           .getItems<AwardCard>()
           .map((card) => {
             const awardCardPoints = awardCardPointFunctions[card.id](playerMoviesMaterial, playerTheaterTilesMaterial, guestCountsByColor, audience)
-            this.memorize<number>(Memory.AwardCardPopcorn, (oldValue) => oldValue + awardCardPoints, player)
             return this.customMove(CustomMoveType.AwardCardPopcorn, {
               cardId: card.id,
               player: player,
@@ -67,6 +66,7 @@ export class FinalEndOfRoundPhaseAwardCardsPointsRule extends SimultaneousRule<P
 
   public onCustomMove(move: CustomMove, context?: PlayMoveContext): PopcornMove[] {
     if (isAwardCardPopcornCustomMove(move)) {
+      this.memorize<number>(Memory.AwardCardPopcorn, (oldValue) => oldValue + move.data.popcorn, move.data.player)
       return this.material(MaterialType.PopcornTokens).money(popcornTokens).addMoney(move.data.popcorn, {
         type: LocationType.PlayerPopcornPileUnderPopcornCupSpot,
         player: move.data.player
