@@ -13,6 +13,8 @@ class GuestPawnInExitZoneLocator extends PileLocator<PlayerColor, MaterialType, 
   parentItemType = MaterialType.TopCinemaBoard
 
   coordinates = { x: 8.5, y: 5 }
+
+  zFromY = true
   radius = { x: 2.75, y: 2 }
 
   limit = 20

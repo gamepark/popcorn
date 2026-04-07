@@ -19,11 +19,7 @@ const dialogClose = keyframes`
 
 export const PopcornTheme = {
   root: {
-    fontFamily: 'Mulish',
-    background: {
-      image: redCarpetBackground,
-      overlay: 'rgba(0, 0, 0, 0.45)'
-    }
+    fontFamily: 'Mulish'
   },
   dialog: {
     backgroundColor: colors.cream,
