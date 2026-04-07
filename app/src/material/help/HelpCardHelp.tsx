@@ -26,6 +26,8 @@ import audienceSymbol from '../../images/Symbols/Audience.png'
 import audienceAdvanceSymbol from '../../images/Symbols/MovieActionAdvanceAudienceCube.png'
 import drawAwardCardSymbol from '../../images/Symbols/MovieActionDrawAwardCard.png'
 import movieActionSymbol from '../../images/Symbols/SeatActionMovieAction.png'
+import { FilmStrip } from '../../theme/filmStrip'
+import { headerDarkCss, headerRedCss, headerTitleCss, helpBodyCss, sectionHeaderCss } from '../../theme/helpStyles'
 import { PopcornMaterialDisplayHelpProps } from './utils/popcornMaterialDisplayHelpProps.util'
 
 export const HelpCardHelp: FC<PopcornMaterialDisplayHelpProps> = ({ item }: { item: Partial<MaterialItem<PlayerColor, LocationType, HelpCard>> }) => {
@@ -37,91 +39,96 @@ export const HelpCardHelp: FC<PopcornMaterialDisplayHelpProps> = ({ item }: { it
 
 const ActionHelpCardHelp: FC = () => (
   <>
-    <h2>
-      <Trans i18nKey="help.material.helpCard.action.title" defaults="Actions reminder" />
-    </h2>
-    <div css={actionGridWithLastCss}>
-      <div>
-        <Picture src={getXMoneySymbol} css={actionPictureCss} />
-      </div>
-      <div>
-        <Trans i18nKey="help.material.helpCard.action.money" />
-      </div>
-      <div>
-        <Picture src={movieActionSymbol} css={actionPictureCss} />
-      </div>
-      <div>
-        <Trans i18nKey="help.material.helpCard.action.movieAction" />
-      </div>
-      <div>
-        <Picture src={getXPopcornSymbol} css={actionPictureCss} />
-      </div>
-      <div>
-        <Trans i18nKey="help.material.helpCard.action.popcorn" />
-      </div>
-      <div>
-        <Picture src={placeGuestInReserveSymbol} css={actionPictureCss} />
-      </div>
-      <div>
-        <Trans i18nKey="help.material.helpCard.action.reserve" />
-      </div>
-      <div>
-        <Picture src={exitGuestToBasSymbol} css={actionPictureCss} />
-      </div>
-      <div>
-        <Trans i18nKey="help.material.helpCard.action.exitGuestToBag" />
-      </div>
-      <div>
-        <Picture src={audienceAdvanceSymbol} css={actionPictureCss} />
-      </div>
-      <div>
-        <Trans i18nKey="help.material.helpCard.action.audience" />
-      </div>
-      <div>
-        <Picture src={drawAwardCardSymbol} css={actionPictureCss} />
-      </div>
-      <div>
-        <Trans i18nKey="help.material.helpCard.action.awardCard" />
-      </div>
-      <div>
-        <Picture src={drawGuestSymbol} css={actionPictureCss} />
-      </div>
-      <div>
-        <Trans i18nKey="help.material.helpCard.action.drawGuest" />
-      </div>
-      <div css={lastLineCss}>
-        <div>
-          <Picture src={advertisingSymbol} css={actionPictureCss} />
-        </div>
-        <div>
-          <Trans i18nKey="help.material.helpCard.action.advertising" />
-        </div>
-      </div>
+    <div css={headerRedCss}>
+      <h2 css={headerTitleCss}>
+        <Trans i18nKey="help.material.helpCard.action.title" defaults="Action Reminder" />
+      </h2>
     </div>
-    <h3 css={textCenterCss}>
-      <Trans i18nKey="help.material.helpCard.action.header.buyingPhase" />
-    </h3>
-    <div css={actionGridCss}>
-      <div>
-        <Picture src={whiteGuestToBagSymbol} css={actionPictureCss} />
+    <FilmStrip />
+    <div css={helpBodyCss}>
+      <div css={actionGridWithLastCss}>
+        <div>
+          <Picture src={getXMoneySymbol} css={actionPictureCss} />
+        </div>
+        <div>
+          <Trans i18nKey="help.material.helpCard.action.money" />
+        </div>
+        <div>
+          <Picture src={movieActionSymbol} css={actionPictureCss} />
+        </div>
+        <div>
+          <Trans i18nKey="help.material.helpCard.action.movieAction" />
+        </div>
+        <div>
+          <Picture src={getXPopcornSymbol} css={actionPictureCss} />
+        </div>
+        <div>
+          <Trans i18nKey="help.material.helpCard.action.popcorn" />
+        </div>
+        <div>
+          <Picture src={placeGuestInReserveSymbol} css={actionPictureCss} />
+        </div>
+        <div>
+          <Trans i18nKey="help.material.helpCard.action.reserve" />
+        </div>
+        <div>
+          <Picture src={exitGuestToBasSymbol} css={actionPictureCss} />
+        </div>
+        <div>
+          <Trans i18nKey="help.material.helpCard.action.exitGuestToBag" />
+        </div>
+        <div>
+          <Picture src={audienceAdvanceSymbol} css={actionPictureCss} />
+        </div>
+        <div>
+          <Trans i18nKey="help.material.helpCard.action.audience" />
+        </div>
+        <div>
+          <Picture src={drawAwardCardSymbol} css={actionPictureCss} />
+        </div>
+        <div>
+          <Trans i18nKey="help.material.helpCard.action.awardCard" />
+        </div>
+        <div>
+          <Picture src={drawGuestSymbol} css={actionPictureCss} />
+        </div>
+        <div>
+          <Trans i18nKey="help.material.helpCard.action.drawGuest" />
+        </div>
+        <div css={lastLineCss}>
+          <div>
+            <Picture src={advertisingSymbol} css={actionPictureCss} />
+          </div>
+          <div>
+            <Trans i18nKey="help.material.helpCard.action.advertising" />
+          </div>
+        </div>
       </div>
-      <div>
-        <Trans i18nKey="help.material.helpCard.action.whiteGuestToBag" />
+      <div css={sectionHeaderCss}>
+        <Trans i18nKey="help.material.helpCard.action.header.buyingPhase" />
       </div>
-      <div css={iconsRowSpanCss}>
-        <Picture src={yellowGuestSymbol} css={actionPictureCss} />
-        <Picture src={greenGuestSymbol} css={actionPictureCss} />
-        <Picture src={redGuestSymbol} css={actionPictureCss} />
-        <Picture src={blueGuestSymbol} css={actionPictureCss} />
-      </div>
-      <div css={rowSpanCss}>
-        <Trans i18nKey="help.material.helpCard.action.advertisingGuest" />
-      </div>
-      <div>
-        <Picture src={anyGuestSymbol} css={actionPictureCss} />
-      </div>
-      <div>
-        <Trans i18nKey="help.material.helpCard.action.advertisingAnyGuest" />
+      <div css={actionGridCss}>
+        <div>
+          <Picture src={whiteGuestToBagSymbol} css={actionPictureCss} />
+        </div>
+        <div>
+          <Trans i18nKey="help.material.helpCard.action.whiteGuestToBag" />
+        </div>
+        <div css={iconsRowSpanCss}>
+          <Picture src={yellowGuestSymbol} css={actionPictureCss} />
+          <Picture src={greenGuestSymbol} css={actionPictureCss} />
+          <Picture src={redGuestSymbol} css={actionPictureCss} />
+          <Picture src={blueGuestSymbol} css={actionPictureCss} />
+        </div>
+        <div css={rowSpanCss}>
+          <Trans i18nKey="help.material.helpCard.action.advertisingGuest" />
+        </div>
+        <div>
+          <Picture src={anyGuestSymbol} css={actionPictureCss} />
+        </div>
+        <div>
+          <Trans i18nKey="help.material.helpCard.action.advertisingAnyGuest" />
+        </div>
       </div>
     </div>
   </>
@@ -132,57 +139,62 @@ const PhasesHelpCardHelp: FC = () => {
   const currentPhase = rules?.currentPhase
   return (
     <>
-      <h2>
-        <Trans i18nKey="help.material.helpCard.phases.title" defaults="Turn Overview" />
-      </h2>
-      <ol css={headingListCss}>
-        <li {...(currentPhase === GamePhase.BuyingPhase ? {} : { css: fadedPhaseCss })}>
-          <h3>
-            <Trans i18nKey="help.material.helpCard.phases.buyingAdvertising.title" values={{ currentPhase: currentPhase === GamePhase.BuyingPhase ? 1 : 0 }} />
-          </h3>
-          <Trans
-            i18nKey="help.material.helpCard.phases.buyingAdvertising.description"
-            components={{
-              ls: <ul></ul>,
-              lit: <li></li>,
-              nl: <br />
-            }}
-          />
-        </li>
-        <li {...(currentPhase === GamePhase.ShowingsPhase ? {} : { css: fadedPhaseCss })}>
-          <h3>
-            <Trans i18nKey="help.material.helpCard.phases.showing.title" values={{ currentPhase: currentPhase === GamePhase.ShowingsPhase ? 1 : 0 }} />
-          </h3>
-          <Trans
-            i18nKey="help.material.helpCard.phases.showing.description"
-            components={{
-              ols: <ol type="A"></ol>,
-              uls: <ul></ul>,
-              lit: <li></li>,
-              e: <em></em>,
-              arr: <FontAwesomeIcon icon={faArrowRight} size="sm" />,
-              nl: <br />,
-              audiencePicture: <Picture src={audienceSymbol} css={audiencePictureCss} />
-            }}
-          />
-        </li>
-        <li {...(currentPhase === GamePhase.EndOfRoundPhase ? {} : { css: fadedPhaseCss })}>
-          <h3>
+      <div css={headerDarkCss}>
+        <h2 css={headerTitleCss}>
+          <Trans i18nKey="help.material.helpCard.phases.title" defaults="Turn Overview" />
+        </h2>
+      </div>
+      <FilmStrip />
+      <div css={helpBodyCss}>
+        <ol css={headingListCss}>
+          <li {...(currentPhase === GamePhase.BuyingPhase ? {} : { css: fadedPhaseCss })}>
+            <h3>
+              <Trans i18nKey="help.material.helpCard.phases.buyingAdvertising.title" values={{ currentPhase: currentPhase === GamePhase.BuyingPhase ? 1 : 0 }} />
+            </h3>
             <Trans
-              i18nKey="help.material.helpCard.phases.endOfRound.title"
-              defaults="End of Round{currentPhase, plural, =1{ (current phase)} other{}}"
-              values={{ currentPhase: currentPhase === GamePhase.EndOfRoundPhase ? 1 : 0 }}
+              i18nKey="help.material.helpCard.phases.buyingAdvertising.description"
+              components={{
+                ls: <ul></ul>,
+                lit: <li></li>,
+                nl: <br />
+              }}
             />
-          </h3>
-          <Trans
-            i18nKey="help.material.helpCard.phases.endOfRound.description"
-            components={{
-              ls: <ul></ul>,
-              lit: <li></li>
-            }}
-          />
-        </li>
-      </ol>
+          </li>
+          <li {...(currentPhase === GamePhase.ShowingsPhase ? {} : { css: fadedPhaseCss })}>
+            <h3>
+              <Trans i18nKey="help.material.helpCard.phases.showing.title" values={{ currentPhase: currentPhase === GamePhase.ShowingsPhase ? 1 : 0 }} />
+            </h3>
+            <Trans
+              i18nKey="help.material.helpCard.phases.showing.description"
+              components={{
+                ols: <ol type="A"></ol>,
+                uls: <ul></ul>,
+                lit: <li></li>,
+                e: <em></em>,
+                arr: <FontAwesomeIcon icon={faArrowRight} size="sm" />,
+                nl: <br />,
+                audiencePicture: <Picture src={audienceSymbol} css={audiencePictureCss} />
+              }}
+            />
+          </li>
+          <li {...(currentPhase === GamePhase.EndOfRoundPhase ? {} : { css: fadedPhaseCss })}>
+            <h3>
+              <Trans
+                i18nKey="help.material.helpCard.phases.endOfRound.title"
+                defaults="End of Round{currentPhase, plural, =1{ (current phase)} other{}}"
+                values={{ currentPhase: currentPhase === GamePhase.EndOfRoundPhase ? 1 : 0 }}
+              />
+            </h3>
+            <Trans
+              i18nKey="help.material.helpCard.phases.endOfRound.description"
+              components={{
+                ls: <ul></ul>,
+                lit: <li></li>
+              }}
+            />
+          </li>
+        </ol>
+      </div>
     </>
   )
 }
@@ -286,10 +298,6 @@ const rowSpanCss = css`
   flex-direction: row;
   flex-wrap: wrap;
   align-content: center;
-`
-
-const textCenterCss = css`
-  text-align: center;
 `
 
 const headingListCss = css`

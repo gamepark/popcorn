@@ -11,6 +11,8 @@ import { FC } from 'react'
 import { Trans } from 'react-i18next'
 import unknownGuestSymbol from '../../images/GuestPawns/UnknownGuestPawn.png'
 import audienceSymbol from '../../images/Symbols/Audience.png'
+import { FilmStrip } from '../../theme/filmStrip'
+import { headerDarkCss, headerTitleCss, helpBodyCss, sectionHeaderCss, pillsCss, pillCss, pillLabelCss, pillValueCss, pillValuePriceCss } from '../../theme/helpStyles'
 import { PopcornMaterialDisplayHelpProps } from './utils/popcornMaterialDisplayHelpProps.util'
 
 export const TopCinemaBoardHelp: FC<PopcornMaterialDisplayHelpProps> = ({ item }: { item: Partial<MaterialItem<PlayerColor, LocationType, PlayerColor>> }) => {
@@ -28,67 +30,59 @@ export const TopCinemaBoardHelp: FC<PopcornMaterialDisplayHelpProps> = ({ item }
   const audience = getAudienceFromCubeLocation(audienceCubeLocation)
   return (
     <>
-      <h2>
-        <Trans i18nKey="help.material.topCinemaBoard.title" values={{ player: playerName }} />
-      </h2>
-      <p>
-        <Trans i18nKey="help.material.topCinemaBoard.description" values={{ player: playerName }} />
-      </p>
-      {!theaterTiles?.some((tile) => tile.location.x === 2) && (
+      <div css={headerDarkCss}>
+        <h2 css={headerTitleCss}>
+          <Trans i18nKey="help.material.topCinemaBoard.title" values={{ player: playerName }}/>
+        </h2>
+      </div>
+      <FilmStrip/>
+      <div css={helpBodyCss}>
         <p>
-          <Trans
-            i18nKey="help.material.topCinemaBoard.description.noTileInRightTheaterBonus"
-            values={{ player: playerName }}
-            components={{
-              cube: (
-                <MaterialComponent
-                  type={MaterialType.AudienceCubes}
-                  css={css`
-                    font-size: 1.25em;
-                    display: inline-block;
-                    vertical-align: middle;
-                  `}
-                />
-              )
-            }}
-          />
+          <Trans i18nKey="help.material.topCinemaBoard.description" values={{ player: playerName }}/>
         </p>
-      )}
-      <p>
-        <Trans
-          i18nKey="help.material.topCinemaBoard.description.totalTheaterTilePrice"
-          values={{ totalPrice: theaterTilesTotalPrice }}
-          components={{ s: <strong></strong> }}
-        />
-      </p>
-      <p>
-        <Trans
-          i18nKey="help.material.topCinemaBoard.description.audience"
-          values={{ player: playerName, audience: audience }}
-          components={{
-            audience: (
-              <Picture
-                src={audienceSymbol}
-                css={css`
-                  font-size: 1.5em;
-                  display: inline-block;
-                `}
-              />
-            ),
-            guest: (
-              <Picture
-                src={unknownGuestSymbol}
-                css={css`
-                  font-size: 1.5em;
-                  display: inline-block;
-                  vertical-align: middle;
-                `}
-              />
-            ),
-            s: <strong></strong>
-          }}
-        />
-      </p>
+        {!theaterTiles?.some((tile) => tile.location.x === 2) && (
+          <p>
+            <Trans
+              i18nKey="help.material.topCinemaBoard.description.noTileInRightTheaterBonus"
+              values={{ player: playerName }}
+              components={{
+                cube: <MaterialComponent type={MaterialType.AudienceCubes} css={inlineComponentCss}/>
+              }}
+            />
+          </p>
+        )}
+
+        <h4 css={sectionHeaderCss}>
+          <Trans i18nKey="help.material.topCinemaBoard.header.stats" defaults="Stats"/>
+        </h4>
+        <div css={pillsCss}>
+          <div css={pillCss}>
+            <span css={pillLabelCss}><Trans i18nKey="help.material.topCinemaBoard.pill.tilePrice" defaults="Theater Tiles"/></span>
+            <span css={pillValuePriceCss}>${theaterTilesTotalPrice}</span>
+          </div>
+          <div css={pillCss}>
+            <span css={pillLabelCss}><Trans i18nKey="help.material.topCinemaBoard.pill.audience" defaults="Audience"/></span>
+            <span css={pillValueCss}>{audience}</span>
+            <Picture src={audienceSymbol} css={inlineIconCss}/>
+          </div>
+          <div css={pillCss}>
+            <span css={pillLabelCss}><Trans i18nKey="help.material.topCinemaBoard.pill.guestsDraw" defaults="Guests drawn"/></span>
+            <span css={pillValueCss}>{audience}</span>
+            <Picture src={unknownGuestSymbol} css={inlineIconCss}/>
+          </div>
+        </div>
+      </div>
     </>
   )
 }
+
+const inlineComponentCss = css`
+  font-size: 0.8em;
+  display: inline-block;
+  vertical-align: middle;
+`
+
+const inlineIconCss = css`
+  height: 1.2em !important;
+  vertical-align: middle;
+`

@@ -9,6 +9,10 @@ import { offsetAdvertisingBoardCoordinates } from './utils/offsetLocatorCoordina
 class TwoSeatTheaterTilesRowLocator extends ListLocator<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor> {
   gap = { y: 4.5 }
 
+  getHoverTransform() {
+    return ['scale(2)', 'translateZ(10em)']
+  }
+
   public getCoordinates(
     _location: Location<PlayerColor, LocationType>,
     context: MaterialContext<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>

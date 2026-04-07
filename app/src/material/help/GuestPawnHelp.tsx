@@ -11,6 +11,8 @@ import { MaterialItem, MaterialMoveBuilder } from '@gamepark/rules-api'
 import { camelCase } from 'es-toolkit'
 import { FC } from 'react'
 import { Trans } from 'react-i18next'
+import { FilmStrip } from '../../theme/filmStrip'
+import { headerNavyCss, headerTitleCss, helpBodyCss } from '../../theme/helpStyles'
 import { colorSymbols, movieTitleDefaults } from '../utils/movieCard.utils'
 import { actionSymbols } from '../utils/seatActionSymbols.util'
 import { PopcornMaterialDisplayHelpProps } from './utils/popcornMaterialDisplayHelpProps.util'
@@ -41,73 +43,78 @@ export const GuestPawnHelp: FC<PopcornMaterialDisplayHelpProps> = ({ item }: { i
   const canDoMovieAction = item.id !== GuestPawn.White && getMovieColorFromGuestPawn(item.id!) === movieColor
   return (
     <>
-      <h2>
-        <Trans
-          i18nKey="help.material.guestPawn.title"
-          values={{ player: playerName, theater: parentTile.location.x, seatNumber: seatNumber, guestColor: GuestPawn[item.id!] }}
-          components={{ nl: <br /> }}
-        />
-      </h2>
-      <p>
-        <Trans
-          i18nKey="help.material.guestPawn.description.seatAction"
-          values={{ canDoSeatAction: canDoSeatAction, seatColor: seatColor }}
-          components={{
-            guest: (
-              <MaterialComponent
-                type={MaterialType.GuestPawns}
-                itemId={item.id}
-                css={css`
-                  display: inline-block;
-                  font-size: 1.25em;
-                  vertical-align: middle;
-                `}
-              />
-            ),
-            seatAction: (
-              <Picture
-                src={actionSymbols[seatAction]}
-                css={css`
-                  display: inline-block;
-                  vertical-align: middle;
-                  min-height: 1.25em;
-                `}
-              />
-            )
-          }}
-        />
-      </p>
-      <p>
-        <Trans
-          i18nKey="help.material.guestPawn.description.movieAction"
-          values={{ canDoMovieAction: canDoMovieAction, movieColor: movieColor }}
-          components={{
-            guest: (
-              <MaterialComponent
-                type={MaterialType.GuestPawns}
-                itemId={item.id}
-                css={css`
-                  display: inline-block;
-                  font-size: 1.25em;
-                  vertical-align: middle;
-                `}
-              />
-            ),
-            movie: (
-              <PlayMoveButton move={displayMaterialHelp(MaterialType.MovieCards, movieCard)} local transient css={linkButtonCss}>
-                <Picture
-                  src={colorSymbols[movieColor]}
+      <div css={headerNavyCss}>
+        <h2 css={headerTitleCss}>
+          <Trans
+            i18nKey="help.material.guestPawn.title"
+            values={{ player: playerName, theater: parentTile.location.x, seatNumber: seatNumber, guestColor: GuestPawn[item.id!] }}
+            components={{ nl: <br /> }}
+          />
+        </h2>
+      </div>
+      <FilmStrip />
+      <div css={helpBodyCss}>
+        <p>
+          <Trans
+            i18nKey="help.material.guestPawn.description.seatAction"
+            values={{ canDoSeatAction: canDoSeatAction, seatColor: seatColor }}
+            components={{
+              guest: (
+                <MaterialComponent
+                  type={MaterialType.GuestPawns}
+                  itemId={item.id}
                   css={css`
                     display: inline-block;
+                    font-size: 1.25em;
+                    vertical-align: middle;
+                  `}
+                />
+              ),
+              seatAction: (
+                <Picture
+                  src={actionSymbols[seatAction]}
+                  css={css`
+                    display: inline-block;
+                    vertical-align: middle;
                     min-height: 1.25em;
                   `}
                 />
-                <Trans i18nKey={`material.movieCard.title.${camelCase(MovieCard[movieCard.id.front])}`} defaults={movieTitleDefaults[movieCard.id.front]} />
-              </PlayMoveButton>
-            )
-          }}
-        />
-      </p>
+              )
+            }}
+          />
+        </p>
+        <p>
+          <Trans
+            i18nKey="help.material.guestPawn.description.movieAction"
+            values={{ canDoMovieAction: canDoMovieAction, movieColor: movieColor }}
+            components={{
+              guest: (
+                <MaterialComponent
+                  type={MaterialType.GuestPawns}
+                  itemId={item.id}
+                  css={css`
+                    display: inline-block;
+                    font-size: 1.25em;
+                    vertical-align: middle;
+                  `}
+                />
+              ),
+              movie: (
+                <PlayMoveButton move={displayMaterialHelp(MaterialType.MovieCards, movieCard)} local transient css={linkButtonCss}>
+                  <Picture
+                    src={colorSymbols[movieColor]}
+                    css={css`
+                      display: inline-block;
+                      min-height: 1.25em;
+                    `}
+                  />
+                  <Trans i18nKey={`material.movieCard.title.${camelCase(MovieCard[movieCard.id.front])}`} defaults={movieTitleDefaults[movieCard.id.front]} />
+                </PlayMoveButton>
+              )
+            }}
+          />
+        </p>
+      </div>
     </>
   )
 }

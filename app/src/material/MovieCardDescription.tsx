@@ -1,3 +1,4 @@
+import { css } from '@emotion/react'
 import { faHandPointLeft, faHandPointRight, faHandPointUp } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Actions } from '@gamepark/popcorn/material/Actions/Actions'
@@ -179,6 +180,10 @@ export class MovieCardDescription extends CardDescription<PlayerColor, MaterialT
       return this.getItemMenuForChooseMovieAction(item, context, legalMoves)
     }
     return
+  }
+
+  public getHelpDisplayExtraCss() {
+    return css`font-size: 6em !important;`
   }
 
   public isFlippedOnTable(

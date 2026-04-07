@@ -1,0 +1,20 @@
+export const colors = {
+  red: '#C41E3A',
+  redDeep: '#8B1525',
+  redGlow: '#E63350',
+  gold: '#D4A828',
+  goldLight: '#F0D060',
+  goldDark: '#A07818',
+  goldPale: '#F5E6B8',
+  dark: '#1a0a0a',
+  darkWarm: '#2a1515',
+  cream: '#FFF8E7',
+  creamMid: '#F5ECD5',
+  creamDark: '#E8DBBF',
+  film: '#1e1e1e',
+  filmHole: '#0c0c0c',
+  green: '#2E7D32',
+  blueDark: '#1C2D3F',
+  blueDarker: '#13202E',
+  teal: '#2E86AB'
+}

@@ -14,89 +14,126 @@ import { Picture, usePlayerName } from '@gamepark/react-game'
 import { MaterialItem } from '@gamepark/rules-api'
 import { FC } from 'react'
 import { Trans } from 'react-i18next'
+import { FilmStrip } from '../../theme/filmStrip'
+import {
+  headerNavyCss, headerRowCss, headerSubCss, headerTitleCss,
+  helpBodyCss, priceTagCss, seatIconCss, seatNumCss,
+  sectionHeaderCss, tableCellCss, tableCss, tableHeadCenterCss, tableHeadCss, tableRowHoverCss
+} from '../../theme/helpStyles'
 import { actionSymbols } from '../utils/seatActionSymbols.util'
 import { PopcornMaterialDisplayHelpProps } from './utils/popcornMaterialDisplayHelpProps.util'
 
 export const TheaterTileHelp: FC<PopcornMaterialDisplayHelpProps> = ({ item }: { item: Partial<MaterialItem<PlayerColor, LocationType, TheaterTileId>> }) => {
   const playerName = usePlayerName(item.location?.player)
   const numberOfSeats = item.id!.back === SeatsNumber.Default ? getDefaultNumberOfGuests(item.id!.front!) : getMaximumNumberOfGuests(item.id!.back)
-  const title = (
-    <h2>
-      <Trans i18nKey="help.material.theaterTile.type" values={{ numberOfSeats }} />
-      {item.location?.type === LocationType.TheaterTileSpotOnTopPlayerCinemaBoard && (
-        <>
-          &nbsp;&mdash;&nbsp;
-          <Trans i18nKey="help.material.theaterTile.playerTile" values={{ name: playerName, theaterNumber: item.location.x ?? -1 }} />
-        </>
-      )}
-    </h2>
-  )
-  const numberOfAccommodatedGuestsComponent = (
-    <Trans
-      i18nKey="help.theaterTile.description.accomodatedGuestsNumber"
-      values={{ numberOfGuests: numberOfSeats }}
-      components={{
-        s: <strong></strong>
-      }}
-    />
-  )
+
   if (item.id?.front === undefined) {
     return (
       <>
-        {title}
-        <p>{numberOfAccommodatedGuestsComponent}</p>
+        <div css={headerNavyCss}>
+          <div css={headerTitleCss} style={{ fontSize: '1.25em' }}>
+            <Trans i18nKey="help.material.theaterTile.type" values={{ numberOfSeats }}/>
+          </div>
+        </div>
+        <FilmStrip/>
+        <div css={helpBodyCss}>
+          <p>
+            <Trans
+              i18nKey="help.theaterTile.description.accomodatedGuestsNumber"
+              values={{ numberOfGuests: numberOfSeats }}
+              components={{ s: <strong/> }}
+            />
+          </p>
+        </div>
       </>
     )
   }
+
   const tileCharacteristics = theaterTilesCharacteristics[item.id.front as TheaterTile]
   const seatActions = tileCharacteristics.getActions()
+  const isOnPlayerBoard = item.location?.type === LocationType.TheaterTileSpotOnTopPlayerCinemaBoard
+
   return (
     <>
-      {title}
-      <p>
-        <Trans i18nKey="help.material.theaterTile.description.price" values={{ price: tileCharacteristics.getPrice() }} components={{ s: <strong></strong> }} />
-      </p>
-      <p>{numberOfAccommodatedGuestsComponent}</p>
-      <table css={tableCss}>
-        <colgroup>
-          <col css={seatNumberColumnCss} />
-          <col css={requiredGuestColorColumnCss} />
-          <col css={actionSymbolColumnCss} />
-          <col css={actionDescriptionColumnCss} />
-        </colgroup>
-        <thead>
-          <tr>
-            <th>
-              <Trans i18nKey="help.material.theaterTile.actions.table.header.seatNumber" />
-            </th>
-            <th>
-              <Trans i18nKey="help.material.theaterTile.actions.table.header.requiredGuestColor" />
-            </th>
-            <th colSpan={2}>
-              <Trans i18nKey="help.material.theaterTile.actions.table.header.actionDescription" />
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {seatActions.map((action, index) => {
-            const seatColor = tileCharacteristics.getSeatColor(index)!
-            return (
-              <tr key={`theaterTileHelp-${item.id!.front}-${item.location!.player}-${index}`}>
-                <td css={textCenterCss}>{index + 1}</td>
-                <td css={textCenterCss}>
-                  <Trans i18nKey={`help.material.theaterTile.actions.table.requiredGuestColorForSeatColor.${SeatColor[seatColor]}`} />
-                </td>
-                <td css={borderRightNoneCss}>
-                  <Picture src={actionSymbols[action]} css={pictureCss} />
-                </td>
-                <td css={borderLeftNoneCss}>
-                  <Trans i18nKey={getActionKey(action)} values={{ money: getAmountFromAction(action), popcorn: getAmountFromAction(action) }} />
-                </td>
-              </tr>
-            )
-          })}
-        </tbody>
-      </table>
+      {/* Navy header with seat icon and price */}
+      <div css={headerNavyCss}>
+        <div css={headerRowCss}>
+          <div css={headerLeftCss}>
+            <div css={seatIconCss}>
+              <span>{numberOfSeats}</span>
+            </div>
+            <div>
+              <div css={headerTitleCss} style={{ fontSize: '1.25em' }}>
+                <Trans i18nKey="help.material.theaterTile.type" values={{ numberOfSeats }}/>
+              </div>
+              {isOnPlayerBoard && (
+                <div css={headerSubCss}>
+                  <Trans i18nKey="help.material.theaterTile.playerTile" values={{ name: playerName, theaterNumber: item.location!.x ?? -1 }}/>
+                </div>
+              )}
+            </div>
+          </div>
+          <div css={priceTagCss}>${tileCharacteristics.getPrice()}</div>
+        </div>
+      </div>
+      <FilmStrip/>
+
+      {/* Body */}
+      <div css={helpBodyCss}>
+        <p>
+          <Trans
+            i18nKey="help.theaterTile.description.accomodatedGuestsNumber"
+            values={{ numberOfGuests: numberOfSeats }}
+            components={{ s: <strong/> }}
+          />
+        </p>
+
+        <h4 css={sectionHeaderCss}>
+          <Trans i18nKey="help.material.theaterTile.header.seatActions" defaults="Seat Actions"/>
+        </h4>
+        <table css={tableCss}>
+          <colgroup>
+            <col style={{ width: '2.2em' }}/>
+            <col style={{ width: '5em' }}/>
+            <col style={{ width: '2em' }}/>
+            <col/>
+          </colgroup>
+          <thead>
+            <tr>
+              <th css={tableHeadCenterCss}>
+                <Trans i18nKey="help.material.theaterTile.actions.table.header.seatNumber" defaults="Seat"/>
+              </th>
+              <th css={tableHeadCss}>
+                <Trans i18nKey="help.material.theaterTile.actions.table.header.requiredGuestColor" defaults="Required"/>
+              </th>
+              <th css={tableHeadCss} colSpan={2}>
+                <Trans i18nKey="help.material.theaterTile.actions.table.header.actionDescription" defaults="Action"/>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {seatActions.map((action, index) => {
+              const seatColor = tileCharacteristics.getSeatColor(index)!
+              return (
+                <tr key={`theaterTileHelp-${item.id!.front}-${item.location!.player}-${index}`} css={tableRowHoverCss}>
+                  <td css={tableCellCss}>
+                    <div css={seatNumCss}>{index + 1}</div>
+                  </td>
+                  <td css={tableCellCss}>
+                    <Trans i18nKey={`help.material.theaterTile.actions.table.requiredGuestColorForSeatColor.${SeatColor[seatColor]}`}/>
+                  </td>
+                  <td css={[tableCellCss, noBorderRightCss]}>
+                    <Picture src={actionSymbols[action]} css={pictureCss}/>
+                  </td>
+                  <td css={[tableCellCss, noBorderLeftCss]}>
+                    <Trans i18nKey={getActionKey(action)} values={{ money: getAmountFromAction(action), popcorn: getAmountFromAction(action) }}/>
+                  </td>
+                </tr>
+              )
+            })}
+          </tbody>
+        </table>
+      </div>
     </>
   )
 }
@@ -147,44 +184,18 @@ const getDefaultNumberOfGuests = (theaterTile: TheaterTile): number => {
   }
 }
 
-const tableCss = css`
-  width: 95%;
-  border-collapse: collapse;
-  border: 2px solid;
-  margin: 0 auto;
-
-  td,
-  th {
-    border: 2px solid;
-  }
+const headerLeftCss = css`
+  display: flex;
+  align-items: center;
+  gap: 0.7em;
 `
 
-const seatNumberColumnCss = css`
-  max-width: 15%;
-`
-
-const requiredGuestColorColumnCss = css`
-  max-width: 15%;
-`
-
-const actionDescriptionColumnCss = css`
-  min-width: 65%;
-  width: 70%;
-`
-
-const actionSymbolColumnCss = css`
-  width: 3em;
-`
-
-const textCenterCss = css`
-  text-align: center;
-`
-
-const borderRightNoneCss = css`
+const noBorderRightCss = css`
   border-right: none !important;
+  padding: 0.25em;
 `
 
-const borderLeftNoneCss = css`
+const noBorderLeftCss = css`
   border-left: none !important;
 `
 

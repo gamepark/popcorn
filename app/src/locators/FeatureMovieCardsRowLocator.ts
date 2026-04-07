@@ -9,6 +9,10 @@ import { offsetPremiersTileCoordinates } from './utils/offsetLocatorCoordinates'
 class FeatureMovieCardsRowLocator extends ListLocator<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor> {
   gap = { x: 7.5 }
 
+  getHoverTransform() {
+    return ['scale(2)', 'translateZ(10em)']
+  }
+
   public getCoordinates(
     _location: Location<PlayerColor, LocationType>,
     context: MaterialContext<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>

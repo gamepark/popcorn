@@ -14,6 +14,10 @@ class MovieCardOnBottomPlayerCinemaBoardLocator extends ListLocator<PlayerColor,
   parentItemType = MaterialType.BottomCinemaBoard
   coordinates = { x: -7.7, y: -7.5 }
   gap = { x: 7.7, z: 0 }
+
+  getHoverTransform() {
+    return ['scale(2)', 'translateZ(10em)']
+  }
   locationDescription = new MovieCardOnBottomPlayerCinemaBoardLocationDescription()
 
   public getParentItem(
