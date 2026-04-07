@@ -167,7 +167,7 @@
   "help.material.movieCard.actions.table.header.actionNumber": "Numéro d'action",
   "help.material.movieCard.bonusAction": "<s>Bonus de séance :</s> <p1/><p2/> = <p3/> À l'achat, si ce film est projeté dans un théâtre à {numberOfSeats, select, 1{un siège} 2{deux sièges} 3{trois sièges} other{}} : <bonusActionDescription/>",
   "help.material.movieCard.color": "<s>Couleur :</s> <colorSymbol/> <color/> {colorEnum, select, 1{(Les comédies vous permettent d'augmenter votre audience plus souvent.)} 2{(Les films d'action vous permettent de gagner du Popcorn plus facilement.)} 3{(Les films de fantasy et de science-fiction attirent des spectateurs exigeants (et vous aident à gérer votre sac et vos spectateurs).)} 4{(Les drames et films d'auteur vous aident à gagner plus d'argent et de cartes de récompense.)} other{}}",
-  "help.material.movieCard.color.Red": "Rouge",
+  "help.material.movieCard.color.red": "Rouge",
   "help.material.movieCard.color.blue": "Bleu",
   "help.material.movieCard.color.green": "Vert",
   "help.material.movieCard.color.yellow": "Jaune",
