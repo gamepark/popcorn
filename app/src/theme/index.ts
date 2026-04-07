@@ -1,11 +1,12 @@
 import { css, keyframes } from '@emotion/react'
 import { addStylesheetUrl } from '@gamepark/react-game'
-import redCarpetBackground from '../images/Background.jpg'
 import { colors } from './colors'
 import { PopcornCloseButton } from './PopcornCloseButton'
 import { PopcornNavigation } from './PopcornNavigation'
 
-addStylesheetUrl('https://fonts.googleapis.com/css2?family=Lilita+One&family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&display=swap')
+addStylesheetUrl(
+  'https://fonts.googleapis.com/css2?family=Lilita+One&family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&display=swap'
+)
 
 const dialogOpen = keyframes`
   from { opacity: 0; transform: scale(0.95); }
@@ -29,10 +30,10 @@ export const PopcornTheme = {
       border-radius: 1em;
       overflow: visible;
       box-shadow:
-        0 0 0 0.06em rgba(212,168,40,0.35),
-        0 0.15em 0 0.06em rgba(140,100,20,0.25),
-        0 0.4em 1em rgba(0,0,0,0.35),
-        0 1.5em 4em rgba(0,0,0,0.55);
+        0 0 0 0.06em rgba(212, 168, 40, 0.35),
+        0 0.15em 0 0.06em rgba(140, 100, 20, 0.25),
+        0 0.4em 1em rgba(0, 0, 0, 0.35),
+        0 1.5em 4em rgba(0, 0, 0, 0.55);
       font-family: 'Crimson Pro', Georgia, serif;
     `,
     backdrop: css`
@@ -61,11 +62,11 @@ export const PopcornTheme = {
         color: ${colors.redDeep};
         margin: 1.1em 0 0.45em;
         padding-bottom: 0.3em;
-        border-bottom: 0.06em solid rgba(0,0,0,0.08);
+        border-bottom: 0.06em solid rgba(0, 0, 0, 0.08);
       }
 
       > p {
-        color: rgba(26,10,10,0.72);
+        color: rgba(26, 10, 10, 0.72);
       }
 
       strong {
@@ -75,7 +76,7 @@ export const PopcornTheme = {
       > q {
         display: block;
         font-style: italic;
-        color: rgba(26,10,10,0.45);
+        color: rgba(26, 10, 10, 0.45);
         text-align: center;
         margin-bottom: 0.8em;
       }
@@ -101,8 +102,8 @@ export const PopcornTheme = {
   },
   header: {
     bar: css`
-      background: linear-gradient(180deg, rgba(26,10,10,0.85), rgba(26,10,10,0.7));
-      border-bottom: 0.06em solid rgba(212,168,40,0.3);
+      background: linear-gradient(180deg, rgba(26, 10, 10, 0.85), rgba(26, 10, 10, 0.7));
+      border-bottom: 0.06em solid rgba(212, 168, 40, 0.3);
       font-family: 'Crimson Pro', Georgia, serif;
       color: ${colors.cream};
     `

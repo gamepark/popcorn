@@ -4,7 +4,9 @@ import { colors } from './colors'
 
 export const FilmStrip: FC = () => (
   <div css={filmStripCss}>
-    {Array.from({ length: 30 }, (_, i) => <i key={i} css={holeCss}/>)}
+    {Array.from({ length: 30 }, (_, i) => (
+      <i key={i} css={holeCss} />
+    ))}
   </div>
 )
 
@@ -18,7 +20,8 @@ const filmStripCss = css`
   position: relative;
   flex-shrink: 0;
 
-  &::before, &::after {
+  &::before,
+  &::after {
     content: '';
     position: absolute;
     left: 0;
@@ -27,8 +30,12 @@ const filmStripCss = css`
     background: rgba(255, 255, 255, 0.08);
   }
 
-  &::before { top: 0.12em; }
-  &::after { bottom: 0.12em; }
+  &::before {
+    top: 0.12em;
+  }
+  &::after {
+    bottom: 0.12em;
+  }
 `
 
 const holeCss = css`

@@ -34,7 +34,7 @@ export const PlayerMovieArchiveHelp: FC<LocationHelpProps<PlayerColor, LocationT
   const me = usePlayerId<PlayerColor>()
   const isMe = location.player === me
   if (!isMe) {
-    return <MovieCardDeckHelp location={location} closeDialog={closeDialog}/>
+    return <MovieCardDeckHelp location={location} closeDialog={closeDialog} />
   }
 
   const movieCards =
@@ -50,19 +50,19 @@ export const PlayerMovieArchiveHelp: FC<LocationHelpProps<PlayerColor, LocationT
     cardsByColor[color].push(card)
   }
 
-  const activeColors = COLOR_ORDER.filter(c => cardsByColor[c]?.length)
+  const activeColors = COLOR_ORDER.filter((c) => cardsByColor[c]?.length)
 
   return (
     <div css={containerCss}>
       {/* Title bar with total count */}
       <div css={titleBarCss}>
         <span css={titleCss}>
-          <Trans i18nKey="help.location.movieCard.yourArchive.title"/>
+          <Trans i18nKey="help.location.movieCard.yourArchive.title" />
         </span>
         <span css={totalBadgeCss}>{movieCards.length}</span>
       </div>
       <p css={descCss}>
-        <Trans i18nKey="help.location.movieCard.yourArchive.description" values={{ numberOfMovies: movieCards.length }}/>
+        <Trans i18nKey="help.location.movieCard.yourArchive.description" values={{ numberOfMovies: movieCards.length }} />
       </p>
 
       {/* Color columns */}
@@ -70,18 +70,12 @@ export const PlayerMovieArchiveHelp: FC<LocationHelpProps<PlayerColor, LocationT
         {activeColors.map((color) => (
           <div key={color} css={columnCss} style={{ background: colorBgs[color], borderColor: colorBorders[color] }}>
             <div css={columnHeaderCss} style={{ borderBottomColor: colorBorders[color] }}>
-              <Picture src={colorSymbols[color]} css={colorIconCss}/>
+              <Picture src={colorSymbols[color]} css={colorIconCss} />
               <span css={countCss}>{cardsByColor[color].length}</span>
             </div>
             <div css={cardsCss}>
               {cardsByColor[color].map((card, index) => (
-                <MaterialComponentWithHelp
-                  key={`archive-${color}-${index}`}
-                  itemType={MaterialType.MovieCards}
-                  item={card}
-                  displayHelp
-                  extraCss={cardCss}
-                />
+                <MaterialComponentWithHelp key={`archive-${color}-${index}`} itemType={MaterialType.MovieCards} item={card} displayHelp extraCss={cardCss} />
               ))}
             </div>
           </div>

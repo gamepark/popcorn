@@ -7,7 +7,7 @@ import { colors } from './colors'
 export const PopcornCloseButton: FC<{ onClick: () => void }> = ({ onClick }) => {
   return (
     <button css={closeCss} onClick={onClick} aria-label="Close">
-      <FontAwesomeIcon icon={faXmark}/>
+      <FontAwesomeIcon icon={faXmark} />
     </button>
   )
 }
