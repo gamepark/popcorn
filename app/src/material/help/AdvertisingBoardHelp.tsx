@@ -8,21 +8,7 @@ import { Trans } from 'react-i18next'
 import { FilmStrip } from '../../theme/filmStrip'
 import { headerNavyCss, headerTitleCss, helpBodyCss, sectionHeaderCss, tableCellCss, tableCss, tableHeadCss, tableRowHoverCss } from '../../theme/helpStyles'
 import { getAdvertisingSpotSymbol } from './utils/advertisingSpotSymbol.utils'
-
-const getColorFromSpot = (spot: AdvertisingTokenSpot): GuestPawn | undefined => {
-  switch (spot) {
-    case AdvertisingTokenSpot.YellowGuestPawn:
-      return GuestPawn.Yellow
-    case AdvertisingTokenSpot.GreenGuestPawn:
-      return GuestPawn.Green
-    case AdvertisingTokenSpot.RedGuestPawn:
-      return GuestPawn.Red
-    case AdvertisingTokenSpot.BlueGuestPawn:
-      return GuestPawn.Blue
-    default:
-      return undefined
-  }
-}
+import { getColorFromSpot } from './utils/getColorFromSpot.util'
 
 export const AdvertisingBoardHelp: FC = () => {
   return (
