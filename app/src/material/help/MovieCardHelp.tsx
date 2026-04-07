@@ -18,15 +18,30 @@ import redMovieShowingBonusSymbol from '../../images/Symbols/ShowingBonusConditi
 import yellowMovieShowingBonusSymbol from '../../images/Symbols/ShowingBonusConditionYellow.png'
 import { FilmStrip } from '../../theme/filmStrip'
 import {
-  availNoCss, availYesCss,
-  badgeCss, badgeDotCss,
-  headerRedCss, headerSubCss, headerTitleCss,
-  helpBodyCss, numBadgeCss,
-  pillCss, pillDotCss, pillLabelCss, pillValueCss, pillValuePriceCss, pillsCss,
-  sectionHeaderCss, tableCellCss, tableCss, tableHeadCenterCss, tableHeadCss, tableRowHoverCss,
+  availNoCss,
+  availYesCss,
+  badgeCss,
+  badgeDotCss,
+  headerRedCss,
+  headerSubCss,
+  headerTitleCss,
+  helpBodyCss,
+  numBadgeCss,
+  pillCss,
+  pillDotCss,
+  pillLabelCss,
+  pillsCss,
+  pillValueCss,
+  pillValuePriceCss,
+  sectionHeaderCss,
+  tableCellCss,
+  tableCss,
+  tableHeadCenterCss,
+  tableHeadCss,
+  tableRowHoverCss,
   tearLineCss
 } from '../../theme/helpStyles'
-import { colorSymbols, getMovieActionSymbol, seatsNumberSymbols } from '../utils/movieCard.utils'
+import { getMovieActionSymbol, seatsNumberSymbols } from '../utils/movieCard.utils'
 import { PopcornMaterialDisplayHelpProps } from './utils/popcornMaterialDisplayHelpProps.util'
 
 export const MovieCardHelp: FC<PopcornMaterialDisplayHelpProps> = ({ item }: { item: Partial<MaterialItem<PlayerColor, LocationType, MovieCardId>> }) => {
@@ -39,10 +54,10 @@ export const MovieCardHelp: FC<PopcornMaterialDisplayHelpProps> = ({ item }: { i
     return (
       <>
         <h2>
-          <Trans i18nKey="help.material.movieCard.finalShowing.title" defaults="Final Showing"/>
+          <Trans i18nKey="help.material.movieCard.finalShowing.title" defaults="Final Showing" />
         </h2>
         <p>
-          <Trans i18nKey="help.material.movieCard.finalShowing.description" defaults="This is the last round of the game."/>
+          <Trans i18nKey="help.material.movieCard.finalShowing.description" defaults="This is the last round of the game." />
         </p>
       </>
     )
@@ -64,37 +79,47 @@ export const MovieCardHelp: FC<PopcornMaterialDisplayHelpProps> = ({ item }: { i
       {/* Colored header */}
       <div css={headerRedCss}>
         <div css={badgeCss}>
-          <span css={badgeDotCss} style={{ background: movieColorValues[movieColor] }}/>
-          <Trans i18nKey={`help.material.movieCard.color.${colorKey}`} defaults={`${MovieColor[movieColor]} Film`}/>
+          <span css={badgeDotCss} style={{ background: movieColorValues[movieColor] }} />
+          <Trans i18nKey={`help.material.movieCard.color.${colorKey}`} defaults={`${MovieColor[movieColor]} Film`} />
         </div>
         <div css={headerTitleCss}>
-          <Trans i18nKey={`material.movieCard.title.${camelCase(MovieCard[item.id.front])}`}/>
+          <Trans i18nKey={`material.movieCard.title.${camelCase(MovieCard[item.id.front])}`} />
         </div>
         <div css={headerSubCss}>
-          <Trans i18nKey={`material.movieCard.quote.${camelCase(MovieCard[item.id.front])}`}/>
+          <Trans i18nKey={`material.movieCard.quote.${camelCase(MovieCard[item.id.front])}`} />
         </div>
       </div>
-      <FilmStrip/>
+      <FilmStrip />
 
       {/* Body */}
       <div css={helpBodyCss}>
         <h4 css={sectionHeaderCss}>
-          <Trans i18nKey="help.material.movieCard.headers.characteristics" defaults="Characteristics"/>
+          <Trans i18nKey="help.material.movieCard.headers.characteristics" defaults="Characteristics" />
         </h4>
         <div css={pillsCss}>
           <div css={pillCss}>
-            <span css={pillLabelCss}><Trans i18nKey="help.material.movieCard.pill.price" defaults="Price"/></span>
+            <span css={pillLabelCss}>
+              <Trans i18nKey="help.material.movieCard.pill.price" defaults="Price" />
+            </span>
             <span css={pillValuePriceCss}>${price}</span>
           </div>
+          {!isMovieOnPlayerBoard && (
+            <div css={pillCss}>
+              <span css={pillLabelCss}>
+                <Trans i18nKey="help.material.movieCard.pill.row" defaults="Row" />
+              </span>
+              <span css={pillValueCss}>
+                <Trans i18nKey={'help.material.movieCard.pill.row.' + (isPremiersMovie ? 'premiers' : 'features')} />
+              </span>
+            </div>
+          )}
           <div css={pillCss}>
-            <span css={pillLabelCss}><Trans i18nKey="help.material.movieCard.pill.row" defaults="Row"/></span>
-            <span css={pillValueCss}>{isPremiersMovie ? 'Premiers' : 'Features'}</span>
-          </div>
-          <div css={pillCss}>
-            <span css={pillLabelCss}><Trans i18nKey="help.material.movieCard.pill.color" defaults="Color"/></span>
-            <span css={pillDotCss} style={{ background: movieColorValues[movieColor] }}/>
+            <span css={pillLabelCss}>
+              <Trans i18nKey="help.material.movieCard.pill.color" defaults="Color" />
+            </span>
+            <span css={pillDotCss} style={{ background: movieColorValues[movieColor] }} />
             <span css={pillValueCss} style={{ color: movieColorValues[movieColor] }}>
-              <Trans i18nKey={`help.material.movieCard.color.${colorKey}`}/>
+              <Trans i18nKey={`help.material.movieCard.color.${colorKey}`} />
             </span>
           </div>
         </div>
@@ -102,7 +127,7 @@ export const MovieCardHelp: FC<PopcornMaterialDisplayHelpProps> = ({ item }: { i
         {bonusAction && (
           <div css={bonusBoxCss}>
             <Trans
-              i18nKey="help.movieCard.bonusAction"
+              i18nKey="help.material.movieCard.bonusAction"
               values={{
                 money: bonusActionAmount,
                 popcorn: bonusActionAmount,
@@ -110,10 +135,12 @@ export const MovieCardHelp: FC<PopcornMaterialDisplayHelpProps> = ({ item }: { i
               }}
               components={{
                 s: <strong></strong>,
-                p1: <Picture src={showingSymbols[movieColor]} css={bonusIconCss}/>,
-                p2: <Picture src={seatsNumberSymbols[movieCharacteristics.numberOfSeatsForBonus!]} css={bonusIconCss}/>,
-                p3: <Picture src={getMovieActionSymbol(bonusAction, movieColor)} css={bonusIconCss}/>,
-                bonusActionDescription: <Trans i18nKey={getActionDescriptionKey(bonusAction)} values={{ money: bonusActionAmount, popcorn: bonusActionAmount }}/>
+                p1: <Picture src={showingSymbols[movieColor]} css={bonusIconCss} />,
+                p2: <Picture src={seatsNumberSymbols[movieCharacteristics.numberOfSeatsForBonus!]} css={bonusIconCss} />,
+                p3: <Picture src={getMovieActionSymbol(bonusAction, movieColor)} css={bonusIconCss} />,
+                bonusActionDescription: (
+                  <Trans i18nKey={getActionDescriptionKey(bonusAction)} values={{ money: bonusActionAmount, popcorn: bonusActionAmount }} />
+                )
               }}
             />
           </div>
@@ -128,30 +155,30 @@ export const MovieCardHelp: FC<PopcornMaterialDisplayHelpProps> = ({ item }: { i
           </div>
         )}
 
-        <div css={tearLineCss}/>
+        <div css={tearLineCss} />
 
         <h4 css={sectionHeaderCss}>
-          <Trans i18nKey="help.material.movieCard.header.actions" defaults="Actions"/>
+          <Trans i18nKey="help.material.movieCard.header.actions" defaults="Actions" />
         </h4>
         <table css={tableCss}>
           <colgroup>
-            <col style={{ width: '2.2em' }}/>
-            {isMovieOnPlayerBoard && <col style={{ width: '2.5em' }}/>}
-            <col style={{ width: '2em' }}/>
-            <col/>
+            <col style={{ width: '2.2em' }} />
+            {isMovieOnPlayerBoard && <col style={{ width: '2.5em' }} />}
+            <col style={{ width: '2em' }} />
+            <col />
           </colgroup>
           <thead>
             <tr>
               <th css={tableHeadCenterCss}>
-                <Trans i18nKey="help.material.movieCard.actions.table.header.actionNumber" defaults="#"/>
+                <Trans i18nKey="help.material.movieCard.actions.table.header.actionNumber" defaults="#" />
               </th>
               {isMovieOnPlayerBoard && (
                 <th css={tableHeadCenterCss}>
-                  <Trans i18nKey="help.material.movieCard.actions.table.header.actionAvailable" defaults="Avail."/>
+                  <Trans i18nKey="help.material.movieCard.actions.table.header.actionAvailable" defaults="Avail." />
                 </th>
               )}
               <th css={tableHeadCss} colSpan={2}>
-                <Trans i18nKey="help.material.movieCard.actions.table.header.actionDescription" defaults="Action"/>
+                <Trans i18nKey="help.material.movieCard.actions.table.header.actionDescription" defaults="Action" />
               </th>
             </tr>
           </thead>
@@ -160,16 +187,18 @@ export const MovieCardHelp: FC<PopcornMaterialDisplayHelpProps> = ({ item }: { i
               const isActionAvailable = availableMovieActions !== undefined ? availableMovieActions[index] : action !== MovieAction.None
               return (
                 <tr key={`movie-${item.id!.front}-a-${index}`} css={tableRowHoverCss}>
-                  <td css={tableCellCss}><div css={numBadgeCss}>{index + 1}</div></td>
+                  <td css={tableCellCss}>
+                    <div css={numBadgeCss}>{index + 1}</div>
+                  </td>
                   {isMovieOnPlayerBoard && (
                     <td css={[tableCellCss, textCenterCss]}>
                       <span css={isActionAvailable ? availYesCss : availNoCss}>
-                        <FontAwesomeIcon icon={isActionAvailable ? faCheck : faXmark}/>
+                        <FontAwesomeIcon icon={isActionAvailable ? faCheck : faXmark} />
                       </span>
                     </td>
                   )}
                   <td css={[tableCellCss, noBorderRightCss]}>
-                    <Picture src={getMovieActionSymbol(action, movieColor)} css={movieActionPictureCss}/>
+                    <Picture src={getMovieActionSymbol(action, movieColor)} css={movieActionPictureCss} />
                   </td>
                   <td css={[tableCellCss, noBorderLeftCss]}>
                     <Trans
@@ -278,7 +307,6 @@ const movieActionPictureCss = css`
   max-width: 2em;
   max-height: 2em;
 `
-
 
 const textCenterCss = css`
   text-align: center;

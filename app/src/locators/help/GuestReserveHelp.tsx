@@ -6,7 +6,7 @@ import { MovieAction, MovieColor } from '@gamepark/popcorn/material/MovieCard'
 import { PlayerColor } from '@gamepark/popcorn/PlayerColor'
 import { PopcornRules } from '@gamepark/popcorn/PopcornRules'
 import { linkButtonCss, LocationHelpProps, Picture, PlayMoveButton, useRules } from '@gamepark/react-game'
-import { isSameLocationArea, MaterialMoveBuilder } from '@gamepark/rules-api'
+import { MaterialMoveBuilder } from '@gamepark/rules-api'
 import { countBy } from 'es-toolkit'
 import { FC } from 'react'
 import { Trans } from 'react-i18next'
@@ -14,13 +14,9 @@ import { getMovieActionSymbol } from '../../material/utils/movieCard.utils'
 import { GuestNumberTable } from '../utils/GuestNumberTable'
 import displayMaterialHelp = MaterialMoveBuilder.displayMaterialHelp
 
-export const GuestReserveHelp: FC<LocationHelpProps<PlayerColor, LocationType>> = ({ location }) => {
+export const GuestReserveHelp: FC<LocationHelpProps<PlayerColor, LocationType>> = () => {
   const rules = useRules<PopcornRules>()
-  const guests =
-    rules
-      ?.material(MaterialType.GuestPawns)
-      .location((l) => isSameLocationArea(l, location))
-      .getItems<GuestPawn>() ?? []
+  const guests = rules?.material(MaterialType.GuestPawns).location(LocationType.GuestPawnReserveSpot).getItems<GuestPawn>() ?? []
   const numberOfGuests = guests.length
   const numberOfGuestsPerColor = countBy(guests, (guest) => guest.id)
   return (

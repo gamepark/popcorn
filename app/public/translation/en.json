@@ -178,6 +178,8 @@
   "help.material.movieCard.pill.color": "Color",
   "help.material.movieCard.pill.price": "Price",
   "help.material.movieCard.pill.row": "Row",
+  "help.material.movieCard.pill.row.premiers": "Premiers",
+  "help.material.movieCard.pill.row.features": "Features",
   "help.material.movieCard.premiersShowingBonus": "<s>Premiers row showing bonus:</s> When you buy a Premier movie, immediately gain 1 {colorEnum, select, 1{yellow} 2{red} 3{green} 4{blue} other{}} Guest from the reserve, and add it to your bag. If the reserve is empty, take it from any other player’s exit zone. If there are none available, nothing happens.",
   "help.material.movieCard.price": "<s>Price:</s> ${price}{premiersMovie, select, 1{ (incl. +$2 because this is a Premiers row movie)} other{}}",
   "help.material.popcornCup.description": "This cup holds the Popcorn tokens <popcorn/> {isMe, select, true{you} other{{player}}} obtained during the game.",
