@@ -75,7 +75,7 @@ export class PickGuestFromReserveOrExitZoneActionRule extends AudienceMoveOrMovi
         if (boughtCard === undefined) {
           throw new Error('Invalid buying card move')
         }
-        this.updateActionsForPlayer(this.action.boughtCardData.player, (pendingActions) =>
+        this.updatePendingActionsForPlayer(this.action.boughtCardData.player, (pendingActions) =>
           pendingActions.filter((action) => action.type !== ActionType.BuyMovieCard)
         )
         return consequences.concat(this.getBuyingFilmCardConsequences(playerDoingAction, boughtCard, this.action.boughtCardData.destinationSpot))

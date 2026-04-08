@@ -36,7 +36,7 @@ export class UseAdvertisingTokenActionRule extends ActionRule<UseAdvertisingToke
     if (isPopcornMoveItemType(MaterialType.AdvertisingTokens)(move) && move.location.type === LocationType.PlayerAdvertisingTokenSpot) {
       const tokenSourceMaterial = this.material(MaterialType.AdvertisingTokens).index(move.itemIndex)
       const tokenSource = tokenSourceMaterial.getItem<PlayerColor>()?.location.id as AdvertisingTokenSpot
-      this.updateActionsForPlayer(move.location.player!, (pendingActions) => {
+      this.updatePendingActionsForPlayer(move.location.player!, (pendingActions) => {
         pendingActions.unshift({
           type: ActionType.PickReserveOrExitZoneGuest,
           guest: tokenSource === AdvertisingTokenSpot.AnyGuestPawn ? undefined : this.getGuestColorForAdvertisingSpot(tokenSource)
