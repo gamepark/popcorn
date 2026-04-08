@@ -23,16 +23,16 @@ export abstract class ActionRule<T extends Actions> extends SimultaneousRule<Pla
 
   public abstract consequencesBeforeRuleForPlayer(player: PlayerColor): PopcornMove[]
 
-  public getActionsForPlayer(player: PlayerColor, filter?: (action: Actions) => boolean): Actions[] {
+  public getPendingActionsForPlayer(player: PlayerColor, filter?: (action: Actions) => boolean): Actions[] {
     const actions = this.remind<Actions[]>(Memory.PendingActions, player)
     return filter !== undefined && filter !== null && typeof filter === 'function' ? actions.filter(filter) : actions
   }
 
   protected existsPendingActionForPlayer(player: PlayerColor, filter: (action: Actions) => boolean) {
-    return this.getActionsForPlayer(player).some(filter)
+    return this.getPendingActionsForPlayer(player).some(filter)
   }
 
-  protected updateActionsForPlayer(player: PlayerColor, updateFn: (oldPendingActions: Actions[]) => Actions[]) {
+  protected updatePendingActionsForPlayer(player: PlayerColor, updateFn: (oldPendingActions: Actions[]) => Actions[]) {
     this.memorize<Actions[]>(Memory.PendingActions, updateFn, player)
   }
 
@@ -42,7 +42,7 @@ export abstract class ActionRule<T extends Actions> extends SimultaneousRule<Pla
 
   public addPendingActionsForPlayer(player: PlayerColor, actions: Actions[], before: boolean = true) {
     const updateFn = before ? (pendingActions: Actions[]) => actions.concat(pendingActions) : (pendingActions: Actions[]) => actions.concat(pendingActions)
-    this.updateActionsForPlayer(player, updateFn)
+    this.updatePendingActionsForPlayer(player, updateFn)
   }
 
   protected removeCurrentActionForPlayer(player: PlayerColor) {

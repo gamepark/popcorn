@@ -59,7 +59,7 @@ export class PlaceGuestsActionRule extends ActionRule<PlaceGuestAction> {
       }
       if (move.location.type === LocationType.GuestPawnExitZoneSpotOnTopPlayerCinemaBoard && move.itemIndex) {
         this.removeCurrentActionForPlayer(player)
-        this.updateActionsForPlayer(player, (pendingActions) =>
+        this.updatePendingActionsForPlayer(player, (pendingActions) =>
           pendingActions.filter((a) => (a.type !== ActionType.ChooseSeatAction && a.type !== ActionType.ChooseMovieAction) || a.guestIndex !== move.itemIndex)
         )
       }
@@ -187,19 +187,28 @@ export class PlaceGuestsActionRule extends ActionRule<PlaceGuestAction> {
           })
         )
       }
-      if (
-        playerTheaterTileMaterial.index(move.location.parent).selected(true).length === 0 &&
-        !this.existsPendingActionForPlayer(player, (a) => a.type === ActionType.PickTheaterTileToActivate)
-      ) {
-        const theaterTilesWithGuestsIndexes = uniq(
-          this.material(MaterialType.GuestPawns)
-            .location(LocationType.GuestPawnSpotOnTheaterTile)
-            .player(player)
-            .getItems()
-            .map((item) => item.location.parent)
-            .filter((index) => index !== undefined)
-        )
+      const isParentTileNotActivated = playerTheaterTileMaterial.index(move.location.parent).selected(true).length === 0
+      const activateTileActions = this.getPendingActionsForPlayer(player, (a) => a.type === ActionType.PickTheaterTileToActivate)
+      const theaterTilesWithGuestsIndexes = uniq(
+        this.material(MaterialType.GuestPawns)
+          .location(LocationType.GuestPawnSpotOnTheaterTile)
+          .player(player)
+          .getItems()
+          .map((item) => item.location.parent)
+          .filter((tileIndex) => tileIndex !== undefined)
+      )
+      if (isParentTileNotActivated && activateTileActions.length === 0) {
         this.addPendingActionsForPlayer(player, new Array(theaterTilesWithGuestsIndexes.length).fill({ type: ActionType.PickTheaterTileToActivate }))
+      } else if (isParentTileNotActivated && activateTileActions.length !== 0 && this.action.placeOneGuest) {
+        const indexOfParentTileOfGuestPerformingAction = this.material(MaterialType.GuestPawns).index(this.action.guestIndexPerformingAction).getItem()!
+          .location.parent
+        const tilesToActivate = playerTheaterTileMaterial
+          .index((tileIndex) => tileIndex !== indexOfParentTileOfGuestPerformingAction)
+          .filter((tile) => tile.selected !== true)
+        this.addPendingActionsForPlayer(
+          player,
+          new Array(tilesToActivate.length - activateTileActions.length).fill({ type: ActionType.PickTheaterTileToActivate })
+        )
       }
       if (areAllSeatsOccupied && existsRemainingGuestsToPlace) {
         return consequences.concat(
@@ -238,7 +247,7 @@ export class PlaceGuestsActionRule extends ActionRule<PlaceGuestAction> {
       move.itemIndex,
       this.getMovieColorFromSpot(player, parentTheaterTile.location.x!)
     )
-    this.updateActionsForPlayer(player, (pendingActions) => {
+    this.updatePendingActionsForPlayer(player, (pendingActions) => {
       const previousGuestLastActionIndex = pendingActions
         .reverse()
         .findIndex((a) => (a.type === ActionType.ChooseMovieAction || a.type === ActionType.ChooseSeatAction) && a.guestIndex === previousGuestsOnTileIndex)

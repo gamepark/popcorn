@@ -88,7 +88,7 @@ export class ChooseMovieActionRule extends AudienceMoveOrMovieOrSeatActionRule<C
       )
       const guestIndex = existsAnotherPendingActionForGuest ? undefined : this.action.guestIndex
       consequences.push(...this.processMovieActionAndBuildConsequences(movieAction, player, guestIndex))
-      const pendingActions = this.getActionsForPlayer(player)
+      const pendingActions = this.getPendingActionsForPlayer(player)
       const existsAvailableMovieAction = this.remind<AvailableMovieActionsMemory>(Memory.AvailableMovieActions)[movieCard.id.front]!.some(
         (available) => available
       )
@@ -107,7 +107,7 @@ export class ChooseMovieActionRule extends AudienceMoveOrMovieOrSeatActionRule<C
   }
 
   private removeChooseMovieActionIfNoActionsAvailable = (player: PlayerColor): void => {
-    this.updateActionsForPlayer(player, (pendingActions) =>
+    this.updatePendingActionsForPlayer(player, (pendingActions) =>
       pendingActions.filter((action) => !(action.type === ActionType.ChooseMovieAction && action.guestIndex === this.action.guestIndex))
     )
   }
