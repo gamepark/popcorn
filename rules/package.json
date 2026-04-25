@@ -15,23 +15,22 @@
     "access": "public"
   },
   "scripts": {
-    "build": "tsc",
-    "prepublishOnly": "tsc",
+    "test": "vitest",
+    "check:cycles": "madge --circular --extensions ts src",
+    "build": "yarn check:cycles && tsc",
+    "prepublishOnly": "yarn check:cycles && tsc",
     "publish": "lerna publish",
-    "lint": "eslint",
-    "prettier": "prettier",
-    "test": "vitest --passWithNoTests"
+    "lint": "eslint --fix"
   },
   "peerDependencies": {
-    "@gamepark/rules-api": ">=7.6",
-    "es-toolkit": "^1.39.10"
+    "@gamepark/rules-api": ">=7",
+    "es-toolkit": "^1.45.1"
   },
   "devDependencies": {
     "@gamepark/rules-api": "~7.6.3",
-    "es-toolkit": "^1.39.10",
-    "prettier": "^3.8.1",
-    "typescript": "^5.9.3",
+    "es-toolkit": "^1.45.1",
+    "madge": "^8.0.0",
     "vite-tsconfig-paths": "^6.1.1",
-    "vitest": "^4.0.18"
+    "vitest": "^4.1.4"
   }
 }
