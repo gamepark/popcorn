@@ -36,7 +36,7 @@ export const PlayerPanels = () => {
         const moneyCounter = {
           value:
             rules?.material(MaterialType.MoneyTokens).location(LocationType.PlayerMoneyPileSpot).player(player.id).money<MoneyToken>(moneyTokens).count ?? 0,
-          image: moneyTokenDescription.images[MoneyToken.Money1],
+          image: moneyTokenDescription.getImage(MoneyToken.Money1)!,
           imageCss: css`
             border-radius: 50%;
           `
@@ -50,7 +50,7 @@ export const PlayerPanels = () => {
                     .location(LocationType.PlayerPopcornPileUnderPopcornCupSpot)
                     .player(player.id)
                     .money<PopcornToken>(popcornTokens).count ?? 0,
-                image: popcornTokenDescription.images[PopcornToken.Token1]
+                image: popcornTokenDescription.getImage(PopcornToken.Token1)!
               }
             : undefined
         const guestLocationType = isGameOver ? LocationType.GuestPawnExitZoneSpotOnTopPlayerCinemaBoard : LocationType.PlayerGuestPawnsUnderClothBagSpot
