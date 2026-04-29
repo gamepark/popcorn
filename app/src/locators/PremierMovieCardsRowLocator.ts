@@ -21,7 +21,7 @@ class PremierMovieCardsRowLocator extends ListLocator<PlayerColor, MaterialType,
   }
 
   public hide(item: MaterialItem<PlayerColor, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>): boolean {
-    if (context.player !== (context.rules.game.view ?? context.player) && context.dragTransform !== undefined) {
+    if (context.player !== (context.rules.game.view ?? context.player) && context.isDragging) {
       const draggedIndex = context.index
       const draggedItem = context.rules.material(MaterialType.MovieCards).index(draggedIndex).getItem()
       if (draggedItem?.id.front === item.id.front) {

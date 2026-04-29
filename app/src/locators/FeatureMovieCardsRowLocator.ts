@@ -22,7 +22,7 @@ class FeatureMovieCardsRowLocator extends ListLocator<PlayerColor, MaterialType,
 
   public hide(item: MaterialItem<PlayerColor, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType, RuleId, PlayerColor>): boolean {
     if (context.player !== context.rules.game.view && context.displayIndex === context.rules.material(MaterialType.MovieCards).id(item.id).getIndex()) {
-      return context.dragTransform !== undefined
+      return context.isDragging === true
     }
     return super.hide(item, context)
   }
